@@ -20,3 +20,18 @@ model Orchestra {
   createdAt DateTime
   updatedAt DateTime @updatedAt
 }
+
+model User {
+  id Int @id @default(autoincrement())
+  name String 
+  mail String @unique
+  password String @unique
+  image String
+  dateOfBirth String
+  city String
+  rol String
+  isActive Boolean @default(true)
+  reactions Int // Esto que ess???? 
+  post Boolean @default(true)
+  // deberia estar isAdmin tambien en esta tabla?? 
+}
