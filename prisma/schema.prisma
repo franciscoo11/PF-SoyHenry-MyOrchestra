@@ -17,6 +17,6 @@ model Orchestra {
   id Int @id @default(autoincrement())
   name String
   description String
-  createdAt DateTime
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
