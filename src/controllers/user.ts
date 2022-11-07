@@ -5,7 +5,7 @@ interface email {
   name: string;
 }
 
-export const postUsers = async (body: User) => {
+export const postUser = async (body: User) => {
   try {
     const { name, mail, avatar, picture } = body;
     if (!name || !mail) return null;
