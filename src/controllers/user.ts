@@ -5,12 +5,6 @@ interface email {
   name: string;
 }
 
-interface user {
-    name: string;
-    mail: string;
-    avatar: string;
-}
-
 export const postUsers = async (body: User) => {
   try {
     const { name, mail, avatar, picture } = body;
