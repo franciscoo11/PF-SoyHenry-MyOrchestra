@@ -20,3 +20,36 @@ model Orchestra {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Favorite {
+  id Int @id @default(autoincrement())
+}
+
+model Reaction {
+  id Int @id @default(autoincrement())
+  reaction String
+  image_url String
+}
+
+model Post_Reaction {
+  id Int @id @default(autoincrement())
+}
+
+model Rol {
+  id Int @id @default(autoincrement())
+  rol String
+}
+
+model Orchestra_Member {
+  isActive Boolean  @unique @default(true)
+}
+
+model Orchestra_Type {
+  id Int @id @default(autoincrement())
+  type String
+}
+
+model Type_Post {
+  id Int @id @default(autoincrement())
+  type String
+}
