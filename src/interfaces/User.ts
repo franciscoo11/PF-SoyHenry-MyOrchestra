@@ -1,7 +1,7 @@
 export interface UserDb{
     id: number
     name?: string;
-    email?: string;
+    mail?: string;
     avatar?: string;
     picture?: string;
     isActive: boolean;
@@ -19,7 +19,7 @@ export interface UserDb{
 
 export interface User{
     name?: string;
-    email?: string;
+    mail?: string;
     avatar?: string;
     picture?: string;
     rol?: string
