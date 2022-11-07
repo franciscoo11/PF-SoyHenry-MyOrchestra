@@ -14,9 +14,19 @@ datasource db {
 // MODELO EXAMPLE
 
 model Orchestra {
-  id Int @id @default(autoincrement())
-  name String
-  description String
+  id Int @id              @default(autoincrement()) // Podria declararse como tipo string @default(cuid()) ??? 
+  name String @unique     @db.VarChar()
+  description String      @db.Text
+  logo String
+  cover String
+  creation_date String
+  sponsor String
+  location String
+  orchestra_type String
+  isActive Boolean        @default(true)
+  //fav_id ---> Esto seria una FK????
+  donation_account String
+  phone Float             @unique
   createdAt DateTime
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime      @updatedAt
 }
