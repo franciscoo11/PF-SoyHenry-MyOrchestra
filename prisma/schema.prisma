@@ -20,3 +20,18 @@ model Orchestra {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Post {
+  id Int @id @default(autoincrement())
+  title String
+  content String @db.Text
+  media String
+  visibility Boolean @default(true)
+  isActive Boolean @default(true)
+  creation_date String
+  event_date String
+  event_hour String
+  post_type String // este post_type que funcion cumpliaaa??? 
+  //file ---> y esto???
+  views Float
+}
