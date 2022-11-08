@@ -45,7 +45,7 @@ model User {
   rol_id          String
   isActive        Boolean @default(true)
   reaction_id     Int
-  comment_id      String
+  comment_id      Comment[]
   post_id         String
   orchestra_id    String
   fav_id          String
@@ -67,7 +67,7 @@ model Post {
   event_hour    String
   post_type     String 
   views         Int
-  comment_id    Int
+  comment_id    Comment[]
   user_id       String
   orchestra_id  String
   reaction_id   Int
@@ -83,5 +83,26 @@ model Campaign {
   isActive      Boolean   @default(true)
   amount_raised Float
   orchestra_id  String
-  donation_id   String
+  donation_id   Donation[]
+}
+
+model Donation {
+  id          String    @id @default(cuid())
+  quantity    Float
+  isPrivate   Boolean   @default(false)
+  date        DateTime  @default(now())
+  user_id     String
+  campaign    Campaign @relation(fields: [campaign_id], references: [id])
+  campaign_id String
+}
+
+model Comment {
+  id              String @id @default(cuid())
+  content         String
+  creation_date   String
+  isActive        Boolean @default(true)
+  user            User @relation(fields: [user_id], references: [id])
+  user_id         String
+  post            Post @relation(fields: [post_id], references: [id])
+  post_id         String
 }
