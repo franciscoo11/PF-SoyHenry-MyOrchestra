@@ -10,13 +10,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 // MODELO EXAMPLE
 
 model Orchestra {
-  id Int @id @default(autoincrement())
-  name String
+  id          Int      @id @default(autoincrement())
+  name        String
   description String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model User {
+  id              String  @id @default(cuid())
+  name            String
+  email           String  @unique
+  password        String
+  avatar          String
+  banner          String
+  dateOfBirth     String
+  city            String
+  rol_id          String
+  isActive        Boolean @default(true)
+  reaction_id     Int
+  comment_id      Int
+  post_id         Int
+  orchestra_id    Int
+  fav_id          Int
+  first_time      Boolean @default(true)
+  donation_id     Int
+  donation_done   Int
+}
+
+
