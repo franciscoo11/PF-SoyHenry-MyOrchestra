@@ -13,11 +13,24 @@ datasource db {
 // MODELO EXAMPLE
 
 model Orchestra {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               String     @id @default(cuid()) // Podria declararse como tipo string @default(cuid()) ??? 
+  name             String     @unique @db.VarChar()
+  description      String     @db.Text
+  logo             String
+  banner           String
+  creation_date    String
+  sponsor          String
+  location         String
+  orchestra_type   String
+  isActive         Boolean    @default(true)
+  fav_id           Int
+  donation_account String     @unique
+  phone            String     @unique
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  user_id          Int
+  post_id          Int
+  campaign_id      Int
 }
 
 model User {
