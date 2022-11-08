@@ -33,44 +33,43 @@ export const getUsers = async () => {
 };
 
 export const getUserById = async (mail: email) => {
-    try {
-      const user = await prisma.User.findUnique({
-        where: { mail: mail },
-      });
-      return user;
-    } catch (error) {
-      return error;
-    }
-  
+  try {
+    const user = await prisma.User.findUnique({
+      where: { mail: mail },
+    });
+    return user;
+  } catch (error) {
+    return error;
+  }
 };
 
 export const updateUser = async (mail: email, body: User) => {
-    try {
-        const getUser = await prisma.User.update({
-            where: {
-                mail: mail
-            },
-            data: {
-                body
-            }
-        })
-        return getUser
-    } catch (error) {
-        return error
-    }
-}
+  try {
+    const getUser = await prisma.User.update({
+      where: {
+        mail: mail,
+      },
+      data: {
+        body,
+      },
+    });
+    return getUser;
+  } catch (error) {
+    return error;
+  }
+};
 
 export const deleteUser = async (mail: email) => {
-    try {
-        await prisma.User.update({
-            where: {
-                mail:mail,
-            },
-            data: {
-                isActive: false
-            },
-        })
-    } catch (error) {
-        return error
-    }
-}
+  try {
+    await prisma.User.update({
+      where: {
+        mail: mail,
+      },
+      data: {
+        isActive: false,
+      },
+    });
+  } catch (error) {
+    return error;
+  }
+};
