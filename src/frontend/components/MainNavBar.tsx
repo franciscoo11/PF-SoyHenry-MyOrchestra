@@ -32,8 +32,9 @@ export default function MainNavBar() {
         <Link href="/campaign">Campañas </Link>
 
         <Link href="/about">Acerca de </Link>
+
         <div>
-          <SearchBar />
+        <SearchBar />
         </div>
       </nav>
     </NavStyle>
