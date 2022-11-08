@@ -21,9 +21,9 @@ model Orchestra {
   creation_date    String
   sponsor          String
   location         String
-  orchestra_type   String
+  orchestra_type   Orchestra_Type?
   isActive         Boolean    @default(true)
-  fav_id           String
+  fav_id           Favorite[]
   donation_account String     @unique
   phone            String     @unique
   createdAt        DateTime   @default(now())
@@ -42,13 +42,14 @@ model User {
   banner          String
   dateOfBirth     String
   city            String
-  rol_id          String
+  rol             Rol     @relation(fields: [rol_id], references: [id])
+  rol_id          String  @unique
   isActive        Boolean @default(true)
-  reaction_id     Int
+  reaction_id     Post_Reaction[]
   comment_id      Comment[]
   post_id         String
   orchestra_id    String
-  fav_id          String
+  fav_id          Favorite[]
   first_time      Boolean @default(true)
   donation_id     String
   donation_done   Int
@@ -65,12 +66,13 @@ model Post {
   creation_date DateTime @default(now())
   event_date    String
   event_hour    String
-  post_type     String 
+  post_type     Type_Post @relation(fields: [post_type_id], references: [id])
+  post_type_id  String
   views         Int
   comment_id    Comment[]
   user_id       String
   orchestra_id  String
-  reaction_id   Int
+  reaction_id   Post_Reaction[]
 }
 
 model Campaign {
@@ -105,4 +107,53 @@ model Comment {
   user_id         String
   post            Post @relation(fields: [post_id], references: [id])
   post_id         String
+}
+
+model Favorite {
+  id           String @id @default(cuid())
+  user         User @relation(fields: [user_id], references: [id])
+  user_id      String
+  orchestra    Orchestra @relation(fields: [orchestra_id], references: [id])
+  orchestra_id String
+}
+
+model Reaction {
+  id               String @id @default(cuid())
+  reaction         String 
+  image_url        String
+  post_reaction    Post_Reaction @relation(fields: [post_reaction_id], references: [id])
+  post_reaction_id String
+}
+
+model Post_Reaction {
+  id        String @id @default(cuid())
+  user      User @relation(fields: [user_id], references: [id])
+  user_id   String
+  post      Post @relation(fields: [post_id], references: [id])
+  post_id   String
+  reaction  Reaction[]
+}
+
+model Rol {
+  id      String @id @default(cuid())
+  rol     String
+  user    User?
+}
+
+// model Orchestra_Member {
+//   id         String   @default(cuid())
+//   isActive   Boolean  @unique @default(true)
+// }
+
+model Orchestra_Type {
+  id            String @id @default(cuid())
+  type          String
+  orchestra     Orchestra @relation(fields: [orchestra_id], references: [id])
+  orchestra_id  String @unique
+}
+
+model Type_Post {
+  id      String @id @default(cuid())
+  type    String
+  post    Post[]
 }
