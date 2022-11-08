@@ -31,14 +31,14 @@ model User {
   city            String
   rol_id          String
   isActive        Boolean @default(true)
-  reactions_id    Int
-  comments_id     Int
+  reaction_id     Int
+  comment_id      Int
   post_id         Int
   orchestra_id    Int
   fav_id          Int
   first_time      Boolean @default(true)
-  donations_id    Int
-  donations_done  Int
+  donation_id     Int
+  donation_done   Int
 }
 
 
