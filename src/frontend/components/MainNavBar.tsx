@@ -1,3 +1,4 @@
+import SearchBar from "./SearchBar";
 import Link from "next/link";
 import styled from "styled-components";
 
@@ -11,6 +12,7 @@ const NavStyle = styled.header`
     flex-direction: row;
     justify-content: space-around;
     text-decoration: none;
+    align-items: baseline;
   }
 `;
 
@@ -32,8 +34,7 @@ export default function MainNavBar() {
         <Link href="/about">Acerca de </Link>
 
         <div>
-          <input type="text" placeholder="Buscar..." />
-          {/* input only for example */}
+        <SearchBar />
         </div>
       </nav>
     </NavStyle>
