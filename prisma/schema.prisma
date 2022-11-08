@@ -23,14 +23,14 @@ model Orchestra {
   location         String
   orchestra_type   String
   isActive         Boolean    @default(true)
-  fav_id           Int
+  fav_id           String
   donation_account String     @unique
   phone            String     @unique
   createdAt        DateTime   @default(now())
   updatedAt        DateTime   @updatedAt
-  user_id          Int
-  post_id          Int
-  campaign_id      Int
+  user_id          String
+  post_id          String
+  campaign_id      String
 }
 
 model User {
@@ -45,12 +45,12 @@ model User {
   rol_id          String
   isActive        Boolean @default(true)
   reaction_id     Int
-  comment_id      Int
-  post_id         Int
-  orchestra_id    Int
-  fav_id          Int
+  comment_id      String
+  post_id         String
+  orchestra_id    String
+  fav_id          String
   first_time      Boolean @default(true)
-  donation_id     Int
+  donation_id     String
   donation_done   Int
 }
 
@@ -65,10 +65,23 @@ model Post {
   creation_date DateTime @default(now())
   event_date    String
   event_hour    String
-  post_type     Int 
+  post_type     String 
   views         Int
   comment_id    Int
-  user_id       Int
-  orchestra_id  Int
+  user_id       String
+  orchestra_id  String
   reaction_id   Int
+}
+
+model Campaign {
+  id            String    @id @default(cuid())
+  title         String
+  goal_amount   Float
+  start_date    String
+  end_date      String
+  description   String    @db.Text
+  isActive      Boolean   @default(true)
+  amount_raised Float
+  orchestra_id  String
+  donation_id   String
 }
