@@ -10,28 +10,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 // MODELO EXAMPLE
 
 model Orchestra {
-  id Int @id @default(autoincrement())
-  name String
+  id          Int      @id @default(autoincrement())
+  name        String
   description String
-  createdAt DateTime
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime
+  updatedAt   DateTime @updatedAt
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  name String 
-  mail String @unique
-  password String @unique
-  image String
-  dateOfBirth String
-  city String
-  rol String
-  isActive Boolean @default(true)
-  reactions Int // Esto que ess???? 
-  post Boolean @default(true)
-  // deberia estar isAdmin tambien en esta tabla?? 
+  id              String  @id @default(cuid())
+  name            String
+  email           String  @unique
+  password        String
+  avatar          String
+  banner          String
+  dateOfBirth     String
+  city            String
+  rol_id          String
+  isActive        Boolean @default(true)
+  reactions_id    Int
+  comments_id     Int
+  post_id         Int
+  orchestra_id    Int
+  fav_id          Int
+  first_time      Boolean @default(true)
+  donations_id    Int
+  donations_done  Int
 }
+
+
