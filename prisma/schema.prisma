@@ -54,4 +54,21 @@ model User {
   donation_done   Int
 }
 
-
+model Post {
+  id            String   @id @default(cuid())
+  title         String
+  content       String   @db.Text
+  //media      
+  file          String
+  //visibility    Boolean  @default(true)
+  isActive      Boolean  @default(true)
+  creation_date DateTime @default(now())
+  event_date    String
+  event_hour    String
+  post_type     Int 
+  views         Int
+  comment_id    Int
+  user_id       Int
+  orchestra_id  Int
+  reaction_id   Int
+}
