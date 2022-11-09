@@ -15,7 +15,7 @@ datasource db {
 model Orchestra {
   id               String     @id @default(cuid()) // Podria declararse como tipo string @default(cuid()) ??? 
   name             String     @unique @db.VarChar()
-  description      String     @db.Text
+  description      String    
   logo             String
   cover            String
   creation_date    String
