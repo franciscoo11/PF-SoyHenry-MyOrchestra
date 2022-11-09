@@ -40,6 +40,6 @@ model User {
   cover           String
   dateOfBirth     String
   city            String
-  isActive        Boolean @default(true)
+  is_active        Boolean @default(true)
   first_time      Boolean @default(true)
 }
