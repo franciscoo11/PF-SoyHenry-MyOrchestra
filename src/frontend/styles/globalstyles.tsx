@@ -1,7 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
   html,
   body {
     color: ${({ theme }) => theme.colors.primary};
