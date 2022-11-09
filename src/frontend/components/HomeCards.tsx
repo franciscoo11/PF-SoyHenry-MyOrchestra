@@ -47,6 +47,7 @@ function HomeCards(props: any) {
             Archivos:
             <span>7</span>
           </div>
+
         </div>
         <div>
           <button>Ver más</button>

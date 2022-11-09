@@ -3,22 +3,20 @@ export interface UserDb{
     name?: string;
     email?: string;
     avatar?: string;
-    picture?: string;
+    banner?: string;
     isActive: boolean;
-    isAdmin: boolean;
     orchestra_id: number;
     comment_id: number;
-    image: string;
     birth_date: string;
     city: string;
     rol: string;
     reactions?: number;
     donations_done: number;
     favorites: number;
+    firstTime: boolean;
 }
 
 export interface User{
-    id?: number
     name?: string;
     email?: string;
     avatar?: string;

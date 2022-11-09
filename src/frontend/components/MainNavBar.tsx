@@ -1,34 +1,42 @@
+import SearchBar from "./SearchBar";
 import Link from "next/link";
+import styled from "styled-components";
+
+const NavStyle = styled.header`
+  width: 90%;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    text-decoration: none;
+    align-items: baseline;
+  }
+`;
 
 export default function MainNavBar() {
   return (
-    <header>
+    <NavStyle>
       <nav>
-        <ul>
-          <li>
-            <Link href="/orchest">Orquestas </Link>
-          </li>
-          <li>
-            <Link href="/news">Noticias </Link>
-          </li>
-          <li>
-            <Link href="/events">Eventos </Link>
-          </li>
-          <li>
-            <Link href="/media">Multimedia </Link>
-          </li>
-          <li>
-            <Link href="/campaign">Campañas </Link>
-          </li>
-          <li>
-            <Link href="/about">Acerca de </Link>
-          </li>
-        </ul>
+        <label>Logo</label>
+        <Link href="/orchest">Orquestas </Link>
+
+        <Link href="/news">Noticias </Link>
+
+        <Link href="/events">Eventos </Link>
+
+        <Link href="/media">Multimedia </Link>
+
+        <Link href="/campaign">Campañas </Link>
+
+        <Link href="/about">Acerca de </Link>
+
+        <div>
+        <SearchBar />
+        </div>
       </nav>
-      <div>
-        <input type="text" placeholder="Buscar..." />
-        {/* input only for example */}
-      </div>
-    </header>
+    </NavStyle>
   );
 }
