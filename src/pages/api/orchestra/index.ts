@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -22,7 +22,7 @@ export default function handler(
     try {
         switch (method) {
             case GET:
-            return res.status(200).json({ name: 'SOY GET' })
+            return res.status(200).json({ name: 'SOY POST' })
             case POST:
             return res.status(200).json({ name: 'SOY POST' })
             case DELETE:
