@@ -5,6 +5,64 @@ interface query{
   location: string;
 }
 
+//POST ORCHESTRAS
+export const postOrchestras = async (body: any) => {
+  try {
+    const {name, description,logo,cover,location,donation_account,phone,creation_date} = body;
+    //en casode hacer uso de la interface y de colocar como opcional alguna de las variable de la interface orchestras se requiere utilizar este codigo y reemplazar
+    // const nameWithoutUndefined:string = name!;
+    // const descriptionWithoutUndefined:string = description!;
+    // const logoWithoutUndefined:string = logo!;
+    // const bannerWithoutUndefined:string = banner!;
+    // const locationWithoutUndefined:string = location!;
+    // const donation_accountWithoutUndefined:string = donation_account!;
+    
+    if(!name || !donation_account || !phone) throw ('missing values')
+    const orchestras = await prisma.orchestra.create({
+      data: body
+    });
+  
+    return orchestras;
+  } catch (error) {
+    console.log(`something was wrong in post, values received:${body} `, error)
+  }
+
+};
+//DELETE ORCHESTRAS
+export const deleteOrchestra = async (name2:any) => {
+
+    const orchestraDelete = await prisma.orchestra.delete({
+      where: {name:name2},
+    });
+    return orchestraDelete;
+    
+  
+};
+
+//UPDATE ORCHESTRAS
+// working in global update
+
+
+export const updateOrchestra = async (name:any, body:any) => {
+  try {
+    const updateOrchestra = await prisma.orchestra.update({
+      where: {
+        name,
+      },
+      data:body,
+      
+    });
+    return updateOrchestra;
+  } catch (error) {
+    return console.log(error,` cant update, values received:${name}, ${body}`)
+  }
+};
+
+
+
+
+
+
 export const getOrchestras = async (query:any) => {
   const {name, creation_date, location} = query
   if(name){
@@ -32,15 +90,16 @@ export const getOrchestras = async (query:any) => {
   return orchestras;
 };
 
-export const postOrchestras = async (body: any) => {
-  const { name, description } = body;
+// export const postOrchestras = async (body: any) => {
+//   const { name, description } = body;
 
-  const orchestras = await prisma.orchestra.create({
-    data: {
-      name,
-      description,
-    },
-  });
+//   const orchestras = await prisma.orchestra.create({
+//     data: {
+//       name,
+//       description,
+//     },
+//   });
 
-  return orchestras;
-};
+//   return orchestras;
+// };
+
