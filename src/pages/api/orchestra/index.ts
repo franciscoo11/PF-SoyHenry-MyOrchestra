@@ -15,7 +15,7 @@ export default function handler(
     let {
       method,
       body: { papas,patatas },
-      query: {  },
+      query
     } = req;
 
 
