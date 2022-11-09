@@ -26,7 +26,7 @@ const SearchBar = () => {
     <SearchStyles>
       <form>
         <button>
-          <img src={searchlogo} width="15px" height="12,5px" />
+          <img src={searchlogo} width="15px" height="15px" />
         </button>
         <input type="text" placeholder="Buscar" />
       </form>
