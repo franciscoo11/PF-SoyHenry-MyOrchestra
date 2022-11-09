@@ -170,7 +170,7 @@ export const Campaigns = [
       "Quasi molestias autem incidunt at ratione aut explicabo enim quia. Sapiente cupiditate aut et. Id veniam autem dolor omnis. Sit sunt reprehenderit sed.",
     media:
       "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668015686/imagen-post-metodologia-2-1_sazsnh.jpg",
-    goal_amount: "Meta: 237.98 USD",
+    goal_amount: 237.98,
     start_date:
       "Sun Oct 09 2022 15:30:02 GMT+0000 (Coordinated Universal Time)",
     end_date: "Thu Jul 13 2023 02:34:32 GMT+0000 (Coordinated Universal Time)",
@@ -182,7 +182,7 @@ export const Campaigns = [
       "Ad architecto odit voluptatem et beatae ullam ratione error dolor. Odit voluptas commodi voluptas occaecati. Dignissimos tempore occaecati dolor rerum. Dolore et esse aut non et dolores consequatur. Quis officiis minima deserunt qui sint voluptas vero.",
     media:
       "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668015871/descarga_csz0n0.jpg",
-    goal_amount: "Meta: 382.55 USD",
+    goal_amount: 382.55,
     start_date:
       "Tue Feb 08 2022 07:43:47 GMT+0000 (Coordinated Universal Time)",
     end_date: "Fri Jun 16 2023 17:32:31 GMT+0000 (Coordinated Universal Time)",
@@ -195,7 +195,7 @@ export const Campaigns = [
       "Veniam assumenda debitis. Quis perspiciatis ea. Modi recusandae quaerat quis quo eum consectetur est ut commodi. Sit et incidunt libero ut ipsam architecto eligendi eum. Est id sed assumenda est. Corrupti ducimus sequi possimus quia alias tempora aliquam nemo sapiente.",
     media:
       "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668015883/destacada-3_rylbg3.webp",
-    goal_amount: "Meta: 217.28 USD",
+    goal_amount: 217.28,
     start_date:
       "Tue Jul 19 2022 16:02:23 GMT+0000 (Coordinated Universal Time)",
     end_date: "Thu Jan 12 2023 16:17:05 GMT+0000 (Coordinated Universal Time)",
@@ -207,7 +207,7 @@ export const Campaigns = [
       "Itaque aperiam non. Sed dolor harum. Aspernatur reiciendis iste occaecati doloribus fugiat facilis dolorem laudantium. Repudiandae est ut non. Quo quam distinctio voluptas optio ea consequuntur dolores et aut. At recusandae itaque sit est dicta et ullam.",
     media:
       "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668015863/pbn11122019-orchestra1_n4vhj4.jpg",
-    goal_amount: "Meta: 910.59 USD",
+    goal_amount: 910.59,
     start_date:
       "Mon Mar 28 2022 17:45:13 GMT+0000 (Coordinated Universal Time)",
     end_date: "Thu Apr 20 2023 23:53:34 GMT+0000 (Coordinated Universal Time)",

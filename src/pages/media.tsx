@@ -1,7 +1,7 @@
 import Head from "next/head";
-import MainNavBar from "../../frontend/components/MainNavBar";
-import * as fakeDB from "../../frontend/utils/fakeDB";
-import HomeCards from "../../frontend/components/HomeCards";
+import MainNavBar from "../frontend/components/MainNavBar";
+import * as fakeDB from "../frontend/utils/fakeDB";
+import HomeCards from "../frontend/components/HomeCards";
 import styled from "styled-components";
 
 const StyledMain = styled.main`
@@ -33,7 +33,7 @@ const StyledMain = styled.main`
   }
 `;
 
-const Campañas = () => {
+const Media = () => {
   return (
     <>
       <Head>
@@ -50,18 +50,23 @@ const Campañas = () => {
         <section>
           <div className="filtros">
             <select name="orderBy" id="orderBy">
-              <option value="Ordenar por:">Ordenar por:</option>
-              <option value="Nombre">Nombre</option>
-              <option value="Ciudad">Ciudad</option>
+              <option value="Ordenar por:">Ordenar por</option>
+              <option value="recientes">Más recientes</option>
+              <option value="antiguos">Más antiguos</option>
             </select>
           </div>
           <div className="campañas">
-            {fakeDB.Campaigns.map((campaign, index) => (
+            {fakeDB.Posts.map((post, index) => (
               <HomeCards
                 key={index}
-                image={campaign.media}
-                title={campaign.title}
-                content={campaign.goal_amount}
+                image={post.media}
+                // title={
+                //   post.title
+                //     ? fakeDB.Users.map((users) => users.name)
+                //     : post.title
+                // }
+                title={post.title}
+                content={post.content}
               />
             ))}
           </div>
@@ -80,4 +85,4 @@ const Campañas = () => {
   );
 };
 
-export default Campañas;
+export default Media;
