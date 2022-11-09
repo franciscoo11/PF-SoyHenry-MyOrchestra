@@ -22,7 +22,7 @@ export default function handler(
     try {
         switch (method) {
             case GET:
-            return res.status(200).json( {name: 'SOY POST'})
+            return res.status(200).json({ name: 'SOY GET' })
             case POST:
             return res.status(200).json({ name: 'SOY POST' })
             case DELETE:
@@ -32,7 +32,7 @@ export default function handler(
               
         }
     } catch (error) {
-      return  res.status(400).json(error)
+      return  res.status(400).send(error)
     }
 
 }
