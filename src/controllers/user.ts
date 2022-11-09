@@ -4,6 +4,8 @@ import { User } from "../interfaces/User";
 
 export const postUser = async (body: any) => {
   try {
+    console.log(body);
+    
     const { name, email, password } = body;
     const user = await prisma.user.findUnique({
       where: { email: email },
