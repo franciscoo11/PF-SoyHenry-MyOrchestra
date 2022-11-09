@@ -1,36 +1,53 @@
 import styled from "styled-components";
 
 const CardStyle = styled.div`
-  width: 320px;
+  box-sizing: border-box;
+  width: 280px;
+  border: 1px solid lightgray;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  .thumbnail {
+    height: 240px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   img {
-    width: 100%;
+    max-width: 100%;
+    max-height: 240px;
   }
 `;
 
-function HomeCards() {
+function HomeCards(props: any) {
   return (
     <>
       <CardStyle>
-        <div>
-          <img
-            src="http://placeimg.com/640/480/nightlife"
-            alt="Nombre Orquesta"
-          />
+        <div className="thumbnail">
+          <img src={props.image} alt={props.title} />
         </div>
         <div>
-          <h3>Tipo de Orquesta</h3>
-          <h2>Nombre de Orquesta</h2>
-          <p>
-            Rerum a autem nihil magni quidem eligendi totam aut voluptas. Maxime
-            architecto hic corporis itaque voluptatibus. Repellendus consequatur
-            qui vero doloribus recusandae et atque unde qui.
-          </p>
+          <h3>{props.subtitle}</h3>
+          <h2>{props.title}</h2>
+          <p>{props.content}</p>
         </div>
         <div>
-          <div>Vistas: 1234</div>
-          <div>Comentarios: 7</div>
-          <div>Archivos: 7</div>
+          <div>
+            Vistas:
+            <span>1234</span>
+          </div>
+          <div>
+            Comentarios:
+            <span>7</span>
+          </div>
+          <div>
+            Archivos:
+            <span>7</span>
+          </div>
+
         </div>
         <div>
           <button>Ver más</button>
