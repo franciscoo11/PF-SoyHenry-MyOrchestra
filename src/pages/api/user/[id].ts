@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-// import { resourceUsage } from 'process';
-import { getUserById,updateUser,logicDeleteUser,deleteUser } from '../../../controllers/user';
+import { updateUser,logicDeleteUser,deleteUser, getUsers } from '../../../controllers/user';
 
 
 
@@ -23,25 +22,23 @@ export default async function handler(
     try {
         switch (method) {
             case GET:
-              const response = await getUserById(id)
-            return res.status(201).json(response)
+              const getUser = await getUsers(id)
+            return getUser ? res.status(200).json(getUser) : res.status(404).json({error: 'User not found'})
             case PATCH:
-              const response2 = await logicDeleteUser(id)
-            return res.status(200).json(response2)
+              const fakeDeleteUser = await logicDeleteUser(id)
+            return fakeDeleteUser ? res.status(204).json(fakeDeleteUser) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
             case PUT:
-              const response3 = await updateUser(id,body)
-              console.log(response3)
-            return res.status(200).json(response3)
+              const modifyUser = await updateUser(id,body)
+            return modifyUser ? res.status(204).json(modifyUser) : res.status(404).json({error: 'Something goes wrong, check information sended and try again'})
             case DELETE:
-              const response4 = await deleteUser(id)
-              console.log(response4)
-              return res.status(200).json(response4)
+              const removeUser = await deleteUser(id)
+              return removeUser ? res.status(200).json(removeUser) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
             default:
             return res.status(400).json("method no found")
               
         }
     } catch (error) {
-      return  res.status(400).json(error)
+      return  res.status(400).json({error : "Internal error, something goes really really wrong"})
     }
 
 }
