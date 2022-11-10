@@ -23,17 +23,17 @@ export default async function handler(
     try {
         switch (method) {
             case GET:
-              const response = await getUsers(id)
-            return response ? res.status(200).json(response) : res.status(404).json({error: 'User not found'})
+              const getUser = await getUsers(id)
+            return getUser ? res.status(200).json(getUser) : res.status(404).json({error: 'User not found'})
             case PATCH:
-              const response2 = await logicDeleteUser(id)
-            return response ? res.status(204).json(response2) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
+              const fakeDeleteUser = await logicDeleteUser(id)
+            return fakeDeleteUser ? res.status(204).json(fakeDeleteUser) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
             case PUT:
-              const response3 = await updateUser(id,body)
-            return response ? res.status(204).json(response3) : res.status(404).json({error: 'Something goes wrong, check information sended and try again'})
+              const modifyUser = await updateUser(id,body)
+            return modifyUser ? res.status(204).json(modifyUser) : res.status(404).json({error: 'Something goes wrong, check information sended and try again'})
             case DELETE:
-              const response4 = await deleteUser(id)
-              return response4 ? res.status(200).json(response4) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
+              const removeUser = await deleteUser(id)
+              return removeUser ? res.status(200).json(removeUser) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
             default:
             return res.status(400).json("method no found")
               
