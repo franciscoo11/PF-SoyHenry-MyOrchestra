@@ -13,7 +13,7 @@ const StyledDiv = styled.div`
 `;
 
 export default function OrchestraPosts(props: any) {
-  const { title, content, media } = props.posts;
+  const { title, content, media } = props.post;
 
   return (
     <StyledDiv>

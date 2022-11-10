@@ -53,7 +53,11 @@ function OrchestraDetails(props: any) {
       </StyledNav>
       <StyledMain>
         <section>
-          <OrchestraPosts posts={Posts[0]} />
+          <div className="posts">
+            {Posts.map((post, index) => (
+              <OrchestraPosts key={index} post={post} />
+            ))}
+          </div>
         </section>
         <aside>Aside</aside>
       </StyledMain>
