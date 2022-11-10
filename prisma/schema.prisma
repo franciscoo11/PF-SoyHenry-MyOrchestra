@@ -46,6 +46,14 @@ model User {
   first_time  Boolean   @default(true)
   comments    Comment[]
   posts       Post[]
+  Rol         Rol?      @relation(fields: [rolId], references: [id])
+  rolId       String?
+}
+
+model Rol {
+  id    String @id @default(cuid())
+  name  String
+  users User[]
 }
 
 model Post {
