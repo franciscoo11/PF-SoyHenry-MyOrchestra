@@ -48,18 +48,18 @@ model Post {
   id            String   @id @default(cuid())
   title         String
   content       String   @db.Text
-  url_video     String
-  url_file      String
+  url_video     String?
+  url_file      String?
   visibility    String
   is_active     Boolean  @default(true)
   creation_date DateTime @default(now())
   event_date    String
   event_hour    String
-  post_type     String
+  post_type     String?
   post_type_id  String
   views         Int
-  comment_id    String
-  user_id       String
+  comment_id    String?
+  user_id       String?
   orchestra_id  String
-  reaction_id   String
+  reaction_id   String?
 }
