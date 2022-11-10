@@ -5,30 +5,50 @@ interface query{
   creation_date: string;
   location: string;
 }
+
+
+
+const filter_location =(datos:any,location:string):object[]=>{
+
+ let newdatos= datos.filter(
+  (orchestradata:any)=>orchestradata.location === location
+ )
+return newdatos
+}
+
 //GET ORCHESTRAS
 export const getOrchestras = async (query:any) => {
+  console.log(query);
+  
   const {name, creation_date, location} = query
+  const datos:object[]=[{}];
   if(name){
   const az = await prisma.orchestra.findMany({orderBy:{name: 'asc'}})
   const za = await prisma.orchestra.findMany({orderBy:{name: 'desc'}})
-  if(name === 'asc') return az
-  if(name === 'desc') return za
+  if(name === 'asc'&&!location) return az
+  if(name === 'desc'&&!location) return za
+  if(name === 'desc'&&location) return filter_location(za,location)
+  if(name === 'asc'&&location) return filter_location(az,location)
   const foundName = await prisma.orchestra.findMany({
     where: { name: { contains: name.toLowerCase() } } })
     if(foundName.length) return foundName
     else return 'not found'
   }
+
+  if(creation_date){
+    let lastDates = creation_date === 'asc' ? await prisma.$queryRaw`SELECT "id", "name", "creation_date", "location" FROM "Orchestra" ORDER BY creation_date ASC` 
+      : await prisma.$queryRaw`SELECT "id", "name", "creation_date", "location" FROM "Orchestra" ORDER BY creation_date DESC`
+      if(!location)return lastDates
+      if(location)return filter_location(lastDates,location)
+  }
+
   if(location){
     const foundLocation = await prisma.orchestra.findMany({
       where: { location: { contains: location.toLowerCase() } } })
       if(foundLocation.length) return foundLocation
       else return 'not found'
   }
-  if(creation_date){
-    let lastDates = creation_date === 'asc' ? await prisma.$queryRaw`SELECT "id", "name", "creation_date" FROM "Orchestra" ORDER BY creation_date ASC` 
-      : await prisma.$queryRaw`SELECT "id", "name", "creation_date" FROM "Orchestra" ORDER BY creation_date DESC`
-      return lastDates
-  }
+
   const orchestras = await prisma.orchestra.findMany();
 
   return orchestras;
