@@ -62,7 +62,7 @@ const Media = () => {
                 image={post.media}
                 // title={
                 //   post.title
-                //     ? fakeDB.Users.map((users) => users.name)
+                //     ? fakeDB.Users.filter((users) => users.name)
                 //     : post.title
                 // }
                 title={post.title}
