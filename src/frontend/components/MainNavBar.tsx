@@ -40,7 +40,7 @@ export default function MainNavBar() {
 
         <Link href="/media">Multimedia </Link>
 
-        <Link href="/campaign">Campañas </Link>
+        <Link href="/campaigns">Campañas </Link>
 
         <Link href="/about">Acerca de </Link>
 

@@ -2,7 +2,7 @@ import * as fakeDB from "../utils/fakeDB";
 import styled from "styled-components";
 import HomeCards from "./HomeCards";
 
-const StyledMain = styled.main`
+export const StyledMain = styled.main`
   margin: 25px auto;
   width: 90%;
   max-width: 1300px;
