@@ -23,16 +23,16 @@ export default async function handler(
         switch (method) {
             case GET:
               const response = await getUsers()
-            return res.status(201).json(response)
+              return response ? res.status(200).json(response) : res.status(404).json({error: 'Something goes wrong, try again'})
             case POST:
               const response2 = await postUser(body)
-            return res.status(200).json(response2)
+              return response2 ? res.status(201).json(response2) : res.status(404).json({error: 'Something goes wrong, try again'})
             default:
-            return res.status(400).json("method no found")
+              return res.status(400).json("method no found")
               
         }
     } catch (error) {
-      return  res.status(400).json(error)
+      return  res.status(400).json({error : "Internal error, something goes really really wrong"})
     }
 
 }
