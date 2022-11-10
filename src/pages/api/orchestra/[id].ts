@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import {logicDeleteOrchestra,deleteOrchestra,getOrchestrasById,updateOrchestra}from "../../../controllers/orquestas"
-// import { resourceUsage } from 'process';
+
 
 
 
@@ -26,13 +26,13 @@ export default async function handler(
         switch (method) {
             case GET:
               const response = await getOrchestrasById(id)
-              return res.status(201).json( response)
+              return res.status(200).json( response)
             case PUT:
               const response2= await updateOrchestra(id,body)
-              return res.status(200).json(response2)
+              return res.status(204).json(response2)
             case PATCH:
               const response3= await logicDeleteOrchestra(id)
-              return res.status(200).json(response3)
+              return res.status(204).json(response3)
             case DELETE:
               const response4= await deleteOrchestra(id)
               return res.status(200).json(response4)
