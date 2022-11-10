@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { deleteOrchestra, getOrchestras, postOrchestras, updateOrchestra } from '../../controllers/orquestas'
+import { deleteOrchestra, getOrchestras, postOrchestras, updateOrchestra } from '../../controllers/orchestras'
 import { getUsersPost, postUsersPost } from '../../controllers/post';
 
 export default async function handler(

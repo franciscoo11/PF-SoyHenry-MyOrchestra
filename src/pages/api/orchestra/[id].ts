@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import {logicDeleteOrchestra,deleteOrchestra,getOrchestrasById,updateOrchestra}from "../../../controllers/orquestas"
+import {logicDeleteOrchestra,deleteOrchestra,getOrchestrasById,updateOrchestra}from "../../../controllers/orchestras"
 
 
 
