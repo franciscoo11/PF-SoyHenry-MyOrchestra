@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-// import { resourceUsage } from 'process';
 import { updateUser,logicDeleteUser,deleteUser, getUsers } from '../../../controllers/user';
 
 
