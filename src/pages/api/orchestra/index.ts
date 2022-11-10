@@ -23,10 +23,10 @@ export default async function handler(
         switch (method) {
             case GET:
               const response = await getOrchestras(query)   
-              return res.status(201).json(response)
+              return res.status(200).json(response)
             case POST:
               const response2 = await postOrchestras(body)
-              return res.status(200).json(response2)
+              return res.status(201).json(response2)
             default:
               return res.status(400).json("method no found")
               
