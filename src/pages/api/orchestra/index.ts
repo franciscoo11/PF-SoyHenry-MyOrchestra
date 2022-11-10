@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import {getOrchestras,postOrchestras} from "../../../controllers/orquestas"
 // import { resourceUsage } from 'process';
 
 
@@ -9,12 +10,11 @@ export default async function handler(
 ) {
     const GET:string="GET";
     const POST:string="POST";
-    const DELETE:string="DELETE";
 
 
     let {
       method,
-      body: { papas,patatas },
+      body,
       query
     } = req;
 
@@ -22,13 +22,13 @@ export default async function handler(
     try {
         switch (method) {
             case GET:
-            return res.status(200).json({ name: 'SOY POST' })
+              const response = await getOrchestras(query)   
+              return res.status(201).json(response)
             case POST:
-            return res.status(200).json({ name: 'SOY POST' })
-            case DELETE:
-            return res.status(200).json({ name: 'SOY DELETE' })
+              const response2 = await postOrchestras(body)
+              return res.status(200).json(response2)
             default:
-            return res.status(400).json("method no found")
+              return res.status(400).json("method no found")
               
         }
     } catch (error) {

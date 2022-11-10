@@ -44,14 +44,12 @@ export const getOrchestrasById = async (id: any) => {
 //POST ORCHESTRAS
 export const postOrchestras = async (body: any) => {
   try {
-    const {name,donation_account,phone, createdAt, updatedAt} = body;
+    const {name,donation_account,phone} = body;
     if(!name || !donation_account || !phone) throw ('missing values')
     const orchestras = await prisma.orchestra.create({
-      data:{
-        ...body,
-        createdAt: new Date(createdAt),
-        updatedAt: new Date(updatedAt)
-      }
+      data:body
+      
+      
     });
     return orchestras;
   } catch(error) {
