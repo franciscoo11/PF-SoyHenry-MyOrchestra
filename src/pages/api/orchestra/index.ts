@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import {getOrchestras,postOrchestras} from "../../../controllers/orquestas"
+import {postOrchestras,getOrchestras} from "../../../controllers/orquestas"
 // import { resourceUsage } from 'process';
 
 
@@ -32,7 +32,7 @@ export default async function handler(
               
         }
     } catch (error) {
-      return  res.status(400).send(error)
+      return  res.status(400).send(error) 
     }
 
 }
