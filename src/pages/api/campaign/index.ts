@@ -22,9 +22,6 @@ export default async function handler(
         return insertCampaign
           ? res.status(201).json(insertCampaign)
           : res.status(404).json({ error: "Something goes wrong, try again" });
-      case PUT:
-        const modifyCampaign = await updateCampaign(query.id,body)
-        return modifyCampaign ? res.status(200).json(modifyCampaign) : res.status(404).json({ error: "Check body information and try again"})
       default:
         return res.status(400).json("method not allowed");
     }
