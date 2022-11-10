@@ -14,13 +14,13 @@ export const getOrchestras = async (query:any) => {
   if(name === 'asc') return az
   if(name === 'desc') return za
   const foundName = await prisma.orchestra.findMany({
-    where: { name:name.toLowerCase() } })
+    where: { name: { contains: name.toLowerCase() } } })
     if(foundName.length) return foundName
     else return 'not found'
   }
   if(location){
     const foundLocation = await prisma.orchestra.findMany({
-      where: { location: location } })
+      where: { location: { contains: location.toLowerCase() } } })
       if(foundLocation.length) return foundLocation
       else return 'not found'
   }
@@ -32,6 +32,13 @@ export const getOrchestras = async (query:any) => {
   const orchestras = await prisma.orchestra.findMany();
 
   return orchestras;
+};
+//GET ORCHESTRAS BY ID
+export const getOrchestrasById = async (id: any) => {
+    const orchestra = await prisma.user.findUnique({
+      where: { id: id },
+    });
+    return orchestra;
 };
 
 //POST ORCHESTRAS
@@ -65,27 +72,27 @@ export const logicDeleteOrchestra = async (id:any) => {
   return deactivate
 }
 //DELETE ORCHESTRAS
-export const deleteOrchestra = async (name2:any) => {
+export const deleteOrchestra = async (id:any) => {
     const orchestraDelete = await prisma.orchestra.delete({
-      where: {name:name2},
+      where: {id:id},
     });
     return orchestraDelete;
 };
 
 //UPDATE ORCHESTRAS
 // working in global update
-export const updateOrchestra = async (name:any, body:any) => {
+export const updateOrchestra = async (id:any, body:any) => {
   try {
     const updateOrchestra = await prisma.orchestra.update({
       where: {
-        name,
+        id,
       },
       data:body,
       
     });
     return updateOrchestra;
   } catch (error) {
-    return console.log(error,` cant update, values received:${name}, ${body}`)
+    return console.log(error,` cant update, values received:${id}, ${body}`)
   }
 };
 
