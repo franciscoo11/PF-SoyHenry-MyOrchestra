@@ -92,7 +92,7 @@ model Campaign {
 model Comment {
   id            String  @id @default(cuid())
   content       String
-  creation_date String
+  creation_date DateTime @default(now())
   is_active     Boolean @default(true)
   User          User?   @relation(fields: [userId], references: [id])
   userId        String?
