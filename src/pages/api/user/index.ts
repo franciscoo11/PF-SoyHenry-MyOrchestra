@@ -1,32 +1,32 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 // import { resourceUsage } from 'process';
+import { getUsers, postUser} from '../../../controllers/user';
 
 
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
     const GET:string="GET";
     const POST:string="POST";
-    const DELETE:string="DELETE";
 
 
     let {
       method,
-      body: { papas,patatas },
-      query: {  },
+      body,
+      query,
     } = req;
 
 
     try {
         switch (method) {
             case GET:
-            return res.status(200).json( {name: 'SOY GET'})
+              const response = await getUsers()
+            return res.status(201).json(response)
             case POST:
-            return res.status(200).json({ name: 'SOY POST' })
-            case DELETE:
-            return res.status(200).json({ name: 'SOY DELETE' })
+              const response2 = await postUser(body)
+            return res.status(200).json(response2)
             default:
             return res.status(400).json("method no found")
               

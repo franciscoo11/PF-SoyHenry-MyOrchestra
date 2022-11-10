@@ -1,20 +1,22 @@
 import { prisma } from "../../lib/prisma";
 import { User } from "../interfaces/User";
 
-interface email {
-  name: string;
-}
 
-export const postUser = async (body: User) => {
+export const postUser = async (body: any) => {
   try {
-    const { name, mail, avatar, picture } = body;
-    if (!name || !mail) return null;
+    const { name, email, password } = body;
+    const user = await prisma.user.findUnique({
+      where: { email: email },
+    });
+    if(user) throw('Email is already')
+    if (!name || !email || !password ) return null;
     // TO CHECK AVATAR OR PICTURE SEND DB
-    const addUser = await prisma.User.create({
+    const addUser = await prisma.user.create({
       data: {
+        ...body,
         name: name,
-        mail: mail,
-        avatar: avatar,
+        email: email,
+        password: password
       },
     });
     return addUser;
@@ -25,17 +27,17 @@ export const postUser = async (body: User) => {
 
 export const getUsers = async () => {
   try {
-    const allUsers = await prisma.User.findMany();
+    const allUsers = await prisma.user.findMany();
     return allUsers;
   } catch (error) {
     return error;
   }
 };
 
-export const getUserById = async (mail: email) => {
+export const getUserById = async (id: any) => {
   try {
-    const user = await prisma.User.findUnique({
-      where: { mail: mail },
+    const user = await prisma.user.findUnique({
+      where: { id: id },
     });
     return user;
   } catch (error) {
@@ -43,15 +45,18 @@ export const getUserById = async (mail: email) => {
   }
 };
 
-export const updateUser = async (mail: email, body: User) => {
+export const updateUser = async (id: any, body: any) => {
   try {
-    const getUser = await prisma.User.update({
+    if(!id) throw('Please enter a id')
+    const user = await prisma.user.findUnique({
+      where: { id: id },
+    });
+    if(!user) throw('User not found, please check and try again')
+    const getUser = await prisma.user.update({
       where: {
-        mail: mail,
+        id: id,
       },
-      data: {
-        body,
-      },
+      data: body
     });
     return getUser;
   } catch (error) {
@@ -59,16 +64,32 @@ export const updateUser = async (mail: email, body: User) => {
   }
 };
 
-export const deleteUser = async (mail: email) => {
+export const logicDeleteUser = async (id: any) => {
   try {
-    await prisma.User.update({
+    if(!id) throw('Please enter a id')
+    const user = await prisma.user.update({
       where: {
-        mail: mail,
+        id: id
       },
-      data: {
-        isActive: false,
-      },
+      data:{
+        is_active: false
+      }
+    })
+    return user
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteUser = async (id: any) => {
+  try {
+    if(!id) throw('Please enter a id')
+    const user = await prisma.user.delete({
+      where: {
+        id: id
+      }
     });
+    return user;
   } catch (error) {
     return error;
   }
