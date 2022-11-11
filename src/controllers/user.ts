@@ -1,21 +1,18 @@
 import { prisma } from "../../lib/prisma";
 
-const yearValidation = (year: any) => {
-  var text = /^[0-9]+$/;
-  if (year != 0) {
-    if (year != "" && !text.test(year)) return null;
-    if (year.length != 4) return null;
-    var current_year = new Date().getFullYear();
-    if (year < 1920 || year > current_year) return null;
-    return true;
-  }
+const yearValidation = (year: string) => {
+  var _thisYear = new Date().getFullYear();
+  if (year.length != 4) return null;
+  if (year.match(/\d{4}/)) return null;
+  if (parseInt(year) > _thisYear || parseInt(year) < 1900) return null;
+  return true;
 };
 
 export const postUser = async (body: any) => {
   try {
     const { name, email, password, year_of_birth } = body;
     if (!name || !email || !password || !year_of_birth) return null;
-    if(!yearValidation(year_of_birth)) return null
+    if (!yearValidation(year_of_birth)) return null;
     const user = await prisma.user.findUnique({
       where: { email: email },
     });
