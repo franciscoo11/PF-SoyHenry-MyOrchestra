@@ -16,7 +16,7 @@ const filter_location =(datos:any,location:string):object[]=>{
 return newdatos
 }
 
-//GET ORCHESTRAS
+// GET ORCHESTRAS
 export const getOrchestras = async (query:any) => {
   console.log(query);
   
