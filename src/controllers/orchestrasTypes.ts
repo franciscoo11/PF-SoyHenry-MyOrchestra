@@ -28,10 +28,7 @@ export const addOrchestraType = async (body:any) => {
         if(checkOrchestraTypeDuplicate) return null
         if(!type) return null
         const generateOrchestraType = await prisma.orchestra_Type.create({
-            data: {
-                ...body,
-                type: type
-            }
+            data: body
         })
         return generateOrchestraType ? generateOrchestraType : null
     } catch (error) {

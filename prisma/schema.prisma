@@ -13,24 +13,23 @@ datasource db {
 // MODELO EXAMPLE
 
 model Orchestra {
-  id               String          @id @default(cuid()) // Podria declararse como tipo string @default(cuid()) ??? 
-  name             String          @unique @db.VarChar()
+  id               String         @id @default(cuid()) // Podria declararse como tipo string @default(cuid()) ??? 
+  name             String         @unique @db.VarChar()
   description      String
   logo             String
   cover            String
   creation_date    String
   sponsor          String?
   location         String
-  orchestra_type   String?
-  is_active        Boolean         @default(true)
-  donation_account String          @unique
-  phone            String          @unique
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
+  is_active        Boolean        @default(true)
+  donation_account String         @unique
+  phone            String         @unique
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
   user_id          String?
-  Orchestra_Type   Orchestra_Type? @relation(fields: [orchestra_TypeId], references: [id])
-  orchestra_TypeId String?
   posts            Post[]
+  orchestra_type   Orchestra_Type @relation(fields: [orchestra_TypeId], references: [id])
+  orchestra_TypeId String
 }
 
 model User {
@@ -71,10 +70,9 @@ model Post {
 }
 
 model Orchestra_Type {
-  id           String      @id @default(cuid())
-  type         String
-  orchestras   Orchestra[]
-  orchestra_id String
+  id        String      @id @default(cuid())
+  type      String
+  Orchestra Orchestra[]
 }
 
 model Campaign {
@@ -98,5 +96,4 @@ model Comment {
   userId        String?
   Post          Post?   @relation(fields: [postId], references: [id])
   postId        String?
-
 }
