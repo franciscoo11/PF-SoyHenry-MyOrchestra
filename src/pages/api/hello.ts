@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { deleteOrchestra, postOrchestras, updateOrchestra } from '../../controllers/orchestras'
-import { getUsersPost, postUsersPost } from '../../controllers/post';
+import { getPost, postPost,getOrchestrasPost } from '../../controllers/post';
 
 export default async function handler(
   req: NextApiRequest,
@@ -23,10 +23,10 @@ export default async function handler(
     try {
         switch (method) {
             case GET:
-              const allOrchestras =await  getUsersPost();
+              const allOrchestras =await getOrchestrasPost(name);
             return res.status(200).json(allOrchestras)
             case POST:
-              const addOrchestra =await postUsersPost(body)
+              const addOrchestra =await postPost(body)
             return res.status(201).json(addOrchestra)
             case DELETE:
               const deleteOrchestra2 = await postOrchestras(body)

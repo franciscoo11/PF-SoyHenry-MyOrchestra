@@ -1,6 +1,6 @@
 import { prisma } from "../../lib/prisma";
 //GET USERSPOST
-export const getUsersPost = async () => {
+export const getPost = async () => {
   try {
     const getPosts = await prisma.post.findMany({
       select: {
@@ -11,7 +11,21 @@ export const getUsersPost = async () => {
 
     return getPosts ? getPosts : null;
   } catch (error) {
-    console.log("something was wrong in get ", error);
+    return null
+  }
+};
+//GET orchestraPOST
+export const getOrchestrasPost = async (query:any) => {
+  const {orchestra}=query
+  try {
+    const getPosts = await prisma.post.findMany({
+      where:{
+        orchestraId: orchestra
+      }
+    });
+    return getPosts ? getPosts: null;
+  } catch (error) {
+    return null;
   }
 };
 
@@ -59,11 +73,13 @@ function verifyHour(event_hour: any) {
 //si no tiene coherencia salta error
 //incluir am o pm
 //formato 2:05 pm
-export const postUsersPost = async (body: any) => {
+export const postPost = async (body: any) => {
   try {
     //estos datos son obligatorios por ahora mientras se termina de definir cuales van a ser los obligatorios en el modelo post
     const { event_date, event_hour, title, content } = body;
     if (!title || !content) return null;
+    if (event_hour && !event_date) return null;
+    if(!event_hour && event_date) return null;
     if (verifyDate(event_date) === false) return null;
     if (verifyHour(event_hour) === false) return null;
     await prisma.post.create({
@@ -71,12 +87,12 @@ export const postUsersPost = async (body: any) => {
     });
     return body ? body : null;
   } catch (error) {
-    console.log(`something was wrong in post, values received:${body} `, error);
+    return null;
   }
 };
 
 //PUT USERSPOST
-export const putUsersPost = async (post_id: any, body: any) => {
+export const putPost = async (post_id: any, body: any) => {
   try {
     if (!post_id || !body) return null;
     await prisma.post.update({
@@ -87,16 +103,13 @@ export const putUsersPost = async (post_id: any, body: any) => {
     });
     return body ? body : null;
   } catch (error) {
-    return console.log(
-      error,
-      ` cant update, values received:${post_id}, ${body}`
-    );
+    return null;
   }
 };
 
 //DELETE USERSPOST
 
-export const logicDeleteUsersPost = async (post_id: any) => {
+export const logicDeletePost = async (post_id: any) => {
   try {
     if (!post_id) return null;
     await prisma.post.update({
@@ -109,11 +122,11 @@ export const logicDeleteUsersPost = async (post_id: any) => {
     });
     return post_id ? post_id : null;
   } catch (error) {
-    return console.log(error, ` cant logic delete, value received:${post_id}`);
+    return null;
   }
 };
 
-export const deleteUsersPost = async (post_id: any) => {
+export const deletePost = async (post_id: any) => {
   try {
     if (!post_id) return null;
     await prisma.post.delete({
@@ -121,6 +134,6 @@ export const deleteUsersPost = async (post_id: any) => {
     });
     return post_id ? post_id : null;
   } catch (error) {
-    return console.log(error, ` cant delete, value received:${post_id}`);
+    return null;
   }
 };

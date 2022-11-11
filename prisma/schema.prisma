@@ -63,14 +63,14 @@ model Post {
   content       String     @db.Text
   url_video     String?
   url_file      String?
-  visibility    String
+  visibility    String?
   is_active     Boolean    @default(true)
   creation_date DateTime   @default(now())
-  event_date    String
-  event_hour    String
+  event_date    String?
+  event_hour    String?
   post_type     String?
-  post_type_id  String
-  views         Int
+  post_type_id  String?
+  views         Int?
   reaction_id   String?
   comments      Comment[]
   Orchestra     Orchestra? @relation(fields: [orchestraId], references: [id])
