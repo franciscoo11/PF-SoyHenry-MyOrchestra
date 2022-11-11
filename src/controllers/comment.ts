@@ -6,7 +6,7 @@ export const getCommentPost = async () => {
       const getComment = await prisma.comment.findMany();
       return getComment;   
     } catch (error) {
-      console.log('error: ', error)
+      return error
     }
 };
 
@@ -17,9 +17,9 @@ export const postCommentPost = async(body:any)=>{
         const postComment = await prisma.comment.create({
           data:body
         });
-        return postComment
+        return postComment ? postComment : null
     } catch (error) {
-        console.log(`error: `, error)
+        return error
     }
 }
 
@@ -35,8 +35,8 @@ export const deleteComment = async (id: any) => {
       const deleted = await prisma.comment.delete({
         where: { id: id },
       });
-      return deleted
+      return deleted ? deleted : null
     } catch (error) {
-      return null;
+      return error;
     }
 };  
