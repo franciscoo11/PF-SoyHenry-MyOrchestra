@@ -1,21 +1,34 @@
 import { prisma } from "../../lib/prisma";
 
-export const getCampaigns = async (id?:any) => {
+export const getCampaigns = async (query?:any) => {
+    const { title, goal_amount, id }= query
     try {
-        if(!id){
-            const allCampaigns = await prisma.campaign.findMany()
-            return allCampaigns.length ? allCampaigns : null
+        if(title){
+            const az = await prisma.campaign.findMany({orderBy:{title: 'asc'}})
+            const za = await prisma.campaign.findMany({orderBy:{title: 'desc'}})
+            if(title === 'asc') return az
+            if(title === 'desc') return za
+            const foundName = await prisma.campaign.findMany({
+                where: { title: { contains: title.toLowerCase() } } })
+                return foundName.length ? foundName : null
         }
+        if(goal_amount){
+            const asc = await prisma.campaign.findMany({orderBy:{goal_amount: 'asc'}})
+            const desc = await prisma.campaign.findMany({orderBy:{goal_amount: 'desc'}})
+            return goal_amount === 'asc' ? asc : desc
+        }
+        if(id){
         const searchCampaignById = await prisma.campaign.findUnique({
-            where: {
-                id: id
-            }
-        })
+            where: { id: id } })
         return searchCampaignById ? searchCampaignById : null
+        }
+        const allCampaigns = await prisma.campaign.findMany()
+        return allCampaigns.length ? allCampaigns : null
     } catch (error) {
         return error
     }
 }
+
 
 export const updateCampaign = async (id:any, body:any) => {
     try {
