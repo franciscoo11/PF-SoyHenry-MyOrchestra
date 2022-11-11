@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import {postOrchestras,getOrchestras} from "../../../controllers/orquestas"
+import {postOrchestras,getOrchestras} from "../../../controllers/orchestras"
 // import { resourceUsage } from 'process';
 
 
