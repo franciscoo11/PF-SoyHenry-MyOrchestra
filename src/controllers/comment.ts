@@ -26,5 +26,17 @@ export const postCommentPost = async(body:any)=>{
 export const logicDeleteComment = async (id:any) => {
     const deactivate = await prisma.comment.update({
       where:{ id:id }, data: { is_active: false } })
-    return deactivate
+    return deactivate ? deactivate : null
   }
+
+export const deleteComment = async (id: any) => {
+    try {
+      if (!id) return null;
+      const deleted = await prisma.comment.delete({
+        where: { id: id },
+      });
+      return deleted
+    } catch (error) {
+      return null;
+    }
+};  

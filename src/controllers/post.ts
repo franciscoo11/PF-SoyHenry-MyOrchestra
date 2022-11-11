@@ -1,7 +1,18 @@
 import { prisma } from "../../lib/prisma";
 //GET USERSPOST
-export const getPost = async () => {
+export const getPost = async (query:any) => {
   try {
+    const {creation_date, views} = query
+    if(creation_date){
+      let lastDates = creation_date === 'asc' ? await prisma.$queryRaw`SELECT "id", "title", "creation_date", "content" FROM "Post" ORDER BY creation_date ASC` 
+      : await prisma.$queryRaw`SELECT "id", "title", "creation_date", "content" FROM "Post" ORDER BY creation_date DESC`
+      return lastDates
+    }
+    if(views){
+      const asc = await prisma.post.findMany({orderBy:{views: 'asc'}})
+      const desc = await prisma.post.findMany({orderBy:{views: 'desc'}})
+      return views === 'asc' ? asc : desc
+    }
     const getPosts = await prisma.post.findMany({
       select: {
         title: true,
@@ -87,7 +98,7 @@ export const postPost = async (body: any) => {
     });
     return body ? body : null;
   } catch (error) {
-    return null;
+    console.log(error);
   }
 };
 
