@@ -33,6 +33,7 @@ interface query {
     id?:string
     reaction?: string
 }
+
 export const updateReaction = async(query:query, body:{reaction:string}) => {
     try {
         if(!query.id) return null
