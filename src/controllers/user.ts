@@ -1,11 +1,15 @@
 import { prisma } from "../../lib/prisma";
 
-const yearValidation = (year: string) => {
-  var _thisYear = new Date().getFullYear();
-  if (year.length != 4) return null;
-  if (year.match(/\d{4}/)) return null;
-  if (parseInt(year) > _thisYear || parseInt(year) < 1900) return null;
-  return true;
+const yearValidation = (year: any) => {
+  var text = /^[0-9]+$/;
+  if (year.length < 4) return null;
+  if (year != 0) {
+    if (year != "" && !text.test(year)) return null;
+    var current_year = new Date().getFullYear();
+    if (year < 1920 || year > current_year) return null;
+    return true;
+  }
+
 };
 
 export const postUser = async (body: any) => {
