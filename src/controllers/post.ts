@@ -98,7 +98,7 @@ export const postPost = async (body: any) => {
     });
     return body ? body : null;
   } catch (error) {
-    console.log(error);
+    return error
   }
 };
 
