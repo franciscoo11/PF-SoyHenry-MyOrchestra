@@ -2,8 +2,8 @@ import { prisma } from "../../lib/prisma";
 
 export const postUser = async (body: any) => {
   try {
-    const { name, email, password } = body;
-    if (!name || !email || !password ) return null;
+    const { name, email, password, year_of_birth } = body;
+    if (!name || !email || !password || !year_of_birth) return null;
     const user = await prisma.user.findUnique({
       where: { email: email },
     });
@@ -15,7 +15,8 @@ export const postUser = async (body: any) => {
         ...body,
         name: name,
         email: email,
-        password: password
+        password: password,
+        year_of_birth: year_of_birth
       },
     });
     return addUser ? addUser : null;
