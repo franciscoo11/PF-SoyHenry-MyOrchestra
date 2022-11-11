@@ -34,20 +34,21 @@ model Orchestra {
 }
 
 model User {
-  id              String         @id @default(cuid())
-  name            String
-  email           String         @unique
-  password        String
-  avatar          String?
-  cover           String?
-  year_of_birth   String
-  city            String?
-  is_active       Boolean        @default(true)
-  first_time      Boolean        @default(true)
-  comments        Comment[]
-  posts           Post[]
-  Rol             Rol?           @relation(fields: [rolId], references: [id])
-  rolId           String?
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  password      String
+  avatar        String?
+  cover         String?
+  year_of_birth String
+  city          String?
+  is_active     Boolean   @default(true)
+  first_time    Boolean   @default(true)
+  comments      Comment[]
+  posts         Post[]
+  Rol           Rol?      @relation(fields: [rolId], references: [id])
+  rolId         String?
+
   Post_Reaction   Post_Reaction? @relation(fields: [post_ReactionId], references: [id])
   post_ReactionId String?
 }
