@@ -98,7 +98,6 @@ export const deleteOrchestra = async (id:any) => {
 };
 
 //UPDATE ORCHESTRAS
-// working in global update
 export const updateOrchestra = async (id:any, body:any) => {
   try {
     const updateOrchestra = await prisma.orchestra.update({

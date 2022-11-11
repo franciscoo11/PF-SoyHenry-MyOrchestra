@@ -30,6 +30,8 @@ model Orchestra {
   posts            Post[]
   orchestra_type   Orchestra_Type @relation(fields: [orchestra_TypeId], references: [id])
   orchestra_TypeId String
+  Campaign         Campaign[]
+
 }
 
 model User {
@@ -45,6 +47,14 @@ model User {
   first_time  Boolean   @default(true)
   comments    Comment[]
   posts       Post[]
+  Rol         Rol?      @relation(fields: [rolId], references: [id])
+  rolId       String?
+}
+
+model Rol {
+  id    String @id @default(cuid())
+  name  String
+  users User[]
 }
 
 model Post {
@@ -76,21 +86,22 @@ model Orchestra_Type {
 }
 
 model Campaign {
-  id            String  @id @default(cuid())
+  id            String    @id @default(cuid())
   title         String
   goal_amount   Float
   start_date    String
   end_date      String
-  description   String  @db.Text
-  is_active     Boolean @default(true)
+  description   String    @db.Text
+  is_active     Boolean   @default(true)
   amount_raised Float
-  orchestra_id  String
+  orchestra     Orchestra @relation(fields: [orchestraId], references: [id])
+  orchestraId   String
 }
 
 model Comment {
   id            String  @id @default(cuid())
   content       String
-  creation_date String
+  creation_date DateTime @default(now())
   is_active     Boolean @default(true)
   User          User?   @relation(fields: [userId], references: [id])
   userId        String?
