@@ -19,8 +19,15 @@ export const getUsersPost = async () => {
 //logica fecha
 function verifyDate(event_date: any) {
   let eventTest = event_date;
+  let validateYear="";
+ if( eventTest.includes('/202') ){
+  validateYear = eventTest.substring(eventTest.length - 4)
+  validateYear = validateYear.slice(2,4)
+  eventTest = eventTest.slice(0,-4)
+  eventTest = eventTest + validateYear;
+ };
   const date_regex =
-    /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[1-9]|2[1-9])$/;
+  /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[1-9]|2[1-9])$/;
   if (!date_regex.test(eventTest)) return false;
   var today = new Date();
   var dateForm = new Date(eventTest);
