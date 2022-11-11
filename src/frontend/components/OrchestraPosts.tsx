@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Orquestas, Users } from "../utils/fakeDB";
+import { Orquestas, Users, Comments } from "../utils/fakeDB";
 
 const StyledDiv = styled.div`
   width: 100%;
@@ -85,6 +85,47 @@ const StyledDiv = styled.div`
         font-weight: bold;
         padding: 6px 12px;
         border-radius: 6px;
+
+        &:hover {
+          background-color: #f1f2f6;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .comment-form-container {
+      .comment-form {
+        width: 100%;
+      }
+
+      .comment-input {
+        background-color: #f1f2f6;
+        border: none;
+        font-size: 1em;
+        width: 100%;
+        padding: 12px;
+        border-radius: 24px;
+      }
+    }
+
+    .users-comments-container {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+
+      .user-comment {
+        width: 100%;
+        background-color: #f1f2f6;
+        padding: 12px;
+      }
+
+      .user-pic {
+        border: 1px solid lightgrey;
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        background-size: cover;
+        background-position: center;
       }
     }
   }
@@ -118,6 +159,24 @@ export default function OrchestraPosts(props: any) {
           </div>
           <div>
             <button>Reaccionar</button>{" "}
+          </div>
+        </div>
+        <div className="comment-form-container">
+          <form className="comment-form">
+            <input
+              className="comment-input"
+              type="text"
+              placeholder="Agregar un comentario..."
+            />
+          </form>
+        </div>
+        <div className="users-comments-container">
+          <div
+            className="user-pic"
+            style={{ backgroundImage: `url(${Users[0].image})` }}
+          ></div>
+          <div className="user-comment">
+            <p>{Comments[0].content}</p>
           </div>
         </div>
       </div>
