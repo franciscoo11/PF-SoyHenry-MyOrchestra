@@ -31,7 +31,6 @@ model Orchestra {
   orchestra_type   Orchestra_Type @relation(fields: [orchestra_TypeId], references: [id])
   orchestra_TypeId String
   Campaign         Campaign[]
-
 }
 
 model User {
@@ -39,10 +38,10 @@ model User {
   name        String
   email       String    @unique
   password    String
-  avatar      String
-  cover       String
-  dateOfBirth String
-  city        String
+  avatar      String?
+  cover       String?
+  year_of_birth String
+  city        String?
   is_active   Boolean   @default(true)
   first_time  Boolean   @default(true)
   comments    Comment[]
@@ -63,20 +62,20 @@ model Post {
   content       String     @db.Text
   url_video     String?
   url_file      String?
-  visibility    String
+  visibility    String?
   is_active     Boolean    @default(true)
   creation_date DateTime   @default(now())
   event_date    String
   event_hour    String
-  post_type     String?
-  post_type_id  String
-  views         Int
+  views         Int?
   reaction_id   String?
   comments      Comment[]
   Orchestra     Orchestra? @relation(fields: [orchestraId], references: [id])
   orchestraId   String?
   User          User?      @relation(fields: [userId], references: [id])
   userId        String?
+  Type_Post     Type_Post? @relation(fields: [type_PostId], references: [id])
+  type_PostId   String?
 }
 
 model Orchestra_Type {
@@ -99,12 +98,18 @@ model Campaign {
 }
 
 model Comment {
-  id            String  @id @default(cuid())
+  id            String   @id @default(cuid())
   content       String
   creation_date DateTime @default(now())
-  is_active     Boolean @default(true)
-  User          User?   @relation(fields: [userId], references: [id])
+  is_active     Boolean  @default(true)
+  User          User?    @relation(fields: [userId], references: [id])
   userId        String?
-  Post          Post?   @relation(fields: [postId], references: [id])
+  Post          Post?    @relation(fields: [postId], references: [id])
   postId        String?
+}
+
+model Type_Post {
+  id    String @id @default(cuid())
+  name  String @unique
+  posts Post[]
 }
