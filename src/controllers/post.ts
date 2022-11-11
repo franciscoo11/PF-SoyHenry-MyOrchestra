@@ -9,7 +9,7 @@ export const getUsersPost = async () => {
       },
     });
 
-    return getPosts ? getPosts: null;
+    return getPosts ? getPosts : null;
   } catch (error) {
     console.log("something was wrong in get ", error);
   }
@@ -18,16 +18,17 @@ export const getUsersPost = async () => {
 //POST USERSPOST
 //logica fecha
 function verifyDate(event_date: any) {
-  let eventTest = event_date;
-  let validateYear="";
- if( eventTest.includes('/202') ){
-  validateYear = eventTest.substring(eventTest.length - 4)
-  validateYear = validateYear.slice(2,4)
-  eventTest = eventTest.slice(0,-4)
-  eventTest = eventTest + validateYear;
- };
+  let eventTest = event_date.trim();
+  let validateYear = "";
+  if (eventTest.length !== 10) return false;
+  if (eventTest.includes("/202")) {
+    validateYear = eventTest.substring(eventTest.length - 4);
+    validateYear = validateYear.slice(2, 4);
+    eventTest = eventTest.slice(0, -4);
+    eventTest = eventTest + validateYear;
+  }
   const date_regex =
-  /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[1-9]|2[1-9])$/;
+    /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[1-9]|2[1-9])$/;
   if (!date_regex.test(eventTest)) return false;
   var today = new Date();
   var dateForm = new Date(eventTest);
@@ -42,8 +43,9 @@ function verifyDate(event_date: any) {
 }
 //logica hora
 function verifyHour(event_hour: any) {
+  
   const date_regex = /^(1[0-2]|0?[1-9]):[0-5][0-9] (AM|PM)$/i;
-  if (!date_regex.test(event_hour)) return false;
+  if (!date_regex.test(event_hour.trim())) return false;
   return true;
 }
 
@@ -51,22 +53,20 @@ function verifyHour(event_hour: any) {
 //si no tiene coherencia salta error
 //la fecha debe ser puesta minimo un dia despues a la actual
 //poner un 0 antes del numero en caso de ser inferior a 10, ejemplo: 05/12/23
-//formato mm/dd/yy(12/03/22)
+//formato mm/dd/yyyy(12/03/22) o (09/30/2022)
 
-//requerimientos a la hora de escribir la hora: 
+//requerimientos a la hora de escribir la hora:
 //si no tiene coherencia salta error
 //incluir am o pm
 //formato 2:05 pm
 export const postUsersPost = async (body: any) => {
   try {
     //estos datos son obligatorios por ahora mientras se termina de definir cuales van a ser los obligatorios en el modelo post
-    const { event_date, event_hour,title,content,visibility,post_type_id,views } = body;
-    if(!event_date || !event_hour || !title || !content || !visibility || !post_type_id || !views) return null;
-    const responseVerifyDate = verifyDate(event_date);
-    const responseVerifyHour = verifyHour(event_hour);
-    if (responseVerifyDate === false) return "null from date";
-    if (responseVerifyHour === false) return "null from hour";
-  await prisma.post.create({
+    const { event_date, event_hour, title, content } = body;
+    if (!title || !content) return null;
+    if (verifyDate(event_date) === false) return null;
+    if (verifyHour(event_hour) === false) return null;
+    await prisma.post.create({
       data: body,
     });
     return body ? body : null;
