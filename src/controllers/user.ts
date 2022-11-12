@@ -24,6 +24,7 @@ export const postUser = async (body: any) => {
     // TO CHECK AVATAR OR PICTURE SEND DB
     const addUser = await prisma.user.create({
       data: {
+        ...body,
         name: name,
         email: email,
         password: password,
@@ -45,14 +46,7 @@ export const postUser = async (body: any) => {
 export const getUsers = async (id?: any) => {
   try {
     if (!id) {
-      const allUsers = await prisma.user.findMany({include:{
-        favorites:{
-          select:{ 
-            orchestra_id:true,email:true
-          }
-        },
-
-      }});
+      const allUsers = await prisma.user.findMany();
       return allUsers.length ? allUsers : null;
     }
     const user = await prisma.user.findUnique({
