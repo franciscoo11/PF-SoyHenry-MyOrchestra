@@ -18,12 +18,11 @@ export default async function handler(
       query:{id},
     } = req;
 
-
     try {
         switch (method) {
             case GET:
               const getUser = await getUsers(id)
-            return getUser ? res.status(200).json(getUser) : res.status(404).json({error: 'User not found'})
+            return getUser ? res.status(200).json(getUser) : res.status(404).json(id)
             case PATCH:
               const fakeDeleteUser = await logicDeleteUser(id)
             return fakeDeleteUser ? res.status(204).json(fakeDeleteUser) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
@@ -40,5 +39,4 @@ export default async function handler(
     } catch (error) {
       return  res.status(400).json({error : "Internal error, something goes really really wrong"})
     }
-
 }

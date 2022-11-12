@@ -49,7 +49,6 @@ model User {
   posts         Post[]
   Rol           Rol?      @relation(fields: [rolId], references: [id])
   rolId         String?
-
   Post_Reaction   Post_Reaction? @relation(fields: [post_ReactionId], references: [id])
   post_ReactionId String?
   Favorites       Favorites[]

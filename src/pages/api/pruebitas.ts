@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { deleteFavorites, getFavorites, postFavorites } from '../../controllers/favorites';
+import {  getFavorites, putFavoritesAdd } from '../../controllers/favorites';
 import { deleteOrchestra, postOrchestras, updateOrchestra } from '../../controllers/orchestras'
 import { getPost, postPost,getOrchestrasPost } from '../../controllers/post';
 import { postUser } from '../../controllers/user';
@@ -17,7 +17,7 @@ export default async function handler(
 
     let {
       method,
-      body:{orchestra_id},
+      body:  {orchestra_id},
       query: {user_id, favorites_id},
     } = req;
 
@@ -25,7 +25,7 @@ export default async function handler(
     try {
         switch (method) {
             case GET:
-              const allOrchestras =await getFavorites(user_id);
+              const allOrchestras = await getFavorites(user_id);
             return res.status(200).json(allOrchestras)
             case POST:
             //   const addOrchestra =await postOrchestras(body)
@@ -35,9 +35,9 @@ export default async function handler(
             // return res.status(200).json(deleteOrchestra2)
             case PUT:
               //con esta se prueba el post de favorites
-              // const addOrchestra =await postFavorites(favorites_id,orchestra_id)
+              const addOrchestra =await putFavoritesAdd(favorites_id,orchestra_id)
               //con esta se prueba el delete de favorites
-              const addOrchestra =await deleteFavorites(favorites_id,orchestra_id)
+              // const addOrchestra =await deleteFavorites(favorites_id,orchestra_id)
             return res.status(201).json(addOrchestra)
             default:
             return res.status(400).json("method no found")
