@@ -13,7 +13,7 @@ export default async function handler(
   try {
     switch (method) {
       case GET:
-        const allCampaigns = await getCampaigns();
+        const allCampaigns = await getCampaigns(query);
         return allCampaigns
           ? res.status(200).json(allCampaigns)
           : res.status(404).json({ error: "Something goes wrong, try again" });
