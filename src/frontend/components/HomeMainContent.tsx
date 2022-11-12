@@ -1,4 +1,4 @@
-import * as fakeDB from "../utils/fakeDB";
+// import * as fakeDB from "../utils/fakeDB";
 import styled from "styled-components";
 import HomeCards from "./HomeCards";
 
@@ -25,20 +25,20 @@ export const StyledMain = styled.main`
   }
 `;
 
-function HomeMainContent() {
+function HomeMainContent({ orchestra }: any) {
   return (
     <>
       <StyledMain>
         <section>
           <h2>Orquestas</h2>
           <div className="orquestas">
-            {fakeDB.Orquestas.map((orquesta, index) => (
+            {orchestra.map((orquesta: any, index: number) => (
               <HomeCards
                 key={index}
                 title={orquesta.name}
-                subtitle={orquesta.orchestra_type}
+                subtitle={orquesta.location}
                 content={orquesta.description}
-                image={orquesta.logo}
+                image={orquesta.cover}
               />
             ))}
           </div>
