@@ -13,16 +13,16 @@ export default async function handler(
   try {
     switch (method) {
       case GET:
-        const campaignById = await getCampaigns(query.id);
+        const campaignById = await getCampaigns(query);
         return campaignById
           ? res.status(200).json(campaignById)
-          : res.status(404).json({ error: "Something goes wrong, try again" });
+          : res.status(404).json({ error: "Something goes wrong check if id is valid and try again" });
       case DELETE:
         const removeDefinitive = await deleteCampaign(query.id)
         return removeDefinitive ? res.status(200).json(removeDefinitive) : res.status(404).json({ error: "Verify id and try again"})
       case PUT:
         const modifyCampaign = await updateCampaign(query.id,body)
-        return modifyCampaign ? res.status(200).json(modifyCampaign) : res.status(404).json({ error: "Check body information and try again"})
+        return modifyCampaign ? res.status(200).json(modifyCampaign) : res.status(404).json({ error: "Please enter a valid title, goal_amount, start_date, end_date, description, amount_raised, orchestraId"})
       default:
         return res.status(400).json("method not allowed");
     }

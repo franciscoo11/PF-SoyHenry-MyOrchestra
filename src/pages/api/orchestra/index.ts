@@ -22,17 +22,16 @@ export default async function handler(
     try {
         switch (method) {
             case GET:
-              const response = await getOrchestras(query)   
-              return res.status(200).json(response)
+              const Getallorchestra = await getOrchestras(query)
+              return Getallorchestra? res.status(200).json(Getallorchestra):res.status(404).json({ error:[]});
             case POST:
-              const response2 = await postOrchestras(body)
-              return res.status(201).json(response2)
+              const postorchestra = await postOrchestras(body)
+              return res.status(201).json(postorchestra)
             default:
-              return res.status(400).json("method no found")
-              
+              return res.status(400).json("method no found: [name,description,logo,cover,creation_date,sponsor,location,donation_account,phone,user_id,orchestra_TypeId]")
         }
     } catch (error) {
-      return  res.status(400).send(error) 
+      return  res.status(400).send({ error: "Internal error, something goes really really wrong" }) 
     }
 
 }
