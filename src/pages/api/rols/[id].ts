@@ -15,7 +15,7 @@ export default async function handler(
         const changeRol = await updateRol(query.id,body.name);
         return changeRol
           ? res.status(200).json(changeRol)
-          : res.status(404).json({ error: "Please check id sended and try again" });
+          : res.status(404).json({ error: "Something goes wrong, try again or check id" });
       default:
         return res.status(400).json("method not allowed");
     }
