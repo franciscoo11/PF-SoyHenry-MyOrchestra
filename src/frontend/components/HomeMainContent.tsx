@@ -1,4 +1,3 @@
-// import * as fakeDB from "../utils/fakeDB";
 import styled from "styled-components";
 import HomeCards from "./HomeCards";
 
