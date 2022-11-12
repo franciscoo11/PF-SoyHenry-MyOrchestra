@@ -56,4 +56,51 @@ export const putFavoritesDelete = async (favorites_id: any, orchestra_id: any) =
     return null;
   }
 };
+
+// export const postFavorites = async (favorites_id:any,userId:any)=>{
+//   try {
+//    const jeje= await prisma.favorites.create({
+//     data:{
+//       user_id: {
+//         connect: [{ id: userId }],
+//       }
+//     }
+//     })
+//     return jeje
+    
+//   } catch (error) {
+    
+//   }
+// }
+
+
+// export const postFavorites = async (favorites_id:any,userId:any)=>{
+//   try {
+//    const jeje= await prisma.user.create({
+//     data:{
+//       connectOrCreate: {
+//         where: {
+//             favorites_id
+//         },
+//         create: {
+//           favorites_id
+//         },
+//       }
+      
+//     },
+//     include: {
+//       author: true,
+//     },
+//   })
+//     return jeje
+    
+//   } catch (error) {
+    
+//   }
+// }
+
+
+
+
+
 //este codigo esta lleno de lagrimas de sangre tratalo con amor 
