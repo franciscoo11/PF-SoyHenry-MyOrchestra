@@ -22,12 +22,12 @@ export default async function handler(
         switch (method) {
             case GET:
               const allUsers = await getUsers()
-              return allUsers ? res.status(200).json(allUsers) : res.status(404).json({error: 'Something goes wrong, try again'})
+              return allUsers ? res.status(200).json(allUsers) : res.status(404).json([])
             case POST:
               const addUser = await postUser(body)
-              return addUser ? res.status(201).json(addUser) : res.status(404).json({error: 'Something goes wrong, try again'})
+              return addUser ? res.status(201).json(addUser) : res.status(404).json({error: 'Fields sent are not correct, please enter password, email, name, date_of_birth'})
             default:
-              return res.status(400).json("method no found")
+              return res.status(400).json("method not allowed")
               
         }
     } catch (error) {
