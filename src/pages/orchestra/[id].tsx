@@ -186,6 +186,95 @@ export const StyledMain = styled.main`
 
   .aside-right {
     grid-column: 13/17;
+
+    .donate-container,
+    .campaign-container {
+      padding: 18px;
+      border: 1px solid lightgrey;
+      text-align: center;
+      border-radius: 6px;
+
+      .campaign-header,
+      .campaign-details {
+        border-bottom: 1px solid lightgrey;
+        text-align: initial;
+
+        .campaign-subtitle,
+        .campaign-desc,
+        .campaign-goal-title,
+        .campaign-goal-amount,
+        .campaign-end-title,
+        .campaign-end-date {
+          margin: 0;
+        }
+
+        .campaign-end-title {
+          margin-top: 12px;
+        }
+
+        .campaign-title {
+          margin: 0;
+          margin-bottom: 24px;
+          text-align: center;
+        }
+
+        .campaign-subtitle,
+        .campaign-goal-title,
+        .campaign-end-title {
+          font-size: 0.9em;
+          font-weight: bold;
+        }
+
+        .campaign-desc {
+          font-size: 0.9em;
+        }
+
+        .read-more {
+          color: ${({ theme }) => theme.colors.secondary};
+          font-size: 0.8em;
+          text-align: right;
+        }
+      }
+
+      .campaign-details {
+        padding: 12px;
+      }
+
+      .campaign-footer {
+        .campaig-footer-title {
+          font-size: 0.8em;
+          font-weight: bold;
+        }
+        .campaign-current-amount {
+          font-size: 1.5em;
+          font-weight: bold;
+          margin: 12px 0;
+        }
+        .campaign-progress-bar {
+          width: 100%;
+          background-color: #f1f2f6;
+
+          .campaign-current-progress-bar {
+            width: 24%;
+            height: 6px;
+            background-color: ${({ theme }) => theme.colors.secondary};
+          }
+        }
+      }
+
+      .donate-info {
+        .info-title {
+          font-weight: bold;
+        }
+        .info-content {
+          font-size: 0.9em;
+        }
+      }
+
+      .donate-icon-container {
+        border-bottom: 1px solid lightgrey;
+      }
+    }
   }
 `;
 
@@ -271,7 +360,47 @@ function OrchestraDetails(props: any) {
             ))}
           </div>
         </section>
-        <aside className="aside-right">Derecha</aside>
+        <aside className="aside-right">
+          <div className="donate-container">
+            <div className="donate-icon-container">icon</div>
+            <div className="donate-info">
+              <p className="info-title">
+                Entre todos podemos <br /> hacer la diferencia
+              </p>
+              <p className="info-content">
+                Colaborá con esta y/u otras orquestas para que puedan seguir
+                adelante con esta hermosa actividad.
+              </p>
+            </div>
+            <div className="donate-btn-container">
+              <button>Donar</button>
+            </div>
+          </div>
+          <div className="campaign-container">
+            <div className="campaign-header">
+              <h3 className="campaign-title">Campaña Abierta</h3>
+              <p className="campaign-subtitle">Campaña</p>
+              <p className="campaign-desc">
+                Viaje de intercambio a Temuco-Chile
+              </p>
+              <p className="read-more">leer más</p>
+            </div>
+            <div className="campaign-details">
+              <p className="campaign-goal-title">Objetivo</p>
+              <p className="campaign-goal-amount">$75.000</p>
+              <p className="campaign-end-title">Finaliza:</p>
+              <p className="campaign-end-date">02/02/2023</p>
+            </div>
+            <div className="campaign-footer">
+              <p className="campaig-footer-title">Alcanzado hasta el momento</p>
+              <p className="campaign-current-amount">$17.985</p>
+              <div className="campaign-progress-bar">
+                <div className="campaign-current-progress-bar"></div>
+              </div>
+              <button>Colaborar</button>
+            </div>
+          </div>
+        </aside>
       </StyledMain>
     </>
   );
