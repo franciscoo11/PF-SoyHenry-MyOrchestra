@@ -16,6 +16,112 @@ export const StyledMain = styled.main`
 
   .aside-left {
     grid-column: 1/4;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    .orchestra-nav-container {
+      .orchestra-logo {
+        width: 110px;
+        height: 110px;
+        margin: 0 auto;
+        border: 2px solid lightgrey;
+        border-radius: 100%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+        z-index: 100;
+      }
+
+      .orchestra-nav {
+        margin-top: -55px;
+        border: 1px solid lightgrey;
+        padding: 80px 24px;
+        border-radius: 10px 10px 0px 50%;
+        position: relative;
+        z-index: -100;
+
+        .nav-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          text-transform: uppercase;
+          font-size: 0.8em;
+
+          .nav-item {
+            padding: 8px 0 8px 60px;
+            border-bottom: 1px solid lightgrey;
+
+            :last-child {
+              border-bottom: none;
+            }
+          }
+        }
+      }
+    }
+
+    .notification-container {
+      background-color: #f1f2f6;
+      border-radius: 6px;
+      border: 1px solid lightgrey;
+      padding-top: 16px;
+      position: relative;
+
+      .admin-pic {
+        width: 90px;
+        height: 90px;
+        border-radius: 100%;
+        margin: 0 auto;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+        z-index: 100;
+      }
+
+      .notification-content {
+        margin-top: -45px;
+        background-color: white;
+        padding: 60px 18px 12px;
+        border-top: 1px solid lightgrey;
+        text-align: center;
+        position: relative;
+
+        p {
+          margin: 0;
+        }
+
+        .user-name {
+          font-weight: bold;
+        }
+
+        .user-role {
+          font-size: 0.9em;
+        }
+
+        hr {
+          border: 1px solid lightgrey;
+        }
+
+        .notifications-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          text-align: initial;
+
+          .notification-item {
+            font-size: 0.9em;
+            padding: 6px 0;
+
+            span {
+              font-weight: bold;
+              float: right;
+            }
+          }
+        }
+      }
+    }
   }
 
   section {
@@ -83,29 +189,6 @@ export const StyledMain = styled.main`
   }
 `;
 
-const StyledNav = styled.nav`
-  width: 90%;
-  max-width: 1300px;
-  margin: 0 auto 100px;
-  position: relative;
-
-  .nav {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    font-size: 1.2em;
-    gap: 20px;
-
-    .nav-item {
-      background-color: lightgray;
-      padding: 5px 15px;
-      border-radius: 10px;
-    }
-  }
-`;
-
 function OrchestraDetails(props: any) {
   const router = useRouter();
   const { id } = router.query;
@@ -115,15 +198,46 @@ function OrchestraDetails(props: any) {
 
       <StyledMain>
         <aside className="aside-left">
-          <StyledNav>
-            <ul className="nav">
-              <li className="nav-item">Inicio</li>
-              <li className="nav-item">Información</li>
-              <li className="nav-item">Noticias</li>
-              <li className="nav-item">Multimedia</li>
-              <li className="nav-item">Fotos</li>
-            </ul>
-          </StyledNav>
+          <div className="orchestra-nav-container">
+            <div
+              className="orchestra-logo"
+              style={{ backgroundImage: `url(${Orquestas[0].logo})` }}
+            ></div>
+            <nav className="orchestra-nav">
+              <ul className="nav-list">
+                <li className="nav-item">Inicio</li>
+                <li className="nav-item">Acerca de</li>
+                <li className="nav-item">Integrantes</li>
+                <li className="nav-item">Noticias</li>
+                <li className="nav-item">Multimedia</li>
+                <li className="nav-item">Archivos</li>
+                <li className="nav-item">Eventos</li>
+                <li className="nav-item">Campañas</li>
+              </ul>
+            </nav>
+          </div>
+          <div className="notification-container">
+            <div
+              className="admin-pic"
+              style={{ backgroundImage: `url(${Users[1].image})` }}
+            ></div>
+            <div className="notification-content">
+              <p className="user-name">{Users[1].name}</p>
+              <p className="user-role">{Users[1].rol}</p>
+              <hr />
+              <ul className="notifications-list">
+                <li className="notification-item">
+                  Notificaciones <span>3</span>{" "}
+                </li>
+                <li className="notification-item">
+                  Mensajes <span>2</span>{" "}
+                </li>
+                <li className="notification-item">
+                  Pendiente <span>1</span>{" "}
+                </li>
+              </ul>
+            </div>
+          </div>
         </aside>
         <section className="content">
           <Cover
