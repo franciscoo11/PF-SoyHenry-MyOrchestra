@@ -20,7 +20,7 @@ export default async function handler(
         switch (method) {
             case PATCH:
               const fakeDeleteComment= await logicDeleteComment(id)
-            return fakeDeleteComment ? res.status(204).json(fakeDeleteComment) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
+            return fakeDeleteComment ? res.status(200).json(fakeDeleteComment) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
         }
     } catch (error) {
       return  res.status(400).json({error : "Internal error, something goes really really wrong"})

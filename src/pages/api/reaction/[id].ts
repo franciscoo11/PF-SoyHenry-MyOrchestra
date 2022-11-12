@@ -15,7 +15,7 @@ export default async function handler(
         const modifyReaction = await updateReaction(query,body);
         return modifyReaction
           ? res.status(201).json(modifyReaction)
-          : res.status(404).json({ error: "Field reaction and valid id is required check and try again" });
+          : res.status(404).json({ error: "Something goes wrong, try again or check id" });
       default:
         return res.status(400).json("method not allowed");
     }

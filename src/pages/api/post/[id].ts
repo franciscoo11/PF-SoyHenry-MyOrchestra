@@ -7,7 +7,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-    const GET:string="GET";
+
     const DELETE:string="DELETE";
     const PUT:string="PUT";
     const PATCH:string="PATCH"
@@ -26,7 +26,7 @@ export default async function handler(
             return fakeDeleteUser ? res.status(204).json(fakeDeleteUser) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
             case PUT:
               const modifyUser = await putPost(id,body)
-            return modifyUser ? res.status(204).json(modifyUser) : res.status(404).json({error:"mandatory data missing: "})
+            return modifyUser ? res.status(204).json(modifyUser) : res.status(404).json({error:"Something goes wrong, try again or check id"})
             case DELETE:
               const removeUser = await deletePost(id)
               return removeUser ? res.status(200).json(removeUser) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
