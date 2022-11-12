@@ -1,9 +1,10 @@
+import axios from "axios";
 import Head from "next/head";
 import HeroImage from "../frontend/components/HeroImage";
 import HomeMainContent from "../frontend/components/HomeMainContent";
 import MainNavBar from "../frontend/components/MainNavBar";
 
-export default function Home() {
+export default function Home(props: any) {
   return (
     <>
       <Head>
@@ -15,7 +16,18 @@ export default function Home() {
       </Head>
       <MainNavBar />
       <HeroImage />
-      <HomeMainContent />
+      <HomeMainContent orchestra={props.orchestra} />
     </>
   );
 }
+
+export const getServerSideProps = async () => {
+  const res = await axios.get("http://localhost:3000/api/orchestra");
+  const orchestra = await res.data;
+
+  return {
+    props: {
+      orchestra,
+    },
+  };
+};
