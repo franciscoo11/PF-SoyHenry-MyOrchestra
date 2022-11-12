@@ -18,7 +18,6 @@ export default async function handler(
       query:{id},
     } = req;
 
-
     try {
         switch (method) {
             case GET:
@@ -40,5 +39,4 @@ export default async function handler(
     } catch (error) {
       return  res.status(400).json({error : "Internal error, something goes really really wrong"})
     }
-
 }
