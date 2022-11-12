@@ -18,15 +18,15 @@ export default async function handler(
     let {
       method,
       body:{orchestra_id},
-      query: {favorites_id},
+      query: {user_id, favorites_id},
     } = req;
 
 
     try {
         switch (method) {
             case GET:
-            //   const allOrchestras =await getFavorites(user_id);
-            // return res.status(200).json(allOrchestras)
+              const allOrchestras =await getFavorites(user_id);
+            return res.status(200).json(allOrchestras)
             case POST:
             //   const addOrchestra =await postOrchestras(body)
             // return res.status(201).json(addOrchestra)
@@ -34,7 +34,10 @@ export default async function handler(
             //   const deleteOrchestra2 = await deleteFavorites(favorites_id,name)
             // return res.status(200).json(deleteOrchestra2)
             case PUT:
-              const addOrchestra =await postFavorites(favorites_id,orchestra_id)
+              //con esta se prueba el post de favorites
+              // const addOrchestra =await postFavorites(favorites_id,orchestra_id)
+              //con esta se prueba el delete de favorites
+              const addOrchestra =await deleteFavorites(favorites_id,orchestra_id)
             return res.status(201).json(addOrchestra)
             default:
             return res.status(400).json("method no found")

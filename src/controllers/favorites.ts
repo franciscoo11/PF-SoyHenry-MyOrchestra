@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma";
-
+//usar el id del usuario del que se desea ver los favoritos por query
 export const getFavorites = async (user_id: any) => {
   try {
     if (!user_id) return null;
@@ -17,6 +17,8 @@ export const getFavorites = async (user_id: any) => {
   }
 };
 
+//en la tabla favoritos hay un favorites Id para cada usuario, esta se envia por query
+//orchestra_id se debera enviar el id de la orchestra a la que se quiere poner el favorito, esta se envia por body
 export const postFavorites = async (favoritesId: any, orchestra_id: any) => {
   try {
     if (!favoritesId || !orchestra_id) return null;
@@ -36,14 +38,16 @@ export const postFavorites = async (favoritesId: any, orchestra_id: any) => {
   }
 };
 
-export const deleteFavorites = async (favorites_id: any, name: any) => {
+//en la tabla favoritos hay un favorites Id para cada usuario, esta se envia por query
+////orchestra_id se debera enviar el id de la orchestra a la que se quiere poner el favorito, esta se envia por body
+export const deleteFavorites = async (favorites_id: any, orchestra_id: any) => {
   try {
-    if (!favorites_id || !name) return null;
+    if (!favorites_id || !orchestra_id) return null;
     const deletedFavorite =await prisma.favorites.update({
       where: { favorites_id: favorites_id },
       data: {
         orchestra_id: {
-          disconnect: [{ name: name }],
+          disconnect: [{ id: orchestra_id }],
         },
       },
     });
