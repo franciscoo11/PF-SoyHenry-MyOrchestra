@@ -5,7 +5,7 @@ export const getFavorites = async (user_id: any) => {
     if (!user_id) return null;
     const searchFavorites = await prisma.favorites.findMany({
       where: {
-        userId: user_id,
+        email: user_id,
       },
       select: {
         orchestra_id: true,
@@ -24,7 +24,7 @@ export const putFavoritesAdd = async (favoritesId: any, orchestra_id: any) => {
     if (!favoritesId || !orchestra_id) return null;
     const addFavorites = await prisma.favorites.update({
       where: {
-        favorites_id: favoritesId,
+        id: favoritesId,
       },
       data: {
         orchestra_id: {
@@ -44,7 +44,7 @@ export const putFavoritesDelete = async (favorites_id: any, orchestra_id: any) =
   try {
     if (!favorites_id || !orchestra_id) return null;
     const deletedFavorite =await prisma.favorites.update({
-      where: { favorites_id: favorites_id },
+      where: { id: favorites_id },
       data: {
         orchestra_id: {
           disconnect: [{ id: orchestra_id }],
@@ -59,13 +59,21 @@ export const putFavoritesDelete = async (favorites_id: any, orchestra_id: any) =
 
 // export const postFavorites = async (favorites_id:any,userId:any)=>{
 //   try {
-//    const jeje= await prisma.favorites.create({
+//    const jeje= await prisma.user.create({
 //     data:{
-//       user_id: {
-//         connect: [{ id: userId }],
+//       name: {
+
+//         connectOrCreate: {
+//           where: {    
+//             id: userId,
+//           },
+//           create: {
+//             : 'viola@prisma.io',
+//             name: 'Viola',
+//           },
 //       }
 //     }
-//     })
+//     }})
 //     return jeje
     
 //   } catch (error) {

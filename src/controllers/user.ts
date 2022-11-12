@@ -9,7 +9,6 @@ const yearValidation = (year: any) => {
     if (year < 1920 || year > current_year) return null;
     return true;
   }
-
 };
 
 export const postUser = async (body: any) => {
@@ -25,23 +24,35 @@ export const postUser = async (body: any) => {
     // TO CHECK AVATAR OR PICTURE SEND DB
     const addUser = await prisma.user.create({
       data: {
-        ...body,
         name: name,
         email: email,
         password: password,
         year_of_birth: year_of_birth,
+        favorites: {
+          connectOrCreate: {
+            where: { email: email },
+            create: { email: email },
+          },
+        },
       },
     });
     return addUser ? addUser : null;
   } catch (error) {
-    return error;
+    return console.log(error);
   }
 };
 
 export const getUsers = async (id?: any) => {
   try {
     if (!id) {
-      const allUsers = await prisma.user.findMany();
+      const allUsers = await prisma.user.findMany({include:{
+        favorites:{
+          select:{ 
+            orchestra_id:true,email:true
+          }
+        },
+
+      }});
       return allUsers.length ? allUsers : null;
     }
     const user = await prisma.user.findUnique({

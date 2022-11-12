@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import {  getFavorites, postFavorites, putFavoritesAdd, putFavoritesDelete } from '../../controllers/favorites';
+import {  getFavorites, putFavoritesAdd, putFavoritesDelete } from '../../controllers/favorites';
 import { deleteOrchestra, postOrchestras, updateOrchestra } from '../../controllers/orchestras'
 import { getPost, postPost,getOrchestrasPost } from '../../controllers/post';
 import { postUser } from '../../controllers/user';

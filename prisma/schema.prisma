@@ -13,45 +13,46 @@ datasource db {
 // MODELO EXAMPLE
 
 model Orchestra {
-  id                    String         @id @default(cuid()) // Podria declararse como tipo string @default(cuid()) ??? 
-  name                  String         @unique @db.VarChar()
-  description           String
-  logo                  String
-  cover                 String
-  creation_date         String
-  sponsor               String?
-  location              String
-  is_active             Boolean        @default(true)
-  donation_account      String         @unique
-  phone                 String         @unique
-  createdAt             DateTime       @default(now())
-  updatedAt             DateTime       @updatedAt
-  user_id               String?
-  posts                 Post[]
-  orchestra_type        Orchestra_Type @relation(fields: [orchestra_TypeId], references: [id])
-  orchestra_TypeId      String
-  Campaign              Campaign[]
-  Favorites             Favorites[]
+  id               String         @id @default(cuid()) // Podria declararse como tipo string @default(cuid()) ??? 
+  name             String         @unique @db.VarChar()
+  description      String
+  logo             String
+  cover            String
+  creation_date    String
+  sponsor          String?
+  location         String
+  is_active        Boolean        @default(true)
+  donation_account String         @unique
+  phone            String         @unique
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  user_id          String?
+  posts            Post[]
+  orchestra_type   Orchestra_Type @relation(fields: [orchestra_TypeId], references: [id])
+  orchestra_TypeId String
+  Campaign         Campaign[]
+  Favorites        Favorites[]
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String
-  email         String    @unique
-  password      String
-  avatar        String?
-  cover         String?
-  year_of_birth String
-  city          String?
-  is_active     Boolean   @default(true)
-  first_time    Boolean   @default(true)
-  comments      Comment[]
-  posts         Post[]
-  Rol           Rol?      @relation(fields: [rolId], references: [id])
-  rolId         String?
+  id              String         @id @default(cuid())
+  name            String
+  email           String         @unique
+  password        String
+  avatar          String?
+  cover           String?
+  year_of_birth   String
+  city            String?
+  is_active       Boolean        @default(true)
+  first_time      Boolean        @default(true)
+  comments        Comment[]
+  posts           Post[]
+  Rol             Rol?           @relation(fields: [rolId], references: [id])
+  rolId           String?
   Post_Reaction   Post_Reaction? @relation(fields: [post_ReactionId], references: [id])
   post_ReactionId String?
-  Favorites       Favorites[]
+  favorites       Favorites?     @relation(fields: [favId], references: [email])
+  favId           String?         @unique
 }
 
 model Rol {
@@ -134,8 +135,8 @@ model Reaction {
 }
 
 model Favorites {
-  favorites_id String      @id @default(cuid())
+  id String      @id @default(cuid())
   orchestra_id Orchestra[]
-  user_id      User?       @relation(fields: [userId], references: [id])
-  userId       String?
+  User         User?
+  email String @unique
 }
