@@ -2,14 +2,15 @@ import styled from "styled-components";
 import { FiFacebook, FiInstagram, FiYoutube } from "react-icons/fi";
 
 const StyledFooter = styled.footer`
+  background-color: #222;
   .footer-grid {
     width: 100%;
     max-width: 1440px;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(16, minmax(0, 1fr));
     gap: 24px;
     padding: 48px 80px;
-    background-color: #222;
     color: white;
 
     .footer-left {
