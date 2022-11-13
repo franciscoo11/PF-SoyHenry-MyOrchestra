@@ -100,18 +100,19 @@ function changeFormat(event_date:any){
   
 
 }
+
 export const postPost = async (body: any) => {
   try {
     //estos datos son obligatorios por ahora mientras se termina de definir cuales van a ser los obligatorios en el modelo post
-    const { event_date, event_hour, title, content } = body;
-    let event_date_validation = event_date;
-    let sks= changeFormat(event_date_validation);
-    return  
-    if (!title || !content) return null;
-    if (event_hour && !event_date) return null;
-    if(!event_hour && event_date) return null;
-    if (verifyDate(event_date) === false) return null;
-    if (verifyHour(event_hour) === false) return null;
+    // const { event_date, event_hour, title, content } = body;
+    // let event_date_validation = event_date;
+    // let sks= changeFormat(event_date_validation);
+    // return  
+    // if (!title || !content) return null;
+    // if (event_hour && !event_date) return null;
+    // if(!event_hour && event_date) return null;
+    // if (verifyDate(event_date) === false) return null;
+    // if (verifyHour(event_hour) === false) return null;
 
     await prisma.post.create({
       data: body,
