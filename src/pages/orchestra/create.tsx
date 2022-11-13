@@ -3,6 +3,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import MainNavBar from "../../frontend/components/MainNavBar";
 import * as Yup from "yup";
+import styled from "styled-components";
 
 export default function CreateOrchestra() {
   const phoneRegExp =
