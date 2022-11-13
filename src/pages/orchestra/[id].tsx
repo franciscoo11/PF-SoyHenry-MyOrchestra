@@ -13,6 +13,8 @@ import {
   FiFile,
   FiCalendar,
   FiHeart,
+  FiImage,
+  FiFileText,
 } from "react-icons/fi";
 
 export const StyledMain = styled.main`
@@ -157,6 +159,16 @@ export const StyledMain = styled.main`
 
       .post-form {
         width: 100%;
+        position: relative;
+
+        .post-form-icons-container {
+          position: absolute;
+          top: 12px;
+          right: 18px;
+          color: gray;
+          display: flex;
+          gap: 6px;
+        }
       }
 
       .post-input {
@@ -214,6 +226,22 @@ export const StyledMain = styled.main`
       border: 1px solid lightgrey;
       text-align: center;
       border-radius: 6px;
+
+      .donate-btn,
+      .campaign-btn {
+        background-color: ${({ theme }) => theme.colors.secondary};
+        width: 100%;
+        padding: 12px;
+        font-size: 1em;
+        color: white;
+        border: none;
+        border-radius: 6px;
+
+        :hover {
+          filter: brightness(110%);
+          cursor: pointer;
+        }
+      }
 
       .donate-icon-container {
         font-size: 4em;
@@ -391,7 +419,7 @@ function OrchestraDetails(props: any) {
           <div className="form-container">
             <div
               className="pic"
-              style={{ backgroundImage: `url(${Users[0].image})` }}
+              style={{ backgroundImage: `url(${Users[1].image})` }}
             ></div>
             <form className="post-form">
               <input
@@ -399,6 +427,11 @@ function OrchestraDetails(props: any) {
                 type="text"
                 placeholder="Nueva publicación..."
               />
+              <div className="post-form-icons-container">
+                <FiFileText />
+                <FiVideo />
+                <FiImage />
+              </div>
             </form>
           </div>
           <div className="filter-container">
@@ -429,7 +462,7 @@ function OrchestraDetails(props: any) {
               </p>
             </div>
             <div className="donate-btn-container">
-              <button>Donar</button>
+              <button className="donate-btn">Donar</button>
             </div>
           </div>
           <div className="campaign-container">
@@ -453,7 +486,7 @@ function OrchestraDetails(props: any) {
               <div className="campaign-progress-bar">
                 <div className="campaign-current-progress-bar"></div>
               </div>
-              <button>Colaborar</button>
+              <button className="campaign-btn">Colaborar</button>
             </div>
           </div>
         </aside>
