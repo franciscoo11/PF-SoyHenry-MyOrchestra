@@ -21,7 +21,7 @@ export default async function handler(
         const generateReaction = await addReaction(body.reaction);
         return generateReaction
           ? res.status(201).json(generateReaction)
-          : res.status(404).json({ error: "mandatory data missing: [reaction]" });
+          : res.status(404).json({ error: "mandatory data missing: reaction" });
       default:
         return res.status(400).json("method not allowed");
     }
