@@ -1,8 +1,8 @@
 import Head from "next/head";
 import MainNavBar from "../frontend/components/MainNavBar";
-import * as fakeDB from "../frontend/utils/fakeDB";
 import CampaignCards from "../frontend/components/CampaignCards";
 import styled from "styled-components";
+import axios from "axios";
 
 const StyledMain = styled.main`
   margin: 25px auto;
@@ -33,7 +33,7 @@ const StyledMain = styled.main`
   }
 `;
 
-const Campañas = () => {
+const Campañas = ({ campaign }: any) => {
   return (
     <>
       <Head>
@@ -56,7 +56,7 @@ const Campañas = () => {
             </select>
           </div>
           <div className="campañas">
-            {fakeDB.Campaigns.map((campaign, index) => (
+            {campaign.map((campaign: any, index: number) => (
               <CampaignCards
                 key={index}
                 image={campaign.media}
@@ -81,3 +81,14 @@ const Campañas = () => {
 };
 
 export default Campañas;
+
+export const getServerSideProps = async () => {
+  const res = await axios.get("http://localhost:3000/api/campaign");
+  const campaign = await res.data;
+
+  return {
+    props: {
+      campaign,
+    },
+  };
+};
