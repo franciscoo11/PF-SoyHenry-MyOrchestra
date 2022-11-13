@@ -4,19 +4,10 @@ import MainNavBar from "../../frontend/components/MainNavBar";
 import { Orquestas, Posts, Users } from "../../frontend/utils/fakeDB";
 import styled from "styled-components";
 import OrchestraPosts from "../../frontend/components/OrchestraPosts";
-import {
-  FiHome,
-  FiInfo,
-  FiUsers,
-  FiEye,
-  FiVideo,
-  FiFile,
-  FiCalendar,
-  FiHeart,
-  FiImage,
-  FiFileText,
-} from "react-icons/fi";
+import { FiVideo, FiImage, FiFileText } from "react-icons/fi";
 import Footer from "../../frontend/components/Footer";
+import AsideLeft from "../../frontend/components/orchestras/AsideLeft";
+import AsideRight from "../../frontend/components/orchestras/AsideRight";
 
 export const StyledMain = styled.main`
   margin: 25px auto;
@@ -349,70 +340,7 @@ function OrchestraDetails(props: any) {
 
       <StyledMain>
         <aside className="aside-left">
-          <div className="orchestra-nav-container">
-            <div
-              className="orchestra-logo"
-              style={{ backgroundImage: `url(${Orquestas[0].logo})` }}
-            ></div>
-            <nav className="orchestra-nav">
-              <ul className="nav-list">
-                <li className="nav-item">
-                  <FiHome />
-                  <div>Inicio</div>
-                </li>
-                <li className="nav-item">
-                  <FiInfo />
-                  <div>Acerca de</div>
-                </li>
-                <li className="nav-item">
-                  <FiUsers />
-                  <div>Integrantes</div>
-                </li>
-                <li className="nav-item">
-                  <FiEye />
-                  <div>Noticias</div>
-                </li>
-                <li className="nav-item">
-                  <FiVideo />
-                  <div>Multimedia</div>
-                </li>
-                <li className="nav-item">
-                  <FiFile />
-                  <div>Archivos</div>
-                </li>
-                <li className="nav-item">
-                  <FiCalendar />
-                  <div>Eventos</div>
-                </li>
-                <li className="nav-item">
-                  <FiHeart />
-                  <div>Campañas</div>
-                </li>
-              </ul>
-            </nav>
-          </div>
-          <div className="notification-container">
-            <div
-              className="admin-pic"
-              style={{ backgroundImage: `url(${Users[1].image})` }}
-            ></div>
-            <div className="notification-content">
-              <p className="user-name">{Users[1].name}</p>
-              <p className="user-role">{Users[1].rol}</p>
-              <hr />
-              <ul className="notifications-list">
-                <li className="notification-item">
-                  Notificaciones <span>3</span>{" "}
-                </li>
-                <li className="notification-item">
-                  Mensajes <span>2</span>{" "}
-                </li>
-                <li className="notification-item">
-                  Pendiente <span>1</span>{" "}
-                </li>
-              </ul>
-            </div>
-          </div>
+          <AsideLeft />
         </aside>
         <section className="content">
           <Cover
@@ -452,47 +380,7 @@ function OrchestraDetails(props: any) {
           </div>
         </section>
         <aside className="aside-right">
-          <div className="donate-container">
-            <div className="donate-icon-container">
-              <FiHeart />
-            </div>
-            <div className="donate-info">
-              <p className="info-title">
-                Entre todos podemos <br /> hacer la diferencia
-              </p>
-              <p className="info-content">
-                Colaborá con esta y/u otras orquestas para que puedan seguir
-                adelante con esta hermosa actividad.
-              </p>
-            </div>
-            <div className="donate-btn-container">
-              <button className="donate-btn">Donar</button>
-            </div>
-          </div>
-          <div className="campaign-container">
-            <div className="campaign-header">
-              <h3 className="campaign-title">Campaña Abierta</h3>
-              <p className="campaign-subtitle">Campaña</p>
-              <p className="campaign-desc">
-                Viaje de intercambio a Temuco-Chile
-              </p>
-              <p className="read-more">leer más</p>
-            </div>
-            <div className="campaign-details">
-              <p className="campaign-goal-title">Objetivo</p>
-              <p className="campaign-goal-amount">$75.000</p>
-              <p className="campaign-end-title">Finaliza:</p>
-              <p className="campaign-end-date">02/02/2023</p>
-            </div>
-            <div className="campaign-footer">
-              <p className="campaig-footer-title">Alcanzado hasta el momento</p>
-              <p className="campaign-current-amount">$17.985</p>
-              <div className="campaign-progress-bar">
-                <div className="campaign-current-progress-bar"></div>
-              </div>
-              <button className="campaign-btn">Colaborar</button>
-            </div>
-          </div>
+          <AsideRight />
         </aside>
       </StyledMain>
       <Footer />
