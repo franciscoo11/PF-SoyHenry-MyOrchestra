@@ -4,6 +4,7 @@ import MainNavBar from "../../frontend/components/MainNavBar";
 import { Orquestas, Posts, Users } from "../../frontend/utils/fakeDB";
 import styled from "styled-components";
 import OrchestraPosts from "../../frontend/components/OrchestraPosts";
+import { CiHeart } from "react-icons/ci";
 
 export const StyledMain = styled.main`
   margin: 25px auto;
@@ -186,6 +187,9 @@ export const StyledMain = styled.main`
 
   .aside-right {
     grid-column: 13/17;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 
     .donate-container,
     .campaign-container {
@@ -193,6 +197,11 @@ export const StyledMain = styled.main`
       border: 1px solid lightgrey;
       text-align: center;
       border-radius: 6px;
+
+      .donate-icon-container {
+        font-size: 4em;
+        color: ${({ theme }) => theme.colors.secondary};
+      }
 
       .campaign-header,
       .campaign-details {
@@ -252,12 +261,16 @@ export const StyledMain = styled.main`
         }
         .campaign-progress-bar {
           width: 100%;
-          background-color: #f1f2f6;
+          background-color: lightgrey;
+          border-radius: 12px;
+          margin-bottom: 24px;
 
           .campaign-current-progress-bar {
             width: 24%;
-            height: 6px;
+            height: 12px;
             background-color: ${({ theme }) => theme.colors.secondary};
+            opacity: 50%;
+            border-radius: 12px;
           }
         }
       }
@@ -362,7 +375,9 @@ function OrchestraDetails(props: any) {
         </section>
         <aside className="aside-right">
           <div className="donate-container">
-            <div className="donate-icon-container">icon</div>
+            <div className="donate-icon-container">
+              <CiHeart />
+            </div>
             <div className="donate-info">
               <p className="info-title">
                 Entre todos podemos <br /> hacer la diferencia
