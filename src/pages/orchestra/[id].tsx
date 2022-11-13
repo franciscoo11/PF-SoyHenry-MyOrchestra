@@ -16,6 +16,7 @@ import {
   FiImage,
   FiFileText,
 } from "react-icons/fi";
+import Footer from "../../frontend/components/Footer";
 
 export const StyledMain = styled.main`
   margin: 25px auto;
@@ -28,6 +29,7 @@ export const StyledMain = styled.main`
 
   .aside-left {
     grid-column: 1/4;
+    grid-row: 1;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -146,6 +148,7 @@ export const StyledMain = styled.main`
 
   section {
     grid-column: 4/13;
+    grid-row: 1;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -216,6 +219,7 @@ export const StyledMain = styled.main`
 
   .aside-right {
     grid-column: 13/17;
+    grid-row: 1;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -491,6 +495,7 @@ function OrchestraDetails(props: any) {
           </div>
         </aside>
       </StyledMain>
+      <Footer />
     </>
   );
 }
