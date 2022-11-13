@@ -22,7 +22,7 @@ model Orchestra {
   sponsor          String?
   location         String
   is_active        Boolean?        @default(true)
-  donation_account String?         @unique
+  donation_account String         @unique
   phone            String         @unique
   createdAt        DateTime?       @default(now())
   updatedAt        DateTime?       @updatedAt

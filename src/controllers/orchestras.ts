@@ -52,7 +52,7 @@ export const getOrchestrasById = async (id: any) => {
 //POST ORCHESTRAS
 export const postOrchestras = async (body: any) => {
   try {
-    const { name, donation_account, phone } = body;
+    const { name, phone, donation_account } = body;
     if (!name || !donation_account || !phone) throw ('missing values')
     const orchestras = await prisma.orchestra.create({
       data: body
