@@ -1,5 +1,6 @@
 import axios from "axios";
 import Head from "next/head";
+import Footer from "../frontend/components/Footer";
 import HeroImage from "../frontend/components/HeroImage";
 import HomeMainContent from "../frontend/components/HomeMainContent";
 import MainNavBar from "../frontend/components/MainNavBar";
@@ -17,6 +18,7 @@ export default function Home(props: any) {
       <MainNavBar />
       <HeroImage />
       <HomeMainContent orchestra={props.orchestra} />
+      <Footer />
     </>
   );
 }
