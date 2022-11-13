@@ -16,12 +16,12 @@ export default async function handler(
         const allCampaigns = await getCampaigns(query);
         return allCampaigns
           ? res.status(200).json(allCampaigns)
-          : res.status(404).json({ error: "Something goes wrong, try again" });
+          : res.status(404).json([]);
       case POST:
         const insertCampaign = await addCampaign(body);
         return insertCampaign
           ? res.status(201).json(insertCampaign)
-          : res.status(404).json({ error: "Something goes wrong, try again" });
+          : res.status(404).json({ error: "Please enter a valid title, goal_amount, start_date, end_date, description, amount_raised, orchestraId" });
       default:
         return res.status(400).json("method not allowed");
     }

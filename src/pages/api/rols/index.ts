@@ -15,14 +15,14 @@ export default async function handler(
         const allRols = await getRols();
         return allRols
           ? res.status(200).json(allRols)
-          : res.status(404).json({ error: "Roles are empty" });
+          : res.status(404).json({ error: []});
       case POST:
         console.log(body)
         const addRol = await postRol(body.name);
         return addRol
           ? res.status(201).json(addRol)
           : res.status(404).json({
-              error: "Type rol not allowed or was founded duplicate",
+              error: "mandatory data missing: [name]",
             });
       default:
         return res.status(400).json("method not allowed");

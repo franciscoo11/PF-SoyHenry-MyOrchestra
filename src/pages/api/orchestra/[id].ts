@@ -25,23 +25,23 @@ export default async function handler(
     try {
         switch (method) {
             case GET:
-              const response = await getOrchestrasById(id)
-              return res.status(200).json( response)
+              const getoneorchestra = await getOrchestrasById(id)
+              return getoneorchestra?  res.status(200).json( getoneorchestra): res.status(404).json({error: 'Something goes wrong, check id and try again'})
             case PUT:
-              const response2= await updateOrchestra(id,body)
-              return res.status(204).json(response2)
+              const changesdataorchestra= await updateOrchestra(id,body)
+              return changesdataorchestra? res.status(200).json(changesdataorchestra): res.status(404).json({error: 'Something goes wrong, check id and try again'})
             case PATCH:
-              const response3= await logicDeleteOrchestra(id)
-              return res.status(204).json(response3)
+              const deletlogic= await logicDeleteOrchestra(id)
+              return deletlogic? res.status(200).json(deletlogic):res.status(404).json({error: 'Something goes wrong, check id and try again'})
             case DELETE:
-              const response4= await deleteOrchestra(id)
-              return res.status(200).json(response4)
+              const deletereal= await deleteOrchestra(id)
+              return deletereal? res.status(200).json(deletereal): res.status(404).json({error: 'Something goes wrong, check id and try again'})
             default:
               return res.status(400).json("method no found")
               
         }
     } catch (error) {
-      return  res.status(400).json(error)
+      return  res.status(400).json({error : "Internal error, something goes really really wrong"})
     }
 
 }

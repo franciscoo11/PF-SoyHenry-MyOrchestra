@@ -21,7 +21,7 @@ export default async function handler(
         return buildTypePost
           ? res.status(201).json(buildTypePost)
           : res.status(404).json({
-              error: "Field name is required or duplicate found, please try again",
+              error: "mandatory data missing:[name]",
             });
       default:
         return res.status(400).json("method not allowed");

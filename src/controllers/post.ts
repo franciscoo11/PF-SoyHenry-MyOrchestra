@@ -55,6 +55,7 @@ function verifyDate(event_date: any) {
   const date_regex =
     /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[1-9]|2[1-9])$/;
   if (!date_regex.test(eventTest)) return false;
+  
   var today = new Date();
   var dateForm = new Date(eventTest);
   // Comparamos solo las fechas => no las horas!!
@@ -84,15 +85,35 @@ function verifyHour(event_hour: any) {
 //si no tiene coherencia salta error
 //incluir am o pm
 //formato 2:05 pm
+
+function changeFormat(event_date:any){
+  let newVar=0;
+  let new_event_date= event_date;
+  let count=0;
+  event_date.split('')
+  let newVar2 = new_event_date.substring(event_date.length - 5)
+  return newVar2
+  for (let i = 0; i < 5; i++) {
+    newVar= event_date[i];
+    newVar2 
+  }
+  
+
+}
+
 export const postPost = async (body: any) => {
   try {
     //estos datos son obligatorios por ahora mientras se termina de definir cuales van a ser los obligatorios en el modelo post
-    const { event_date, event_hour, title, content } = body;
-    if (!title || !content) return null;
-    if (event_hour && !event_date) return null;
-    if(!event_hour && event_date) return null;
-    if (verifyDate(event_date) === false) return null;
-    if (verifyHour(event_hour) === false) return null;
+    // const { event_date, event_hour, title, content } = body;
+    // let event_date_validation = event_date;
+    // let sks= changeFormat(event_date_validation);
+    // return  
+    // if (!title || !content) return null;
+    // if (event_hour && !event_date) return null;
+    // if(!event_hour && event_date) return null;
+    // if (verifyDate(event_date) === false) return null;
+    // if (verifyHour(event_hour) === false) return null;
+
     await prisma.post.create({
       data: body,
     });

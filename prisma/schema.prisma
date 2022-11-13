@@ -31,26 +31,28 @@ model Orchestra {
   orchestra_type   Orchestra_Type @relation(fields: [orchestra_TypeId], references: [id])
   orchestra_TypeId String
   Campaign         Campaign[]
+  Favorites        Favorites[]
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String
-  email         String    @unique
-  password      String
-  avatar        String?
-  cover         String?
-  year_of_birth String
-  city          String?
-  is_active     Boolean   @default(true)
-  first_time    Boolean   @default(true)
-  comments      Comment[]
-  posts         Post[]
-  Rol           Rol?      @relation(fields: [rolId], references: [id])
-  rolId         String?
-
+  id              String         @id @default(cuid())
+  name            String
+  email           String         @unique
+  password        String
+  avatar          String?
+  cover           String?
+  year_of_birth   String
+  city            String?
+  is_active       Boolean        @default(true)
+  first_time      Boolean        @default(true)
+  comments        Comment[]
+  posts           Post[]
+  Rol             Rol?           @relation(fields: [rolId], references: [id])
+  rolId           String?
   Post_Reaction   Post_Reaction? @relation(fields: [post_ReactionId], references: [id])
   post_ReactionId String?
+  favorites       Favorites?     @relation(fields: [favId], references: [email])
+  favId           String?         @unique
 }
 
 model Rol {
@@ -130,4 +132,11 @@ model Reaction {
   id             String          @id @default(cuid())
   reaction       String
   post_reactions Post_Reaction[]
+}
+
+model Favorites {
+  id String      @id @default(cuid())
+  orchestra_id Orchestra[]
+  User         User?
+  email String @unique
 }
