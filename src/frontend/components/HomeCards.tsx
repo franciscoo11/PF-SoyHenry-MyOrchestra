@@ -15,13 +15,24 @@ const CardStyle = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 5px;
+  gap: 6px;
 
   .thumbnail {
     height: 240px;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+
+    p,
+    h2,
+    h3 {
+      margin: 0;
+    }
   }
 
   img {
@@ -66,7 +77,7 @@ function HomeCards(props: any) {
         <div className="text">
           <h3>{props.subtitle}</h3>
           <h2>{props.title}</h2>
-          <p>{props.content}</p>
+          <p>{props.content}...</p>
         </div>
         <div className="container">
           <div className="logos">

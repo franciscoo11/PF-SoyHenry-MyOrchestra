@@ -62,8 +62,8 @@ export default function Orquestas({ orchestra }: any) {
                 key={index}
                 title={orquesta.name}
                 subtitle={orquesta.location}
-                content={orquesta.description}
-                image={orquesta.cover}
+                content={orquesta.description.substr(0, 150)}
+                image={orquesta.logo}
               />
             ))}
           </div>
