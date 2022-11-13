@@ -31,24 +31,28 @@ model Orchestra {
   orchestra_type   Orchestra_Type @relation(fields: [orchestra_TypeId], references: [id])
   orchestra_TypeId String
   Campaign         Campaign[]
-
+  Favorites        Favorites[]
 }
 
 model User {
-  id          String    @id @default(cuid())
-  name        String
-  email       String    @unique
-  password    String
-  avatar      String
-  cover       String
-  dateOfBirth String
-  city        String
-  is_active   Boolean   @default(true)
-  first_time  Boolean   @default(true)
-  comments    Comment[]
-  posts       Post[]
-  Rol         Rol?      @relation(fields: [rolId], references: [id])
-  rolId       String?
+  id              String         @id @default(cuid())
+  name            String
+  email           String         @unique
+  password        String
+  avatar          String?
+  cover           String?
+  year_of_birth   String
+  city            String?
+  is_active       Boolean        @default(true)
+  first_time      Boolean        @default(true)
+  comments        Comment[]
+  posts           Post[]
+  Rol             Rol?           @relation(fields: [rolId], references: [id])
+  rolId           String?
+  Post_Reaction   Post_Reaction? @relation(fields: [post_ReactionId], references: [id])
+  post_ReactionId String?
+  favorites       Favorites?     @relation(fields: [favId], references: [email])
+  favId           String?         @unique
 }
 
 model Rol {
@@ -58,25 +62,25 @@ model Rol {
 }
 
 model Post {
-  id            String     @id @default(cuid())
+  id            String          @id @default(cuid())
   title         String
-  content       String     @db.Text
+  content       String          @db.Text
   url_video     String?
   url_file      String?
-  visibility    String
-  is_active     Boolean    @default(true)
-  creation_date DateTime   @default(now())
+  visibility    String?
+  is_active     Boolean         @default(true)
+  creation_date DateTime        @default(now())
   event_date    String
   event_hour    String
-  post_type     String?
-  post_type_id  String
-  views         Int
-  reaction_id   String?
+  views         Int?
   comments      Comment[]
-  Orchestra     Orchestra? @relation(fields: [orchestraId], references: [id])
+  Orchestra     Orchestra?      @relation(fields: [orchestraId], references: [id])
   orchestraId   String?
-  User          User?      @relation(fields: [userId], references: [id])
+  User          User?           @relation(fields: [userId], references: [id])
   userId        String?
+  Type_Post     Type_Post?      @relation(fields: [type_PostId], references: [id])
+  type_PostId   String?
+  Post_Reaction Post_Reaction[]
 }
 
 model Orchestra_Type {
@@ -99,12 +103,40 @@ model Campaign {
 }
 
 model Comment {
-  id            String  @id @default(cuid())
+  id            String   @id @default(cuid())
   content       String
   creation_date DateTime @default(now())
-  is_active     Boolean @default(true)
-  User          User?   @relation(fields: [userId], references: [id])
+  is_active     Boolean  @default(true)
+  User          User?    @relation(fields: [userId], references: [id])
   userId        String?
-  Post          Post?   @relation(fields: [postId], references: [id])
+  Post          Post?    @relation(fields: [postId], references: [id])
   postId        String?
+}
+
+model Type_Post {
+  id    String @id @default(cuid())
+  name  String @unique
+  posts Post[]
+}
+
+model Post_Reaction {
+  id         String    @id @default(cuid())
+  Reaction   Reaction? @relation(fields: [reactionId], references: [id])
+  reactionId String?
+  post       Post      @relation(fields: [postId], references: [id])
+  postId     String
+  users      User[]
+}
+
+model Reaction {
+  id             String          @id @default(cuid())
+  reaction       String
+  post_reactions Post_Reaction[]
+}
+
+model Favorites {
+  id String      @id @default(cuid())
+  orchestra_id Orchestra[]
+  User         User?
+  email String @unique
 }

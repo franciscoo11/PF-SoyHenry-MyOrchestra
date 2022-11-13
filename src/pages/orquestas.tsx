@@ -1,8 +1,8 @@
 import Head from "next/head";
 import MainNavBar from "../frontend/components/MainNavBar";
-import * as fakeDB from "../frontend/utils/fakeDB";
 import HomeCards from "../frontend/components/HomeCards";
 import styled from "styled-components";
+import axios from "axios";
 
 const StyledMain = styled.main`
   margin: 25px auto;
@@ -35,7 +35,7 @@ const StyledMain = styled.main`
   }
 `;
 
-export default function Orquestas() {
+export default function Orquestas({ orchestra }: any) {
   return (
     <>
       <Head>
@@ -56,13 +56,13 @@ export default function Orquestas() {
             </select>
           </div>
           <div className="orquestas">
-            {fakeDB.Orquestas.map((orquesta, index) => (
+            {orchestra.map((orquesta: any, index: number) => (
               <HomeCards
                 key={index}
                 title={orquesta.name}
-                subtitle={orquesta.orchestra_type}
+                subtitle={orquesta.location}
                 content={orquesta.description}
-                image={orquesta.logo}
+                image={orquesta.cover}
               />
             ))}
           </div>
@@ -80,3 +80,14 @@ export default function Orquestas() {
     </>
   );
 }
+
+export const getServerSideProps = async () => {
+  const res = await axios.get("http://localhost:3000/api/orchestra");
+  const orchestra = await res.data;
+
+  return {
+    props: {
+      orchestra,
+    },
+  };
+};

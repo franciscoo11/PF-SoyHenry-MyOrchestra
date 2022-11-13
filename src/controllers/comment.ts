@@ -6,7 +6,7 @@ export const getCommentPost = async () => {
       const getComment = await prisma.comment.findMany();
       return getComment;   
     } catch (error) {
-      console.log('error: ', error)
+      return error
     }
 };
 
@@ -17,14 +17,26 @@ export const postCommentPost = async(body:any)=>{
         const postComment = await prisma.comment.create({
           data:body
         });
-        return postComment
+        return postComment ? postComment : null
     } catch (error) {
-        console.log(`error: `, error)
+        return error
     }
 }
 
 export const logicDeleteComment = async (id:any) => {
     const deactivate = await prisma.comment.update({
       where:{ id:id }, data: { is_active: false } })
-    return deactivate
+    return deactivate ? deactivate : null
   }
+
+export const deleteComment = async (id: any) => {
+    try {
+      if (!id) return null;
+      const deleted = await prisma.comment.delete({
+        where: { id: id },
+      });
+      return deleted ? deleted : null
+    } catch (error) {
+      return error;
+    }
+};  

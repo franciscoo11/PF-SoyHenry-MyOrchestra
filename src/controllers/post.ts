@@ -1,7 +1,18 @@
 import { prisma } from "../../lib/prisma";
 //GET USERSPOST
-export const getUsersPost = async () => {
+export const getPost = async (query:any) => {
   try {
+    const {creation_date, views} = query
+    if(creation_date){
+      let lastDates = creation_date === 'asc' ? await prisma.$queryRaw`SELECT "id", "title", "creation_date", "content" FROM "Post" ORDER BY creation_date ASC` 
+      : await prisma.$queryRaw`SELECT "id", "title", "creation_date", "content" FROM "Post" ORDER BY creation_date DESC`
+      return lastDates
+    }
+    if(views){
+      const asc = await prisma.post.findMany({orderBy:{views: 'asc'}})
+      const desc = await prisma.post.findMany({orderBy:{views: 'desc'}})
+      return views === 'asc' ? asc : desc
+    }
     const getPosts = await prisma.post.findMany({
       select: {
         title: true,
@@ -9,19 +20,42 @@ export const getUsersPost = async () => {
       },
     });
 
+    return getPosts ? getPosts : null;
+  } catch (error) {
+    return null
+  }
+};
+//GET orchestraPOST
+export const getOrchestrasPost = async (query:any) => {
+  const {orchestra}=query
+  try {
+    const getPosts = await prisma.post.findMany({
+      where:{
+        orchestraId: orchestra
+      }
+    });
     return getPosts ? getPosts: null;
   } catch (error) {
-    console.log("something was wrong in get ", error);
+    return null;
   }
 };
 
 //POST USERSPOST
 //logica fecha
 function verifyDate(event_date: any) {
-  let eventTest = event_date;
+  let eventTest = event_date.trim();
+  let validateYear = "";
+  if (eventTest.length !== 10) return false;
+  if (eventTest.includes("/202")) {
+    validateYear = eventTest.substring(eventTest.length - 4);
+    validateYear = validateYear.slice(2, 4);
+    eventTest = eventTest.slice(0, -4);
+    eventTest = eventTest + validateYear;
+  }
   const date_regex =
     /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[1-9]|2[1-9])$/;
   if (!date_regex.test(eventTest)) return false;
+  
   var today = new Date();
   var dateForm = new Date(eventTest);
   // Comparamos solo las fechas => no las horas!!
@@ -35,8 +69,9 @@ function verifyDate(event_date: any) {
 }
 //logica hora
 function verifyHour(event_hour: any) {
+  
   const date_regex = /^(1[0-2]|0?[1-9]):[0-5][0-9] (AM|PM)$/i;
-  if (!date_regex.test(event_hour)) return false;
+  if (!date_regex.test(event_hour.trim())) return false;
   return true;
 }
 
@@ -44,32 +79,51 @@ function verifyHour(event_hour: any) {
 //si no tiene coherencia salta error
 //la fecha debe ser puesta minimo un dia despues a la actual
 //poner un 0 antes del numero en caso de ser inferior a 10, ejemplo: 05/12/23
-//formato mm/dd/yy(12/03/22)
+//formato mm/dd/yyyy(12/03/22) o (09/30/2022)
 
-//requerimientos a la hora de escribir la hora: 
+//requerimientos a la hora de escribir la hora:
 //si no tiene coherencia salta error
 //incluir am o pm
 //formato 2:05 pm
-export const postUsersPost = async (body: any) => {
+
+function changeFormat(event_date:any){
+  let newVar=0;
+  let new_event_date= event_date;
+  let count=0;
+  event_date.split('')
+  let newVar2 = new_event_date.substring(event_date.length - 5)
+  return newVar2
+  for (let i = 0; i < 5; i++) {
+    newVar= event_date[i];
+    newVar2 
+  }
+  
+
+}
+export const postPost = async (body: any) => {
   try {
     //estos datos son obligatorios por ahora mientras se termina de definir cuales van a ser los obligatorios en el modelo post
-    const { event_date, event_hour,title,content,visibility,post_type_id,views } = body;
-    if(!event_date || !event_hour || !title || !content || !visibility || !post_type_id || !views) return null;
-    const responseVerifyDate = verifyDate(event_date);
-    const responseVerifyHour = verifyHour(event_hour);
-    if (responseVerifyDate === false) return "null from date";
-    if (responseVerifyHour === false) return "null from hour";
-  await prisma.post.create({
+    const { event_date, event_hour, title, content } = body;
+    let event_date_validation = event_date;
+    let sks= changeFormat(event_date_validation);
+    return  
+    if (!title || !content) return null;
+    if (event_hour && !event_date) return null;
+    if(!event_hour && event_date) return null;
+    if (verifyDate(event_date) === false) return null;
+    if (verifyHour(event_hour) === false) return null;
+
+    await prisma.post.create({
       data: body,
     });
     return body ? body : null;
   } catch (error) {
-    console.log(`something was wrong in post, values received:${body} `, error);
+    return error
   }
 };
 
 //PUT USERSPOST
-export const putUsersPost = async (post_id: any, body: any) => {
+export const putPost = async (post_id: any, body: any) => {
   try {
     if (!post_id || !body) return null;
     await prisma.post.update({
@@ -80,16 +134,13 @@ export const putUsersPost = async (post_id: any, body: any) => {
     });
     return body ? body : null;
   } catch (error) {
-    return console.log(
-      error,
-      ` cant update, values received:${post_id}, ${body}`
-    );
+    return null;
   }
 };
 
 //DELETE USERSPOST
 
-export const logicDeleteUsersPost = async (post_id: any) => {
+export const logicDeletePost = async (post_id: any) => {
   try {
     if (!post_id) return null;
     await prisma.post.update({
@@ -102,11 +153,11 @@ export const logicDeleteUsersPost = async (post_id: any) => {
     });
     return post_id ? post_id : null;
   } catch (error) {
-    return console.log(error, ` cant logic delete, value received:${post_id}`);
+    return null;
   }
 };
 
-export const deleteUsersPost = async (post_id: any) => {
+export const deletePost = async (post_id: any) => {
   try {
     if (!post_id) return null;
     await prisma.post.delete({
@@ -114,6 +165,6 @@ export const deleteUsersPost = async (post_id: any) => {
     });
     return post_id ? post_id : null;
   } catch (error) {
-    return console.log(error, ` cant delete, value received:${post_id}`);
+    return null;
   }
 };

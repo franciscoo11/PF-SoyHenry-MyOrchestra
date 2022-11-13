@@ -16,12 +16,12 @@ export default async function handler(
         const OrchestrasType = await getOrchestrasTypes(query.id);
         return OrchestrasType
           ? res.status(200).json(OrchestrasType)
-          : res.status(404).json({ error: "Something goes wrong, try again" });
+          : res.status(404).json({ error: "Something goes wrong, try again or check id" });
       case PUT:
         const modifyOrchestraType = await updateOrchestraType(query.id,body);
         return modifyOrchestraType
           ? res.status(201).json(modifyOrchestraType)
-          : res.status(404).json({ error: "Something goes wrong, try again" });
+          : res.status(404).json({ error: "Something goes wrong, try again or check id" });
       default:
         return res.status(400).json("method not allowed");
     }

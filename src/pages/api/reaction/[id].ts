@@ -1,20 +1,20 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { updateRol } from "../../../controllers/rols";
+import { updateReaction } from '../../../controllers/reaction';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-
   const PUT: string = "PUT";
+
   let { method, body, query } = req;
 
   try {
     switch (method) {
       case PUT:
-        const changeRol = await updateRol(query.id,body.name);
-        return changeRol
-          ? res.status(200).json(changeRol)
+        const modifyReaction = await updateReaction(query,body);
+        return modifyReaction
+          ? res.status(201).json(modifyReaction)
           : res.status(404).json({ error: "Something goes wrong, try again or check id" });
       default:
         return res.status(400).json("method not allowed");

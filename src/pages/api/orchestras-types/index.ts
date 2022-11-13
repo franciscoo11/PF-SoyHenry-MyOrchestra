@@ -19,12 +19,12 @@ export default async function handler(
         const allOrchestrasTypes = await getOrchestrasTypes();
         return allOrchestrasTypes
           ? res.status(200).json(allOrchestrasTypes)
-          : res.status(404).json({ error: "Something goes wrong, try again" });
+          : res.status(404).json({ error: [] });
       case POST:
         const generateOrchestraType = await addOrchestraType(body);
         return generateOrchestraType
           ? res.status(201).json(generateOrchestraType)
-          : res.status(404).json({ error: "Something goes wrong, try again" });
+          : res.status(404).json({ error: "mandatory data missing:[type]" });
       default:
         return res.status(400).json("method not allowed");
     }
