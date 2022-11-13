@@ -4,6 +4,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import MainNavBar from "../../frontend/components/MainNavBar";
 import * as Yup from "yup";
 import styled from "styled-components";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 const StyledForm = styled.div`
   .form {
@@ -47,6 +49,7 @@ const StyledForm = styled.div`
 `;
 
 export default function CreateOrchestra() {
+  const router = useRouter();
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
   return (
@@ -60,8 +63,10 @@ export default function CreateOrchestra() {
           creation_date: "",
           sponsor: "",
           location: "",
-          email: "",
+          donation_account: "",
           phone: "",
+          orchestra_TypeId: "",
+          cover: "",
         }}
         validationSchema={Yup.object({
           name: Yup.string()
@@ -70,7 +75,7 @@ export default function CreateOrchestra() {
           description: Yup.string()
             .max(250, "Must be 250 characters or less")
             .required("Required"),
-          email: Yup.string()
+          donation_account: Yup.string()
             .email("Invalid email address")
             .required("Required"),
           location: Yup.string().required("Required"),
@@ -81,10 +86,10 @@ export default function CreateOrchestra() {
           logo: Yup.string().url("Invalid URL Logo").required("Required"),
         })}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
+          axios.post("http://localhost:3000/api/orchestra", values);
+          alert("Orchestra Created");
+          router.push("/");
+          setSubmitting(false);
         }}
       >
         <Form className="form">
@@ -126,17 +131,17 @@ export default function CreateOrchestra() {
 
           {/* NO supe como validar las fechas :( */}
           <label>Date</label>
-          <Field name="date" type="date" className="input" />
-          <ErrorMessage name="date" className="errorMessage" />
+          <Field name="creation_date" type="date" className="input" />
+          <ErrorMessage name="creation_date" className="errorMessage" />
 
           <label>Email Institucional</label>
           <Field
-            name="email"
+            name="donation_account"
             type="text"
             placeholder="Correo electrónico"
             className="input"
           />
-          <ErrorMessage name="email" className="errorMessage" />
+          <ErrorMessage name="donation_account" className="errorMessage" />
 
           <label>Número de Teléfono</label>
           <Field
@@ -155,6 +160,24 @@ export default function CreateOrchestra() {
             className="input"
           />
           <ErrorMessage name="logo" className="errorMessage" />
+
+          <label>Cover</label>
+          <Field
+            name="cover"
+            type="text"
+            placeholder="cover"
+            className="input"
+          />
+          <ErrorMessage name="cover" className="errorMessage" />
+
+          <label>Tipo de orquesta</label>
+          <Field
+            name="orchestra_TypeId"
+            type="text"
+            placeholder="País"
+            className="input"
+          />
+          <ErrorMessage name="orchestra_TypeId" className="errorMessage" />
 
           <button type="submit" className="submit">
             Submit
