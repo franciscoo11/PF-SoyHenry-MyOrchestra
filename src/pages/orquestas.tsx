@@ -3,6 +3,7 @@ import MainNavBar from "../frontend/components/MainNavBar";
 import HomeCards from "../frontend/components/HomeCards";
 import styled from "styled-components";
 import axios from "axios";
+import Footer from "../frontend/components/Footer";
 
 const StyledMain = styled.main`
   margin: 25px auto;
@@ -61,8 +62,8 @@ export default function Orquestas({ orchestra }: any) {
                 key={index}
                 title={orquesta.name}
                 subtitle={orquesta.location}
-                content={orquesta.description}
-                image={orquesta.cover}
+                content={orquesta.description.substr(0, 150)}
+                image={orquesta.logo}
               />
             ))}
           </div>
@@ -77,6 +78,7 @@ export default function Orquestas({ orchestra }: any) {
           </div>
         </section>
       </StyledMain>
+      <Footer />
     </>
   );
 }

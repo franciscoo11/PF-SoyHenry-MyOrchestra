@@ -3,6 +3,7 @@ import MainNavBar from "../frontend/components/MainNavBar";
 import HomeCards from "../frontend/components/HomeCards";
 import styled from "styled-components";
 import axios from "axios";
+import Footer from "../frontend/components/Footer";
 
 const StyledMain = styled.main`
   margin: 25px auto;
@@ -76,6 +77,7 @@ const Media = ({ post }: any) => {
           </div>
         </section>
       </StyledMain>
+      <Footer />
     </>
   );
 };
