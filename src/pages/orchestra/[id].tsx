@@ -4,7 +4,16 @@ import MainNavBar from "../../frontend/components/MainNavBar";
 import { Orquestas, Posts, Users } from "../../frontend/utils/fakeDB";
 import styled from "styled-components";
 import OrchestraPosts from "../../frontend/components/OrchestraPosts";
-import { CiHeart } from "react-icons/ci";
+import {
+  FiHome,
+  FiInfo,
+  FiUsers,
+  FiEye,
+  FiVideo,
+  FiFile,
+  FiCalendar,
+  FiHeart,
+} from "react-icons/fi";
 
 export const StyledMain = styled.main`
   margin: 25px auto;
@@ -32,7 +41,7 @@ export const StyledMain = styled.main`
         background-position: center;
         background-repeat: no-repeat;
         position: relative;
-        z-index: 100;
+        z-index: 20;
       }
 
       .orchestra-nav {
@@ -41,7 +50,7 @@ export const StyledMain = styled.main`
         padding: 80px 24px;
         border-radius: 10px 10px 0px 50%;
         position: relative;
-        z-index: -100;
+        z-index: 10;
 
         .nav-list {
           list-style: none;
@@ -51,8 +60,16 @@ export const StyledMain = styled.main`
           font-size: 0.8em;
 
           .nav-item {
-            padding: 8px 0 8px 60px;
+            padding: 8px 0 8px 40px;
             border-bottom: 1px solid lightgrey;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+
+            &:hover {
+              color: ${({ theme }) => theme.colors.secondary};
+              cursor: pointer;
+            }
 
             :last-child {
               border-bottom: none;
@@ -307,14 +324,38 @@ function OrchestraDetails(props: any) {
             ></div>
             <nav className="orchestra-nav">
               <ul className="nav-list">
-                <li className="nav-item">Inicio</li>
-                <li className="nav-item">Acerca de</li>
-                <li className="nav-item">Integrantes</li>
-                <li className="nav-item">Noticias</li>
-                <li className="nav-item">Multimedia</li>
-                <li className="nav-item">Archivos</li>
-                <li className="nav-item">Eventos</li>
-                <li className="nav-item">Campañas</li>
+                <li className="nav-item">
+                  <FiHome />
+                  <div>Inicio</div>
+                </li>
+                <li className="nav-item">
+                  <FiInfo />
+                  <div>Acerca de</div>
+                </li>
+                <li className="nav-item">
+                  <FiUsers />
+                  <div>Integrantes</div>
+                </li>
+                <li className="nav-item">
+                  <FiEye />
+                  <div>Noticias</div>
+                </li>
+                <li className="nav-item">
+                  <FiVideo />
+                  <div>Multimedia</div>
+                </li>
+                <li className="nav-item">
+                  <FiFile />
+                  <div>Archivos</div>
+                </li>
+                <li className="nav-item">
+                  <FiCalendar />
+                  <div>Eventos</div>
+                </li>
+                <li className="nav-item">
+                  <FiHeart />
+                  <div>Campañas</div>
+                </li>
               </ul>
             </nav>
           </div>
@@ -376,7 +417,7 @@ function OrchestraDetails(props: any) {
         <aside className="aside-right">
           <div className="donate-container">
             <div className="donate-icon-container">
-              <CiHeart />
+              <FiHeart />
             </div>
             <div className="donate-info">
               <p className="info-title">
