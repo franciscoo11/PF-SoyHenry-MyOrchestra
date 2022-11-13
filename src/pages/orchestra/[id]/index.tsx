@@ -1,13 +1,13 @@
 import { useRouter } from "next/router";
-import Cover from "../../frontend/components/Cover";
-import MainNavBar from "../../frontend/components/MainNavBar";
-import { Orquestas, Posts, Users } from "../../frontend/utils/fakeDB";
+import Cover from "../../../frontend/components/Cover";
+import MainNavBar from "../../../frontend/components/MainNavBar";
+import { Orquestas, Posts, Users } from "../../../frontend/utils/fakeDB";
 import styled from "styled-components";
-import OrchestraPosts from "../../frontend/components/OrchestraPosts";
+import OrchestraPosts from "../../../frontend/components/OrchestraPosts";
 import { FiVideo, FiImage, FiFileText } from "react-icons/fi";
-import Footer from "../../frontend/components/Footer";
-import AsideLeft from "../../frontend/components/orchestras/AsideLeft";
-import AsideRight from "../../frontend/components/orchestras/AsideRight";
+import Footer from "../../../frontend/components/Footer";
+import AsideLeft from "../../../frontend/components/orchestras/AsideLeft";
+import AsideRight from "../../../frontend/components/orchestras/AsideRight";
 
 export const StyledMain = styled.main`
   margin: 25px auto;
