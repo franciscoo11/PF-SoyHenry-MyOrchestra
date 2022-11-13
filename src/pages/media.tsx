@@ -1,8 +1,9 @@
 import Head from "next/head";
 import MainNavBar from "../frontend/components/MainNavBar";
-import * as fakeDB from "../frontend/utils/fakeDB";
 import HomeCards from "../frontend/components/HomeCards";
 import styled from "styled-components";
+import axios from "axios";
+import Footer from "../frontend/components/Footer";
 
 const StyledMain = styled.main`
   margin: 25px auto;
@@ -33,7 +34,7 @@ const StyledMain = styled.main`
   }
 `;
 
-const Media = () => {
+const Media = ({ post }: any) => {
   return (
     <>
       <Head>
@@ -56,15 +57,10 @@ const Media = () => {
             </select>
           </div>
           <div className="campañas">
-            {fakeDB.Posts.map((post, index) => (
+            {post.map((post: any, index: number) => (
               <HomeCards
                 key={index}
-                image={post.media}
-                // title={
-                //   post.title
-                //     ? fakeDB.Users.filter((users) => users.name)
-                //     : post.title
-                // }
+                image={post.url_file}
                 title={post.title}
                 content={post.content}
               />
@@ -81,8 +77,20 @@ const Media = () => {
           </div>
         </section>
       </StyledMain>
+      <Footer />
     </>
   );
 };
 
 export default Media;
+
+export const getServerSideProps = async () => {
+  const res = await axios.get("http://localhost:3000/api/post");
+  const post = await res.data;
+
+  return {
+    props: {
+      post,
+    },
+  };
+};

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Orquestas, Users, Comments } from "../utils/fakeDB";
+import { FiThumbsUp } from "react-icons/fi";
 
 const StyledDiv = styled.div`
   width: 100%;
@@ -78,13 +79,20 @@ const StyledDiv = styled.div`
       align-items: baseline;
       padding: 12px;
 
-      button {
+      .post-reaction-btn {
         background-color: transparent;
         border: 1px solid lightgrey;
-        font-size: 0.9em;
+        font-size: 1.2em;
         font-weight: bold;
-        padding: 6px 12px;
-        border-radius: 6px;
+        padding: 8px 16px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        span {
+          font-size: 0.8em;
+        }
 
         &:hover {
           background-color: #f1f2f6;
@@ -117,6 +125,21 @@ const StyledDiv = styled.div`
         width: 100%;
         background-color: #f1f2f6;
         padding: 12px;
+        position: relative;
+        border-radius: 6px;
+
+        ::after {
+          content: "";
+          display: block;
+          position: absolute;
+          top: 12px;
+          margin-left: -24px;
+          width: 0;
+          height: 0;
+          border-top: 6px solid transparent;
+          border-bottom: 6px solid transparent;
+          border-right: 12px solid #f1f2f6;
+        }
       }
 
       .user-pic {
@@ -158,7 +181,10 @@ export default function OrchestraPosts(props: any) {
             <p>7 reacciones / 2 comentarios </p>
           </div>
           <div>
-            <button>Reaccionar</button>{" "}
+            <button className="post-reaction-btn">
+              <span>Reaccionar</span>
+              <FiThumbsUp />
+            </button>
           </div>
         </div>
         <div className="comment-form-container">

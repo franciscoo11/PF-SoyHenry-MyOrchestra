@@ -1,21 +1,6 @@
-import { useRouter } from "next/router";
-import Cover from "../../frontend/components/Cover";
-import MainNavBar from "../../frontend/components/MainNavBar";
-import { Orquestas, Posts, Users } from "../../frontend/utils/fakeDB";
 import styled from "styled-components";
-import OrchestraPosts from "../../frontend/components/OrchestraPosts";
-import {
-  FiHome,
-  FiInfo,
-  FiUsers,
-  FiEye,
-  FiVideo,
-  FiFile,
-  FiCalendar,
-  FiHeart,
-} from "react-icons/fi";
 
-export const StyledMain = styled.main`
+const StyledMain = styled.main`
   margin: 25px auto;
   width: 100%;
   max-width: 1440px;
@@ -26,6 +11,7 @@ export const StyledMain = styled.main`
 
   .aside-left {
     grid-column: 1/4;
+    grid-row: 1;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -144,19 +130,34 @@ export const StyledMain = styled.main`
 
   section {
     grid-column: 4/13;
+    grid-row: 1;
     display: flex;
     flex-direction: column;
     gap: 24px;
 
-    .form-container {
+    .form-container,
+    .about-container {
       border: 1px solid lightgrey;
       padding: 24px;
       border-radius: 12px;
-      display: flex;
-      gap: 12px;
+
+      .about-title {
+        margin: 0;
+        color: ${({ theme }) => theme.colors.secondary};
+      }
 
       .post-form {
         width: 100%;
+        position: relative;
+
+        .post-form-icons-container {
+          position: absolute;
+          top: 12px;
+          right: 18px;
+          color: gray;
+          display: flex;
+          gap: 6px;
+        }
       }
 
       .post-input {
@@ -176,6 +177,11 @@ export const StyledMain = styled.main`
         background-size: cover;
         background-position: center;
       }
+    }
+
+    .form-container {
+      display: flex;
+      gap: 12px;
     }
 
     .filter-container {
@@ -204,6 +210,7 @@ export const StyledMain = styled.main`
 
   .aside-right {
     grid-column: 13/17;
+    grid-row: 1;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -214,6 +221,22 @@ export const StyledMain = styled.main`
       border: 1px solid lightgrey;
       text-align: center;
       border-radius: 6px;
+
+      .donate-btn,
+      .campaign-btn {
+        background-color: ${({ theme }) => theme.colors.secondary};
+        width: 100%;
+        padding: 12px;
+        font-size: 1em;
+        color: white;
+        border: none;
+        border-radius: 6px;
+
+        :hover {
+          filter: brightness(110%);
+          cursor: pointer;
+        }
+      }
 
       .donate-icon-container {
         font-size: 4em;
@@ -308,158 +331,4 @@ export const StyledMain = styled.main`
   }
 `;
 
-function OrchestraDetails(props: any) {
-  const router = useRouter();
-  const { id } = router.query;
-  return (
-    <>
-      <MainNavBar />
-
-      <StyledMain>
-        <aside className="aside-left">
-          <div className="orchestra-nav-container">
-            <div
-              className="orchestra-logo"
-              style={{ backgroundImage: `url(${Orquestas[0].logo})` }}
-            ></div>
-            <nav className="orchestra-nav">
-              <ul className="nav-list">
-                <li className="nav-item">
-                  <FiHome />
-                  <div>Inicio</div>
-                </li>
-                <li className="nav-item">
-                  <FiInfo />
-                  <div>Acerca de</div>
-                </li>
-                <li className="nav-item">
-                  <FiUsers />
-                  <div>Integrantes</div>
-                </li>
-                <li className="nav-item">
-                  <FiEye />
-                  <div>Noticias</div>
-                </li>
-                <li className="nav-item">
-                  <FiVideo />
-                  <div>Multimedia</div>
-                </li>
-                <li className="nav-item">
-                  <FiFile />
-                  <div>Archivos</div>
-                </li>
-                <li className="nav-item">
-                  <FiCalendar />
-                  <div>Eventos</div>
-                </li>
-                <li className="nav-item">
-                  <FiHeart />
-                  <div>Campañas</div>
-                </li>
-              </ul>
-            </nav>
-          </div>
-          <div className="notification-container">
-            <div
-              className="admin-pic"
-              style={{ backgroundImage: `url(${Users[1].image})` }}
-            ></div>
-            <div className="notification-content">
-              <p className="user-name">{Users[1].name}</p>
-              <p className="user-role">{Users[1].rol}</p>
-              <hr />
-              <ul className="notifications-list">
-                <li className="notification-item">
-                  Notificaciones <span>3</span>{" "}
-                </li>
-                <li className="notification-item">
-                  Mensajes <span>2</span>{" "}
-                </li>
-                <li className="notification-item">
-                  Pendiente <span>1</span>{" "}
-                </li>
-              </ul>
-            </div>
-          </div>
-        </aside>
-        <section className="content">
-          <Cover
-            cover={Orquestas[0].cover}
-            title={Orquestas[0].name}
-            location={Orquestas[0].ubication}
-          />
-          <div className="form-container">
-            <div
-              className="pic"
-              style={{ backgroundImage: `url(${Users[0].image})` }}
-            ></div>
-            <form className="post-form">
-              <input
-                className="post-input"
-                type="text"
-                placeholder="Nueva publicación..."
-              />
-            </form>
-          </div>
-          <div className="filter-container">
-            <div className="divider"></div>
-            <div className="post-filter">
-              Ordenar por: <b>Mas recientes</b>
-            </div>
-          </div>
-
-          <div className="posts">
-            {Posts.map((post, index) => (
-              <OrchestraPosts key={index} post={post} />
-            ))}
-          </div>
-        </section>
-        <aside className="aside-right">
-          <div className="donate-container">
-            <div className="donate-icon-container">
-              <FiHeart />
-            </div>
-            <div className="donate-info">
-              <p className="info-title">
-                Entre todos podemos <br /> hacer la diferencia
-              </p>
-              <p className="info-content">
-                Colaborá con esta y/u otras orquestas para que puedan seguir
-                adelante con esta hermosa actividad.
-              </p>
-            </div>
-            <div className="donate-btn-container">
-              <button>Donar</button>
-            </div>
-          </div>
-          <div className="campaign-container">
-            <div className="campaign-header">
-              <h3 className="campaign-title">Campaña Abierta</h3>
-              <p className="campaign-subtitle">Campaña</p>
-              <p className="campaign-desc">
-                Viaje de intercambio a Temuco-Chile
-              </p>
-              <p className="read-more">leer más</p>
-            </div>
-            <div className="campaign-details">
-              <p className="campaign-goal-title">Objetivo</p>
-              <p className="campaign-goal-amount">$75.000</p>
-              <p className="campaign-end-title">Finaliza:</p>
-              <p className="campaign-end-date">02/02/2023</p>
-            </div>
-            <div className="campaign-footer">
-              <p className="campaig-footer-title">Alcanzado hasta el momento</p>
-              <p className="campaign-current-amount">$17.985</p>
-              <div className="campaign-progress-bar">
-                <div className="campaign-current-progress-bar"></div>
-              </div>
-              <button>Colaborar</button>
-            </div>
-          </div>
-        </aside>
-      </StyledMain>
-    </>
-  );
-}
-
-export default OrchestraDetails;
+export { StyledMain };

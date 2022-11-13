@@ -7,6 +7,8 @@ const commentLogo =
 const viewsLogo =
   "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668090840/vista_j8t6ku.png";
 
+const photo = "http://placeimg.com/640/480/business";
+
 const CardStyle = styled.div`
   box-sizing: border-box;
   width: 280px;
@@ -57,7 +59,7 @@ const CampaignCards = (props: any) => {
     <>
       <CardStyle>
         <div className="thumbnail">
-          <img src={props.image} alt={props.title} />
+          <img src={props.image ? props.image : photo} alt={props.title} />
         </div>
         <div>
           <h2>{props.title}</h2>

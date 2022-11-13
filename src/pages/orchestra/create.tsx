@@ -3,12 +3,54 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import MainNavBar from "../../frontend/components/MainNavBar";
 import * as Yup from "yup";
+import styled from "styled-components";
+
+const StyledForm = styled.div`
+  .form {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    margin: auto;
+    box-sizing: border-box;
+    border: 1px solid lightgray;
+    padding: 15px;
+    justify-content: space-between;
+    gap: 5px;
+  }
+  label {
+    font-weight: bold;
+    display: flex;
+  }
+  .input {
+    padding: 0.65rem 0.5rem;
+    font-size: 1rem;
+    border: 2px solid gray;
+    background-color: #f7f5f5;
+    color: var(--gray-800);
+    border-radius: 10px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  .errorMessage {
+    color: red;
+  }
+
+  .submit {
+    width: 100%;
+    height: 35px;
+    object-fit: cover;
+    margin: auto;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+`;
 
 export default function CreateOrchestra() {
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
   return (
-    <div>
+    <StyledForm>
       <MainNavBar />
       <Formik
         initialValues={{
@@ -45,43 +87,80 @@ export default function CreateOrchestra() {
           }, 400);
         }}
       >
-        <Form>
+        <Form className="form">
           <label>Nombre de la Orquesta</label>
-          <Field name="name" type="text" />
-          <ErrorMessage name="name" />
+          <Field
+            name="name"
+            type="text"
+            placeholder="Nombre"
+            className="input"
+          />
+          <ErrorMessage name="name" className="errorMessage" />
 
           <label>Descripción</label>
-          <Field name="description" as="textarea" />
-          <ErrorMessage name="description" />
+          <Field
+            name="description"
+            as="textarea"
+            placeholder="Descripción de tu orquesta"
+            className="input"
+          />
+          <ErrorMessage name="description" className="errorMessage" />
 
           <label>País</label>
-          <Field name="location" type="text" />
-          <ErrorMessage name="location" />
+          <Field
+            name="location"
+            type="text"
+            placeholder="País"
+            className="input"
+          />
+          <ErrorMessage name="location" className="errorMessage" />
 
           <label>Patrocinantes</label>
-          <Field name="sponsor" type="text" />
-          <ErrorMessage name="sponsor" />
+          <Field
+            name="sponsor"
+            type="text"
+            placeholder="Escripe aquí tu patrocinante"
+            className="input"
+          />
+          <ErrorMessage name="sponsor" className="errorMessage" />
 
           {/* NO supe como validar las fechas :( */}
           <label>Date</label>
-          <Field name="date" type="date" />
-          <ErrorMessage name="date" />
+          <Field name="date" type="date" className="input" />
+          <ErrorMessage name="date" className="errorMessage" />
 
           <label>Email Institucional</label>
-          <Field name="email" type="text" />
-          <ErrorMessage name="email" />
+          <Field
+            name="email"
+            type="text"
+            placeholder="Correo electrónico"
+            className="input"
+          />
+          <ErrorMessage name="email" className="errorMessage" />
 
           <label>Número de Teléfono</label>
-          <Field name="phone" type="text" />
-          <ErrorMessage name="phone" />
+          <Field
+            name="phone"
+            type="text"
+            placeholder="Contacto"
+            className="input"
+          />
+          <ErrorMessage name="phone" className="errorMessage" />
 
           <label>Logo</label>
-          <Field name="logo" type="text" />
-          <ErrorMessage name="logo" />
+          <Field
+            name="logo"
+            type="text"
+            placeholder="Fotico"
+            className="input"
+          />
+          <ErrorMessage name="logo" className="errorMessage" />
 
-          <button type="submit">Submit</button>
+          <button type="submit" className="submit">
+            Submit
+          </button>
         </Form>
       </Formik>
-    </div>
+    </StyledForm>
   );
 }
