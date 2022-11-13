@@ -12,40 +12,18 @@ export const getAllReactions = async() => {
 export const addReaction = async(reaction:string) => {
     try {
         if(!reaction) return null
-        const findDuplicate = await prisma.reaction.findFirst({
-            where: {
-                reaction: reaction
+        const isDuplicate = await prisma.reaction.findFirst({
+            where:{
+                reaction:reaction
             }
         })
-        if(findDuplicate) return null
-        const generateReaction = await prisma.reaction.create({
-            data: {
-                reaction
-            }
-        })
-        return generateReaction ? generateReaction : null
-    } catch (error) {
-        return error
-    }
-}
-
-interface query {
-    id?:string
-    reaction?: string
-}
-
-export const updateReaction = async(query:query, body:{reaction:string}) => {
-    try {
-        if(!query.id) return null
-        const modifyReaction = await prisma.reaction.update({
-            where: {
-                id: query.id
-            },
+        if(isDuplicate) return null
+        const addReaction = await prisma.reaction.create({
             data:{
-                reaction:body.reaction
+                reaction:reaction
             }
         })
-        return modifyReaction ? modifyReaction : null
+        return addReaction ? addReaction : null
     } catch (error) {
         return error
     }
