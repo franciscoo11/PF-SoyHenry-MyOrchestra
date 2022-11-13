@@ -1,49 +1,47 @@
 import styled from "styled-components";
 
-const CoverDiv = styled.div`
-  width: 90%;
-  max-width: 1300px;
-  margin: 0 auto;
-  height: 320px;
-  background-size: cover;
-  background-position: center;
-  /* border-radius: 10px; */
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  position: relative;
+const StyledDiv = styled.div`
+  border-radius: 12px;
+  border: 1px solid lightgray;
+  overflow: hidden;
 
-  .title {
-    color: white;
-    margin: 0 15px 10px 0;
+  .info {
+    padding: 12px 24px;
   }
 
-  .pic {
-    width: 180px;
-    height: 180px;
-    background-color: gray;
-    border: 4px solid white;
-    border-radius: 100%;
-    position: absolute;
-    left: 50px;
-    bottom: -80px;
+  .cover {
+    width: 100%;
+    height: 240px;
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    box-shadow: 0px 5px 5px gray;
+  }
+
+  .title {
+    color: ${({ theme }) => theme.colors.secondary};
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .location {
+    font-weight: bold;
   }
 `;
 
 export default function Cover(props: any) {
   return (
-    <>
-      <CoverDiv style={{ backgroundImage: `url(${props.cover})` }}>
-        <h1 className="title">{props.title}</h1>
-        <div
-          className="pic"
-          style={{ backgroundImage: `url(${props.pic})` }}
-        ></div>
-      </CoverDiv>
-    </>
+    <StyledDiv>
+      <div
+        className="cover"
+        style={{ backgroundImage: `url(${props.cover})` }}
+      ></div>
+      <div className="info">
+        <h2 className="title">{props.title}</h2>
+        <p className="location">{props.location}</p>
+        <p>27 integrantes</p>
+      </div>
+    </StyledDiv>
   );
 }
