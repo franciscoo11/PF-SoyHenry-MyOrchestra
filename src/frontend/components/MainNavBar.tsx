@@ -3,7 +3,7 @@ import Link from "next/link";
 import styled from "styled-components";
 
 const logIcon =
-  "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668094650/kisspng-computer-icons-google-account-icon-design-login-5afc02dade3123.8372574215264652429101_shtgvv.png";
+  "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668357018/empleado_ytyb9t.png";
 const NavStyle = styled.header`
   width: 90%;
   max-width: 1300px;
@@ -49,9 +49,9 @@ export default function MainNavBar() {
 
         <Link href="/about">Acerca de </Link>
 
-        <Link href="/login" className="log">
-          <img src={logIcon} alt="login" width="17px" height="17px" /> Iniciar
-          Sesión
+        <Link href="/orchestra/create" className="log">
+          <img src={logIcon} alt="login" width="18px" height="18px" /> Crear
+          Orquesta
         </Link>
 
         <div>
