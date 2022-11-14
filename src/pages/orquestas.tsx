@@ -9,20 +9,37 @@ import OrchestasNavBar from "../frontend/components/OrchestasNavBar";
 
 const StyledMain = styled.main`
   margin: 25px auto;
-  width: 90%;
-  max-width: 1300px;
-  display: flex;
-  gap: 20px;
+  width: 100%;
+  max-width: 1440px;
+  display: grid;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  gap: 24px;
+  padding: 0 80px;
 
-  section {
-    width: 100%;
+  .content {
+    grid-column: 1/17;
+
+    .nav-btn {
+      padding: 12px;
+      font-size: 12px;
+      border: 1px solid lightgray;
+      border-radius: 12px;
+      font-weight: bold;
+      background-color: white;
+      margin: 12px;
+
+      :hover {
+        cursor: pointer;
+        background-color: ${({ theme }) => theme.colors.secondary};
+        color: white;
+      }
+    }
 
     .filters-container {
       margin: 15px 0;
       display: flex;
       justify-content: flex-end;
 
-      /* Dropdown Button */
       .dropbtn {
         padding: 12px;
         font-size: 12px;
@@ -32,13 +49,11 @@ const StyledMain = styled.main`
         background-color: white;
       }
 
-      /* The container <div> - needed to position the dropdown content */
       .dropdown {
         position: relative;
         display: inline-block;
       }
 
-      /* Dropdown Content (Hidden by Default) */
       .dropdown-content {
         display: none;
         position: absolute;
@@ -48,7 +63,6 @@ const StyledMain = styled.main`
         font-size: 0.8em;
       }
 
-      /* Links inside the dropdown */
       .dropdown-content a {
         color: black;
         padding: 12px 16px;
@@ -75,12 +89,13 @@ const StyledMain = styled.main`
     }
 
     .orquestas {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 10px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 24px;
 
       .search-alert {
+        grid-column: 1/5;
         margin: 242px auto;
         font-size: 2em;
       }
@@ -156,7 +171,7 @@ export default function Orquestas({ orchestra }: any) {
         setSearch={setSearch}
       />
       <StyledMain>
-        <section>
+        <section className="content">
           <div className="filters-container">
             <div className="dropdown">
               <button className="dropbtn">Ordernar por:</button>
@@ -187,8 +202,12 @@ export default function Orquestas({ orchestra }: any) {
             )}
           </div>
           <div className="paginacion">
-            <button onClick={prevPage}>Anterior</button>
-            <button onClick={nextPage}>Siguiente</button>
+            <button className="nav-btn" onClick={prevPage}>
+              Anterior
+            </button>
+            <button className="nav-btn" onClick={nextPage}>
+              Siguiente
+            </button>
           </div>
         </section>
       </StyledMain>
