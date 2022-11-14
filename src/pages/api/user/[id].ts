@@ -33,7 +33,7 @@ export default async function handler(
               const removeUser = await deleteUser(id)
               return removeUser ? res.status(200).json(removeUser) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
             default:
-            return res.status(400).json("method no found")
+            return res.status(400).json("method not allowed")
               
         }
     } catch (error) {

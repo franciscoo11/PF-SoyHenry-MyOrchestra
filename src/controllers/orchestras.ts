@@ -46,7 +46,7 @@ export const getOrchestras = async (query: any) => {
     }
   });
   if (location || orchestra_TypeId) return filter_query(orchestras, location, orchestra_TypeId)
-  return orchestras;
+  return orchestras ? orchestras : undefined;
 };
 
 //GET ORCHESTRAS BY ID
@@ -54,41 +54,53 @@ export const getOrchestrasById = async (id: any) => {
   const orchestra = await prisma.orchestra.findUnique({
     where: { id: id },
   });
-  return orchestra;
+  return orchestra ? orchestra : undefined;
 };
 
 //POST ORCHESTRAS
 export const postOrchestras = async (body: any) => {
   try {
+    if(!body) return undefined
     const { name, phone, donation_account } = body;
-    if (!name || !donation_account || !phone) throw ('missing values')
+    if (!name || !donation_account || !phone) return undefined
     const orchestras = await prisma.orchestra.create({
       data: body
     });
-    return orchestras;
+    return orchestras ? orchestras : undefined;
   } catch (error) {
-    console.log(`something was wrong in post, values received:${body} `, error)
+    return error
   }
 
 };
 //BORRADO LOGICO
 export const logicDeleteOrchestra = async (id: any) => {
-  const deactivate = await prisma.orchestra.update({
-    where: {
-      id: id
-    },
-    data: {
-      is_active: false
-    }
-  })
-  return deactivate ? deactivate:null
+  try {
+    const deactivate = await prisma.orchestra.update({
+      where: {
+        id: id
+      },
+      data: {
+        is_active: false
+      }
+    })
+    return deactivate ? deactivate : null
+  } catch (error) {
+    return error
+  }
+  
 }
 //DELETE ORCHESTRAS
 export const deleteOrchestra = async (id: any) => {
-  const orchestraDelete = await prisma.orchestra.delete({
-    where: { id: id },
-  });
-  return orchestraDelete ? orchestraDelete:null;
+  try {
+    if(!id) return undefined
+    const orchestraDelete = await prisma.orchestra.delete({
+      where: { id: id },
+    });
+    return orchestraDelete ? orchestraDelete : null;
+  } catch (error) {
+    return error
+  }
+  
 };
 
 //UPDATE ORCHESTRAS
@@ -101,9 +113,9 @@ export const updateOrchestra = async (id: any, body: any) => {
       data: body,
 
     });
-    return updateOrchestra;
+    return updateOrchestra ? updateOrchestra : undefined;
   } catch (error) {
-    return console.log(error, ` cant update, values received:${id}, ${body}`)
+    return error
   }
 };
 

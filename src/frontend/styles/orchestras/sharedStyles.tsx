@@ -28,6 +28,7 @@ const StyledMain = styled.main`
         background-repeat: no-repeat;
         position: relative;
         z-index: 20;
+        background-color: white;
       }
 
       .orchestra-nav {

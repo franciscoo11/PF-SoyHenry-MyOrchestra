@@ -1,10 +1,18 @@
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
+// import axios from "axios";
+// import { useState } from "react";
+import {
+  Formik,
+  Form,
+  Field,
+  ErrorMessage,
+  FormikBag,
+  FormikHelpers,
+} from "formik";
 import MainNavBar from "../../frontend/components/MainNavBar";
 import * as Yup from "yup";
 import styled from "styled-components";
 import axios from "axios";
 import { useRouter } from "next/router";
-import Footer from "../../frontend/components/Footer";
 
 const StyledForm = styled.div`
   background-image: url("/bg_01.jpg");
@@ -135,19 +143,14 @@ interface Values {
   location: string;
   donation_account: string;
   phone: string;
-  orchestra_TypeId: string;
   cover?: string;
+  orchestra_TypeId: string;
 }
 
-interface Props {
-  types_orchestras: {
-    id: string;
-    type: string;
-  }[];
-}
-
-export default function CreateOrchestra(props: Props) {
+export default function UpdateOrchestra({ types_orchestras }: any) {
   const router = useRouter();
+  const { id } = router.query;
+
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
   return (
@@ -163,8 +166,8 @@ export default function CreateOrchestra(props: Props) {
           location: "",
           donation_account: "",
           phone: "",
-          orchestra_TypeId: "",
           cover: "",
+          orchestra_TypeId: "",
         }}
         validationSchema={Yup.object({
           name: Yup.string()
@@ -185,9 +188,12 @@ export default function CreateOrchestra(props: Props) {
         })}
         onSubmit={(values, { setSubmitting }: FormikHelpers<Values>) => {
           axios
-            .post("http://localhost:3000/api/orchestra", values)
-            .then(() => {
-              alert("Orchestra Created");
+            .put(`http://localhost:3000/api/orchestra/${id}`, values)
+            .then((res) => {
+              console.log(res);
+              console.log(values);
+
+              alert("Orquesta modificada");
               router.push("/");
               setSubmitting(false);
             })
@@ -291,8 +297,8 @@ export default function CreateOrchestra(props: Props) {
                 <option disabled value="">
                   Tipo de Orquesta
                 </option>
-                {props.types_orchestras &&
-                  props.types_orchestras.map((type_orq: any) => (
+                {types_orchestras &&
+                  types_orchestras.map((type_orq: any) => (
                     <option value={type_orq.id} key={type_orq.id}>
                       {type_orq.type}
                     </option>
@@ -334,24 +340,12 @@ export default function CreateOrchestra(props: Props) {
 
             <div className="btn-container">
               <button type="submit" className="submit">
-                Crear
+                Actualizar
               </button>
             </div>
           </div>
         </Form>
       </Formik>
-      <Footer />
     </StyledForm>
   );
 }
-
-export const getServerSideProps = async () => {
-  const res = await axios.get("http://localhost:3000/api/orchestras-types");
-  const types_orchestras = await res.data;
-
-  return {
-    props: {
-      types_orchestras,
-    },
-  };
-};
