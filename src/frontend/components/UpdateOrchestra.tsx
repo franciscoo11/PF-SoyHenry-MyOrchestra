@@ -75,7 +75,7 @@ interface Props {
   }[];
 }
 
-export default function CreateOrchestra(props: Props) {
+export default function UpdateOrchestra(props: Props) {
   const router = useRouter();
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -114,9 +114,9 @@ export default function CreateOrchestra(props: Props) {
         })}
         onSubmit={(values, { setSubmitting }: FormikHelpers<Values>) => {
           axios
-            .post("http://localhost:3000/api/orchestra", values)
+            .put("http://localhost:3000/api/orchestra", values)
             .then(() => {
-              alert("Orchestra Created");
+              alert("Orquesta modificada");
               router.push("/");
               setSubmitting(false);
             })
@@ -163,8 +163,7 @@ export default function CreateOrchestra(props: Props) {
           />
           <ErrorMessage name="sponsor" className="errorMessage" />
 
-          {/* NO supe como validar las fechas :( */}
-          <label>Date</label>
+          <label>Fecha de fundación</label>
           <Field name="creation_date" type="date" className="input" />
           <ErrorMessage name="creation_date" className="errorMessage" />
 
@@ -219,7 +218,7 @@ export default function CreateOrchestra(props: Props) {
           <ErrorMessage name="orchestra_TypeId" className="errorMessage" />
 
           <button type="submit" className="submit">
-            Submit
+            Update
           </button>
         </Form>
       </Formik>
