@@ -330,7 +330,7 @@ export default function UpdateOrchestra({ types_orchestras }: any) {
 
             <div className="btn-container">
               <button type="submit" className="submit">
-                Crear
+                Actualizar
               </button>
             </div>
           </div>
