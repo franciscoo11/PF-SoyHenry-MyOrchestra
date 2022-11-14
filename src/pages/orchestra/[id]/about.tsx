@@ -6,6 +6,39 @@ import Footer from "../../../frontend/components/Footer";
 import AsideLeft from "../../../frontend/components/orchestras/AsideLeft";
 import AsideRight from "../../../frontend/components/orchestras/AsideRight";
 import { StyledMain } from "../../../frontend/styles/orchestras/sharedStyles";
+import axios from "axios";
+
+export interface DataModel {
+  id: string;
+}
+
+export const getStaticPaths = async () => {
+  try {
+    const res = await axios.get("http://localhost:3000/api/orchestra");
+    const data: DataModel[] = await res.data;
+    const paths = data.map(({ id }) => ({ params: { id } }));
+    return {
+      paths,
+      fallback: false,
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getStaticProps = async ({ params }: any) => {
+  try {
+    const res = await axios.get(
+      `http://localhost:3000/api/orchestra/${params.id}`
+    );
+    const data = await res.data;
+    return {
+      props: {
+        data,
+      },
+    };
+  } catch (error) {}
+};
 
 function OrchestraAbout(props: any) {
   const router = useRouter();
@@ -16,33 +49,17 @@ function OrchestraAbout(props: any) {
 
       <StyledMain>
         <aside className="aside-left">
-          <AsideLeft />
+          <AsideLeft logo={props.data.logo} id={props.data.id} />
         </aside>
         <section className="content">
           <Cover
-            cover={Orquestas[0].cover}
-            title={Orquestas[0].name}
-            location={Orquestas[0].ubication}
+            cover={props.data.cover}
+            title={props.data.name}
+            location={props.data.location}
           />
           <div className="about-container">
             <h2 className="about-title">Acerca de</h2>
-            <p className="about-content">
-              Et aut enim totam asperiores voluptas provident corporis aperiam
-              aliquam. Quidem exercitationem illo eligendi molestias. Animi
-              beatae error esse est rem consequatur sit. Non eos repellendus
-              maxime ut eum. Molestias nemo officiis minus repellat voluptas aut
-              sunt harum.{" "}
-            </p>
-            <p>
-              Aspernatur quas sint placeat. Et sunt eos quia. Molestiae pariatur
-              architecto itaque mollitia et eius optio. Sunt et aut magni qui
-              vitae neque vero aut.{" "}
-            </p>
-            <p>
-              Voluptates et doloribus enim et aut autem qui. Modi ullam quis
-              quasi. Nobis voluptatibus inventore et debitis eum aut sint
-              possimus. Cum itaque ut. Autem atque expedita.
-            </p>
+            <p className="about-content">{props.data.description}</p>
           </div>
         </section>
         <aside className="aside-right">

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styled from "styled-components";
 
 const filesLogo =
@@ -17,14 +18,14 @@ const CardStyle = styled.div`
   justify-content: space-between;
   gap: 6px;
 
-  .thumbnail {
+  .card-header {
     height: 240px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  .text {
+  .card-content {
     display: flex;
     flex-direction: column;
 
@@ -34,36 +35,52 @@ const CardStyle = styled.div`
       margin: 0;
     }
   }
+  .card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   img {
     max-width: 100%;
     max-height: 240px;
   }
 
-  .logos {
+  .card-counters-container {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     margin-bottom: 10px;
-  }
-  button {
-    width: 100%;
-    height: 35px;
-    object-fit: cover;
-    margin: auto;
-    border-radius: 5px;
-    cursor: pointer;
   }
 
   h3 {
     color: #9b9797;
   }
 
-  .contador {
+  .card-counter {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+  }
+
+  .card-btn-container {
+    .card-btn {
+      background-color: ${({ theme }) => theme.colors.secondary};
+      text-align: center;
+      display: block;
+      width: 100%;
+      padding: 12px;
+      font-size: 1em;
+      color: white;
+      border: none;
+      border-radius: 6px;
+
+      :hover {
+        filter: brightness(110%);
+        cursor: pointer;
+      }
+    }
   }
 `;
 
@@ -71,31 +88,38 @@ function HomeCards(props: any) {
   return (
     <>
       <CardStyle>
-        <div className="thumbnail">
-          <img src={props.image} alt={props.title} />
+        <div className="card-header">
+          <Link href={`/orchestra/${encodeURIComponent(props.id)}`}>
+            <img src={props.image} alt={props.title} />
+          </Link>
         </div>
-        <div className="text">
+        <div className="card-content">
           <h3>{props.subtitle}</h3>
-          <h2>{props.title}</h2>
+          <h2 className="card-title">{props.title}</h2>
           <p>{props.content}...</p>
         </div>
-        <div className="container">
-          <div className="logos">
-            <div className="contador">
+        <div className="card-footer">
+          <div className="card-counters-container">
+            <div className="card-counter">
               <img src={viewsLogo} width="25%" />
               <div>1234 </div>
             </div>
-            <div className="contador">
+            <div className="card-counter">
               <img src={commentLogo} width="25%" />
               <div>7 </div>
             </div>
-            <div className="contador">
+            <div className="card-counter">
               <img src={filesLogo} width="25%" />
               <div>7</div>
             </div>
           </div>
-          <div>
-            <button>Ver más</button>
+          <div className="card-btn-container">
+            <Link
+              href={`/orchestra/${encodeURIComponent(props.id)}`}
+              legacyBehavior
+            >
+              <a className="card-btn">Ver más</a>
+            </Link>
           </div>
         </div>
       </CardStyle>
