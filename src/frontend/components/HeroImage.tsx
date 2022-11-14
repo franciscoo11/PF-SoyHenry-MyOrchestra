@@ -2,26 +2,34 @@ import styled from "styled-components";
 
 const HeroContainer = styled.div`
   box-sizing: border-box;
-  width: 90%;
-  max-width: 1300px;
-  height: 400px;
-  background-image: url("https://cdn.pixabay.com/photo/2020/11/01/13/41/music-notes-5703813_960_720.jpg");
+  width: 100%;
+  height: 450px;
+  background-image: url("/bg_01.jpg");
   background-size: cover;
-  background-position: top;
-  display: flex;
-  margin: auto;
+  background-position: center;
+  background-repeat: no-repeat;
 
-  div {
+  .content {
+    height: 450px;
+    margin: 0 auto;
     box-sizing: border-box;
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding-left: 40px;
+    width: 100%;
+    max-width: 1440px;
+    display: grid;
+    grid-template-columns: repeat(16, minmax(0, 1fr));
+    gap: 24px;
+    padding: 0 80px;
 
-    h1 {
-      color: white;
+    .cover-art {
+      grid-column: 3/15;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        max-height: 400px;
+      }
     }
   }
 `;
@@ -30,9 +38,17 @@ function HeroImage() {
   return (
     <>
       <HeroContainer>
-        <div>
-          <h1>Red de Orquestas Populares de Música Latinoamericana</h1>
-          <button>Leer más</button>
+        <div className="content">
+          <div className="cover-art">
+            <img
+              src="/mapa.png"
+              alt="Imagen representando una mapa del continente americano formado por instrumentos musicales"
+            />
+            <img
+              src="/isologo.png"
+              alt="Red de orquestas populares de música latinoamericana"
+            />
+          </div>
         </div>
       </HeroContainer>
     </>

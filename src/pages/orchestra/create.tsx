@@ -13,45 +13,125 @@ import * as Yup from "yup";
 import styled from "styled-components";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Footer from "../../frontend/components/Footer";
 
 const StyledForm = styled.div`
-  .form {
-    display: flex;
-    flex-direction: column;
-    width: 400px;
-    margin: auto;
-    box-sizing: border-box;
-    border: 1px solid lightgray;
-    padding: 15px;
-    justify-content: space-between;
-    gap: 5px;
-  }
-  label {
-    font-weight: bold;
-    display: flex;
-  }
-  .input {
-    padding: 0.65rem 0.5rem;
-    font-size: 1rem;
-    border: 2px solid gray;
-    background-color: #f7f5f5;
-    color: var(--gray-800);
-    border-radius: 10px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-  }
-  .errorMessage {
-    color: red;
-  }
+  background-image: url("/bg_01.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 0 -100px;
 
-  .submit {
+  .form {
+    box-sizing: border-box;
+    margin: 25px auto;
     width: 100%;
-    height: 35px;
-    object-fit: cover;
-    margin: auto;
-    border-radius: 5px;
-    cursor: pointer;
+    max-width: 1440px;
+    display: grid;
+    grid-template-columns: repeat(16, minmax(0, 1fr));
+    gap: 24px;
+    padding: 0 80px;
+
+    .fields-container {
+      grid-column: 5/13;
+      grid-row: 1;
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 24px;
+      padding: 120px 0px;
+
+      .input {
+        display: block;
+        width: 100%;
+        font-family: "Lato";
+        font-size: 0.9em;
+        padding: 10px 15px;
+        border-radius: 12px;
+        border: none;
+      }
+
+      label,
+      .error {
+        padding: 6px;
+        display: block;
+        color: white;
+        font-size: 0.7em;
+        text-align: center;
+      }
+
+      .error {
+        margin: 0;
+        text-align: unset;
+        margin-bottom: -12px;
+      }
+
+      .name-field {
+        grid-column: 1/7;
+        grid-row: 1;
+      }
+
+      .location-field {
+        grid-column: 1/7;
+        grid-row: 2;
+      }
+
+      .email-field {
+        grid-column: 1/4;
+        grid-row: 3;
+      }
+      .phone-field {
+        grid-column: 4/7;
+        grid-row: 3;
+      }
+
+      .logo-field {
+        grid-column: 1/4;
+        grid-row: 4;
+      }
+      .cover-field {
+        grid-column: 4/7;
+        grid-row: 4;
+      }
+
+      .date-field {
+        grid-column: 1/3;
+        grid-row: 5;
+      }
+
+      .orchesta-type-field {
+        grid-column: 3/5;
+        grid-row: 5;
+      }
+      .sponsor-field {
+        grid-column: 5/7;
+        grid-row: 5;
+      }
+
+      .description-field {
+        grid-column: 1/7;
+        grid-row: 6;
+      }
+      .btn-container {
+        grid-column: 1/7;
+        grid-row: 7;
+        text-align: right;
+
+        .submit {
+          font-family: "Lato";
+          color: white;
+          background-color: transparent;
+          border: 1px solid white;
+          font-size: 1.1em;
+          padding: 12px 24px;
+          border-radius: 12px;
+
+          :hover {
+            cursor: pointer;
+            border-color: gray;
+            color: gray;
+          }
+        }
+      }
+    }
   }
 `;
 
@@ -127,102 +207,139 @@ export default function CreateOrchestra(props: Props) {
         }}
       >
         <Form className="form">
-          <label>Nombre de la Orquesta</label>
-          <Field
-            name="name"
-            type="text"
-            placeholder="Nombre"
-            className="input"
-          />
-          <ErrorMessage name="name" className="errorMessage" />
+          <div className="fields-container">
+            <div className="name-field">
+              <Field
+                name="name"
+                type="text"
+                placeholder="Nombre de la Orquesta"
+                className="input"
+              />
+              <p className="error">
+                <ErrorMessage name="name" className="errorMessage" />
+              </p>
+            </div>
+            <div className="location-field">
+              <Field
+                name="location"
+                type="text"
+                placeholder="Ubicación (Ciudad, Provincia, Ciudad)"
+                className="input"
+              />
+              <p className="error">
+                <ErrorMessage name="location" className="errorMessage" />
+              </p>
+            </div>
+            <div className="email-field">
+              <Field
+                name="donation_account"
+                type="text"
+                placeholder="Email Institucional"
+                className="input"
+              />
+              <p className="error">
+                <ErrorMessage
+                  name="donation_account"
+                  className="errorMessage"
+                />
+              </p>
+            </div>
 
-          <label>Descripción</label>
-          <Field
-            name="description"
-            as="textarea"
-            placeholder="Descripción de tu orquesta"
-            className="input"
-          />
-          <ErrorMessage name="description" className="errorMessage" />
+            <div className="phone-field">
+              <Field
+                name="phone"
+                type="text"
+                placeholder="Teléfono / WhatsApp"
+                className="input"
+              />
+              <p className="error">
+                <ErrorMessage name="phone" className="errorMessage" />
+              </p>
+            </div>
 
-          <label>País</label>
-          <Field
-            name="location"
-            type="text"
-            placeholder="País"
-            className="input"
-          />
-          <ErrorMessage name="location" className="errorMessage" />
+            <div className="logo-field">
+              <Field
+                name="logo"
+                type="text"
+                placeholder="Logotipo de la Orquesta"
+                className="input"
+              />
+              <p className="error">
+                <ErrorMessage name="logo" className="errorMessage" />
+              </p>
+            </div>
 
-          <label>Patrocinantes</label>
-          <Field
-            name="sponsor"
-            type="text"
-            placeholder="Escripe aquí tu patrocinante"
-            className="input"
-          />
-          <ErrorMessage name="sponsor" className="errorMessage" />
+            <div className="cover-field">
+              <Field
+                name="cover"
+                type="text"
+                placeholder="Imagen de portada"
+                className="input"
+              />
+              <p className="error">
+                <ErrorMessage name="cover" className="errorMessage" />
+              </p>
+            </div>
 
-          {/* NO supe como validar las fechas :( */}
-          <label>Date</label>
-          <Field name="creation_date" type="date" className="input" />
-          <ErrorMessage name="creation_date" className="errorMessage" />
+            <div className="date-field">
+              {/* NO supe como validar las fechas :( */}
+              <Field name="creation_date" type="date" className="input" />
+              <label>Fecha de creación de la Orquesta</label>
+              <p className="error">
+                <ErrorMessage name="creation_date" className="errorMessage" />
+              </p>
+            </div>
 
-          <label>Email Institucional</label>
-          <Field
-            name="donation_account"
-            type="text"
-            placeholder="Correo electrónico"
-            className="input"
-          />
-          <ErrorMessage name="donation_account" className="errorMessage" />
+            <div className="orchesta-type-field">
+              <Field
+                name="orchestra_TypeId"
+                type="text"
+                placeholder="Tipo de Orquesta"
+                className="input"
+              />
+              <p className="error">
+                <ErrorMessage
+                  name="orchestra_TypeId"
+                  className="errorMessage"
+                />
+              </p>
+            </div>
 
-          <label>Número de Teléfono</label>
-          <Field
-            name="phone"
-            type="text"
-            placeholder="Contacto"
-            className="input"
-          />
-          <ErrorMessage name="phone" className="errorMessage" />
+            <div className="sponsor-field">
+              <Field
+                name="sponsor"
+                type="text"
+                placeholder="Patrocinador oficial"
+                className="input"
+              />
+              <p className="error">
+                <ErrorMessage name="sponsor" className="errorMessage" />
+              </p>
+            </div>
 
-          <label>Logo</label>
-          <Field
-            name="logo"
-            type="text"
-            placeholder="Fotico"
-            className="input"
-          />
-          <ErrorMessage name="logo" className="errorMessage" />
+            <div className="description-field">
+              <Field
+                name="description"
+                as="textarea"
+                placeholder="Breve descripción / reseña sobre la orquesta"
+                className="input"
+                rows="5"
+                cols="30"
+              />
+              <p className="error">
+                <ErrorMessage name="description" className="errorMessage" />
+              </p>
+            </div>
 
-          <label>Cover</label>
-          <Field
-            name="cover"
-            type="text"
-            placeholder="cover"
-            className="input"
-          />
-          <ErrorMessage name="cover" className="errorMessage" />
-
-          <label>Tipo de orquesta</label>
-          <Field as="select" name="orchestra_TypeId" className="input">
-            <option disabled value="">
-              Selecciona tipo de orquesta
-            </option>
-            {props.types_orchestras &&
-              props.types_orchestras.map((type_orq: any) => (
-                <option value={type_orq.id} key={type_orq.id}>
-                  {type_orq.type}
-                </option>
-              ))}
-          </Field>
-          <ErrorMessage name="orchestra_TypeId" className="errorMessage" />
-
-          <button type="submit" className="submit">
-            Submit
-          </button>
+            <div className="btn-container">
+              <button type="submit" className="submit">
+                Crear
+              </button>
+            </div>
+          </div>
         </Form>
       </Formik>
+      <Footer />
     </StyledForm>
   );
 }

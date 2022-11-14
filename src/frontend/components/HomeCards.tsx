@@ -10,13 +10,13 @@ const viewsLogo =
 
 const CardStyle = styled.div`
   box-sizing: border-box;
-  width: 280px;
   border: 1px solid lightgray;
   padding: 15px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 6px;
+  gap: 12px;
+  border-radius: 12px;
 
   .card-header {
     height: 240px;

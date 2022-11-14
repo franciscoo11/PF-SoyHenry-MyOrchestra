@@ -47,7 +47,7 @@ const NavStyle = styled.header`
   }
 `;
 
-export default function MainNavBar(props: any) {
+export default function OrchestasNavBar(props: any) {
   return (
     <NavStyle>
       <div className="nav-container">
@@ -57,6 +57,16 @@ export default function MainNavBar(props: any) {
             <img src={logIcon} alt="login" width="18px" height="18px" /> Crear
             Orquesta
           </Link>
+        </div>
+
+        <div>
+          <SearchBar
+            setCurrentPage={props.setCurrentPage}
+            data={props.data}
+            setData={props.setData}
+            search={props.search}
+            setSearch={props.setSearch}
+          />
         </div>
       </div>
     </NavStyle>
