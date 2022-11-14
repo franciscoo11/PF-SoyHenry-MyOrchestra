@@ -15,10 +15,61 @@ const StyledMain = styled.main`
   section {
     width: 100%;
 
-    .filtros {
+    .filters-container {
       margin: 15px 0;
       display: flex;
       justify-content: flex-end;
+
+      /* Dropdown Button */
+      .dropbtn {
+        padding: 12px;
+        font-size: 12px;
+        border: 1px solid lightgray;
+        border-radius: 12px;
+        font-weight: bold;
+        background-color: white;
+      }
+
+      /* The container <div> - needed to position the dropdown content */
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      /* Dropdown Content (Hidden by Default) */
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        min-width: 120px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        font-size: 0.8em;
+      }
+
+      /* Links inside the dropdown */
+      .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        background-color: white;
+      }
+
+      /* Change color of dropdown links on hover */
+      .dropdown-content a:hover {
+        background-color: #f1f2f6;
+        cursor: pointer;
+      }
+
+      /* Show the dropdown menu on hover */
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      /* Change the background color of the dropdown button when the dropdown content is shown */
+      .dropdown:hover .dropbtn {
+        background-color: #f1f2f6;
+      }
     }
 
     .orquestas {
@@ -49,12 +100,16 @@ export default function Orquestas({ orchestra }: any) {
       <MainNavBar />
       <StyledMain>
         <section>
-          <div className="filtros">
-            <select name="orderBy" id="orderBy">
-              <option value="Ordenar por:">Ordenar por:</option>
-              <option value="Nombre">Nombre</option>
-              <option value="Ciudad">Ciudad</option>
-            </select>
+          <div className="filters-container">
+            <div className="dropdown">
+              <button className="dropbtn">Ordernar por:</button>
+              <div className="dropdown-content">
+                <a className="filter-option">Nombre Asc</a>
+                <a className="filter-option">Nombre Desc</a>
+                <a className="filter-option">Ciudad Asc</a>
+                <a className="filter-option">Ciudad Desc</a>
+              </div>
+            </div>
           </div>
           <div className="orquestas">
             {orchestra.map((orquesta: any, index: number) => (
