@@ -8,6 +8,7 @@ import {
   FiFile,
   FiCalendar,
   FiHeart,
+  FiEdit3,
 } from "react-icons/fi";
 import Link from "next/link";
 
@@ -60,6 +61,16 @@ export default function AsideLeft(props: any) {
             <li className="nav-item">
               <FiHeart />
               <div>Campañas</div>
+            </li>
+            <li className="nav-item">
+              <FiEdit3 />
+              <div>
+                <Link
+                  href={`/orchestra/${encodeURIComponent(props.id)}/update`}
+                >
+                  Editar Orquesta
+                </Link>
+              </div>
             </li>
           </ul>
         </nav>
