@@ -64,19 +64,14 @@ interface Values {
   location: string;
   donation_account: string;
   phone: string;
-  orchestra_TypeId: string;
   cover?: string;
+  orchestra_TypeId: string;
 }
 
-interface Props {
-  types_orchestras: {
-    id: string;
-    type: string;
-  }[];
-}
-
-export default function UpdateOrchestra(props: Props) {
+export default function UpdateOrchestra({ types_orchestras }: any) {
   const router = useRouter();
+  const { id } = router.query;
+
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
   return (
@@ -92,8 +87,8 @@ export default function UpdateOrchestra(props: Props) {
           location: "",
           donation_account: "",
           phone: "",
-          orchestra_TypeId: "",
           cover: "",
+          orchestra_TypeId: "",
         }}
         validationSchema={Yup.object({
           name: Yup.string()
@@ -114,8 +109,11 @@ export default function UpdateOrchestra(props: Props) {
         })}
         onSubmit={(values, { setSubmitting }: FormikHelpers<Values>) => {
           axios
-            .put("http://localhost:3000/api/orchestra", values)
-            .then(() => {
+            .put(`http://localhost:3000/api/orchestra/${id}`, values)
+            .then((res) => {
+              console.log(res);
+              console.log(values);
+
               alert("Orquesta modificada");
               router.push("/");
               setSubmitting(false);
@@ -167,7 +165,7 @@ export default function UpdateOrchestra(props: Props) {
           <Field name="creation_date" type="date" className="input" />
           <ErrorMessage name="creation_date" className="errorMessage" />
 
-          <label>Email Institucional</label>
+          <label>Cuenta de donación</label>
           <Field
             name="donation_account"
             type="text"
@@ -208,8 +206,8 @@ export default function UpdateOrchestra(props: Props) {
             <option disabled value="">
               Selecciona tipo de orquesta
             </option>
-            {props.types_orchestras &&
-              props.types_orchestras.map((type_orq: any) => (
+            {types_orchestras &&
+              types_orchestras.map((type_orq: any) => (
                 <option value={type_orq.id} key={type_orq.id}>
                   {type_orq.type}
                 </option>
@@ -225,14 +223,3 @@ export default function UpdateOrchestra(props: Props) {
     </StyledForm>
   );
 }
-
-export const getServerSideProps = async () => {
-  const res = await axios.get("http://localhost:3000/api/orchestras-types");
-  const types_orchestras = await res.data;
-
-  return {
-    props: {
-      types_orchestras,
-    },
-  };
-};
