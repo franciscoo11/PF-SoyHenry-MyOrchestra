@@ -60,8 +60,7 @@ export const getUsers = async (id?: any) => {
 
 export const updateUser = async (id: any, body: any) => {
   try {
-    if (!id) return null;
-    //if(!user) throw('User not found, please check and try again')
+    if (!id || !body) return null;
     const getUser = await prisma.user.update({
       where: {
         id: id,
