@@ -5,6 +5,7 @@ import styled from "styled-components";
 import axios from "axios";
 import Footer from "../frontend/components/Footer";
 import { useState } from "react";
+import OrchestasNavBar from "../frontend/components/OrchestasNavBar";
 
 const StyledMain = styled.main`
   margin: 25px auto;
@@ -78,6 +79,11 @@ const StyledMain = styled.main`
       flex-wrap: wrap;
       justify-content: space-between;
       gap: 10px;
+
+      .search-alert {
+        margin: 242px auto;
+        font-size: 2em;
+      }
     }
 
     .paginacion {
@@ -142,7 +148,7 @@ export default function Orquestas({ orchestra }: any) {
           url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
         </style>
       </Head>
-      <MainNavBar
+      <OrchestasNavBar
         setCurrentPage={setCurrentPage}
         setData={setData}
         data={data}
@@ -177,7 +183,7 @@ export default function Orquestas({ orchestra }: any) {
                 />
               ))
             ) : (
-              <h1>Sin coincidencias</h1>
+              <p className="search-alert">Sin coincidencias</p>
             )}
           </div>
           <div className="paginacion">
