@@ -1,6 +1,13 @@
 // import axios from "axios";
 // import { useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import {
+  Formik,
+  Form,
+  Field,
+  ErrorMessage,
+  FormikBag,
+  FormikHelpers,
+} from "formik";
 import MainNavBar from "../../frontend/components/MainNavBar";
 import * as Yup from "yup";
 import styled from "styled-components";
@@ -128,7 +135,27 @@ const StyledForm = styled.div`
   }
 `;
 
-export default function CreateOrchestra() {
+interface Values {
+  logo: string;
+  name: string;
+  description: string;
+  creation_date: string;
+  sponsor: string;
+  location: string;
+  donation_account: string;
+  phone: string;
+  orchestra_TypeId: string;
+  cover?: string;
+}
+
+interface Props {
+  types_orchestras: {
+    id: string;
+    type: string;
+  }[];
+}
+
+export default function CreateOrchestra(props: Props) {
   const router = useRouter();
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -165,11 +192,18 @@ export default function CreateOrchestra() {
             .required("Required"),
           logo: Yup.string().url("Invalid URL Logo").required("Required"),
         })}
-        onSubmit={(values, { setSubmitting }) => {
-          axios.post("http://localhost:3000/api/orchestra", values);
-          alert("Orchestra Created");
-          router.push("/");
-          setSubmitting(false);
+        onSubmit={(values, { setSubmitting }: FormikHelpers<Values>) => {
+          axios
+            .post("http://localhost:3000/api/orchestra", values)
+            .then(() => {
+              alert("Orchestra Created");
+              router.push("/");
+              setSubmitting(false);
+            })
+            .catch(() => {
+              alert("Verifica los datos ingresados, y vuelve a intentar.");
+              window.location.reload();
+            });
         }}
       >
         <Form className="form">
@@ -309,3 +343,14 @@ export default function CreateOrchestra() {
     </StyledForm>
   );
 }
+
+export const getServerSideProps = async () => {
+  const res = await axios.get("http://localhost:3000/api/orchestras-types");
+  const types_orchestras = await res.data;
+
+  return {
+    props: {
+      types_orchestras,
+    },
+  };
+};
