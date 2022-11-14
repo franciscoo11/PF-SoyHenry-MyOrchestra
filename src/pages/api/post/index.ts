@@ -27,6 +27,7 @@ export default async function handler(
             case POST:   
               const post_post = await postPost(body)
               return post_post? res.status(201).json(post_post):res.status(400).json({ error:"mandatory data missing: title,content,url_video or url_file,visibility,event_date,event_hour,orchestraId,userId,type_PostId " })
+
             default:
               return res.status(400).json("method not allowed")
               

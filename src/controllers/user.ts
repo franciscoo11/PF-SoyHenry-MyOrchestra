@@ -29,12 +29,6 @@ export const postUser = async (body: any) => {
         email: email,
         password: password,
         year_of_birth: year_of_birth,
-        favorites: {
-          connectOrCreate: {
-            where: { email: email },
-            create: { email: email },
-          },
-        },
       },
     });
     return addUser ? addUser : null;
