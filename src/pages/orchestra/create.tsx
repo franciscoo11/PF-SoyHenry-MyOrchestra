@@ -1,13 +1,4 @@
-// import axios from "axios";
-// import { useState } from "react";
-import {
-  Formik,
-  Form,
-  Field,
-  ErrorMessage,
-  FormikBag,
-  FormikHelpers,
-} from "formik";
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import MainNavBar from "../../frontend/components/MainNavBar";
 import * as Yup from "yup";
 import styled from "styled-components";
@@ -293,10 +284,20 @@ export default function CreateOrchestra(props: Props) {
             <div className="orchesta-type-field">
               <Field
                 name="orchestra_TypeId"
-                type="text"
+                as="select"
                 placeholder="Tipo de Orquesta"
                 className="input"
-              />
+              >
+                <option disabled value="">
+                  Tipo de Orquesta
+                </option>
+                {props.types_orchestras &&
+                  props.types_orchestras.map((type_orq: any) => (
+                    <option value={type_orq.id} key={type_orq.id}>
+                      {type_orq.type}
+                    </option>
+                  ))}
+              </Field>
               <p className="error">
                 <ErrorMessage
                   name="orchestra_TypeId"
