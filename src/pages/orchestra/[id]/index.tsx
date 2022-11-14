@@ -51,13 +51,13 @@ function OrchestraDetails(props: any) {
 
       <StyledMain>
         <aside className="aside-left">
-          <AsideLeft />
+          <AsideLeft logo={props.data.logo} id={props.data.id} />
         </aside>
         <section className="content">
           <Cover
-            cover={Orquestas[0].cover}
-            title={Orquestas[0].name}
-            location={Orquestas[0].ubication}
+            cover={props.data.cover}
+            title={props.data.name}
+            location={props.data.location}
           />
           <div className="form-container">
             <div

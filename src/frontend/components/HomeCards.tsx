@@ -89,7 +89,9 @@ function HomeCards(props: any) {
     <>
       <CardStyle>
         <div className="card-header">
-          <img src={props.image} alt={props.title} />
+          <Link href={`/orchestra/${encodeURIComponent(props.id)}`}>
+            <img src={props.image} alt={props.title} />
+          </Link>
         </div>
         <div className="card-content">
           <h3>{props.subtitle}</h3>

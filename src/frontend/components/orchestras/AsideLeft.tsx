@@ -9,6 +9,7 @@ import {
   FiCalendar,
   FiHeart,
 } from "react-icons/fi";
+import Link from "next/link";
 
 export default function AsideLeft(props: any) {
   return (
@@ -16,17 +17,25 @@ export default function AsideLeft(props: any) {
       <div className="orchestra-nav-container">
         <div
           className="orchestra-logo"
-          style={{ backgroundImage: `url(${Orquestas[0].logo})` }}
+          style={{ backgroundImage: `url(${props.logo})` }}
         ></div>
         <nav className="orchestra-nav">
           <ul className="nav-list">
             <li className="nav-item">
               <FiHome />
-              <div>Inicio</div>
+              <div>
+                <Link href={`/orchestra/${encodeURIComponent(props.id)}`}>
+                  Inicio
+                </Link>
+              </div>
             </li>
             <li className="nav-item">
               <FiInfo />
-              <div>Acerca de</div>
+              <div>
+                <Link href={`/orchestra/${encodeURIComponent(props.id)}/about`}>
+                  Acerca de
+                </Link>
+              </div>
             </li>
             <li className="nav-item">
               <FiUsers />
