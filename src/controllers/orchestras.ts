@@ -36,15 +36,7 @@ export const getOrchestras = async (query: any) => {
   }
 
 
-  const orchestras = await prisma.orchestra.findMany({
-    include:{
-      posts:{
-        include:{
-          PostUserOnReaction:true
-        }
-      }
-    }
-  });
+  const orchestras = await prisma.orchestra.findMany();
   if (location || orchestra_TypeId) return filter_query(orchestras, location, orchestra_TypeId)
   return orchestras ? orchestras : undefined;
 };
