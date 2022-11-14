@@ -59,7 +59,8 @@ export default function Orquestas({ orchestra }: any) {
           <div className="orquestas">
             {orchestra.map((orquesta: any, index: number) => (
               <HomeCards
-                key={index}
+                key={orquesta.id}
+                id={orquesta.id}
                 title={orquesta.name}
                 subtitle={orquesta.location}
                 content={orquesta.description.substr(0, 150)}
