@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 
 const searchlogo =
@@ -21,14 +22,24 @@ const SearchStyles = styled.div`
     cursor: pointer;
   }
 `;
-const SearchBar = () => {
+const SearchBar = (props: any) => {
+  const onSearchChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    props.setCurrentPage(0);
+    props.setSearch(target.value);
+  };
+
   return (
     <SearchStyles>
       <form>
         <button>
           <img src={searchlogo} width="15px" height="15px" />
         </button>
-        <input type="text" placeholder="Buscar" />
+        <input
+          type="text"
+          placeholder="Buscar"
+          value={props.search}
+          onChange={onSearchChange}
+        />
       </form>
     </SearchStyles>
   );

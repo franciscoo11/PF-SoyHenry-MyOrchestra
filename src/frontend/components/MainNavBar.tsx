@@ -31,7 +31,7 @@ const NavStyle = styled.header`
   }
 `;
 
-export default function MainNavBar() {
+export default function MainNavBar(props: any) {
   return (
     <NavStyle>
       <nav>
@@ -39,15 +39,15 @@ export default function MainNavBar() {
 
         <Link href="/orquestas">Orquestas </Link>
 
-        <Link href="/news">Noticias </Link>
+        <Link href="#">Noticias </Link>
 
-        <Link href="/events">Eventos </Link>
+        <Link href="#">Eventos </Link>
 
-        <Link href="/media">Multimedia </Link>
+        <Link href="#">Multimedia </Link>
 
-        <Link href="/campaigns">Campañas </Link>
+        <Link href="#">Campañas </Link>
 
-        <Link href="/about">Acerca de </Link>
+        <Link href="#">Acerca de </Link>
 
         <Link href="/orchestra/create" className="log">
           <img src={logIcon} alt="login" width="18px" height="18px" /> Crear
@@ -55,7 +55,13 @@ export default function MainNavBar() {
         </Link>
 
         <div>
-          <SearchBar />
+          <SearchBar
+            setCurrentPage={props.setCurrentPage}
+            data={props.data}
+            setData={props.setData}
+            search={props.search}
+            setSearch={props.setSearch}
+          />
         </div>
       </nav>
     </NavStyle>
