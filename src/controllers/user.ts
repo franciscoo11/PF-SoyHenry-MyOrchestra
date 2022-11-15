@@ -21,7 +21,7 @@ export const postUser = async (body: any) => {
       where: { email: email },
     });
     if (user) return null;
-    const hashPassword = bcryptjs.hash(password.trim(),8)
+    const hashPassword = bcryptjs.hashSync(password.trim())
     
     const addUser = await prisma.user.create({
       data: {
