@@ -3,6 +3,7 @@ import MainNavBar from "../frontend/components/MainNavBar";
 import CampaignCards from "../frontend/components/CampaignCards";
 import styled from "styled-components";
 import axios from "axios";
+import Footer from "../frontend/components/Footer";
 
 const StyledMain = styled.main`
   margin: 25px auto;
@@ -76,6 +77,7 @@ const Campañas = ({ campaign }: any) => {
           </div>
         </section>
       </StyledMain>
+      <Footer />
     </>
   );
 };

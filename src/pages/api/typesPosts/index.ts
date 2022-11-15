@@ -21,7 +21,7 @@ export default async function handler(
         return buildTypePost
           ? res.status(201).json(buildTypePost)
           : res.status(404).json({
-              error: "mandatory data missing:[name]",
+              error: "mandatory data missing: name"
             });
       default:
         return res.status(400).json("method not allowed");

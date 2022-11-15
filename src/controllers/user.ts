@@ -29,12 +29,6 @@ export const postUser = async (body: any) => {
         email: email,
         password: password,
         year_of_birth: year_of_birth,
-        favorites: {
-          connectOrCreate: {
-            where: { email: email },
-            create: { email: email },
-          },
-        },
       },
     });
     return addUser ? addUser : null;
@@ -60,8 +54,7 @@ export const getUsers = async (id?: any) => {
 
 export const updateUser = async (id: any, body: any) => {
   try {
-    if (!id) return null;
-    //if(!user) throw('User not found, please check and try again')
+    if (!id || !body) return null;
     const getUser = await prisma.user.update({
       where: {
         id: id,
