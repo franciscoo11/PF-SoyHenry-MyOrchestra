@@ -1,4 +1,5 @@
 import { prisma } from "../../lib/prisma";
+import bcryptjs from 'bcryptjs'
 
 const yearValidation = (year: any) => {
   var text = /^[0-9]+$/;
@@ -10,6 +11,10 @@ const yearValidation = (year: any) => {
     return true;
   }
 };
+
+const hashPassword = (password: string) => {
+  return bcryptjs.hashSync(password.trim())
+}
 
 export const postUser = async (body: any) => {
   try {
@@ -27,10 +32,12 @@ export const postUser = async (body: any) => {
         ...body,
         name: name,
         email: email,
-        password: password,
+        password: hashPassword(password),
         year_of_birth: year_of_birth,
-      },
+      }
     });
+
+
     return addUser ? addUser : null;
   } catch (error) {
     return console.log(error);
@@ -40,7 +47,11 @@ export const postUser = async (body: any) => {
 export const getUsers = async (id?: any) => {
   try {
     if (!id) {
-      const allUsers = await prisma.user.findMany();
+      const allUsers = await prisma.user.findMany({
+        include:{
+          Rol:true
+        }
+      });
       return allUsers.length ? allUsers : null;
     }
     const user = await prisma.user.findUnique({
