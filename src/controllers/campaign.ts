@@ -8,8 +8,9 @@ export const getCampaigns = async (query?:any) => {
             const za = await prisma.campaign.findMany({orderBy:{title: 'desc'}})
             if(title === 'asc') return az
             if(title === 'desc') return za
+            const trimedTitle = title.toLowerCase().trim()
             const foundName = await prisma.campaign.findMany({
-                where: { title: { contains: title.toLowerCase() } } })
+                where: { title: { contains: trimedTitle, mode:'insensitive' } } })
                 return foundName.length ? foundName : null
         }
         if(goal_amount){
