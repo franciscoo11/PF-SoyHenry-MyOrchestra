@@ -6,6 +6,7 @@ import axios from "axios";
 import Footer from "../frontend/components/Footer";
 import { useState } from "react";
 import OrchestasNavBar from "../frontend/components/OrchestasNavBar";
+import { useSession, getSession } from "next-auth/react";
 
 const StyledMain = styled.main`
   margin: 25px auto;
@@ -110,6 +111,8 @@ const StyledMain = styled.main`
 `;
 
 export default function Orquestas({ orchestra }: any) {
+  const { data: session } = useSession()
+  console.log(session)
   const [data, setData] = useState(orchestra);
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");

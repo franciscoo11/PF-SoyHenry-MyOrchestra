@@ -12,10 +12,6 @@ const yearValidation = (year: any) => {
   }
 };
 
-const hashPassword = (password: string) => {
-  return bcryptjs.hashSync(password.trim())
-}
-
 export const postUser = async (body: any) => {
   try {
     const { name, email, password, year_of_birth } = body;
@@ -25,14 +21,14 @@ export const postUser = async (body: any) => {
       where: { email: email },
     });
     if (user) return null;
-
-    // TO CHECK AVATAR OR PICTURE SEND DB
+    const hashPassword = bcryptjs.hash(password.trim(),8)
+    
     const addUser = await prisma.user.create({
       data: {
         ...body,
         name: name,
         email: email,
-        password: hashPassword(password),
+        password: hashPassword,
         year_of_birth: year_of_birth,
       }
     });

@@ -9,10 +9,10 @@ const theme: DefaultTheme = {
   },
 };
 
-export default function App({ Component, pageProps: { session, ...pageProps }, }: AppProps) {
+export default function App({ Component, pageProps, }: AppProps) {
   return (
     <>
-      <SessionProvider session={session}>
+      <SessionProvider session={pageProps.session}>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <Component {...pageProps} />
