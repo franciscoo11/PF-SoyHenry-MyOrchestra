@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import {  getFavorites, putFavoritesAdd, putFavoritesDelete } from '../../controllers/favorites';
+import {  getFavorites} from '../../controllers/favorites';
 import { deleteOrchestra, postOrchestras, updateOrchestra } from '../../controllers/orchestras'
 import { getPost, postPost,getOrchestrasPost } from '../../controllers/post';
 import { postUser } from '../../controllers/user';
@@ -17,11 +17,9 @@ export default async function handler(
 
     let {
       method,
-      body:{orchestra_id},
+      body:{orchestra_id,putDelete},
       query:{favorites_id},
     } = req;
-
-
     try {
         switch (method) {
             case GET:
@@ -37,8 +35,8 @@ export default async function handler(
               //con esta se prueba el post de favorites
               // const addOrchestra =await putFavoritesAdd(favorites_id,orchestra_id)
               //con esta se prueba el delete de favorites
-              const addOrchestra =await putFavoritesDelete(favorites_id,orchestra_id)
-            return res.status(201).json(addOrchestra)
+              // const addOrchestra =await putFavorites(favorites_id,orchestra_id,putDelete)
+            // return res.status(201).json(addOrchestra)
             default:
             return res.status(400).json("method no found")
               
