@@ -4,8 +4,12 @@ import Footer from "../frontend/components/Footer";
 import HeroImage from "../frontend/components/HeroImage";
 import HomeMainContent from "../frontend/components/HomeMainContent";
 import MainNavBar from "../frontend/components/MainNavBar";
+import { useUser } from '@auth0/nextjs-auth0'
 
 export default function Home(props: any) {
+
+  const { user, error, isLoading } = useUser()
+  console.log(user)
   return (
     <>
       <Head>

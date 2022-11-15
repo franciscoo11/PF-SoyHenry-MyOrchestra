@@ -37,15 +37,15 @@ model Orchestra {
 
 model User {
   id                 String               @id @default(cuid())
-  name               String
+  name               String?
   email              String               @unique
   password           String
   avatar             String?
   cover              String?
-  year_of_birth      String
+  year_of_birth      String?
   city               String?
-  is_active          Boolean              @default(true)
-  first_time         Boolean              @default(true)
+  is_active          Boolean?              @default(true)
+  first_time         Boolean?              @default(true)
   comments           Comment[]
   posts              Post[]
   PostUserOnReaction PostUserOnReaction[]
