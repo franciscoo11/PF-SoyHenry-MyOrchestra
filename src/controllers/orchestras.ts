@@ -21,8 +21,9 @@ export const getOrchestras = async (query: any) => {
     if (name === 'desc' && !location) return za
     if (name === 'desc' && (location || orchestra_TypeId)) return filter_query(za, location, orchestra_TypeId)
     if (name === 'asc' && (location || orchestra_TypeId)) return filter_query(az, location, orchestra_TypeId)
+    const trimedName = name.toLowerCase().trim()
     const foundName = await prisma.orchestra.findMany({
-      where: { name: { contains: name.toLowerCase().trim() } }
+      where: { name: { contains: trimedName, mode:'insensitive' } }
     })
     if (foundName.length) return foundName
     else return 'not found'
