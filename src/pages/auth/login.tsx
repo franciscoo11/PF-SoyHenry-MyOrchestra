@@ -5,6 +5,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 const Signin = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
+
   
   setTimeout(() => status, 9000)
   if ( status === 'loading' ){
