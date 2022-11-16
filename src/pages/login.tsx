@@ -75,14 +75,21 @@ const StyledForm = styled.div`
         grid-column: 4/7;
         grid-row: 4;
       }
+
+      .city-field {
+        grid-column: 1/3;
+        grid-row: 5;
+      }
+
       .year_of_birth-field {
-        grid-column: 1/4;
+        grid-column: 3/5;
         grid-row: 5;
       }
       .rolId-field {
-        grid-column: 4/7;
+        grid-column: 5/7;
         grid-row: 5;
       }
+
       .btn-container {
         grid-column: 1/7;
         grid-row: 6;
@@ -118,13 +125,6 @@ interface Values {
   city: string;
 }
 
-// interface Props {
-//   rols: {
-//     id: string;
-//     name: string;
-//   }[];
-// }
-
 export default function CreateUser() {
   const router = useRouter();
 
@@ -143,34 +143,26 @@ export default function CreateUser() {
             year_of_birth: "",
             city: "",
           }}
-          //           validationSchema={Yup.object({
-          //             name: Yup.string().required("Ningún nombre ingresado"),
-          //             email: Yup.string()
-          //               .email("Correo inválido")
-          //               .required("Ninguna correo ingresado"),
-          //             password: Yup.string()
-          //               .required("Ninguna contraseña ingresada")
-          //               .min(
-          //                 8,
-          //                 "La contraseña es demasiado corta - Al menos 8 caracteres"
-          //               )
-          //               .matches(
-          //                 passwordRegex,
-          //                 `La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula.
-          // NO puede tener otros símbolos.`
-          //               ),
-          //             avatar: Yup.string()
-          //               .url("URL de avatar no válido")
-          //               .required("Requerido"),
-          //             cover: Yup.string()
-          //               .url("URL de portada no válido")
-          //               .required("Requerido"),
-          //             year_of_birth: Yup.string()
-          //               .required("Requerido")
-          //               .max(4, "No debería tener más de 4 digitos")
-          //               .matches(/^[0-9]/, "Debería ser un número"),
-          //             city: Yup.string().required("Requerido"),
-          //           })}
+          validationSchema={Yup.object({
+            name: Yup.string().required("Requerido"),
+            email: Yup.string()
+              .email("Correo inválido")
+              .required("Ningún correo ingresado"),
+            password: Yup.string()
+              .min(8)
+              .matches(
+                passwordRegex,
+                `La contraseña debe tener al menos 8, un dígito, al menos una minúscula y al menos una mayúscula.
+            NO puede tener otros símbolos.`
+              )
+              .required("Ninguna contraseña ingresada"),
+            avatar: Yup.string().url("URL inválido"),
+            cover: Yup.string().url("URL inválido"),
+            year_of_birth: Yup.string()
+              .max(4, "Tiene que ser un número de 4 dígitos")
+              .required("Requerido"),
+            city: Yup.string().required("Requerido"),
+          })}
           onSubmit={(values, { setSubmitting }: FormikHelpers<Values>) => {
             axios
               .post("http://localhost:3000/api/user", values)
@@ -251,6 +243,17 @@ export default function CreateUser() {
                 />
                 <p className="error">
                   <ErrorMessage name="year_of_birth" className="errorMessage" />
+                </p>
+              </div>
+              <div className="city-field">
+                <Field
+                  name="city"
+                  type="text"
+                  placeholder="Ciudad"
+                  className="input"
+                />
+                <p className="error">
+                  <ErrorMessage name="city" className="errorMessage" />
                 </p>
               </div>
               <div className="rolId-field">
