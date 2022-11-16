@@ -40,7 +40,11 @@ export const postUser = async (body: any) => {
 export const getUsers = async (id?: any) => {
   try {
     if (!id) {
-      const allUsers = await prisma.user.findMany();
+      const allUsers = await prisma.user.findMany({
+        include:{
+          favorites:true
+        }
+      });
       return allUsers.length ? allUsers : null;
     }
     const user = await prisma.user.findUnique({
