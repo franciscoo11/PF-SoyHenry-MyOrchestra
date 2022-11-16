@@ -1,17 +1,10 @@
-import {
-  Formik,
-  Form,
-  Field,
-  ErrorMessage,
-  FormikBag,
-  FormikHelpers,
-} from "formik";
-import MainNavBar from "../../frontend/components/MainNavBar";
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
 import axios from "axios";
+import Footer from "../frontend/components/Footer";
 import { useRouter } from "next/router";
-import Footer from "./Footer";
+import MainNavBar from "../frontend/components/MainNavBar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -38,6 +31,7 @@ const StyledForm = styled.div`
       grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 24px;
       padding: 120px 0px;
+      margin: 25px;
 
       .input {
         display: block;
@@ -48,7 +42,6 @@ const StyledForm = styled.div`
         border-radius: 12px;
         border: none;
       }
-
       label,
       .error {
         padding: 6px;
@@ -68,22 +61,15 @@ const StyledForm = styled.div`
         grid-column: 1/7;
         grid-row: 1;
       }
-
-      .location-field {
+      .email-field {
         grid-column: 1/7;
         grid-row: 2;
       }
-
-      .email-field {
-        grid-column: 1/4;
+      .password {
+        grid-column: 1/7;
         grid-row: 3;
       }
-      .phone-field {
-        grid-column: 4/7;
-        grid-row: 3;
-      }
-
-      .logo-field {
+      .avatar-field {
         grid-column: 1/4;
         grid-row: 4;
       }
@@ -92,30 +78,26 @@ const StyledForm = styled.div`
         grid-row: 4;
       }
 
-      .date-field {
+      .city-field {
         grid-column: 1/3;
         grid-row: 5;
       }
 
-      .orchesta-type-field {
+      .year_of_birth-field {
         grid-column: 3/5;
         grid-row: 5;
       }
-      .sponsor-field {
+      .rolId-field {
         grid-column: 5/7;
         grid-row: 5;
       }
 
-      .description-field {
-        grid-column: 1/7;
-        grid-row: 6;
-      }
       .btn-container {
         grid-column: 1/7;
-        grid-row: 7;
+        grid-row: 6;
         text-align: right;
 
-        .submit {
+        .submitted {
           font-family: "Lato";
           color: white;
           background-color: transparent;
@@ -136,66 +118,58 @@ const StyledForm = styled.div`
 `;
 
 interface Values {
-  logo: string;
   name: string;
-  description: string;
-  creation_date: string;
-  sponsor: string;
-  location: string;
-  donation_account: string;
-  phone: string;
-  cover?: string;
-  orchestra_TypeId: string;
+  email: string;
+  password: string;
+  avatar: string;
+  cover: string;
+  year_of_birth: string;
+  city: string;
 }
 
-export default function UpdateOrchestra({ types_orchestras }: any) {
+export default function CreateUser() {
   const router = useRouter();
-  const { id } = router.query;
 
-  const phoneRegExp =
-    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+  const passwordRegex = /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/;
   return (
     <>
+      <MainNavBar />
       <StyledForm>
-        <MainNavBar />
         <Formik
           initialValues={{
-            logo: "",
             name: "",
-            description: "",
-            creation_date: "",
-            sponsor: "",
-            location: "",
-            donation_account: "",
-            phone: "",
+            email: "",
+            password: "",
+            avatar: "",
             cover: "",
-            orchestra_TypeId: "",
+            year_of_birth: "",
+            city: "",
           }}
           validationSchema={Yup.object({
-            name: Yup.string()
-              .max(25, "Debes ingresar 25 caracteres máximo")
-              .required("Requerido"),
-            description: Yup.string()
-              .max(250, "No debes ingresar más de 250 caracteres")
-              .required("Requerido"),
-            donation_account: Yup.string()
+            name: Yup.string().required("Requerido"),
+            email: Yup.string()
               .email("Correo inválido")
               .required("Ningún correo ingresado"),
-            location: Yup.string().required("Ninguna ubicación ingresada"),
-            sponsor: Yup.string(),
-            phone: Yup.string()
-              .matches(phoneRegExp, "Numero de teléfono inválido")
-              .required("Ningún número de teléfono ingresado"),
-            logo: Yup.string()
-              .url("URL inválido")
-              .required("Debes elegir un logo"),
+            password: Yup.string()
+              .min(8)
+              .matches(
+                passwordRegex,
+                `La contraseña debe tener al menos 8, un dígito, al menos una minúscula y al menos una mayúscula.
+            NO puede tener otros símbolos.`
+              )
+              .required("Ninguna contraseña ingresada"),
+            avatar: Yup.string().url("URL inválido"),
             cover: Yup.string().url("URL inválido"),
+            year_of_birth: Yup.string()
+              .max(4, "Tiene que ser un número de 4 dígitos")
+              .required("Requerido"),
+            city: Yup.string().required("Requerido"),
           })}
           onSubmit={(values, { setSubmitting }: FormikHelpers<Values>) => {
             axios
-              .put(`http://localhost:3000/api/orchestra/${id}`, values)
-              .then((res) => {
-                toast.success("Orquesta actualizada correctamente", {
+              .post("http://localhost:3000/api/user", values)
+              .then(() => {
+                toast.success("Usuario creado exitosamente", {
                   position: "top-right",
                   autoClose: 5000,
                   hideProgressBar: false,
@@ -205,6 +179,7 @@ export default function UpdateOrchestra({ types_orchestras }: any) {
                   progress: undefined,
                   theme: "light",
                 });
+
                 setSubmitting(false);
               })
               .catch(() => {
@@ -219,63 +194,46 @@ export default function UpdateOrchestra({ types_orchestras }: any) {
                 <Field
                   name="name"
                   type="text"
-                  placeholder="Nombre de la Orquesta"
+                  placeholder="Nombre"
                   className="input"
                 />
                 <p className="error">
                   <ErrorMessage name="name" className="errorMessage" />
                 </p>
               </div>
-              <div className="location-field">
-                <Field
-                  name="location"
-                  type="text"
-                  placeholder="Ubicación (Ciudad, Provincia, Ciudad)"
-                  className="input"
-                />
-                <p className="error">
-                  <ErrorMessage name="location" className="errorMessage" />
-                </p>
-              </div>
               <div className="email-field">
                 <Field
-                  name="donation_account"
+                  name="email"
                   type="text"
-                  placeholder="Email Institucional"
+                  placeholder="Email"
                   className="input"
                 />
                 <p className="error">
-                  <ErrorMessage
-                    name="donation_account"
-                    className="errorMessage"
-                  />
+                  <ErrorMessage name="email" className="errorMessage" />
                 </p>
               </div>
-
-              <div className="phone-field">
+              <div className="password">
                 <Field
-                  name="phone"
-                  type="text"
-                  placeholder="Teléfono / WhatsApp"
+                  name="password"
+                  type="password"
+                  placeholder="Contraseña"
                   className="input"
                 />
                 <p className="error">
-                  <ErrorMessage name="phone" className="errorMessage" />
+                  <ErrorMessage name="password" className="errorMessage" />
                 </p>
               </div>
-
-              <div className="logo-field">
+              <div className="avatar-field">
                 <Field
-                  name="logo"
+                  name="avatar"
                   type="text"
-                  placeholder="Logotipo de la Orquesta"
+                  placeholder="Avatar"
                   className="input"
                 />
                 <p className="error">
-                  <ErrorMessage name="logo" className="errorMessage" />
+                  <ErrorMessage name="avatar" className="errorMessage" />
                 </p>
               </div>
-
               <div className="cover-field">
                 <Field
                   name="cover"
@@ -287,78 +245,51 @@ export default function UpdateOrchestra({ types_orchestras }: any) {
                   <ErrorMessage name="cover" className="errorMessage" />
                 </p>
               </div>
-
-              <div className="date-field">
-                {/* NO supe como validar las fechas :( */}
-                <Field name="creation_date" type="date" className="input" />
-                <label>Fecha de creación de la Orquesta</label>
+              <div className="year_of_birth-field">
+                <Field
+                  name="year_of_birth"
+                  type="text"
+                  placeholder="Año de nacimiento"
+                  className="input"
+                />
                 <p className="error">
-                  <ErrorMessage name="creation_date" className="errorMessage" />
+                  <ErrorMessage name="year_of_birth" className="errorMessage" />
                 </p>
               </div>
-
-              <div className="orchesta-type-field">
+              <div className="city-field">
                 <Field
-                  name="orchestra_TypeId"
-                  as="select"
-                  placeholder="Tipo de Orquesta"
+                  name="city"
+                  type="text"
+                  placeholder="Ciudad"
                   className="input"
-                >
+                />
+                <p className="error">
+                  <ErrorMessage name="city" className="errorMessage" />
+                </p>
+              </div>
+              <div className="rolId-field">
+                <Field name="rolId" as="select" className="input">
                   <option disabled value="">
-                    Tipo de Orquesta
+                    Tipo de Usuario
                   </option>
-                  {types_orchestras &&
-                    types_orchestras.map((type_orq: any) => (
-                      <option value={type_orq.id} key={type_orq.id}>
-                        {type_orq.type}
-                      </option>
-                    ))}
+                  <option>ADMIN</option>
+                  <option>USER</option>
                 </Field>
                 <p className="error">
-                  <ErrorMessage
-                    name="orchestra_TypeId"
-                    className="errorMessage"
-                  />
+                  <ErrorMessage name="rolId" className="errorMessage" />
                 </p>
               </div>
-
-              <div className="sponsor-field">
-                <Field
-                  name="sponsor"
-                  type="text"
-                  placeholder="Patrocinador oficial"
-                  className="input"
-                />
-                <p className="error">
-                  <ErrorMessage name="sponsor" className="errorMessage" />
-                </p>
-              </div>
-
-              <div className="description-field">
-                <Field
-                  name="description"
-                  as="textarea"
-                  placeholder="Breve descripción / reseña sobre la orquesta"
-                  className="input"
-                  rows="5"
-                  cols="30"
-                />
-                <p className="error">
-                  <ErrorMessage name="description" className="errorMessage" />
-                </p>
-              </div>
-
               <div className="btn-container">
-                <button type="submit" className="submit">
-                  Actualizar
+                <button type="submit" className="submitted">
+                  Crear usuario
                 </button>
               </div>
             </div>
           </Form>
         </Formik>
         <Footer />
+        <ToastContainer />
       </StyledForm>
-      <ToastContainer />
     </>
   );
 }
