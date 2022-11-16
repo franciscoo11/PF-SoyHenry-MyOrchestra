@@ -5,6 +5,8 @@ import axios from "axios";
 import Footer from "../frontend/components/Footer";
 import { useRouter } from "next/router";
 import MainNavBar from "../frontend/components/MainNavBar";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const StyledForm = styled.div`
   background-image: url("/bg_01.jpg");
@@ -167,8 +169,17 @@ export default function CreateUser() {
             axios
               .post("http://localhost:3000/api/user", values)
               .then(() => {
-                alert("Usuario creado exitosamente");
-                router.push("/");
+                toast.success("Usuario creado exitosamente", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+
                 setSubmitting(false);
               })
               .catch(() => {
@@ -277,6 +288,7 @@ export default function CreateUser() {
           </Form>
         </Formik>
         <Footer />
+        <ToastContainer />
       </StyledForm>
     </>
   );
