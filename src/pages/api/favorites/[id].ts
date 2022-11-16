@@ -13,9 +13,9 @@ export default async function handler(
   try {
     switch (method) {
       case PUT:
-        const allFavorites = await removeFavorite(query.id, body.orchestra_id);
-        return allFavorites
-          ? res.status(200).json(allFavorites)
+        const deleteFavorite = await removeFavorite(query.id, body.orchestra_id);
+        return deleteFavorite
+          ? res.status(200).json(deleteFavorite)
           : res.status(404).json({ error: 'id and orchestra_id are not correct, verify them and try again'});
       default:
         return res.status(400).json("method not allowed");
