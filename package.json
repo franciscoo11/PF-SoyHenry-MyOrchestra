@@ -11,7 +11,7 @@
     "studioDB": "npx prisma studio"
   },
   "dependencies": {
-    "@prisma/client": "^4.5.0",
+    "@prisma/client": "^4.6.1",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",
@@ -29,6 +29,6 @@
   },
   "devDependencies": {
     "@types/styled-components": "^5.1.26",
-    "prisma": "^4.5.0"
+    "prisma": "^4.6.1"
   }
 }
