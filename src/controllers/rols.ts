@@ -1,5 +1,5 @@
 // import { prisma } from "../../lib/prisma";
-
+export {};
 // export const getRols = async () => {
 //   try {
 //     const allRols = await prisma.rol.findMany();
