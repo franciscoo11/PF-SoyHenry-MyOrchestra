@@ -1,4 +1,5 @@
 import { prisma } from "../../lib/prisma";
+import bcryptjs from 'bcryptjs'
 
 const yearValidation = (year: any) => {
   var text = /^[0-9]+$/;
@@ -21,13 +22,14 @@ export const postUser = async (body: any) => {
     });
     if (user) return null;
 
+    const hashPassword = bcryptjs.hashSync(password)
     // TO CHECK AVATAR OR PICTURE SEND DB
     const addUser = await prisma.user.create({
       data: {
         ...body,
         name: name,
         email: email,
-        password: password,
+        password: hashPassword,
         year_of_birth: year_of_birth,
       },
     });
