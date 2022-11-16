@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import {getOrchestrasPost,postPost} from "../../../controllers/post"
+import {getPost,postPost} from "../../../controllers/post"
 
 
 
@@ -22,7 +22,7 @@ export default async function handler(
     try {
         switch (method) {
             case GET:
-              const getpostbyorchestra = await getOrchestrasPost(query)   
+              const getpostbyorchestra = await getPost(query)   
               return getpostbyorchestra ? res.status(200).json(getpostbyorchestra):res.status(400).json([])
             case POST:   
               const post_post = await postPost(body)
