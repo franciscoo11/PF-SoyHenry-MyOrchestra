@@ -50,15 +50,9 @@ model User {
   posts              Post[]
   PostUserOnReaction PostUserOnReaction[]
   UserOnOrchestra    UserOnOrchestra[]
-  Rol                Rol?                 @relation(fields: [rolId], references: [id])
+  role                Roles               @default(USER)
   rolId              String?
   favorites Favorites[]
-}
-
-model Rol {
-  id   String @id @default(cuid())
-  name Roles @default(USER)
-  User User[]
 }
 
 model Post {
