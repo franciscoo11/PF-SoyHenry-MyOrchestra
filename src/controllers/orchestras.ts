@@ -104,38 +104,6 @@ const { name, creation_date, location, orchestra_TypeId,page,resources,order } =
   if(name)return dataandorder("name",order,"name",name)
 
   return await prisma.orchestra.findMany()
-
-
-    
- 
-
-
-
-
-
-
-  // if (name) {
-  //   const az = await prisma.orchestra.findMany({ orderBy: { name: 'asc' } })
-  //   const za = await prisma.orchestra.findMany({ orderBy: { name: 'desc' } })
-  //   if (name === 'asc' && !location) return az
-  //   if (name === 'desc' && !location) return za
-  //   if (name === 'desc' && (location || orchestra_TypeId)) return filter_query(za, location, orchestra_TypeId)
-  //   if (name === 'asc' && (location || orchestra_TypeId)) return filter_query(az, location, orchestra_TypeId)
-  //   const trimedName = name.toLowerCase().trim()
-  //   const foundName = await prisma.orchestra.findMany({
-  //     where: { name: { contains: trimedName, mode:'insensitive' } }
-  //   })
-  //   if (foundName.length) return foundName
-  //   else return 'not found'
-  // }
-
-  // if (creation_date) {
-  //   let lastDates = creation_date === 'asc' ? await prisma.$queryRaw`SELECT "id", "name", "creation_date", "location" FROM "Orchestra" ORDER BY creation_date ASC`
-  //     : await prisma.$queryRaw`SELECT "id", "name", "creation_date", "location" FROM "Orchestra" ORDER BY creation_date DESC`
-  //   if (!location) return lastDates
-  //   if (location || orchestra_TypeId) return filter_query(lastDates, location, orchestra_TypeId)
-  // }
-  
 };
 
 //GET ORCHESTRAS BY ID
