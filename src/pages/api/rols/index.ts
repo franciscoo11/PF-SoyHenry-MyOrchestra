@@ -22,7 +22,7 @@ export default async function handler(
         return addRol
           ? res.status(201).json(addRol)
           : res.status(404).json({
-              error: "mandatory data missing: name"
+              error: "mandatory data missing: rolId"
             });
       default:
         return res.status(400).json("method not allowed");
