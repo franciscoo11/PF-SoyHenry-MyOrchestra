@@ -19,10 +19,10 @@ export default async function handler(
           ? res.status(200).json(allFavorites)
           : res.status(404).json([]);
       case POST:
-        const generateOrchestraType = await addFavorite(query.user_id,body.orchestra_id);
-        return generateOrchestraType
-          ? res.status(201).json(generateOrchestraType)
-          : res.status(404).json({ error: "mandatory data missing: type" });
+        const insertFavorite = await addFavorite(query.user_id,body.orchestra_id);
+        return insertFavorite
+          ? res.status(201).json(insertFavorite)
+          : res.status(404).json({ error: "Wrong orchestra_id or user_id check information and try again" });
       default:
         return res.status(400).json("method not allowed");
     }
