@@ -3,8 +3,6 @@ import Link from "next/link";
 import styled from "styled-components";
 import Nav from "./Nav";
 
-const logIcon =
-  "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668357018/empleado_ytyb9t.png";
 const NavStyle = styled.header`
   width: 100%;
   max-width: 1440px;
@@ -32,7 +30,12 @@ const NavStyle = styled.header`
       align-items: baseline;
       gap: 24px;
     }
-
+    .links-container {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      gap: 24px;
+    }
     img {
       margin-right: 5px;
     }
@@ -52,11 +55,17 @@ export default function MainNavBar(props: any) {
     <NavStyle>
       <div className="nav-container">
         <Nav />
-        <div>
-          <Link href="/orchestra/create" className="log">
-            <img src={logIcon} alt="login" width="18px" height="18px" /> Crear
-            Orquesta
-          </Link>
+        <div className="links-container">
+          <div>
+            <Link href="/orchestra/create" className="log">
+              Crear Orquesta
+            </Link>
+          </div>
+          <div>
+            <Link href="/signup" className="log">
+              Registrarse
+            </Link>
+          </div>
         </div>
       </div>
     </NavStyle>
