@@ -14,7 +14,7 @@ export default NextAuth({
                 password: { label: "password", type: "password", placeholder: "***********"},
                 name: { label: "name", type: "text", placeholder: "Francisco Giudicatti"},
             },
-            async authorize(credentials){ 
+            async authorize(credentials:any){ 
                 const findUser = await prisma.user.findFirst({
                     where: {
                         email: credentials!.email
@@ -33,7 +33,7 @@ export default NextAuth({
         
     ],
     callbacks: {
-        jwt: async ({ token, user }) => {
+        jwt: async ({ token, user}) => {
           if ( user ) {
             token.id = user.id
           }
