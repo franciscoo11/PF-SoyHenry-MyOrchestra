@@ -12,10 +12,10 @@ export default async function handler(
   try {
     switch (method) {
       case PUT:
-        const changeRol = await updateRol(query.id,body.name);
+        const changeRol = await updateRol(query.id,body);
         return changeRol
           ? res.status(200).json(changeRol)
-          : res.status(404).json({ error: "Something goes wrong, try again or check id" });
+          : res.status(404).json({ error: "Something goes wrong, try again or check id from user and rol" });
       default:
         return res.status(400).json("method not allowed");
     }

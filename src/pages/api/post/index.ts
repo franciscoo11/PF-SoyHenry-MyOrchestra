@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import {getOrchestrasPost,postPost} from "../../../controllers/post"
+import {getPost,postPost} from "../../../controllers/post"
 
 
 
@@ -22,13 +22,14 @@ export default async function handler(
     try {
         switch (method) {
             case GET:
-              const getpostbyorchestra = await getOrchestrasPost(query)   
+              const getpostbyorchestra = await getPost(query)   
               return getpostbyorchestra ? res.status(200).json(getpostbyorchestra):res.status(400).json([])
             case POST:   
               const post_post = await postPost(body)
-              return post_post? res.status(201).json(post_post):res.status(400).json({error:"mandatory data missing:[title,content,url_video or url_file,visibility,event_date,event_hour,orchestraId,userId,type_PostId] "})
+              return post_post? res.status(201).json(post_post):res.status(400).json({ error:"mandatory data missing: title,content,url_video or url_file,visibility,event_date,event_hour,orchestraId,userId,type_PostId " })
+
             default:
-              return res.status(400).json("method no found")
+              return res.status(400).json("method not allowed")
               
         }
     } catch (error) {

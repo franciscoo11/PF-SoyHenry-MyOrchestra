@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getRols, postRol, updateRol } from "../../../controllers/rols";
+import { buildRol, getRols, updateRol } from "../../../controllers/rols";
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,14 +15,14 @@ export default async function handler(
         const allRols = await getRols();
         return allRols
           ? res.status(200).json(allRols)
-          : res.status(404).json({ error: []});
+          : res.status(404).json([]);
       case POST:
         console.log(body)
-        const addRol = await postRol(body.name);
+        const addRol = await buildRol(body);
         return addRol
           ? res.status(201).json(addRol)
           : res.status(404).json({
-              error: "mandatory data missing: [name]",
+              error: "mandatory data missing: rolId"
             });
       default:
         return res.status(400).json("method not allowed");

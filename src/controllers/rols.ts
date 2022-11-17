@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma";
-
+export {};
 export const getRols = async () => {
   try {
     const allRols = await prisma.rol.findMany();
@@ -9,38 +9,32 @@ export const getRols = async () => {
   }
 };
 
-export const updateRol = async (id:any,newName:any) => {
+export const buildRol = async (body:any) => {
   try {
-    if(!newName || !id) return null
-    const changeRol = await prisma.rol.update({
-      where: {
-        id: id,
-      },
-      data: {
-        name: newName
+    if(!body) return null
+    const addRol = await prisma.rol.create({
+      data:{
+        name: body.name
       }
-    });
-    return changeRol ? changeRol : null;
+    })
+    return addRol ? addRol : null
   } catch (error) {
     return error;
   }
 };
 
-export const postRol = async (name: any) => {
+export const updateRol = async (rol_id:any, body:any) => {
   try {
-    if (!name) return null;
-    const findDuplicateRol = await prisma.rol.findFirst({
-      where: {
-        name: name,
+    if(!body) return null
+    const modifyRol = await prisma.rol.update({
+      where:{
+        id:rol_id
       },
-    });
-    if (findDuplicateRol) return null;
-    const addRol = await prisma.rol.create({
-      data: {
-        name
+      data:{
+        name: body.name
       }
-    });
-    return addRol ? addRol : null;
+    })
+    return modifyRol ? modifyRol : null
   } catch (error) {
     return error;
   }

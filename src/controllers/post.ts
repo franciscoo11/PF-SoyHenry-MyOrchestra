@@ -2,43 +2,38 @@ import { prisma } from "../../lib/prisma";
 //GET USERSPOST
 export const getPost = async (query:any) => {
   try {
-    const {creation_date, views} = query
-    if(creation_date){
-      let lastDates = creation_date === 'asc' ? await prisma.$queryRaw`SELECT "id", "title", "creation_date", "content" FROM "Post" ORDER BY creation_date ASC` 
-      : await prisma.$queryRaw`SELECT "id", "title", "creation_date", "content" FROM "Post" ORDER BY creation_date DESC`
-      return lastDates
-    }
-    if(views){
-      const asc = await prisma.post.findMany({orderBy:{views: 'asc'}})
-      const desc = await prisma.post.findMany({orderBy:{views: 'desc'}})
-      return views === 'asc' ? asc : desc
-    }
-    const getPosts = await prisma.post.findMany({
-      select: {
-        title: true,
-        content: true,
-      },
-    });
+    const {event_date, views,resources,page,orchestra} = query
 
-    return getPosts ? getPosts : null;
+    const onlyorder =async(orderprop:any,order:any)=>{
+      const datos= await prisma.post.findMany( 
+        { orderBy: { [orderprop]: order },
+        take: resources*1 ||4,
+        skip: page*resources||page*4||0,
+        where:{
+          orchestraId: orchestra
+        },
+        include:{
+          comments:true
+        }
+        })
+        return datos
+    }
+
+    if(event_date)return onlyorder("event_date",event_date)
+    if(views)return onlyorder("views",views)
+
+    return await prisma.post.findMany({
+      take: resources*1 ||4,
+      skip: page*resources||page*4||0,
+      include: {
+        comments:true
+      }}
+      )
   } catch (error) {
     return null
   }
 };
-//GET orchestraPOST
-export const getOrchestrasPost = async (query:any) => {
-  const {orchestra}=query
-  try {
-    const getPosts = await prisma.post.findMany({
-      where:{
-        orchestraId: orchestra
-      }
-    });
-    return getPosts ? getPosts: null;
-  } catch (error) {
-    return null;
-  }
-};
+
 
 //POST USERSPOST
 //logica fecha
@@ -78,8 +73,8 @@ function verifyHour(event_hour: any) {
 //requerimientos a la hora de escribir la fecha:
 //si no tiene coherencia salta error
 //la fecha debe ser puesta minimo un dia despues a la actual
-//poner un 0 antes del numero en caso de ser inferior a 10, ejemplo: 05/12/23
-//formato mm/dd/yyyy(12/03/22) o (09/30/2022)
+//poner un 0 antes del numero en caso de ser inferior a 10, ejemplo: 05/12/2023
+//formato dd/mm/yyyy (20/04/2022)
 
 //requerimientos a la hora de escribir la hora:
 //si no tiene coherencia salta error
@@ -87,32 +82,35 @@ function verifyHour(event_hour: any) {
 //formato 2:05 pm
 
 function changeFormat(event_date:any){
-  let newVar=0;
-  let new_event_date= event_date;
-  let count=0;
-  event_date.split('')
-  let newVar2 = new_event_date.substring(event_date.length - 5)
-  return newVar2
-  for (let i = 0; i < 5; i++) {
-    newVar= event_date[i];
-    newVar2 
-  }
-  
-
+  let newEvent_date:any = [];
+  event_date.split("");
+  newEvent_date[0] = event_date[3];
+  newEvent_date[1] = event_date[4];
+  newEvent_date[2] = event_date[2];
+  newEvent_date[3] = event_date[0];
+  newEvent_date[4] = event_date[1];
+  newEvent_date[5] = event_date[5];
+  newEvent_date[6] = event_date[6];
+  newEvent_date[7] = event_date[7];
+  newEvent_date[8] = event_date[8];
+  newEvent_date[9] = event_date[9];
+  newEvent_date = newEvent_date.join("");
+  return newEvent_date;
 }
 
 export const postPost = async (body: any) => {
   try {
     //estos datos son obligatorios por ahora mientras se termina de definir cuales van a ser los obligatorios en el modelo post
-    // const { event_date, event_hour, title, content } = body;
-    // let event_date_validation = event_date;
-    // let sks= changeFormat(event_date_validation);
-    // return  
-    // if (!title || !content) return null;
-    // if (event_hour && !event_date) return null;
-    // if(!event_hour && event_date) return null;
-    // if (verifyDate(event_date) === false) return null;
-    // if (verifyHour(event_hour) === false) return null;
+    const { event_date, event_hour, title, content } = body;
+    let newFormatDate= changeFormat(event_date);;
+    
+    
+    if (!title || !content) return null;
+    if (event_hour && !event_date) return null;
+    if(!event_hour && event_date) return null;
+     
+    if (verifyDate(newFormatDate) === false) return null;
+    if (verifyHour(event_hour) === false) return null;
 
     await prisma.post.create({
       data: body,

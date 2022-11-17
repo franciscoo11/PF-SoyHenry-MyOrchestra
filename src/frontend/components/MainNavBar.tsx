@@ -1,22 +1,41 @@
 import SearchBar from "./SearchBar";
 import Link from "next/link";
 import styled from "styled-components";
+import Nav from "./Nav";
 
-const logIcon =
-  "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668094650/kisspng-computer-icons-google-account-icon-design-login-5afc02dade3123.8372574215264652429101_shtgvv.png";
 const NavStyle = styled.header`
-  width: 90%;
-  max-width: 1300px;
+  width: 100%;
+  max-width: 1440px;
   margin: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  nav {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  gap: 24px;
+  padding: 0 80px;
+
+  .nav-container {
+    grid-column: 1/17;
+    grid-row: 1;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     text-decoration: none;
     align-items: baseline;
 
+    nav {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+    }
+    .links-container {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      gap: 24px;
+    }
     img {
       margin-right: 5px;
     }
@@ -31,33 +50,24 @@ const NavStyle = styled.header`
   }
 `;
 
-export default function MainNavBar() {
+export default function MainNavBar(props: any) {
   return (
     <NavStyle>
-      <nav>
-        <Link href="/">Inicio</Link>
-
-        <Link href="/orquestas">Orquestas </Link>
-
-        <Link href="/news">Noticias </Link>
-
-        <Link href="/events">Eventos </Link>
-
-        <Link href="/media">Multimedia </Link>
-
-        <Link href="/campaigns">Campañas </Link>
-
-        <Link href="/about">Acerca de </Link>
-
-        <Link href="/login" className="log">
-          <img src={logIcon} alt="login" width="17px" height="17px" /> Iniciar
-          Sesión
-        </Link>
-
-        <div>
-          <SearchBar />
+      <div className="nav-container">
+        <Nav />
+        <div className="links-container">
+          <div>
+            <Link href="/orchestras/create" className="log">
+              Crear Orquesta
+            </Link>
+          </div>
+          <div>
+            <Link href="/signup" className="log">
+              Registrarse
+            </Link>
+          </div>
         </div>
-      </nav>
+      </div>
     </NavStyle>
   );
 }
