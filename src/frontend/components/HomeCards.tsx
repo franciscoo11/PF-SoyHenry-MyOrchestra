@@ -89,7 +89,7 @@ function HomeCards(props: any) {
     <>
       <CardStyle>
         <div className="card-header">
-          <Link href={`/orchestra/${encodeURIComponent(props.id)}`}>
+          <Link href={`/orchestras/${encodeURIComponent(props.id)}`}>
             <img src={props.image} alt={props.title} />
           </Link>
         </div>
@@ -115,7 +115,7 @@ function HomeCards(props: any) {
           </div>
           <div className="card-btn-container">
             <Link
-              href={`/orchestra/${encodeURIComponent(props.id)}`}
+              href={`/orchestras/${encodeURIComponent(props.id)}`}
               legacyBehavior
             >
               <a className="card-btn">Ver más</a>
