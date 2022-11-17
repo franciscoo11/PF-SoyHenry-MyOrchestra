@@ -57,7 +57,7 @@ export default function MainNavBar(props: any) {
         <Nav />
         <div className="links-container">
           <div>
-            <Link href="/orchestra/create" className="log">
+            <Link href="/orchestras/create" className="log">
               Crear Orquesta
             </Link>
           </div>
