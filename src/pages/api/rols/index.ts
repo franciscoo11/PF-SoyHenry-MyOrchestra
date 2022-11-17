@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getRols, postRol, updateRol } from "../../../controllers/rols";
+import { buildRol, getRols, updateRol } from "../../../controllers/rols";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,7 +18,7 @@ export default async function handler(
           : res.status(404).json([]);
       case POST:
         console.log(body)
-        const addRol = await postRol(query.user_id,body.rolId);
+        const addRol = await buildRol(body);
         return addRol
           ? res.status(201).json(addRol)
           : res.status(404).json({

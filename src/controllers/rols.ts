@@ -9,35 +9,32 @@ export const getRols = async () => {
   }
 };
 
-export const updateRol = async (user_id:any,rolId:any) => {
+export const buildRol = async (body:any) => {
   try {
-    if(!rolId || !user_id) return null
-    const changeRol = await prisma.user.update({
-      where: {
-        id: user_id,
-      },
+    if(!body) return null
+    const addRol = await prisma.rol.create({
       data:{
-        rolId:rolId
+        name: body.name
       }
     })
-    return changeRol ? changeRol : null;
+    return addRol ? addRol : null
   } catch (error) {
     return error;
   }
 };
 
-export const postRol = async (user_id:any, rolId:any) => {
+export const updateRol = async (rol_id:any, body:any) => {
   try {
-    if (!user_id || !rolId) return null;
-    const addRol = await prisma.user.update({
-        where: {
-          id: user_id,
-        },
-        data:{
-          rolId:rolId
-        }
+    if(!body) return null
+    const modifyRol = await prisma.rol.update({
+      where:{
+        id:rol_id
+      },
+      data:{
+        name: body.name
+      }
     })
-    return addRol ? addRol : null;
+    return modifyRol ? modifyRol : null
   } catch (error) {
     return error;
   }

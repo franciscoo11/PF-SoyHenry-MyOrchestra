@@ -59,7 +59,8 @@ model User {
 
 model Rol {
   id   String @id @default(cuid())
-  name Roles  @default(USER)
+  name String
+  privilege Roles  @default(USER)
   User User[]
 }
 
@@ -172,6 +173,7 @@ enum MemberType {
 
 enum Roles {
   USER
+  MODERATOR
   ADMIN
 }
 
