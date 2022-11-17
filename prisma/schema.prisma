@@ -33,6 +33,7 @@ model Orchestra {
   Campaign         Campaign[]
   UserOnOrchestra  UserOnOrchestra[]
   favorites        Favorites[]
+  Donation         Donation[]
 }
 
 model User {
@@ -42,7 +43,7 @@ model User {
   password           String
   avatar             String?
   cover              String?
-  year_of_birth      String
+  year_of_birth      String?
   city               String?
   is_active          Boolean              @default(true)
   first_time         Boolean              @default(true)
@@ -53,6 +54,7 @@ model User {
   favorites          Favorites[]
   Rol                Rol?                 @relation(fields: [rolId], references: [id])
   rolId              String?
+  Donation           Donation[]
 }
 
 model Rol {
@@ -90,16 +92,17 @@ model Orchestra_Type {
 }
 
 model Campaign {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   title         String
   goal_amount   Float
   start_date    String
   end_date      String
-  description   String    @db.Text
-  is_active     Boolean   @default(true)
+  description   String     @db.Text
+  is_active     Boolean    @default(true)
   amount_raised Float
-  orchestra     Orchestra @relation(fields: [orchestraId], references: [id])
+  orchestra     Orchestra  @relation(fields: [orchestraId], references: [id])
   orchestraId   String
+  Donation      Donation[]
 }
 
 model Comment {
@@ -170,4 +173,18 @@ enum MemberType {
 enum Roles {
   USER
   ADMIN
+}
+
+model Donation {
+  campaign    Campaign? @relation(fields: [campaignId], references: [id])
+  campaignId  String?
+  orchestra   Orchestra @relation(fields: [orchestraId], references: [id])
+  orchestraId String
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  amount      Float
+  private     Boolean   @default(false)
+  date        DateTime  @default(now())
+
+  @@id([orchestraId, userId])
 }
