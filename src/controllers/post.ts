@@ -12,6 +12,9 @@ export const getPost = async (query:any) => {
         where:{
           orchestraId: orchestra
         },
+        include:{
+          comments:true
+        }
         })
         return datos
     }
@@ -21,7 +24,10 @@ export const getPost = async (query:any) => {
 
     return await prisma.post.findMany({
       take: resources*1 ||4,
-      skip: page*resources||page*4||0,}
+      skip: page*resources||page*4||0,
+      include: {
+        comments:true
+      }}
       )
   } catch (error) {
     return null
