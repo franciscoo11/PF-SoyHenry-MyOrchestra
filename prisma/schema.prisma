@@ -177,7 +177,9 @@ enum Roles {
   ADMIN
 }
 
+
 model Donation {
+  id            String   @id @default(cuid())
   campaign    Campaign? @relation(fields: [campaignId], references: [id])
   campaignId  String?
   orchestra   Orchestra @relation(fields: [orchestraId], references: [id])
@@ -187,6 +189,4 @@ model Donation {
   amount      Float
   private     Boolean   @default(false)
   date        DateTime  @default(now())
-
-  @@id([orchestraId, userId])
 }
