@@ -206,8 +206,19 @@ export default function CreateOrchestra(props: Props) {
               setSubmitting(false);
             })
             .catch(() => {
-              alert("Verifica los datos ingresados, y vuelve a intentar.");
-              window.location.reload();
+              toast.error(
+                "Verifica los datos ingresados, y vuelve a intentar.",
+                {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                }
+              );
             });
         }}
       >

@@ -55,7 +55,7 @@ function HomeMainContent({ orchestra }: any) {
           <h2 className="section-title">
             Orquestas{" "}
             <span className="btn-container">
-              <Link href={"/orquestas"} className="more-btn">
+              <Link href={"/orchestras"} className="more-btn">
                 Ver más
               </Link>
             </span>

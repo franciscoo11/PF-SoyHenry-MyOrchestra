@@ -1,11 +1,11 @@
 import Head from "next/head";
-import MainNavBar from "../frontend/components/MainNavBar";
-import HomeCards from "../frontend/components/HomeCards";
+import MainNavBar from "../../frontend/components/MainNavBar";
+import HomeCards from "../../frontend/components/HomeCards";
 import styled from "styled-components";
 import axios from "axios";
-import Footer from "../frontend/components/Footer";
+import Footer from "../../frontend/components/Footer";
 import { useState } from "react";
-import OrchestasNavBar from "../frontend/components/OrchestasNavBar";
+import OrchestasNavBar from "../../frontend/components/OrchestasNavBar";
 
 const StyledMain = styled.main`
   margin: 25px auto;

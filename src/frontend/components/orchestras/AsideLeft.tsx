@@ -25,7 +25,7 @@ export default function AsideLeft(props: any) {
             <li className="nav-item">
               <FiHome />
               <div>
-                <Link href={`/orchestra/${encodeURIComponent(props.id)}`}>
+                <Link href={`/orchestras/${encodeURIComponent(props.id)}`}>
                   Inicio
                 </Link>
               </div>
@@ -33,7 +33,9 @@ export default function AsideLeft(props: any) {
             <li className="nav-item">
               <FiInfo />
               <div>
-                <Link href={`/orchestra/${encodeURIComponent(props.id)}/about`}>
+                <Link
+                  href={`/orchestras/${encodeURIComponent(props.id)}/about`}
+                >
                   Acerca de
                 </Link>
               </div>
@@ -66,7 +68,7 @@ export default function AsideLeft(props: any) {
               <FiEdit3 />
               <div>
                 <Link
-                  href={`/orchestra/${encodeURIComponent(props.id)}/update`}
+                  href={`/orchestras/${encodeURIComponent(props.id)}/update`}
                 >
                   Editar Orquesta
                 </Link>
