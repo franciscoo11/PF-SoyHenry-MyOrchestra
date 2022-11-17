@@ -1,47 +1,44 @@
-// import { prisma } from "../../lib/prisma";
+import { prisma } from "../../lib/prisma";
 export {};
-// export const getRols = async () => {
-//   try {
-//     const allRols = await prisma.rol.findMany();
-//     return allRols.length ? allRols : null;
-//   } catch (error) {
-//     return error;
-//   }
-// };
+export const getRols = async () => {
+  try {
+    const allRols = await prisma.rol.findMany();
+    return allRols.length ? allRols : null;
+  } catch (error) {
+    return error;
+  }
+};
 
-// export const updateRol = async (id:any,newName:any) => {
-//   try {
-//     if(!newName || !id) return null
-//     const changeRol = await prisma.rol.update({
-//       where: {
-//         id: id,
-//       },
-//       data: {
-//         name: newName
-//       }
-//     });
-//     return changeRol ? changeRol : null;
-//   } catch (error) {
-//     return error;
-//   }
-// };
+export const updateRol = async (user_id:any,rolId:any) => {
+  try {
+    if(!rolId || !user_id) return null
+    const changeRol = await prisma.user.update({
+      where: {
+        id: user_id,
+      },
+      data:{
+        rolId:rolId
+      }
+    })
+    return changeRol ? changeRol : null;
+  } catch (error) {
+    return error;
+  }
+};
 
-// export const postRol = async (name: any) => {
-//   try {
-//     if (!name) return null;
-//     const findDuplicateRol = await prisma.rol.findFirst({
-//       where: {
-//         name: name,
-//       },
-//     });
-//     if (findDuplicateRol) return null;
-//     const addRol = await prisma.rol.create({
-//       data: {
-//         name
-//       }
-//     });
-//     return addRol ? addRol : null;
-//   } catch (error) {
-//     return error;
-//   }
-// };
+export const postRol = async (user_id:any, rolId:any) => {
+  try {
+    if (!user_id || !rolId) return null;
+    const addRol = await prisma.user.update({
+        where: {
+          id: user_id,
+        },
+        data:{
+          rolId:rolId
+        }
+    })
+    return addRol ? addRol : null;
+  } catch (error) {
+    return error;
+  }
+};

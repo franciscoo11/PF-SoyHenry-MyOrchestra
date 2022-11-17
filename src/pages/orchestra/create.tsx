@@ -5,6 +5,8 @@ import styled from "styled-components";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Footer from "../../frontend/components/Footer";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const StyledForm = styled.div`
   background-image: url("/bg_01.jpg");
@@ -168,26 +170,38 @@ export default function CreateOrchestra(props: Props) {
         }}
         validationSchema={Yup.object({
           name: Yup.string()
-            .max(25, "Must be 25 characters or less")
-            .required("Required"),
+            .max(25, "Debes ingresar 25 caracteres máximo")
+            .required("Requerido"),
           description: Yup.string()
-            .max(250, "Must be 250 characters or less")
-            .required("Required"),
+            .max(250, "No debes ingresar más de 250 caracteres")
+            .required("Requerido"),
           donation_account: Yup.string()
-            .email("Invalid email address")
-            .required("Required"),
-          location: Yup.string().required("Required"),
-          sponsor: Yup.string().required("Required"),
+            .email("Correo inválido")
+            .required("Ningún correo ingresado"),
+          location: Yup.string().required("Ninguna ubicación ingresada"),
+          sponsor: Yup.string(),
           phone: Yup.string()
-            .matches(phoneRegExp, "Phone number is not valid")
-            .required("Required"),
-          logo: Yup.string().url("Invalid URL Logo").required("Required"),
+            .matches(phoneRegExp, "Numero de teléfono inválido")
+            .required("Ningún número de teléfono ingresado"),
+          logo: Yup.string()
+            .url("URL inválido")
+            .required("Debes elegir un logo"),
+          cover: Yup.string().url("URL inválido"),
         })}
         onSubmit={(values, { setSubmitting }: FormikHelpers<Values>) => {
           axios
             .post("http://localhost:3000/api/orchestra", values)
             .then(() => {
-              alert("Orchestra Created");
+              toast.success("Orquesta creada exitosamente", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
               router.push("/");
               setSubmitting(false);
             })
@@ -341,6 +355,7 @@ export default function CreateOrchestra(props: Props) {
         </Form>
       </Formik>
       <Footer />
+      <ToastContainer />
     </StyledForm>
   );
 }

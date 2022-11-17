@@ -2,43 +2,32 @@ import { prisma } from "../../lib/prisma";
 //GET USERSPOST
 export const getPost = async (query:any) => {
   try {
-    const {creation_date, views} = query
-    if(creation_date){
-      let lastDates = creation_date === 'asc' ? await prisma.$queryRaw`SELECT "id", "title", "creation_date", "content" FROM "Post" ORDER BY creation_date ASC` 
-      : await prisma.$queryRaw`SELECT "id", "title", "creation_date", "content" FROM "Post" ORDER BY creation_date DESC`
-      return lastDates
-    }
-    if(views){
-      const asc = await prisma.post.findMany({orderBy:{views: 'asc'}})
-      const desc = await prisma.post.findMany({orderBy:{views: 'desc'}})
-      return views === 'asc' ? asc : desc
-    }
-    const getPosts = await prisma.post.findMany({
-      select: {
-        title: true,
-        content: true,
-      },
-    });
+    const {event_date, views,resources,page,orchestra} = query
 
-    return getPosts ? getPosts : null;
+    const onlyorder =async(orderprop:any,order:any)=>{
+      const datos= await prisma.post.findMany( 
+        { orderBy: { [orderprop]: order },
+        take: resources*1 ||4,
+        skip: page*resources||page*4||0,
+        where:{
+          orchestraId: orchestra
+        },
+        })
+        return datos
+    }
+
+    if(event_date)return onlyorder("event_date",event_date)
+    if(views)return onlyorder("views",views)
+
+    return await prisma.post.findMany({
+      take: resources*1 ||4,
+      skip: page*resources||page*4||0,}
+      )
   } catch (error) {
     return null
   }
 };
-//GET orchestraPOST
-export const getOrchestrasPost = async (query:any) => {
-  const {orchestra}=query
-  try {
-    const getPosts = await prisma.post.findMany({
-      where:{
-        orchestraId: orchestra
-      }
-    });
-    return getPosts ? getPosts: null;
-  } catch (error) {
-    return null;
-  }
-};
+
 
 //POST USERSPOST
 //logica fecha

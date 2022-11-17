@@ -1,12 +1,10 @@
 import UpdateOrchestra from "../../../frontend/components/UpdateOrchestra";
 import axios from "axios";
-import Footer from "../../../frontend/components/Footer";
 
 export default function Update(props: any) {
   return (
     <>
       <UpdateOrchestra types_orchestras={props.types_orchestras} />
-      <Footer />
     </>
   );
 }
