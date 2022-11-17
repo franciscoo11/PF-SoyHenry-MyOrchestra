@@ -25,10 +25,10 @@ export default async function handler(
             return getUser ? res.status(200).json(getUser) : res.status(404).json({error: 'User not found, check if id is valid'})
             case PATCH:
               const fakeDeleteUser = await logicDeleteUser(id)
-            return fakeDeleteUser ? res.status(204).json(fakeDeleteUser) : res.status(404).json({error: 'Something goes wrong, check if id is correct and try again'})
+            return fakeDeleteUser ? res.status(200).json(fakeDeleteUser) : res.status(404).json({error: 'Something goes wrong, check if id is correct and try again'})
             case PUT:
               const modifyUser = await updateUser(id,body)
-            return modifyUser ? res.status(204).json(modifyUser) : res.status(404).json({error: 'Something goes wrong, check if id is correct and try again'})
+            return modifyUser ? res.status(200).json(modifyUser) : res.status(404).json({error: 'Something goes wrong, check if id is correct and try again'})
             case DELETE:
               const removeUser = await deleteUser(id)
               return removeUser ? res.status(200).json(removeUser) : res.status(404).json({error: 'Something goes wrong, check id and try again'})

@@ -13,22 +13,25 @@ const yearValidation = (year: any) => {
 
 export const postUser = async (body: any) => {
   try {
-    const { name, email, password, year_of_birth } = body;
+    if (!body) return null;
+    const { name, email, password, year_of_birth, rolId } = body;
     if (!name || !email || !password || !year_of_birth) return null;
     if (!yearValidation(year_of_birth)) return null;
-    const user = await prisma.user.findUnique({
-      where: { email: email },
-    });
-    if (user) return null;
 
-    // TO CHECK AVATAR OR PICTURE SEND DB
-    const addUser = await prisma.user.create({
-      data: {
-        ...body,
+    const addUser = await prisma.user.upsert({
+      where: {
+        email: email,
+      },
+      update: {
         name: name,
         email: email,
         password: password,
         year_of_birth: year_of_birth,
+        rolId: rolId,
+        ...body,
+      },
+      create: {
+        ...body,
       },
     });
     return addUser ? addUser : null;
@@ -40,11 +43,7 @@ export const postUser = async (body: any) => {
 export const getUsers = async (id?: any) => {
   try {
     if (!id) {
-      const allUsers = await prisma.user.findMany({
-        include:{
-          favorites:true
-        }
-      });
+      const allUsers = await prisma.user.findMany();
       return allUsers.length ? allUsers : null;
     }
     const user = await prisma.user.findUnique({
