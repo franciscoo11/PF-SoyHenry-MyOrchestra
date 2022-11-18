@@ -7,7 +7,7 @@ export const getFavorites = async (user_id: any) => {
       return allFavorites.length ? allFavorites : null;
     }
 
-    const findFavoriteById = await prisma.user.findUnique({
+    const findFavoriteById = await prisma.users.findUnique({
       where:{
         id: user_id
       },
@@ -25,7 +25,7 @@ export const getFavorites = async (user_id: any) => {
 export const addFavorite = async (user_id: any, orchestra_id: any) => {
   try {
     if (!user_id || !orchestra_id) return null;
-    const addFavorites = await prisma.user.update({
+    const addFavorites = await prisma.users.update({
      where:{
       id: user_id
      },
@@ -45,7 +45,7 @@ export const addFavorite = async (user_id: any, orchestra_id: any) => {
 export const removeFavorite = async (user_id: any, orchestra_id: any) => {
   try {
     if (!user_id || !orchestra_id) return null;
-    const removeFavorite = await prisma.user.update({
+    const removeFavorite = await prisma.users.update({
       where:{
        id: user_id
       },

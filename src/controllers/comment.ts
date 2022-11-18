@@ -3,7 +3,7 @@ import {prisma} from '../../lib/prisma'
 
 export const getCommentPost = async () => {
     try {
-      const getComment = await prisma.comment.findMany();
+      const getComment = await prisma.comments.findMany();
       return getComment;   
     } catch (error) {
       return error
@@ -14,7 +14,7 @@ export const postCommentPost = async(body:any)=>{
     try {
         const {content} = body;
         if(!content) return 'missing values'
-        const postComment = await prisma.comment.create({
+        const postComment = await prisma.comments.create({
           data:body
         });
         return postComment ? postComment : null
@@ -24,7 +24,7 @@ export const postCommentPost = async(body:any)=>{
 }
 
 export const logicDeleteComment = async (id:any) => {
-    const deactivate = await prisma.comment.update({
+    const deactivate = await prisma.comments.update({
       where:{ id:id }, data: { is_active: false } })
     return deactivate ? deactivate : null
   }
@@ -32,7 +32,7 @@ export const logicDeleteComment = async (id:any) => {
 export const deleteComment = async (id: any) => {
     try {
       if (!id) return null;
-      const deleted = await prisma.comment.delete({
+      const deleted = await prisma.comments.delete({
         where: { id: id },
       });
       return deleted ? deleted : null
