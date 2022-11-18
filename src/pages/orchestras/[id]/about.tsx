@@ -6,7 +6,7 @@ import Footer from "../../../frontend/components/Footer";
 import AsideLeft from "../../../frontend/components/orchestras/AsideLeft";
 import AsideRight from "../../../frontend/components/orchestras/AsideRight";
 import { StyledMain } from "../../../frontend/styles/orchestras/sharedStyles";
-import { prisma } from '../../../../lib/prisma';
+import { prisma } from "../../../../lib/prisma";
 import axios from "axios";
 
 export interface DataModel {
@@ -15,10 +15,10 @@ export interface DataModel {
 
 export const getStaticPaths = async () => {
   try {
-    const orchestrasById:any = await prisma.$queryRaw`SELECT id FROM orchestras`
-    const paths = orchestrasById.map(({ id }:any) => ({ params: { id } }));
-    console.log(paths)
-    // 
+    const orchestrasById: any =
+      await prisma.$queryRaw`SELECT id FROM orchestras`;
+    const paths = orchestrasById.map(({ id }: any) => ({ params: { id } }));
+    //
     // const data: any = res.data;
     // const paths = data.map(({ id }:any) => ({ params: { id } }));
     return {
@@ -32,17 +32,17 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }: any) => {
   try {
-    const orchestrasById:any = await prisma.$queryRaw`SELECT * FROM orchestras WHERE id = ${params.id}`
+    const orchestrasById: any =
+      await prisma.$queryRaw`SELECT * FROM orchestras WHERE id = ${params.id}`;
     return {
       props: {
         orchestrasById,
       },
     };
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
-function OrchestraAbout(props:any) {
+function OrchestraAbout(props: any) {
   const router = useRouter();
   const { id } = router.query;
   return (
@@ -51,7 +51,10 @@ function OrchestraAbout(props:any) {
 
       <StyledMain>
         <aside className="aside-left">
-          <AsideLeft logo={props.orchestrasById.logo} id={props.orchestrasById.id} />
+          <AsideLeft
+            logo={props.orchestrasById.logo}
+            id={props.orchestrasById.id}
+          />
         </aside>
         <section className="content">
           <Cover
