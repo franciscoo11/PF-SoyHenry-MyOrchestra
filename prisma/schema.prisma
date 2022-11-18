@@ -24,8 +24,6 @@ model orchestras {
   is_active          Boolean?             @default(true)
   donation_account   String               @unique
   phone              String               @unique
-  createdAt          DateTime?            @default(now())
-  updatedAt          DateTime?            @updatedAt
   user_id            String?
   posts              posts[]
   orchestra_type     orchestra_type?      @relation(fields: [orchestra_TypeId], references: [id])

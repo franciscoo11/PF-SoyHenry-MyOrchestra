@@ -8,6 +8,7 @@ import Footer from "../../../frontend/components/Footer";
 import AsideLeft from "../../../frontend/components/orchestras/AsideLeft";
 import AsideRight from "../../../frontend/components/orchestras/AsideRight";
 import { StyledMain } from "../../../frontend/styles/orchestras/sharedStyles";
+import { prisma } from '../../../../lib/prisma';
 import axios from "axios";
 
 export interface DataModel {
@@ -16,13 +17,14 @@ export interface DataModel {
 
 export const getStaticPaths = async () => {
   try {
-    const res = await axios.get("http://localhost:3000/api/orchestra");
-    const data: DataModel[] = await res.data;
-    const paths = data.map(({ id }) => ({ params: { id } }));
+    const orchestrasById:any = await prisma.$queryRaw`SELECT id FROM orchestras`
+    const paths = orchestrasById.map(({ id }:any) => ({ params: { id } }));
+    console.log(paths)
     return {
       paths,
       fallback: false,
     };
+  
   } catch (error) {
     console.log(error);
   }
@@ -30,13 +32,11 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }: any) => {
   try {
-    const res = await axios.get(
-      `http://localhost:3000/api/orchestra/${params.id}`
-    );
-    const data = await res.data;
+    const orchestrasById:any = await prisma.$queryRaw`SELECT * FROM orchestras WHERE id = ${params.id}`
+    console.log(orchestrasById)
     return {
       props: {
-        data,
+        orchestrasById,
       },
     };
   } catch (error) {}
@@ -51,13 +51,13 @@ function OrchestraDetails(props: any) {
 
       <StyledMain>
         <aside className="aside-left">
-          <AsideLeft logo={props.data.logo} id={props.data.id} />
+          <AsideLeft logo={props.orchestrasById.logo} id={props.orchestrasByid[0].id} />
         </aside>
         <section className="content">
           <Cover
-            cover={props.data.cover}
-            title={props.data.name}
-            location={props.data.location}
+            cover={props.orchestrasById.cover}
+            title={props.orchestrasById.name}
+            location={props.orchestrasById.location}
           />
           <div className="form-container">
             <div

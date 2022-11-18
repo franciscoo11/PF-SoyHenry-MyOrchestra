@@ -6,6 +6,7 @@ import Footer from "../../../frontend/components/Footer";
 import AsideLeft from "../../../frontend/components/orchestras/AsideLeft";
 import AsideRight from "../../../frontend/components/orchestras/AsideRight";
 import { StyledMain } from "../../../frontend/styles/orchestras/sharedStyles";
+import { prisma } from '../../../../lib/prisma';
 import axios from "axios";
 
 export interface DataModel {
@@ -14,9 +15,12 @@ export interface DataModel {
 
 export const getStaticPaths = async () => {
   try {
-    const res = await axios.get("http://localhost:3000/api/orchestra");
-    const data: any = await res.data;
-    const paths = data.map(({ id }:any) => ({ params: { id } }));
+    const orchestrasById:any = await prisma.$queryRaw`SELECT id FROM orchestras`
+    const paths = orchestrasById.map(({ id }:any) => ({ params: { id } }));
+    console.log(paths)
+    // 
+    // const data: any = res.data;
+    // const paths = data.map(({ id }:any) => ({ params: { id } }));
     return {
       paths,
       fallback: false,
@@ -28,19 +32,17 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }: any) => {
   try {
-    const res = await axios.get(
-      `http://localhost:3000/api/orchestra/${params.id}`
-    );
-    const data = await res.data;
+    const orchestrasById:any = await prisma.$queryRaw`SELECT * FROM orchestras WHERE id = ${params.id}`
     return {
       props: {
-        data,
+        orchestrasById,
       },
     };
-  } catch (error) {}
+  } catch (error) {
+  }
 };
 
-function OrchestraAbout(props: any) {
+function OrchestraAbout(props:any) {
   const router = useRouter();
   const { id } = router.query;
   return (
@@ -49,17 +51,17 @@ function OrchestraAbout(props: any) {
 
       <StyledMain>
         <aside className="aside-left">
-          <AsideLeft logo={props.data.logo} id={props.data.id} />
+          <AsideLeft logo={props.orchestrasById.logo} id={props.orchestrasById.id} />
         </aside>
         <section className="content">
           <Cover
-            cover={props.data.cover}
-            title={props.data.name}
-            location={props.data.location}
+            cover={props.orchestrasById.cover}
+            title={props.orchestrasById.name}
+            location={props.orchestrasById.location}
           />
           <div className="about-container">
             <h2 className="about-title">Acerca de</h2>
-            <p className="about-content">{props.data.description}</p>
+            <p className="about-content">{props.orchestrasById.description}</p>
           </div>
         </section>
         <aside className="aside-right">
