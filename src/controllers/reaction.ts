@@ -9,7 +9,7 @@ export const getAllReactions = async() => {
     }
 }
 
-export const addReaction = async(reaction:string) => {
+export const addReaction = async(reaction:any) => {
     try {
         if(!reaction) return null
         const isDuplicate = await prisma.reactions.findFirst({

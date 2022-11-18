@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSession, signIn, signOut } from "next-auth/react";
-import Cookies from "universal-cookie";
-
+import Cookies  from 'universal-cookie'
 const Signin = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const cookies = new Cookies
+  const cookies = new Cookies()
   cookies.set("user_loging",session,{path:"/"})
   
   setTimeout(() => status, 9000)

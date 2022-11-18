@@ -9,7 +9,7 @@ export const allReactionFromPosts = async() => {
     }
 }
 
-export const addReactionToPost = async(query:{id:string}, body:{userId:string, reactionId: string}) => {
+export const addReactionToPost = async(query:any, body:any) => {
     try {
         if(!query || !body) return null
         const isDuplicateReaction = await prisma.post_user_on_reactions.findFirst({
@@ -33,7 +33,7 @@ export const addReactionToPost = async(query:{id:string}, body:{userId:string, r
     }
 }
 
-export const deleteReactionToPost = async(query:{id:string}, body:{userId: string, reactionId: string}) => {
+export const deleteReactionToPost = async(query:any, body:any) => {
     try {
         if(!query || !body) return null
         const unsubscribeReaction = await prisma.post_user_on_reactions.delete({

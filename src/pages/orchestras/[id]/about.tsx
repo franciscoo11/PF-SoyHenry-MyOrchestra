@@ -15,8 +15,8 @@ export interface DataModel {
 export const getStaticPaths = async () => {
   try {
     const res = await axios.get("http://localhost:3000/api/orchestra");
-    const data: DataModel[] = await res.data;
-    const paths = data.map(({ id }) => ({ params: { id } }));
+    const data: any = await res.data;
+    const paths = data.map(({ id }:any) => ({ params: { id } }));
     return {
       paths,
       fallback: false,
