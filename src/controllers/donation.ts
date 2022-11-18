@@ -4,12 +4,12 @@ export const getDonations = async (query:any) => {
   const {orchestraId, userId} = query
   try {
     if (!orchestraId && !userId) {
-      const allDonations = await prisma.donation.findMany();
+      const allDonations = await prisma.donations.findMany();
       return allDonations.length ? allDonations : null;
     }
 
     if (!orchestraId && userId) {
-      const userDonations = await prisma.donation.findMany({
+      const userDonations = await prisma.donations.findMany({
         where: {
           userId: userId,
         },
@@ -18,7 +18,7 @@ export const getDonations = async (query:any) => {
     }
 
     if (orchestraId && !userId) {
-      const orchestraDonations = await prisma.donation.findMany({
+      const orchestraDonations = await prisma.donations.findMany({
         where: {
           orchestraId: orchestraId,
         },
@@ -27,7 +27,7 @@ export const getDonations = async (query:any) => {
     }
 
     if (orchestraId && userId) {
-      const userDonationsInAnOrchestra = await prisma.donation.findMany({
+      const userDonationsInAnOrchestra = await prisma.donations.findMany({
         where: {
           orchestraId: orchestraId,
           userId: userId,
@@ -44,7 +44,7 @@ export const getDonations = async (query:any) => {
 
 export const getDonationsById = async (id:any) => {
   try {
-    const donation = await prisma.donation.findUnique({
+    const donation = await prisma.donations.findUnique({
       where: { id: id },
     });
     return donation ? donation : undefined;
@@ -56,7 +56,7 @@ export const getDonationsById = async (id:any) => {
 export const postDonation =async (body:any)=>{
     try {
       const {userId,orchestraId,amount}=body;
-    const createDonation = await prisma.donation.create({
+    const createDonation = await prisma.donations.create({
     data:body
     })
     return createDonation?createDonation: null

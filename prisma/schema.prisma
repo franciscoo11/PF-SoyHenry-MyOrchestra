@@ -13,100 +13,100 @@ datasource db {
 // MODELO EXAMPLE
 
 model orchestras {
-  id               String            @id @default(cuid()) // Podria declararse como tipo string @default(cuid()) ??? 
-  name             String            @unique @db.VarChar()
-  description      String
-  logo             String?
-  cover            String?
-  creation_date    String
-  sponsor          String?
-  location         String
-  is_active        Boolean?          @default(true)
-  donation_account String            @unique
-  phone            String            @unique
-  createdAt        DateTime?         @default(now())
-  updatedAt        DateTime?         @updatedAt
-  user_id          String?
-  posts            posts[]
-  orchestra_type   orchestra_type?   @relation(fields: [orchestra_TypeId], references: [id])
-  orchestra_TypeId String?
-  campaigns         campaigns[]
-  users_on_orchestra  users_on_orchestra[]
-  favorites        favorites[]
-  donations        donations[]
+  id                 String               @id @default(cuid()) // Podria declararse como tipo string @default(cuid()) ??? 
+  name               String               @unique @db.VarChar()
+  description        String
+  logo               String?
+  cover              String?
+  creation_date      String
+  sponsor            String?
+  location           String
+  is_active          Boolean?             @default(true)
+  donation_account   String               @unique
+  phone              String               @unique
+  createdAt          DateTime?            @default(now())
+  updatedAt          DateTime?            @updatedAt
+  user_id            String?
+  posts              posts[]
+  orchestra_type     orchestra_type?      @relation(fields: [orchestra_TypeId], references: [id])
+  orchestra_TypeId   String?
+  campaigns          campaigns[]
+  users_on_orchestra users_on_orchestra[]
+  favorites          favorites[]
+  donations          donations[]
 }
 
 model users {
-  id                 String               @id @default(uuid())
-  name               String?
-  email              String               @unique
-  password           String?
-  avatar             String?
-  cover              String?
-  birthday           DateTime?
-  city               String?
-  state              String?
-  country            String?
-  is_active          Boolean              @default(true)
-  first_time         Boolean              @default(true)
-  comments           comments[]
-  posts              posts[]
+  id                     String                   @id @default(uuid())
+  name                   String?
+  email                  String                   @unique
+  password               String?
+  avatar                 String?
+  cover                  String?
+  birthday               DateTime?
+  city                   String?
+  state                  String?
+  country                String?
+  is_active              Boolean                  @default(true)
+  first_time             Boolean                  @default(true)
+  comments               comments[]
+  posts                  posts[]
   post_user_on_reactions post_user_on_reactions[]
-  user_on_orchestra    users_on_orchestra[]
-  favorites          favorites[]
-  rol                rols?                 @relation(fields: [rolId], references: [id])
-  rolId              String?
-  donations           donations[]
+  user_on_orchestra      users_on_orchestra[]
+  favorites              favorites[]
+  rol                    rols?                    @relation(fields: [rolId], references: [id])
+  rolId                  String?
+  donations              donations[]
 }
 
 model rols {
-  id              String            @id @default(cuid())
-  name            String
-  privilege       Roles             @default(USER)
-  Users            users[]
+  id                String               @id @default(cuid())
+  name              String
+  privilege         Roles                @default(USER)
+  Users             users[]
   user_on_orchestra users_on_orchestra[]
 }
 
 model posts {
-  id                 String               @id @default(cuid())
-  title              String
-  content            String               @db.Text
-  url_video          String?
-  url_file           String?
-  visibility         String?
-  is_active          Boolean?             @default(true)
-  creation_date      DateTime             @default(now())
-  event_date         String?
-  event_hour         String?
-  views              Int?
-  comments           comments[]
-  Orchestra          orchestras            @relation(fields: [orchestraId], references: [id])
-  orchestraId        String
-  user               users                 @relation(fields: [userCreator], references: [id])
-  userCreator        String
-  Type_Post          type_post?           @relation(fields: [type_PostId], references: [id])
-  type_PostId        String?
+  id            String                   @id @default(cuid())
+  title         String
+  content       String                   @db.Text
+  url_video     String?
+  url_file      String?
+  visibility    String?
+  is_active     Boolean?                 @default(true)
+  creation_date DateTime                 @default(now())
+  event_date    String?
+  event_hour    String?
+  views         Int?
+  comments      comments[]
+  Orchestra     orchestras               @relation(fields: [orchestraId], references: [id])
+  orchestraId   String
+  user          users                    @relation(fields: [userCreator], references: [id])
+  userCreator   String
+  Type_Post     type_post?               @relation(fields: [type_PostId], references: [id])
+  type_PostId   String?
   user_reaction post_user_on_reactions[]
 }
 
 model orchestra_type {
-  id        String      @id @default(cuid())
+  id        String       @id @default(cuid())
   type      String
   orchestra orchestras[]
 }
 
 model campaigns {
-  id            String     @id @default(cuid())
+  id            String      @id @default(cuid())
   title         String
   goal_amount   Float
   start_date    String
   end_date      String?
-  description   String     @db.Text
-  is_active     Boolean    @default(true)
+  description   String      @db.Text
+  is_active     Boolean     @default(true)
   amount_raised Float?
   orchestra     orchestras  @relation(fields: [orchestraId], references: [id])
   orchestraId   String
-  donations      donations[]
+  donations     donations[]
 }
 
 model comments {
@@ -114,21 +114,21 @@ model comments {
   content       String
   creation_date DateTime @default(now())
   is_active     Boolean  @default(true)
-  User          users?    @relation(fields: [userId], references: [id])
+  User          users?   @relation(fields: [userId], references: [id])
   userId        String?
-  Post          posts?    @relation(fields: [postId], references: [id])
+  Post          posts?   @relation(fields: [postId], references: [id])
   postId        String?
 }
 
 model type_post {
-  id    String @id @default(cuid())
-  name  String @unique
+  id    String  @id @default(cuid())
+  name  String  @unique
   posts posts[]
 }
 
 model reactions {
-  id                 String               @id @default(cuid())
-  reaction           String               @unique
+  id                     String                   @id @default(cuid())
+  reaction               String                   @unique
   post_user_on_reactions post_user_on_reactions[]
 }
 
@@ -145,11 +145,11 @@ model post_user_on_reactions {
 
 model users_on_orchestra {
   status      StatusOrchestraMember @default(PENDING)
-  user        users                  @relation(fields: [userId], references: [id])
+  user        users                 @relation(fields: [userId], references: [id])
   userId      String
-  orchestra   orchestras             @relation(fields: [orchestraId], references: [id])
+  orchestra   orchestras            @relation(fields: [orchestraId], references: [id])
   orchestraId String
-  rol         rols                   @relation(fields: [rolId], references: [id])
+  rol         rols                  @relation(fields: [rolId], references: [id])
   rolId       String
 
   @@id([userId, orchestraId, rolId])
@@ -177,7 +177,7 @@ enum Roles {
 }
 
 model donations {
-  id          String    @id @default(cuid())
+  id          String     @id @default(cuid())
   campaign    campaigns? @relation(fields: [campaignId], references: [id])
   campaignId  String?
   orchestra   orchestras @relation(fields: [orchestraId], references: [id])
@@ -185,6 +185,6 @@ model donations {
   user        users      @relation(fields: [userId], references: [id])
   userId      String
   amount      Float
-  private     Boolean   @default(false)
-  date        DateTime  @default(now())
+  private     Boolean    @default(false)
+  date        DateTime   @default(now())
 }
