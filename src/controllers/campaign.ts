@@ -24,8 +24,12 @@ export const getCampaigns = async (query?:any) => {
           skip: page*resources||page*4||0,
             where:{      
               [prop1]:aux 
+            },
+            include:{
+                Donation:true
             }
           })
+
           return datos
       }
 
