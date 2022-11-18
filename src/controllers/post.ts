@@ -5,7 +5,7 @@ export const getPost = async (query:any) => {
     const {event_date, views,resources,page,orchestra} = query
 
     const onlyorder =async(orderprop:any,order:any)=>{
-      const datos= await prisma.post.findMany( 
+      const datos= await prisma.posts.findMany( 
         { orderBy: { [orderprop]: order },
         take: resources*1 ||4,
         skip: page*resources||page*4||0,
@@ -22,7 +22,7 @@ export const getPost = async (query:any) => {
     if(event_date)return onlyorder("event_date",event_date)
     if(views)return onlyorder("views",views)
 
-    return await prisma.post.findMany({
+    return await prisma.posts.findMany({
       take: resources*1 ||4,
       skip: page*resources||page*4||0,
       include: {
@@ -112,7 +112,7 @@ export const postPost = async (body: any) => {
     if (verifyDate(newFormatDate) === false) return null;
     if (verifyHour(event_hour) === false) return null;
 
-    await prisma.post.create({
+    await prisma.posts.create({
       data: body,
     });
     return body ? body : null;
@@ -125,7 +125,7 @@ export const postPost = async (body: any) => {
 export const putPost = async (post_id: any, body: any) => {
   try {
     if (!post_id || !body) return null;
-    await prisma.post.update({
+    await prisma.posts.update({
       where: {
         id: post_id,
       },
@@ -142,7 +142,7 @@ export const putPost = async (post_id: any, body: any) => {
 export const logicDeletePost = async (post_id: any) => {
   try {
     if (!post_id) return null;
-    await prisma.post.update({
+    await prisma.posts.update({
       where: {
         id: post_id,
       },
@@ -159,7 +159,7 @@ export const logicDeletePost = async (post_id: any) => {
 export const deletePost = async (post_id: any) => {
   try {
     if (!post_id) return null;
-    await prisma.post.delete({
+    await prisma.posts.delete({
       where: { id: post_id },
     });
     return post_id ? post_id : null;

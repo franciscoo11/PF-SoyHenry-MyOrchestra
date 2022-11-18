@@ -1,15 +1,5 @@
 import { prisma } from "../../lib/prisma";
 
-const filter_query = (datos: any, location: string, orchestra_TypeId: string): object[] => {
-  let newdatos = datos
-  const filterParams: any = { location: location, orchestra_TypeId: orchestra_TypeId }
-  for (const property in filterParams) {
-    filterParams[property] ? newdatos = newdatos.filter(
-      (orchestradata: any) => orchestradata[property].toLowerCase().trim() === filterParams[property].toLowerCase().trim()
-    ) : null
-  }
-  return newdatos
-}
 
 //GET ORCHESTRAS
 export const getOrchestras = async (query: any) => {
@@ -17,7 +7,7 @@ export const getOrchestras = async (query: any) => {
 const { name, creation_date, location, orchestra_TypeId,page,resources,order } = query
 
   const fulldataorder =async(orderprop:any, order:any,prop1:any,prop2:any,date1:any,date2:any)=>{
-    const datos= await prisma.orchestra.findMany( 
+    const datos= await prisma.orchestras.findMany( 
       { orderBy: { [orderprop]: order },
       take: resources*1 ||4,
       skip: page*resources||page*4||0,
@@ -35,7 +25,7 @@ const { name, creation_date, location, orchestra_TypeId,page,resources,order } =
     if(prop1!="orchestra_TypeId"){
        aux = { contains: trimedName, mode:'insensitive' }
     }
-    const datos= await prisma.orchestra.findMany( 
+    const datos= await prisma.orchestras.findMany( 
       { orderBy: { [orderprop]: order },
       take: resources*1 ||4,
       skip: page*resources||page*4||0,
@@ -47,7 +37,7 @@ const { name, creation_date, location, orchestra_TypeId,page,resources,order } =
   }
 
   const fulldata =async(prop1:any,prop2:any,date1:any,date2:any)=>{
-    const datos= await prisma.orchestra.findMany( 
+    const datos= await prisma.orchestras.findMany( 
       { 
       take: resources*1 ||4,
       skip: page*resources||page*4||0,
@@ -65,7 +55,7 @@ const { name, creation_date, location, orchestra_TypeId,page,resources,order } =
     if(prop1!="orchestra_TypeId"){
        aux = { contains: trimedName, mode:'insensitive' }
     }
-    const datos= await prisma.orchestra.findMany( 
+    const datos= await prisma.orchestras.findMany( 
       {
       take: resources*1 ||4,
       skip: page*resources||page*4||0,
@@ -78,7 +68,7 @@ const { name, creation_date, location, orchestra_TypeId,page,resources,order } =
 
   const onlyorder =async(orderprop:any,order:any)=>{
   
-    const datos= await prisma.orchestra.findMany( 
+    const datos= await prisma.orchestras.findMany( 
       { orderBy: { [orderprop]: order },
       take: resources*1 ||4,
       skip: page*resources||page*4||0,
@@ -103,12 +93,12 @@ const { name, creation_date, location, orchestra_TypeId,page,resources,order } =
 
   if(name)return dataandorder("name",order,"name",name)
 
-  return await prisma.orchestra.findMany()
+  return await prisma.orchestras.findMany()
 };
 
 //GET ORCHESTRAS BY ID
 export const getOrchestrasById = async (id: any) => {
-  const orchestra = await prisma.orchestra.findUnique({
+  const orchestra = await prisma.orchestras.findUnique({
     where: { id: id },
   });
   return orchestra ? orchestra : undefined;
@@ -120,7 +110,7 @@ export const postOrchestras = async (body: any) => {
     if(!body) return undefined
     const { name, phone, donation_account } = body;
     if (!name || !donation_account || !phone) return undefined
-    const orchestras = await prisma.orchestra.create({
+    const orchestras = await prisma.orchestras.create({
       data: body
     });
     return orchestras ? orchestras : undefined;
@@ -132,7 +122,7 @@ export const postOrchestras = async (body: any) => {
 //BORRADO LOGICO
 export const logicDeleteOrchestra = async (id: any) => {
   try {
-    const deactivate = await prisma.orchestra.update({
+    const deactivate = await prisma.orchestras.update({
       where: {
         id: id
       },
@@ -150,7 +140,7 @@ export const logicDeleteOrchestra = async (id: any) => {
 export const deleteOrchestra = async (id: any) => {
   try {
     if(!id) return undefined
-    const orchestraDelete = await prisma.orchestra.delete({
+    const orchestraDelete = await prisma.orchestras.delete({
       where: { id: id },
     });
     return orchestraDelete ? orchestraDelete : null;
@@ -163,7 +153,7 @@ export const deleteOrchestra = async (id: any) => {
 //UPDATE ORCHESTRAS
 export const updateOrchestra = async (id: any, body: any) => {
   try {
-    const updateOrchestra = await prisma.orchestra.update({
+    const updateOrchestra = await prisma.orchestras.update({
       where: {
         id,
       },

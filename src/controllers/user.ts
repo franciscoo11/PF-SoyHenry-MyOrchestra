@@ -14,11 +14,10 @@ const yearValidation = (year: any) => {
 export const postUser = async (body: any) => {
   try {
     if (!body) return null;
-    const { name, email, password, year_of_birth, rolId } = body;
-    if (!name || !email || !password || !year_of_birth) return null;
-    if (!yearValidation(year_of_birth)) return null;
+    const { name, email, password, rolId } = body;
+    if (!name || !email || !password ) return null;
 
-    const addUser = await prisma.user.upsert({
+    const addUser = await prisma.users.upsert({
       where: {
         email: email,
       },
@@ -26,7 +25,6 @@ export const postUser = async (body: any) => {
         name: name,
         email: email,
         password: password,
-        year_of_birth: year_of_birth,
         rolId: rolId,
         ...body,
       },
@@ -43,10 +41,10 @@ export const postUser = async (body: any) => {
 export const getUsers = async (id?: any) => {
   try {
     if (!id) {
-      const allUsers = await prisma.user.findMany();
+      const allUsers = await prisma.users.findMany();
       return allUsers.length ? allUsers : null;
     }
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: { id: id },
     });
     return user ? user : null;
@@ -58,7 +56,7 @@ export const getUsers = async (id?: any) => {
 export const updateUser = async (id: any, body: any) => {
   try {
     if (!id || !body) return null;
-    const getUser = await prisma.user.update({
+    const getUser = await prisma.users.update({
       where: {
         id: id,
       },
@@ -73,7 +71,7 @@ export const updateUser = async (id: any, body: any) => {
 export const logicDeleteUser = async (id: any) => {
   try {
     if (!id) return null;
-    const user = await prisma.user.update({
+    const user = await prisma.users.update({
       where: {
         id: id,
       },
@@ -90,7 +88,7 @@ export const logicDeleteUser = async (id: any) => {
 export const deleteUser = async (id: any) => {
   try {
     if (!id) return null;
-    const user = await prisma.user.delete({
+    const user = await prisma.users.delete({
       where: {
         id: id,
       },

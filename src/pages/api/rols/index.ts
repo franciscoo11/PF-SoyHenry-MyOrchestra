@@ -17,7 +17,6 @@ export default async function handler(
           ? res.status(200).json(allRols)
           : res.status(404).json([]);
       case POST:
-        console.log(body)
         const addRol = await buildRol(body);
         return addRol
           ? res.status(201).json(addRol)
