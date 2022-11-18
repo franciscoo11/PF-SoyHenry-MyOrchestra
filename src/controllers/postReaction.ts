@@ -2,7 +2,7 @@ import { prisma } from "../../lib/prisma";
 
 export const allReactionFromPosts = async() => {
     try {
-        const allReactionsPosts = await prisma.postUserOnReaction.findMany()
+        const allReactionsPosts = await prisma.post_user_on_reactions.findMany()
         return allReactionsPosts ? allReactionsPosts : null
     } catch (error) {
         return null
@@ -12,7 +12,7 @@ export const allReactionFromPosts = async() => {
 export const addReactionToPost = async(query:{id:string}, body:{userId:string, reactionId: string}) => {
     try {
         if(!query || !body) return null
-        const isDuplicateReaction = await prisma.postUserOnReaction.findFirst({
+        const isDuplicateReaction = await prisma.post_user_on_reactions.findFirst({
             where:{
                 userId:body.userId,
                 postId:query.id,
@@ -20,7 +20,7 @@ export const addReactionToPost = async(query:{id:string}, body:{userId:string, r
             }
         })
         if(isDuplicateReaction) return null
-        const subscribeReaction = await prisma.postUserOnReaction.create({
+        const subscribeReaction = await prisma.post_user_on_reactions.create({
             data:{
                 postId: query.id,
                 reactionId: body.reactionId,
@@ -36,7 +36,7 @@ export const addReactionToPost = async(query:{id:string}, body:{userId:string, r
 export const deleteReactionToPost = async(query:{id:string}, body:{userId: string, reactionId: string}) => {
     try {
         if(!query || !body) return null
-        const unsubscribeReaction = await prisma.postUserOnReaction.delete({
+        const unsubscribeReaction = await prisma.post_user_on_reactions.delete({
             where:{
                 postId_userId_reactionId: {postId: query.id, userId:body.userId, reactionId:body.reactionId}
             }
