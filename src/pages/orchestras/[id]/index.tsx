@@ -33,7 +33,6 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({ params }: any) => {
   try {
     const orchestrasById:any = await prisma.$queryRaw`SELECT * FROM orchestras WHERE id = ${params.id}`
-    console.log(orchestrasById)
     return {
       props: {
         orchestrasById,
@@ -45,19 +44,21 @@ export const getStaticProps = async ({ params }: any) => {
 function OrchestraDetails(props: any) {
   const router = useRouter();
   const { id } = router.query;
+  const orchestras = props.orchestrasById[0]
+
   return (
     <>
       <MainNavBar />
 
       <StyledMain>
         <aside className="aside-left">
-          <AsideLeft logo={props.orchestrasById.logo} id={props.orchestrasByid[0].id} />
+          <AsideLeft logo={orchestras.logo} id={orchestras.id} />
         </aside>
         <section className="content">
           <Cover
-            cover={props.orchestrasById.cover}
-            title={props.orchestrasById.name}
-            location={props.orchestrasById.location}
+            cover={orchestras.cover}
+            title={orchestras.name}
+            location={orchestras.location}
           />
           <div className="form-container">
             <div
