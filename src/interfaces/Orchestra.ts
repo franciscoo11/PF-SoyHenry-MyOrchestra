@@ -10,5 +10,5 @@ export interface OrchestraInt {
     is_active:boolean;
     donation_account?:string;
     phone:string;
-    user_id:string; 
+    user_id?:string; 
 }
