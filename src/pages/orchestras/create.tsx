@@ -372,12 +372,12 @@ export default function CreateOrchestra(props: Props) {
 }
 
 export const getServerSideProps = async () => {
-  const res = await axios.get("http://localhost:3000/api/orchestras-types");
-  const types_orchestras = await res.data;
+  const allRols = await axios.get("http://localhost:3000/api/orchestras-types");
+  const rols = await allRols.data;
 
   return {
     props: {
-      types_orchestras,
+      rols,
     },
   };
 };

@@ -1,4 +1,4 @@
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
+import { Formik, Form, Field, ErrorMessage, FormikHelpers, validateYupSchema } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
 import axios from "axios";
@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import MainNavBar from "../frontend/components/MainNavBar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useUser } from "@auth0/nextjs-auth0";
 
 const StyledForm = styled.div`
   background-image: url("/bg_01.jpg");
@@ -62,10 +63,10 @@ const StyledForm = styled.div`
         grid-row: 1;
       }
       .email-field {
-        grid-column: 1/7;
-        grid-row: 2;
+        grid-column: 1/4;
+        grid-row: 3;
       }
-      .password {
+      .cover-field {
         grid-column: 1/7;
         grid-row: 3;
       }
@@ -79,16 +80,17 @@ const StyledForm = styled.div`
       }
 
       .city-field {
+        grid-column: 1/7;
+        grid-row: 2;
+      }
+
+      .birthday-field {
         grid-column: 1/3;
         grid-row: 5;
       }
 
-      .year_of_birth-field {
-        grid-column: 3/5;
-        grid-row: 5;
-      }
       .rolId-field {
-        grid-column: 5/7;
+        grid-column: 3/5;
         grid-row: 5;
       }
 
@@ -119,18 +121,18 @@ const StyledForm = styled.div`
 
 interface Values {
   name: string;
-  email: string;
-  password: string;
+  email:string;
   avatar: string;
   cover: string;
-  year_of_birth: string;
-  city: string;
+  birthday: string;
+  city:string;
+  state:string;
+  country:string;
+  rolId:string;
 }
 
-export default function CreateUser() {
+export default function CreateUser(props:any) {
   const router = useRouter();
-
-  const passwordRegex = /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/;
   return (
     <>
       <MainNavBar />
@@ -138,32 +140,27 @@ export default function CreateUser() {
         <Formik
           initialValues={{
             name: "",
-            email: "",
-            password: "",
             avatar: "",
             cover: "",
-            year_of_birth: "",
+            birthday: "",
             city: "",
+            state:"",
+            country:"",
+            rolId:"",
+            email:""
           }}
           validationSchema={Yup.object({
             name: Yup.string().required("Requerido"),
             email: Yup.string()
               .email("Correo inválido")
               .required("Ningún correo ingresado"),
-            password: Yup.string()
-              .min(8)
-              .matches(
-                passwordRegex,
-                `La contraseña debe tener al menos 8, un dígito, al menos una minúscula y al menos una mayúscula.
-            NO puede tener otros símbolos.`
-              )
-              .required("Ninguna contraseña ingresada"),
             avatar: Yup.string().url("URL inválido"),
             cover: Yup.string().url("URL inválido"),
-            year_of_birth: Yup.string()
-              .max(4, "Tiene que ser un número de 4 dígitos")
-              .required("Requerido"),
+            birthday: Yup.date()
+            .required('Please enter a date of birth')
+            .max(new Date(), "You can't born in this year!"),
             city: Yup.string().required("Requerido"),
+            rolId: Yup.string().required()
           })}
           onSubmit={(values, { setSubmitting }: FormikHelpers<Values>) => {
             axios
@@ -211,28 +208,6 @@ export default function CreateUser() {
                   <ErrorMessage name="name" className="errorMessage" />
                 </p>
               </div>
-              <div className="email-field">
-                <Field
-                  name="email"
-                  type="text"
-                  placeholder="Email"
-                  className="input"
-                />
-                <p className="error">
-                  <ErrorMessage name="email" className="errorMessage" />
-                </p>
-              </div>
-              <div className="password">
-                <Field
-                  name="password"
-                  type="password"
-                  placeholder="Contraseña"
-                  className="input"
-                />
-                <p className="error">
-                  <ErrorMessage name="password" className="errorMessage" />
-                </p>
-              </div>
               <div className="avatar-field">
                 <Field
                   name="avatar"
@@ -255,17 +230,27 @@ export default function CreateUser() {
                   <ErrorMessage name="cover" className="errorMessage" />
                 </p>
               </div>
-              <div className="year_of_birth-field">
-                <Field
-                  name="year_of_birth"
-                  type="text"
-                  placeholder="Año de nacimiento"
-                  className="input"
+              <div className="email-field">
+              <Field
+                name="email"
+                type="text"
+                placeholder="example@correo.com"
+                className="input"
+              />
+              <p className="error">
+                <ErrorMessage
+                  name="email"
+                  className="errorMessage"
                 />
-                <p className="error">
-                  <ErrorMessage name="year_of_birth" className="errorMessage" />
-                </p>
-              </div>
+              </p>
+            </div>
+              <div className="birthday-field">
+              <Field name="birthday" type="date" className="input" />
+              <label>Fecha de Nacimiento</label>
+              <p className="error">
+                <ErrorMessage name="birthday" className="errorMessage" />
+              </p>
+            </div>
               <div className="city-field">
                 <Field
                   name="city"
@@ -278,17 +263,29 @@ export default function CreateUser() {
                 </p>
               </div>
               <div className="rolId-field">
-                <Field name="rolId" as="select" className="input">
-                  <option disabled value="">
-                    Tipo de Usuario
-                  </option>
-                  <option>ADMIN</option>
-                  <option>USER</option>
-                </Field>
-                <p className="error">
-                  <ErrorMessage name="rolId" className="errorMessage" />
-                </p>
-              </div>
+              <Field
+                name="rolId"
+                as="select"
+                placeholder="roles"
+                className="input"
+              >
+                <option disabled value="">
+                  Desempeño
+                </option>
+                {props.allRols &&
+                  props.allRols.map((rol: any) => (
+                    <option value={rol.id} key={rol.id}>
+                      {rol.name}
+                    </option>
+                  ))}
+              </Field>
+              <p className="error">
+                <ErrorMessage
+                  name="rolId"
+                  className="errorMessage"
+                />
+              </p>
+            </div>
               <div className="btn-container">
                 <button type="submit" className="submitted">
                   Crear usuario
@@ -303,3 +300,15 @@ export default function CreateUser() {
     </>
   );
 }
+
+
+export const getServerSideProps = async () => {
+  const apiRols = await axios.get("http://localhost:3000/api/rols");
+  const allRols = await apiRols.data;
+
+  return {
+    props: {
+      allRols,
+    },
+  };
+};

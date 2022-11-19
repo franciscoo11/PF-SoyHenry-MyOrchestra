@@ -1,4 +1,5 @@
 import { prisma } from "../../lib/prisma";
+import bcrypt from "bcryptjs";
 
 const yearValidation = (year: any) => {
   var text = /^[0-9]+$/;
@@ -11,25 +12,37 @@ const yearValidation = (year: any) => {
   }
 };
 
+const hashPassword = (password:string) => {
+  const hash = bcrypt.hashSync(password)
+  return hash
+}
+
+const check_password = (password:any) => {
+  const regex_pw = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/
+  return regex_pw.test(password)
+};
+
 export const postUser = async (body: any) => {
   try {
     if (!body) return null;
     const { name, email, password, rolId } = body;
     if ( !email || !password ) return null;
-
+    if(!check_password(password)) return null
     const addUser = await prisma.users.upsert({
       where: {
         email: email,
       },
       update: {
+        ...body,
         name: name,
         email: email,
-        password: password,
+        password: hashPassword(password),
         rolId: rolId,
-        ...body,
+        
       },
       create: {
         ...body,
+        password: hashPassword(password)
       },
     });
     return addUser ? addUser : null;

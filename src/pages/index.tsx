@@ -1,3 +1,4 @@
+import { useUser } from "@auth0/nextjs-auth0";
 import axios from "axios";
 import Head from "next/head";
 import Footer from "../frontend/components/Footer";
