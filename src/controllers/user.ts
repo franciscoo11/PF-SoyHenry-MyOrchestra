@@ -15,7 +15,7 @@ export const postUser = async (body: any) => {
   try {
     if (!body) return null;
     const { name, email, password, rolId } = body;
-    if (!name || !email || !password ) return null;
+    if ( !email || !password ) return null;
 
     const addUser = await prisma.users.upsert({
       where: {
