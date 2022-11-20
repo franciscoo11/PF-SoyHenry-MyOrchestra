@@ -1,6 +1,5 @@
 import axios from "axios";
 import Head from "next/head";
-import { hostname } from "os";
 import Footer from "../frontend/components/Footer";
 import HeroImage from "../frontend/components/HeroImage";
 import HomeMainContent from "../frontend/components/HomeMainContent";

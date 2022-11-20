@@ -193,7 +193,7 @@ export default function UpdateOrchestra({ types_orchestras }: any) {
           })}
           onSubmit={(values, { setSubmitting }: FormikHelpers<Values>) => {
             axios
-              .put(`http://localhost:3000/api/orchestra/${id}`, values)
+              .put(`/api/orchestra/${id}`, values)
               .then((res) => {
                 toast.success("Orquesta actualizada correctamente", {
                   position: "top-right",
