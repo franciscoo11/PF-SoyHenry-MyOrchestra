@@ -1,5 +1,4 @@
 import Head from "next/head";
-import MainNavBar from "../../frontend/components/MainNavBar";
 import HomeCards from "../../frontend/components/HomeCards";
 import styled from "styled-components";
 import axios from "axios";
