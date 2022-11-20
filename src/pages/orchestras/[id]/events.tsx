@@ -10,6 +10,7 @@ import AsideRight from "../../../frontend/components/orchestras/AsideRight";
 import { StyledMain } from "../../../frontend/styles/orchestras/sharedStyles";
 import { prisma } from "../../../../lib/prisma";
 import axios from "axios";
+import OrchestraEventCard from "../../../frontend/components/OrchestraEventCard";
 
 export interface DataModel {
   id: string;
@@ -60,24 +61,6 @@ function OrchestraEvents(props: any) {
             title={orchestras.name}
             location={orchestras.location}
           />
-          <div className="form-container">
-            <div
-              className="pic"
-              style={{ backgroundImage: `url(${Users[1].image})` }}
-            ></div>
-            <form className="post-form">
-              <input
-                className="post-input"
-                type="text"
-                placeholder="Nueva publicación..."
-              />
-              <div className="post-form-icons-container">
-                <FiFileText />
-                <FiVideo />
-                <FiImage />
-              </div>
-            </form>
-          </div>
           <div className="filter-container">
             <div className="divider"></div>
             <div className="post-filter">
@@ -86,9 +69,29 @@ function OrchestraEvents(props: any) {
           </div>
 
           <div className="posts">
-            {Posts.map((post, index) => (
-              <OrchestraPosts key={index} post={post} />
-            ))}
+            {Posts.map(
+              (
+                {
+                  title,
+                  event_day,
+                  event_hour,
+                  media,
+                  content,
+                  event_location,
+                },
+                index
+              ) => (
+                <OrchestraEventCard
+                  key={index}
+                  title={title}
+                  day={event_day}
+                  hour={event_hour}
+                  image={media}
+                  description={content}
+                  location={event_location}
+                />
+              )
+            )}
           </div>
         </section>
         <aside className="aside-right">

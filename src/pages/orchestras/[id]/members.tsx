@@ -61,8 +61,9 @@ function OrchestraMembers(props: any) {
           <div className="members-container">
             <h2 className="members-title">Integrantes</h2>
             <p className="members-content">
-              {Users.map((user) => (
+              {Users.map((user, index) => (
                 <MemberCard
+                  key={index}
                   pic={user.image}
                   logo={orchestras.logo}
                   role={user.rol}
