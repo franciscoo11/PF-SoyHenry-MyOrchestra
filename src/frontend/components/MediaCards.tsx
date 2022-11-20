@@ -1,4 +1,4 @@
-import { Users, Orquestas } from "./../utils/fakeDB";
+import { Users, Orquestas } from "../utils/fakeDB";
 import styled from "styled-components";
 import { FiMail } from "react-icons/fi";
 
@@ -11,12 +11,11 @@ const StyledMemberCard = styled.div`
   border: 1px solid lightgrey;
   overflow: hidden;
 
-  .profile-pic {
+  .media-pic {
     height: 8em;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    filter: grayscale();
   }
 
   .orchestra-logo {
@@ -35,19 +34,19 @@ const StyledMemberCard = styled.div`
   }
 
   .content {
-    padding: 12px 10px;
+    padding: 18px 12px;
     p {
       margin: 0;
     }
 
-    .user-role {
+    .media-label {
       text-transform: uppercase;
       color: gray;
       font-weight: bold;
       font-size: 0.8em;
     }
 
-    .user-name {
+    .media-title {
       font-weight: bold;
       font-size: 1.1em;
       white-space: nowrap;
@@ -55,36 +54,44 @@ const StyledMemberCard = styled.div`
       text-overflow: ellipsis;
     }
 
-    .card-icons {
-      text-align: right;
-      margin: 12px 0 0;
+    .media-btn {
+      margin: 24px 0 0;
+      .readmore-btn {
+        width: 100%;
+        padding: 12px 18px;
+        font-size: 1em;
+        color: ${({ theme }) => theme.colors.secondary};
+        background-color: white;
+        border: 1px solid ${({ theme }) => theme.colors.secondary};
+        border-radius: 6px;
+
+        :hover {
+          background-color: ${({ theme }) => theme.colors.secondary};
+          color: white;
+          cursor: pointer;
+        }
+      }
     }
   }
 `;
 
-interface MemberCardProps {
+interface MediaCardModel {
   pic: string;
-  logo: string;
-  role: string;
-  name: string;
+  title: string;
 }
 
-export default function MemberCard({ pic, logo, role, name }: MemberCardProps) {
+export default function MediaCard({ pic, title }: MediaCardModel) {
   return (
     <StyledMemberCard>
       <div
-        className="profile-pic"
+        className="media-pic"
         style={{ backgroundImage: `url(${pic})` }}
       ></div>
-      <div
-        className="orchestra-logo"
-        style={{ backgroundImage: `url(${logo})` }}
-      ></div>
       <div className="content">
-        <p className="user-role">{role}</p>
-        <p className="user-name">{name}</p>
-        <div className="card-icons">
-          <FiMail />
+        <p className="media-label">Multimedia</p>
+        <p className="media-title">{title}</p>
+        <div className="media-btn">
+          <button className="readmore-btn">Ver más</button>
         </div>
       </div>
     </StyledMemberCard>

@@ -56,7 +56,13 @@ export default function AsideLeft(props: any) {
             </li>
             <li className="nav-item">
               <FiVideo />
-              <div>Multimedia</div>
+              <div>
+                <Link
+                  href={`/orchestras/${encodeURIComponent(props.id)}/media`}
+                >
+                  Multimedia
+                </Link>
+              </div>
             </li>
             <li className="nav-item">
               <FiFile />

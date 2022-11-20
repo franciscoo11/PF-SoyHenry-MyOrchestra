@@ -136,7 +136,8 @@ const StyledMain = styled.main`
     flex-direction: column;
     gap: 24px;
 
-    .members-content {
+    .members-content,
+    .media-container {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
