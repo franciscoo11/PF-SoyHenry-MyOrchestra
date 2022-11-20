@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import MainNavBar from "../frontend/components/MainNavBar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { HOSTNAME } from "./_app";
 
 const StyledForm = styled.div`
   background-image: url("/bg_01.jpg");
@@ -83,7 +84,7 @@ const StyledForm = styled.div`
         grid-row: 5;
       }
 
-      .year_of_birth-field {
+      .birthday-field {
         grid-column: 3/5;
         grid-row: 5;
       }
@@ -121,16 +122,15 @@ interface Values {
   name: string;
   email: string;
   password: string;
-  avatar: string;
-  cover: string;
-  year_of_birth: string;
+  avatar?: string;
+  cover?: string;
+  birthday: string;
   city: string;
 }
 
-export default function CreateUser() {
+export default function CreateUser({allRols}:any) {
   const router = useRouter();
-
-  const passwordRegex = /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/;
+  const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/;
   return (
     <>
       <MainNavBar />
@@ -142,7 +142,7 @@ export default function CreateUser() {
             password: "",
             avatar: "",
             cover: "",
-            year_of_birth: "",
+            birthday: "",
             city: "",
           }}
           validationSchema={Yup.object({
@@ -154,14 +154,13 @@ export default function CreateUser() {
               .min(8)
               .matches(
                 passwordRegex,
-                `La contraseña debe tener al menos 8, un dígito, al menos una minúscula y al menos una mayúscula.
-            NO puede tener otros símbolos.`
+                `La contraseña debe tener al menos 8 digitos, un caracter especial, al menos una minúscula, debe contener algun numero y al menos una mayúscula`
               )
               .required("Ninguna contraseña ingresada"),
             avatar: Yup.string().url("URL inválido"),
             cover: Yup.string().url("URL inválido"),
-            year_of_birth: Yup.string()
-              .max(4, "Tiene que ser un número de 4 dígitos")
+            birthday: Yup.date()
+              .max(new Date(), "Fecha incorrecta, ingrese una fecha valida")
               .required("Requerido"),
             city: Yup.string().required("Requerido"),
           })}
@@ -207,6 +206,7 @@ export default function CreateUser() {
                   placeholder="Nombre"
                   className="input"
                 />
+                <label>Nombre</label>
                 <p className="error">
                   <ErrorMessage name="name" className="errorMessage" />
                 </p>
@@ -218,6 +218,7 @@ export default function CreateUser() {
                   placeholder="Email"
                   className="input"
                 />
+                <label>Email</label>
                 <p className="error">
                   <ErrorMessage name="email" className="errorMessage" />
                 </p>
@@ -229,6 +230,7 @@ export default function CreateUser() {
                   placeholder="Contraseña"
                   className="input"
                 />
+                <label>Password</label>
                 <p className="error">
                   <ErrorMessage name="password" className="errorMessage" />
                 </p>
@@ -240,6 +242,7 @@ export default function CreateUser() {
                   placeholder="Avatar"
                   className="input"
                 />
+                <label>Avatar</label>
                 <p className="error">
                   <ErrorMessage name="avatar" className="errorMessage" />
                 </p>
@@ -251,21 +254,20 @@ export default function CreateUser() {
                   placeholder="Imagen de portada"
                   className="input"
                 />
+                <label>Imagen de portada</label>
                 <p className="error">
                   <ErrorMessage name="cover" className="errorMessage" />
                 </p>
               </div>
-              <div className="year_of_birth-field">
-                <Field
-                  name="year_of_birth"
-                  type="text"
-                  placeholder="Año de nacimiento"
-                  className="input"
-                />
-                <p className="error">
-                  <ErrorMessage name="year_of_birth" className="errorMessage" />
-                </p>
+
+              <div className="birthday-field">
+              <Field name="birthday" type="date" className="input" />
+              <label>Fecha de Nacimiento</label>
+              <p className="error">
+                <ErrorMessage name="birthday" className="errorMessage" />
+              </p>
               </div>
+
               <div className="city-field">
                 <Field
                   name="city"
@@ -273,22 +275,34 @@ export default function CreateUser() {
                   placeholder="Ciudad"
                   className="input"
                 />
+                <label>Ciudad</label>
                 <p className="error">
                   <ErrorMessage name="city" className="errorMessage" />
                 </p>
               </div>
+
               <div className="rolId-field">
-                <Field name="rolId" as="select" className="input">
-                  <option disabled value="">
-                    Tipo de Usuario
-                  </option>
-                  <option>ADMIN</option>
-                  <option>USER</option>
-                </Field>
-                <p className="error">
-                  <ErrorMessage name="rolId" className="errorMessage" />
-                </p>
-              </div>
+              <Field
+                name="rolId"
+                as="select"
+                placeholder="ACTIVIDAD"
+                className="input"
+              >
+                {allRols &&
+                  allRols.map((rol: any) => (
+                    <option value={rol.id} key={rol.id}>
+                      {rol.name}
+                    </option>
+                  ))}
+              </Field>
+              <p className="error">
+                <ErrorMessage
+                  name="rolId"
+                  className="errorMessage"
+                />
+              </p>
+            </div>
+
               <div className="btn-container">
                 <button type="submit" className="submitted">
                   Crear usuario
@@ -303,3 +317,14 @@ export default function CreateUser() {
     </>
   );
 }
+
+
+export const getServerSideProps = async () => {
+  const rols = await axios.get(`${HOSTNAME}/api/rols`);
+  const allRols = rols.data
+  return {
+    props: {
+      allRols,
+    },
+  };
+};

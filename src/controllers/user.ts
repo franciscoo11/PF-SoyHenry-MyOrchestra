@@ -25,7 +25,7 @@ const check_password = (password:string) => {
 export const postUser = async (body: any) => {
   try {
     if (!body) return null;
-    const { name, email, password, rolId } = body;
+    const { name, email, password, rolId, birthday } = body;
     if ( !email || !password ) return null;
 
     if(!check_password(password)) return null
@@ -33,17 +33,20 @@ export const postUser = async (body: any) => {
       where: {
         email: email,
       },
+      
       update: {
         ...body,
         name: name,
         email: email,
         password: hashPassword(password),
         rolId: rolId,
-        
+        birthday: new Date(birthday)
       },
+
       create: {
         ...body,
-        password: hashPassword(password)
+        password: hashPassword(password),
+        birthday: new Date(birthday)
       },
     });
     return addUser ? addUser : null;

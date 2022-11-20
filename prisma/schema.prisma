@@ -40,7 +40,7 @@ model users {
   password               String?
   avatar                 String?
   cover                  String?
-  birthday               DateTime?
+  birthday               DateTime? @db.Date 
   city                   String?
   state                  String?
   country                String?
