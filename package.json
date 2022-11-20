@@ -11,6 +11,7 @@
     "studioDB": "npx prisma studio"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "^1.9.2",
     "@prisma/client": "^4.6.1",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
@@ -20,7 +21,6 @@
     "eslint-config-next": "13.0.2",
     "formik": "^2.2.9",
     "next": "13.0.2",
-    "next-auth": "^4.16.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.6.0",

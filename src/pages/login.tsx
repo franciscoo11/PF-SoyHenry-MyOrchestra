@@ -3,10 +3,9 @@ import { useRouter } from "next/router";
 import * as Yup from 'yup';
 import MainNavBar from '../frontend/components/MainNavBar';
 import Footer from "../frontend/components/Footer";
-import { useSession, signIn, signOut } from "next-auth/react";
 import styled from "styled-components";
 import Link from "next/link";
-
+import { useUser } from '@auth0/nextjs-auth0'
 
 
  const StyledForm = styled.div
@@ -114,7 +113,8 @@ import Link from "next/link";
 
 export default function LoginUser () {
     const router = useRouter();
-    const { data: session } = useSession()
+    const { user, error, isLoading } = useUser()
+
 
     const passwordRegex = /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/;
     return(
@@ -174,11 +174,8 @@ export default function LoginUser () {
                 </p>
             </div>
             
-            <div className="boton">
-                <button type="submit" className="submitted"> Iniciar Sesión </button>
-            </div>
             <div className="botonGoogle">
-                <button type="submit" className="submitted"> Iniciar Sesión con Google </button>
+                <button type="submit" className="submitted" onClick={() => router.push('/api/auth/login')}> Iniciar Sesion </button>
             </div>
             <div className="botonRegistro">
                 <label>
@@ -199,7 +196,5 @@ export default function LoginUser () {
     </>
 
     )
-
-
 
 }
