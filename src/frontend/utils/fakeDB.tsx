@@ -103,8 +103,9 @@ export const Posts = [
       "Blanditiis harum quidem tenetur voluptatem. Non dolorum vel repellat recusandae sunt ut. Enim deserunt et dolor et eveniet ipsam sed. Iste in ducimus consequatur id quis soluta. Excepturi tenetur quo dolor. Illum ut eum.",
     media: "http://placeimg.com/640/480/business",
     views: 91625,
-    event_date:
-      "Sat Dec 03 2022 20:50:41 GMT+0000 (Coordinated Universal Time)",
+    event_location: "Vero - Architecto - Asperiores",
+    event_day: "Dec 03 2022",
+    event_hour: "20:50",
     file: "card_keyboard_enterprise.pdf",
   },
   {
@@ -113,8 +114,9 @@ export const Posts = [
       "Repudiandae illo accusantium sequi illum amet suscipit quia est voluptates. Non pariatur possimus in sapiente facilis. Labore ipsam qui dolore autem. Iste neque nihil dolorem non nisi quam est. Nisi rem quod. Placeat hic occaecati.",
     media: "http://placeimg.com/640/480/nature",
     views: 19671,
-    event_date:
-      "Sun Oct 01 2023 17:45:27 GMT+0000 (Coordinated Universal Time)",
+    event_location: "Modi - Vel - Impedit",
+    event_day: "Oct 01 2023",
+    event_hour: "17:45",
     file: "generic.mp4",
   },
   {
@@ -123,8 +125,9 @@ export const Posts = [
       "Error est dignissimos soluta facere nihil inventore molestiae rem. At soluta unde veniam ut iure doloremque temporibus beatae dolorem. Quasi perferendis veritatis velit asperiores. Eaque molestiae quo voluptates provident accusamus numquam voluptate.",
     media: "http://placeimg.com/640/480/cats",
     views: 24075,
-    event_date:
-      "Mon Nov 21 2022 11:34:25 GMT+0000 (Coordinated Universal Time)",
+    event_location: "Dolorum - Quaerat - Sint",
+    event_day: "Nov 21 2022",
+    event_hour: "11:34",
     file: "malawi_incredible.csv",
   },
   {
@@ -134,8 +137,9 @@ export const Posts = [
       "Quae suscipit in voluptas distinctio molestiae cumque dolore. Est dolores autem quisquam doloribus molestiae. Hic tenetur et dolore quia. Aliquam eos minima corrupti labore vel sit ea praesentium nemo. Doloremque odio consequatur libero ipsam sit accusamus atque voluptatem ut.",
     media: "http://placeimg.com/640/480/fashion",
     views: 79025,
-    event_date:
-      "Mon Sep 25 2023 00:56:02 GMT+0000 (Coordinated Universal Time)",
+    event_location: "Dolorum - Quaerat - Sint",
+    event_day: "Nov 21 2022",
+    event_hour: "11:34",
     file: "com.wav",
   },
 ];

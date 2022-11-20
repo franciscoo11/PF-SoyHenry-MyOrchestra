@@ -42,15 +42,31 @@ export default function AsideLeft(props: any) {
             </li>
             <li className="nav-item">
               <FiUsers />
-              <div>Integrantes</div>
+              <div>
+                <Link
+                  href={`/orchestras/${encodeURIComponent(props.id)}/members`}
+                >
+                  Integrantes
+                </Link>
+              </div>
             </li>
             <li className="nav-item">
               <FiEye />
-              <div>Noticias</div>
+              <div>
+                <Link href={`/orchestras/${encodeURIComponent(props.id)}/news`}>
+                  Noticias
+                </Link>
+              </div>
             </li>
             <li className="nav-item">
               <FiVideo />
-              <div>Multimedia</div>
+              <div>
+                <Link
+                  href={`/orchestras/${encodeURIComponent(props.id)}/media`}
+                >
+                  Multimedia
+                </Link>
+              </div>
             </li>
             <li className="nav-item">
               <FiFile />
@@ -58,7 +74,13 @@ export default function AsideLeft(props: any) {
             </li>
             <li className="nav-item">
               <FiCalendar />
-              <div>Eventos</div>
+              <div>
+                <Link
+                  href={`/orchestras/${encodeURIComponent(props.id)}/events`}
+                >
+                  Eventos
+                </Link>
+              </div>
             </li>
             <li className="nav-item">
               <FiHeart />
