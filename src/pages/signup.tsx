@@ -166,7 +166,7 @@ export default function CreateUser({allRols}:any) {
           })}
           onSubmit={(values, { setSubmitting }: FormikHelpers<Values>) => {
             axios
-              .post("http://localhost:3000/api/user", values)
+              .post("/api/user", values)
               .then(() => {
                 toast.success("Usuario creado exitosamente", {
                   position: "top-right",
