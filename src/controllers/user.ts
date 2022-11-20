@@ -1,5 +1,6 @@
 import { prisma } from "../../lib/prisma";
 import bcrypt from "bcryptjs";
+import { transporter } from '../../config/nodemailer';
 
 const yearValidation = (year: any) => {
   var text = /^[0-9]+$/;
@@ -46,6 +47,12 @@ export const postUser = async (body: any) => {
         password: hashPassword(password)
       },
     });
+    await transporter.sendMail({
+      from: `"My Orchestras App" <${process.env.EMAIL}>`, 
+      to: `${addUser.email}`, 
+      subject: "Registro", 
+      html: `<b>Gracias por registrarte ${addUser.name}! </b>`,
+    });
     return addUser ? addUser : null;
   } catch (error) {
     return console.log(error);
@@ -75,6 +82,12 @@ export const updateUser = async (id: any, body: any) => {
         id: id,
       },
       data: body,
+    });
+    await transporter.sendMail({
+      from: `"My Orchestras App" <${process.env.EMAIL}>`, 
+      to: `${getUser.email}`, 
+      subject: "Update account", 
+      html: `<b>Tu cuenta ha sido actualizada ${getUser.name}! </b>`,
     });
     return getUser ? getUser : null;
   } catch (error) {
