@@ -16,7 +16,7 @@ transporter.verify().then(() => {
 
 export const emailerReg = function (user:any) {
     return {
-      from: `"My Orchestras App" <${process.env.EMAIL}>`,
+      from: `"My Orchestras App" <${EMAIL}>`,
       to: user.email,
       subject: "Bienvenido a My Orchestras App",
       html: ` 
