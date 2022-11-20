@@ -18,7 +18,7 @@ export const emailerReg = function (user:any) {
     return {
       from: `"My Orchestras App" <${process.env.EMAIL}>`,
       to: user.email,
-      subject: "Bienvenido a My Orchestras",
+      subject: "Bienvenido a My Orchestras App",
       html: ` 
       <div style="background-color: #2b9423; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3px 10px; font-weight: bold; border-radius: 5px;">
       <ul>
