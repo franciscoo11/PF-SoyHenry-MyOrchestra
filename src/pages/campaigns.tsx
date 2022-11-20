@@ -4,6 +4,7 @@ import CampaignCards from "../frontend/components/CampaignCards";
 import styled from "styled-components";
 import axios from "axios";
 import Footer from "../frontend/components/Footer";
+import { HOSTNAME } from "./_app";
 
 const StyledMain = styled.main`
   margin: 25px auto;
@@ -85,7 +86,7 @@ const Campañas = ({ campaign }: any) => {
 export default Campañas;
 
 export const getServerSideProps = async () => {
-  const res = await axios.get("http://localhost:3000/api/campaign");
+  const res = await axios.get(`${HOSTNAME}/api/campaign`);
   const campaign = await res.data;
 
   return {

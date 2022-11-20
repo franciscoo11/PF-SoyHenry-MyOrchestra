@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import Footer from "../../frontend/components/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { HOSTNAME } from "../_app";
 
 const StyledForm = styled.div`
   background-image: url("/bg_01.jpg");
@@ -190,7 +191,7 @@ export default function CreateOrchestra(props: Props) {
         })}
         onSubmit={(values, { setSubmitting }: FormikHelpers<Values>) => {
           axios
-            .post("http://localhost:3000/api/orchestra", values)
+            .post("/api/orchestra", values)
             .then(() => {
               toast.success("Orquesta creada exitosamente", {
                 position: "top-right",
@@ -372,7 +373,7 @@ export default function CreateOrchestra(props: Props) {
 }
 
 export const getServerSideProps = async () => {
-  const res = await axios.get("http://localhost:3000/api/orchestras-types");
+  const res = await axios.get(`${HOSTNAME}/api/orchestras-types`);
   const types_orchestras = await res.data;
 
   return {

@@ -1,6 +1,7 @@
 import type { AppProps } from "next/app";
 import { ThemeProvider, DefaultTheme } from "styled-components";
 import GlobalStyle from "../frontend/styles/globalstyles";
+export const { HOSTNAME } = process.env;
 import { UserProvider } from '@auth0/nextjs-auth0'
 import {QueryClient,QueryClientProvider } from "react-query"
 
