@@ -10,7 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model orchestras {
   id                 String               @id @default(cuid())
   name               String               @unique @db.VarChar()
@@ -40,7 +39,7 @@ model users {
   password               String?
   avatar                 String?
   cover                  String?
-  birthday               DateTime?
+  birthday               DateTime?                @db.Date    
   city                   String?
   state                  String?
   country                String?
