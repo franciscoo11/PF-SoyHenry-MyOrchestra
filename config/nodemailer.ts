@@ -11,5 +11,34 @@ export const transporter = nodemailer.createTransport({
 })
 
 transporter.verify().then(() => {
-    console.log('Configuration correct!')
+    console.log('Configuration has working perfect!')
 })
+
+export const emailerReg = function (user:any) {
+    return {
+      from: `"My Orchestras App" <${process.env.EMAIL}>`,
+      to: user.email,
+      subject: "Bienvenido a My Orchestras",
+      html: ` 
+      <div style="background-color: #2b9423; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3px 10px; font-weight: bold; border-radius: 5px;">
+      <ul>
+      <h2 style="color: #fff;">Hola ${
+        user.name
+      }, My Orchestras te da una calida bienvenida, gracias por ser parte de nuestra familia! </h2>
+      </ul>
+      </div>
+      <ul>
+      
+      <h3 style="color: #000000;">ESTOS SON LOS DATOS DE TU CUENTA:</h3>
+      <h4 style="color: #000000;">- Nombre: ${user.name}</h4>
+      <h4 style="color: #000000;">- Email: ${user.email}</h4>
+
+      </ul>
+      <ul><br><br>
+      <h3 style="color: #000000;">Politicas de seguridad:</h3>
+      <li style="color: #000000;">Pon tus datos en un lugar seguro.</li>
+      <li style="color: #000000;">No compartas tu información personal con otras personas.</li>
+      <li style="color: #000000;">Si tienes dudas sobre algun movimiento extraño en tu cuenta, haganos saber!</li>
+      </ul> `,
+    };
+  };
