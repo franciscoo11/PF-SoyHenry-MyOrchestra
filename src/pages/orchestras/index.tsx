@@ -6,6 +6,7 @@ import axios from "axios";
 import Footer from "../../frontend/components/Footer";
 import { useState } from "react";
 import OrchestasNavBar from "../../frontend/components/OrchestasNavBar";
+import { HOSTNAME } from "../_app";
 
 const StyledMain = styled.main`
   margin: 25px auto;
@@ -143,14 +144,12 @@ export default function Orquestas({ orchestra }: any) {
   };
 
   async function nameSortDesc() {
-    const res = await axios.get(
-      "http://localhost:3000/api/orchestra?name=desc"
-    );
+    const res = await axios.get(`${HOSTNAME}/api/orchestra?name=desc`);
     setData(await res.data);
   }
 
   async function nameSortAsc() {
-    const res = await axios.get("http://localhost:3000/api/orchestra?name=asc");
+    const res = await axios.get(`${HOSTNAME}/api/orchestra?name=asc`);
     setData(await res.data);
   }
 
@@ -217,7 +216,7 @@ export default function Orquestas({ orchestra }: any) {
 }
 
 export const getServerSideProps = async () => {
-  const res = await axios.get("http://localhost:3000/api/orchestra");
+  const res = await axios.get(`${HOSTNAME}/api/orchestra`);
   const orchestra = await res.data;
 
   return {

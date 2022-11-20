@@ -4,6 +4,7 @@ import HomeCards from "../frontend/components/HomeCards";
 import styled from "styled-components";
 import axios from "axios";
 import Footer from "../frontend/components/Footer";
+import { HOSTNAME } from "./_app";
 
 const StyledMain = styled.main`
   margin: 25px auto;
@@ -85,7 +86,7 @@ const Media = ({ post }: any) => {
 export default Media;
 
 export const getServerSideProps = async () => {
-  const res = await axios.get("http://localhost:3000/api/post");
+  const res = await axios.get(`${HOSTNAME}/api/post`);
   const post = await res.data;
 
   return {
