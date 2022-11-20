@@ -52,7 +52,11 @@ export default function AsideLeft(props: any) {
             </li>
             <li className="nav-item">
               <FiEye />
-              <div>Noticias</div>
+              <div>
+                <Link href={`/orchestras/${encodeURIComponent(props.id)}/news`}>
+                  Noticias
+                </Link>
+              </div>
             </li>
             <li className="nav-item">
               <FiVideo />
