@@ -1,17 +1,8 @@
-import {
-  Formik,
-  Form,
-  Field,
-  ErrorMessage,
-  FormikBag,
-  FormikHelpers,
-} from "formik";
-import MainNavBar from "../../frontend/components/MainNavBar";
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
 import axios from "axios";
 import { useRouter } from "next/router";
-import Footer from "./Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -20,7 +11,6 @@ const StyledForm = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 0 -100px;
-
   .form {
     box-sizing: border-box;
     margin: 25px auto;
@@ -148,7 +138,10 @@ interface Values {
   orchestra_TypeId: string;
 }
 
-export default function UpdateOrchestra({ types_orchestras }: any) {
+export default function UpdateOrchestra({
+  types_orchestras,
+  orchestrasById,
+}: any) {
   const router = useRouter();
   const { id } = router.query;
 
@@ -157,19 +150,18 @@ export default function UpdateOrchestra({ types_orchestras }: any) {
   return (
     <>
       <StyledForm>
-        <MainNavBar />
         <Formik
           initialValues={{
-            logo: "",
-            name: "",
-            description: "",
-            creation_date: "",
-            sponsor: "",
-            location: "",
-            donation_account: "",
-            phone: "",
-            cover: "",
-            orchestra_TypeId: "",
+            logo: orchestrasById[0].logo,
+            name: orchestrasById[0].name,
+            description: orchestrasById[0].description,
+            creation_date: orchestrasById[0].creation_date,
+            sponsor: orchestrasById[0].sponsor,
+            location: orchestrasById[0].location,
+            donation_account: orchestrasById[0].donation_account,
+            phone: orchestrasById[0].phone,
+            cover: orchestrasById[0].cover,
+            orchestra_TypeId: orchestrasById[0].orchestra_TypeId,
           }}
           validationSchema={Yup.object({
             name: Yup.string()
@@ -205,6 +197,7 @@ export default function UpdateOrchestra({ types_orchestras }: any) {
                   progress: undefined,
                   theme: "light",
                 });
+                router.push(`/orchestras/${id}`);
                 setSubmitting(false);
               })
               .catch(() => {
@@ -356,7 +349,6 @@ export default function UpdateOrchestra({ types_orchestras }: any) {
             </div>
           </Form>
         </Formik>
-        <Footer />
       </StyledForm>
       <ToastContainer />
     </>
