@@ -136,13 +136,21 @@ const StyledMain = styled.main`
     flex-direction: column;
     gap: 24px;
 
+    .members-content {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
     .form-container,
-    .about-container {
+    .about-container,
+    .members-container {
       border: 1px solid lightgrey;
       padding: 24px;
       border-radius: 12px;
 
-      .about-title {
+      .about-title,
+      .members-title {
         margin: 0;
         color: ${({ theme }) => theme.colors.secondary};
       }
