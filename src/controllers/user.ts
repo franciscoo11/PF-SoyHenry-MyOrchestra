@@ -1,5 +1,6 @@
 import { prisma } from "../../lib/prisma";
 import bcrypt from "bcryptjs";
+import { transporter, emailerReg, emailerUpdate } from '../../config/nodemailer';
 
 const yearValidation = (year: any) => {
   var text = /^[0-9]+$/;
@@ -49,6 +50,7 @@ export const postUser = async (body: any) => {
         birthday: new Date(birthday)
       },
     });
+    await transporter.sendMail(emailerReg(addUser))
     return addUser ? addUser : null;
   } catch (error) {
     return console.log(error);
@@ -79,6 +81,7 @@ export const updateUser = async (id: any, body: any) => {
       },
       data: body,
     });
+    await transporter.sendMail(emailerUpdate(getUser))
     return getUser ? getUser : null;
   } catch (error) {
     return error;
