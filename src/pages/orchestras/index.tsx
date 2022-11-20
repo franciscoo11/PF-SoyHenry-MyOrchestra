@@ -144,12 +144,12 @@ export default function Orquestas({ orchestra }: any) {
   };
 
   async function nameSortDesc() {
-    const res = await axios.get(`${HOSTNAME}/api/orchestra?name=desc`);
+    const res = await axios.get(`api/orchestra?order=desc`);
     setData(await res.data);
   }
 
   async function nameSortAsc() {
-    const res = await axios.get(`${HOSTNAME}/api/orchestra?name=asc`);
+    const res = await axios.get(`api/orchestra?order=asc`);
     setData(await res.data);
   }
 
