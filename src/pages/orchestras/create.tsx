@@ -8,6 +8,7 @@ import Footer from "../../frontend/components/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { HOSTNAME } from "../_app";
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
 const StyledForm = styled.div`
   background-image: url("/bg_01.jpg");
@@ -372,7 +373,9 @@ export default function CreateOrchestra(props: Props) {
   );
 }
 
-export const getServerSideProps = async () => {
+
+export const getServerSideProps = withPageAuthRequired({
+  async getServerSideProps() {
   const res = await axios.get(`${HOSTNAME}/api/orchestras-types`);
   const types_orchestras = await res.data;
 
@@ -381,4 +384,5 @@ export const getServerSideProps = async () => {
       types_orchestras,
     },
   };
-};
+}
+});
