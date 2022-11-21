@@ -1,0 +1,38 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { getAllUserOnOrchestras, sendMembership, unsubscribeMembership } from '../../../controllers/userOnOrchestra';
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+    const GET:string="GET";
+    const POST:string="POST";
+    const DELETE:string='DELETE';
+
+    let {
+      method,
+      body,
+      query,
+    } = req;
+
+
+    try {
+        switch (method) {
+            case GET:
+              const allUsersOnOrchestras = await getAllUserOnOrchestras()
+              return allUsersOnOrchestras ? res.status(200).json(allUsersOnOrchestras) : res.status(404).json([])
+            case POST:
+              const addUser = await sendMembership(query,body)
+              return addUser ? res.status(201).json(addUser) : res.status(404).json({ error: 'Fields sent are not correct, please enter orchestraId, userId, rolId' })
+            case DELETE:
+              const deleteMembership = await unsubscribeMembership(query,body)
+              return deleteMembership ? res.status(200).json(deleteMembership) : res.status(404).json({ error: 'Fields sent are not correct, please enter orchestraId, userId, rolId' })
+            default:
+              return res.status(400).json("method not allowed")
+              
+        }
+    } catch (error) {
+      return  res.status(400).json({error : "Internal error, something goes really really wrong"})
+    }
+
+}
