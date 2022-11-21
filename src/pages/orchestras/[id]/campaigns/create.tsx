@@ -8,7 +8,7 @@ import AsideRight from "../../../../frontend/components/orchestras/AsideRight";
 import { StyledMain } from "../../../../frontend/styles/orchestras/sharedStyles";
 import { prisma } from "../../../../../lib/prisma";
 import CampaignForm from "../../../../frontend/components/orchestras/CampaignForm";
-
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 export interface DataModel {
   id: string;
 }
@@ -39,7 +39,7 @@ export const getStaticProps = async ({ params }: any) => {
   } catch (error) {}
 };
 
-function OrchestraCreateCampaign(props: any) {
+export default withPageAuthRequired( function OrchestraCreateCampaign(props: any) {
   const router = useRouter();
   // const { id } = router.query;
   const orchestra = props.orchestrasById[0];
@@ -68,4 +68,4 @@ function OrchestraCreateCampaign(props: any) {
   );
 }
 
-export default OrchestraCreateCampaign;
+)
