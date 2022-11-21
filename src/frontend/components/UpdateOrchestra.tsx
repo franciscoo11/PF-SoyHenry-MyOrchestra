@@ -201,7 +201,19 @@ export default function UpdateOrchestra({
                 setSubmitting(false);
               })
               .catch(() => {
-                alert("Verifica los datos ingresados, y vuelve a intentar.");
+                toast.error(
+                  "Verifica los datos ingresados, y vuelve a intentar.",
+                  {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                  }
+                );
                 window.location.reload();
               });
           }}

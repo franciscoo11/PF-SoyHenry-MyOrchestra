@@ -1,10 +1,10 @@
 import Head from "next/head";
-import MainNavBar from "../frontend/components/MainNavBar";
-import CampaignCards from "../frontend/components/CampaignCards";
+import MainNavBar from "../../frontend/components/MainNavBar";
+import CampaignCards from "../../frontend/components/CampaignCards";
 import styled from "styled-components";
 import axios from "axios";
-import Footer from "../frontend/components/Footer";
-import { HOSTNAME } from "./_app";
+import Footer from "../../frontend/components/Footer";
+import { HOSTNAME } from "../_app";
 
 const StyledMain = styled.main`
   margin: 25px auto;
