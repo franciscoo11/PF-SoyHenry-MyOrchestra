@@ -2,6 +2,7 @@ import SearchBar from "./SearchBar";
 import Link from "next/link";
 import styled from "styled-components";
 import Nav from "./Nav";
+import Auth from "./Auth";
 
 const NavStyle = styled.header`
   width: 100%;
@@ -56,25 +57,15 @@ export default function OrchestasNavBar(props: any) {
       <div className="nav-container">
         <Nav />
         <div className="links-container">
-          <div>
-            <Link href="/orchestras/create" className="log">
-              Crear Orquesta
-            </Link>
-          </div>
-          <div>
-            <Link href="/signup" className="log">
-              Registrarse
-            </Link>
-          </div>
-          <div></div>
-          <SearchBar
-            setCurrentPage={props.setCurrentPage}
-            data={props.data}
-            setData={props.setData}
-            search={props.search}
-            setSearch={props.setSearch}
-          />
+          <Auth />
         </div>
+        <SearchBar
+          setCurrentPage={props.setCurrentPage}
+          data={props.data}
+          setData={props.setData}
+          search={props.search}
+          setSearch={props.setSearch}
+        />
       </div>
     </NavStyle>
   );

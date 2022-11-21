@@ -1,15 +1,14 @@
 import { useRouter } from "next/router";
 import Cover from "../../../frontend/components/Cover";
 import MainNavBar from "../../../frontend/components/MainNavBar";
-import { Users, Posts } from "../../../frontend/utils/fakeDB";
+import { Campaigns, Posts, Users } from "../../../frontend/utils/fakeDB";
 import Footer from "../../../frontend/components/Footer";
 import AsideLeft from "../../../frontend/components/orchestras/AsideLeft";
 import AsideRight from "../../../frontend/components/orchestras/AsideRight";
 import { StyledMain } from "../../../frontend/styles/orchestras/sharedStyles";
 import { prisma } from "../../../../lib/prisma";
-import axios from "axios";
-import MemberCard from "../../../frontend/components/MemberCards";
-import MediaCard from "../../../frontend/components/MediaCards";
+import CampaignForm from "../../../frontend/components/orchestras/CampaignForm";
+import OrchestraEditForm from "../../../frontend/components/OrchestraEditForm";
 
 export interface DataModel {
   id: string;
@@ -31,51 +30,42 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }: any) => {
   try {
-    const orchestrasById: any =
+    const orchestraQuery: any =
       await prisma.$queryRaw`SELECT * FROM orchestras WHERE id = ${params.id}`;
+    const types_orchestras =
+      await prisma.$queryRaw`SELECT * FROM orchestra_type`;
+    const orchestra = orchestraQuery[0];
+
     return {
       props: {
-        orchestrasById,
+        orchestra,
+        types_orchestras,
       },
     };
   } catch (error) {}
 };
 
-function OrchestraMedia(props: any) {
+function OrchestraCreateCampaign({ orchestra, types_orchestras }: any) {
   const router = useRouter();
-  const { id } = router.query;
-  const orchestras = props.orchestrasById[0];
+  // const { id } = router.query;
+
+  const { id, logo, cover, name, location } = orchestra;
+
   return (
     <>
       <MainNavBar />
 
       <StyledMain>
         <aside className="aside-left">
-          <AsideLeft logo={orchestras.logo} id={orchestras.id} />
+          <AsideLeft logo={logo} id={id} />
         </aside>
         <section className="content">
-          <Cover
-            cover={orchestras.cover}
-            title={orchestras.name}
-            location={orchestras.location}
+          <Cover cover={cover} title={name} location={location} />
+          <h2 className="campaign-form-title">Editar Orquesta</h2>
+          <OrchestraEditForm
+            orchestra={orchestra}
+            types_orchestras={types_orchestras}
           />
-          <div className="about-container">
-            <h2 className="about-title">Galería Multimedia</h2>
-            <p className="about-content">{orchestras.description}</p>
-          </div>
-
-          <div className="filter-container">
-            <div className="divider"></div>
-            <div className="post-filter">
-              Ordenar por: <b>Mas recientes</b>
-            </div>
-          </div>
-
-          <div className="media-container">
-            {Posts.map((post, index) => (
-              <MediaCard key={index} pic={post.media} title={post.title} />
-            ))}
-          </div>
         </section>
         <aside className="aside-right">
           <AsideRight />
@@ -86,4 +76,4 @@ function OrchestraMedia(props: any) {
   );
 }
 
-export default OrchestraMedia;
+export default OrchestraCreateCampaign;
