@@ -1,13 +1,15 @@
 import { useRouter } from "next/router";
-import Cover from "../../../frontend/components/Cover";
-import MainNavBar from "../../../frontend/components/MainNavBar";
-import { Campaigns, Posts, Users } from "../../../frontend/utils/fakeDB";
-import Footer from "../../../frontend/components/Footer";
-import AsideLeft from "../../../frontend/components/orchestras/AsideLeft";
-import AsideRight from "../../../frontend/components/orchestras/AsideRight";
-import { StyledMain } from "../../../frontend/styles/orchestras/sharedStyles";
-import { prisma } from "../../../../lib/prisma";
-import OrchestraCampaignCard from "../../../frontend/components/OrchestraCampaignCard";
+import Cover from "../../../../frontend/components/Cover";
+import MainNavBar from "../../../../frontend/components/MainNavBar";
+import { Campaigns, Posts, Users } from "../../../../frontend/utils/fakeDB";
+import Footer from "../../../../frontend/components/Footer";
+import AsideLeft from "../../../../frontend/components/orchestras/AsideLeft";
+import AsideRight from "../../../../frontend/components/orchestras/AsideRight";
+import { StyledMain } from "../../../../frontend/styles/orchestras/sharedStyles";
+import { prisma } from "../../../../../lib/prisma";
+import OrchestraCampaignCard from "../../../../frontend/components/OrchestraCampaignCard";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export interface DataModel {
   id: string;
@@ -41,8 +43,13 @@ export const getStaticProps = async ({ params }: any) => {
 
 function OrchestraCampaigns(props: any) {
   const router = useRouter();
-  const { id } = router.query;
+  // const { id } = router.query;
   const orchestras = props.orchestrasById[0];
+  const [data, setData] = useState(orchestras);
+
+  useEffect(() => setData(orchestras), []);
+
+  const { id, logo, cover, name, location, description } = data;
 
   return (
     <>
@@ -50,17 +57,13 @@ function OrchestraCampaigns(props: any) {
 
       <StyledMain>
         <aside className="aside-left">
-          <AsideLeft logo={orchestras.logo} id={orchestras.id} />
+          <AsideLeft logo={logo} id={id} />
         </aside>
         <section className="content">
-          <Cover
-            cover={orchestras.cover}
-            title={orchestras.name}
-            location={orchestras.location}
-          />
+          <Cover cover={cover} title={name} location={location} />
           <div className="about-container">
             <h2 className="about-title">Campañas de recaudación de fondos</h2>
-            <p className="about-content">{orchestras.description}</p>
+            <p className="about-content">{description}</p>
           </div>
 
           <div className="filter-container">
@@ -87,7 +90,12 @@ function OrchestraCampaigns(props: any) {
         </section>
         <aside className="aside-right">
           <div className="create-campaign-btn-container">
-            <button className="create-campaign-btn">Crear Campaña</button>
+            <Link
+              href={`/orchestras/${encodeURIComponent(id)}/campaigns/create`}
+              className="create-campaign-btn"
+            >
+              Crear Campaña
+            </Link>
           </div>
           <AsideRight />
         </aside>
