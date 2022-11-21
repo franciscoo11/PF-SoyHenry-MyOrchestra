@@ -61,6 +61,11 @@ function OrchestraEvents(props: any) {
             title={orchestras.name}
             location={orchestras.location}
           />
+          <div className="about-container">
+            <h2 className="about-title">Próximos Eventos</h2>
+            <p className="about-content">{orchestras.description}</p>
+          </div>
+
           <div className="filter-container">
             <div className="divider"></div>
             <div className="post-filter">

@@ -68,10 +68,10 @@ export default function AsideLeft(props: any) {
                 </Link>
               </div>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <FiFile />
               <div>Archivos</div>
-            </li>
+            </li> */}
             <li className="nav-item">
               <FiCalendar />
               <div>
@@ -84,7 +84,13 @@ export default function AsideLeft(props: any) {
             </li>
             <li className="nav-item">
               <FiHeart />
-              <div>Campañas</div>
+              <div>
+                <Link
+                  href={`/orchestras/${encodeURIComponent(props.id)}/campaigns`}
+                >
+                  Campañas
+                </Link>
+              </div>
             </li>
             <li className="nav-item">
               <FiEdit3 />

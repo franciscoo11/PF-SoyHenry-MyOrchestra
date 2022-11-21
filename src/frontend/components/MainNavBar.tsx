@@ -1,11 +1,6 @@
-import SearchBar from "./SearchBar";
-import Link from "next/link";
 import styled from "styled-components";
 import Nav from "./Nav";
-import { useUser } from "@auth0/nextjs-auth0/dist/frontend/use-user";
-import Cookies from "universal-cookie";
-import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import Auth from "./Auth";
 
 const NavStyle = styled.header`
   width: 100%;
@@ -55,41 +50,12 @@ const NavStyle = styled.header`
 `;
 
 export default function MainNavBar(props: any) {
-
-  const { user, error, isLoading } = useUser()
-  const cookie = new Cookies;
-  cookie.set ("Userlogin",user,{path:"/"})
-  const [loging,setLoging]=useState();
-  const {cookies}:any=cookie
-
-  useEffect(()=>{
-    setLoging(cookie.get("Userlogin"))
-  },[cookies.Userlogin])
- 
-  const handlelogout =()=>{
-    cookie.remove("Userlogin")
-    setLoging(cookie.get("Userlogin")) 
-  }
-
   return (
     <NavStyle>
       <div className="nav-container">
         <Nav />
         <div className="links-container">
-        {loging=="undefined"||undefined?<div>
-          <Link href="/api/auth/login" className="log">
-              Iniciar Sesion
-          </Link> 
-          <Link href="/signup" className="log">
-              Registrarse
-          </Link>
-          </div>:
-          <div>
-          <Link onClick={handlelogout} href="/api/auth/logout" className="log">
-              Desconectar
-          </Link>
-          </div>
-          }
+          <Auth />
         </div>
       </div>
     </NavStyle>

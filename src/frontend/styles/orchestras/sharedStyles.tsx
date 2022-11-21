@@ -225,6 +225,25 @@ const StyledMain = styled.main`
     flex-direction: column;
     gap: 24px;
 
+    .create-campaign-btn-container {
+      .create-campaign-btn {
+        width: 100%;
+        background-color: white;
+        color: ${({ theme }) => theme.colors.secondary};
+        font-family: "Lato";
+        font-weight: bold;
+        font-size: 1.1em;
+        padding: 12px 24px;
+        border: 2px solid ${({ theme }) => theme.colors.secondary};
+        border-radius: 12px;
+        &:hover {
+          background-color: ${({ theme }) => theme.colors.secondary};
+          color: white;
+          cursor: pointer;
+        }
+      }
+    }
+
     .donate-container,
     .campaign-container {
       padding: 18px;
