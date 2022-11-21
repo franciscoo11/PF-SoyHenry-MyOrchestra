@@ -24,6 +24,9 @@ export default function LoggedIn({ handlelogout }: any) {
         </div>
       </StyledDiv>
       <div>
+        <Link href={"/orchestras/create"}>Crear Orquesta</Link>
+      </div>
+      <div>
         <Link onClick={handlelogout} href="/api/auth/logout" className="log">
           Cerrar sesión
         </Link>

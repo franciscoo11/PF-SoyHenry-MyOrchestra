@@ -95,9 +95,7 @@ export default function AsideLeft(props: any) {
             <li className="nav-item">
               <FiEdit3 />
               <div>
-                <Link
-                  href={`/orchestras/${encodeURIComponent(props.id)}/update`}
-                >
+                <Link href={`/orchestras/${encodeURIComponent(props.id)}/edit`}>
                   Editar Orquesta
                 </Link>
               </div>
