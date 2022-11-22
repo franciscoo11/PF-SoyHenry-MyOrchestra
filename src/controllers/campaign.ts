@@ -2,14 +2,15 @@ import { prisma } from "../../lib/prisma";
 
 export const getCampaigns = async (query?:any) => {
     const { title, goal_amount, id,resources,page,order }= query
+    const results= (await prisma.campaigns.findMany()).length
 
     const onlyorder =async(orderprop:any,order:any)=>{
-        const datos= await prisma.campaigns.findMany( 
+        const data= await prisma.campaigns.findMany( 
           { orderBy: { [orderprop]: order },
           take: resources*1 ||4,
           skip: page*resources||page*4||0,
           })
-          return datos
+          return {results,data}
       }
 
       const dataonly =async(prop1:any,date1:any)=>{
@@ -18,7 +19,7 @@ export const getCampaigns = async (query?:any) => {
         if(prop1!="id"){
            aux = { contains: trimedName, mode:'insensitive' }
         }
-        const datos= await prisma.campaigns.findMany( 
+        const data= await prisma.campaigns.findMany( 
           {
           take: resources*1 ||4,
           skip: page*resources||page*4||0,
@@ -30,7 +31,7 @@ export const getCampaigns = async (query?:any) => {
             }
           })
 
-          return datos
+          return {results,data}
       }
 
       if(order) return onlyorder("title",order)
@@ -39,10 +40,11 @@ export const getCampaigns = async (query?:any) => {
       if(title)return dataonly ("title",title)
       if(id)return dataonly ("id",id)
 
-      return await prisma.campaigns.findMany({
+      const data = await prisma.campaigns.findMany({
         take: resources*1 ||4,
         skip: page*resources||page*4||0,}
         )
+      return {results,data}
 }
 
 
