@@ -1,29 +1,41 @@
-import { prisma } from "../../lib/prisma";
-import axios from "axios";
-import { useState } from "react";
-// import cloudinary from "../frontend/utils/cloudinary";
+// import { prisma } from "../../lib/prisma";
+// import axios from "axios";
+// import { useState } from "react";
+// // import cloudinary from '../frontend/utils/cloudinary';
 
-// export const cloudinaryImage = async(url:any)=>{
-//     const sendImage = await cloudinary.uploader.upload(url,{
-//         allowed_formats:['png','jpg','jpeg','gift']
-//     })
-//     return sendImage;
-// }
+// // export const cloudinaryImage = async(url:any)=>{
+// //     const sendImage = await cloudinary.uploader.upload(url,{
+// //         allowed_formats:['png','jpg','jpeg','gift']
+// //     })
+// //     return sendImage;
+// // }
 
 
-export const postImageCloudinary =  (file0:any)=>{
-    try {
-        const formData = new FormData();
-        const [url,setUrl]= useState();
-        formData.append("file", file0);
-        formData.append("upload_preset", "orchestras-uploads");
-        axios('https://api.cloudinary.com/v1_1/orchestrascloudinary/image/upload',{
-            method: 'POST',
-            data:formData
-        }).then((response)=>setUrl(response.data.secure_url))
+// export const postImageCloudinary =  (file0:any)=>{
+//     try {
+//         const formData = new FormData();
+//         formData.append("text", file0);
+//         formData.append("upload_preset", "orchestras-uploads");
+//         const url2 = axios.post('https://api.cloudinary.com/v1_1/orchestrascloudinary/image/upload', formData).then((response)=> response.data)
        
-       return url
-    } catch (error) {
-        return 'controller cloudinary'
-    }
-    }
+//         return url2
+
+//     } catch (error) {
+//         return 'controller cloudinary'
+//     }
+//     }
+
+import cloudinary from "../frontend/utils/cloudinary";
+
+export const cloudinaryImage = async (url:any) => {
+    const upImg = await cloudinary.uploader.upload(
+        url, {
+            allowed_formats: ['png', 'jpg', 'jpeg', 'gif']
+        },
+        (error:any) => {
+            if(error) console.log(error)
+        }
+    )
+
+    return upImg
+}
