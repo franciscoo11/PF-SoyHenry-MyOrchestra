@@ -45,3 +45,5 @@ export const unsubscribeMembership = async(query:any,body:any) => {
         return error
     }
 }
+
+// UPDATE MEMBER
