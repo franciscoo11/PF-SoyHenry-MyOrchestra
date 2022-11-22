@@ -44,9 +44,6 @@ export const getServerSideProps = async () => {
       }
     }
   )
-  console.log("results are", results);
-  console.log('jeje')
-
   const { resources } = results.data;
   const images = resources.map((resource: any) => {
     const { width, height } = resource;

@@ -50,20 +50,12 @@ export default function HomeMainContent({ images,orchestra }:any) {
     return orchestra.slice(0, 3);
   };
 
-  const jeje2 =async () => {
-    const yeyo= await postImageCloudinary('https://img.freepik.com/vector-premium/dibujo-estilo-dibujos-animados-planos-negocios-conductor-musica-hombre-musico-actuar-escenario-dirigiendo-orquesta-sinfonica-conjunto-instrumental-interpretacion-musica-clasica-ilustracion-vector-diseno-grafico_620206-865.jpg?w=2000')
-    const je3 = console.log(yeyo);
-    return je3
-  }
- 
+
+
 
   
-  
-
-  console.log('este es images' ,images)
-  console.log('este es orchestras',orchestra)
-  let jeje= 'https://res.cloudinary.com/orchestrascloudinary/image/upload/v1669086402/LogoOrchestra_x8vlt7.jpg';
- 
+  let jeje= 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/421dcea1-ad22-471a-9e15-d1518417f327/dcpeb7c-f74a0627-5583-4aed-aa88-62533d2edb6e.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzQyMWRjZWExLWFkMjItNDcxYS05ZTE1LWQxNTE4NDE3ZjMyN1wvZGNwZWI3Yy1mNzRhMDYyNy01NTgzLTRhZWQtYWE4OC02MjUzM2QyZWRiNmUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.Vl19MP-yBgx9ok3rdzuPUIogOAiXYKue_0qmE8_oShI';
+  const updateImage= postImageCloudinary(jeje)
   return (
     <>
       <StyledMain>

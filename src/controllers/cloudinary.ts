@@ -1,5 +1,6 @@
 import { prisma } from "../../lib/prisma";
 import axios from "axios";
+import { useState } from "react";
 // import cloudinary from "../frontend/utils/cloudinary";
 
 // export const cloudinaryImage = async(url:any)=>{
@@ -10,18 +11,19 @@ import axios from "axios";
 // }
 
 
-export const postImageCloudinary= async (file0:any)=>{
-try {
-    const file = new FormData();
-file.append("file", file0);
-file.append("upload_preset", "orchestras-uploads");
-    const data = await axios('https://api.cloudinary.com/v1_1/orchestrascloudinary/image/upload',{
-        method: 'POST',
-        data:file
-    })
-    
-   return data.data.secure_url
-} catch (error) {
-    return 'errocito'
-}
-}
+export const postImageCloudinary =  (file0:any)=>{
+    try {
+        const formData = new FormData();
+        const [url,setUrl]= useState();
+        formData.append("file", file0);
+        formData.append("upload_preset", "orchestras-uploads");
+        axios('https://api.cloudinary.com/v1_1/orchestrascloudinary/image/upload',{
+            method: 'POST',
+            data:formData
+        }).then((response)=>setUrl(response.data.secure_url))
+       
+       return url
+    } catch (error) {
+        return 'controller cloudinary'
+    }
+    }

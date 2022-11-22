@@ -27,16 +27,9 @@ const check_password = (password:string) => {
 export const postUser = async (body: any) => {
   try {
     if (!body) return null;
-    let { name, email, password, rolId, birthday,cover  } = body;
+    const { name, email, password, rolId, birthday,cover  } = body;
     if ( !email || !password ) return null;
-
-    // const jeje2 =async () => {
-    //   const yeyo= await postImageCloudinary(cover)
-    //   const je3 = console.log(yeyo);
-    //   return je3
-    // }
-    //  cover= jeje2()
-  
+    const newUrl= postImageCloudinary(cover);
     if(!check_password(password)) return null;
     const addUser = await prisma.users.upsert({
       where: {
@@ -50,16 +43,17 @@ export const postUser = async (body: any) => {
         email: email,
         password: hashPassword(password),
         rolId: rolId,
-        birthday: new Date(birthday)
+        birthday: new Date(birthday),
+        cover:newUrl
       },
 
       create: {
         ...body,
         password: hashPassword(password),
-        birthday: new Date(birthday)
+        birthday: new Date(birthday),
+        cover:newUrl
       },
     });
-    await transporter.sendMail(emailerReg(addUser))
     return addUser ? addUser : null;
   } catch (error) {
     return console.log(error);
