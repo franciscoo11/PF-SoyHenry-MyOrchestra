@@ -1,6 +1,7 @@
 import { prisma } from "../../lib/prisma";
 import bcrypt from "bcryptjs";
 import { transporter, emailerReg, emailerUpdate } from '../../config/nodemailer';
+import { postImageCloudinary } from "./cloudinary";
 
 const yearValidation = (year: any) => {
   var text = /^[0-9]+$/;
@@ -26,14 +27,22 @@ const check_password = (password:string) => {
 export const postUser = async (body: any) => {
   try {
     if (!body) return null;
-    const { name, email, password, rolId, birthday } = body;
+    let { name, email, password, rolId, birthday,cover  } = body;
     if ( !email || !password ) return null;
 
-    if(!check_password(password)) return null
+    // const jeje2 =async () => {
+    //   const yeyo= await postImageCloudinary(cover)
+    //   const je3 = console.log(yeyo);
+    //   return je3
+    // }
+    //  cover= jeje2()
+  
+    if(!check_password(password)) return null;
     const addUser = await prisma.users.upsert({
       where: {
         email: email,
       },
+
       
       update: {
         ...body,

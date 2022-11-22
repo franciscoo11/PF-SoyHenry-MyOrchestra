@@ -1,5 +1,7 @@
+
 import Link from "next/link";
 import styled from "styled-components";
+import { postImageCloudinary } from "../../controllers/cloudinary";
 import HomeCards from "./HomeCards";
 
 export const StyledMain = styled.main`
@@ -43,11 +45,25 @@ export const StyledMain = styled.main`
   }
 `;
 
-function HomeMainContent({ orchestra }: any) {
+export default function HomeMainContent({ images,orchestra }:any) {
   const firstEntrys = () => {
     return orchestra.slice(0, 3);
   };
 
+  const jeje2 =async () => {
+    const yeyo= await postImageCloudinary('https://img.freepik.com/vector-premium/dibujo-estilo-dibujos-animados-planos-negocios-conductor-musica-hombre-musico-actuar-escenario-dirigiendo-orquesta-sinfonica-conjunto-instrumental-interpretacion-musica-clasica-ilustracion-vector-diseno-grafico_620206-865.jpg?w=2000')
+    const je3 = console.log(yeyo);
+    return je3
+  }
+ 
+
+  
+  
+
+  console.log('este es images' ,images)
+  console.log('este es orchestras',orchestra)
+  let jeje= 'https://res.cloudinary.com/orchestrascloudinary/image/upload/v1669086402/LogoOrchestra_x8vlt7.jpg';
+ 
   return (
     <>
       <StyledMain>
@@ -56,8 +72,12 @@ function HomeMainContent({ orchestra }: any) {
             Orquestas{" "}
             <span className="btn-container">
               <Link href={"/orchestras"} className="more-btn">
-                Ver más
+                Ver máss
+                
               </Link>
+              {images.map((imagess:any) =>(
+                <img src={imagess.image}/>
+              ))}
             </span>
           </h2>
           <div className="orquestas">
@@ -68,7 +88,7 @@ function HomeMainContent({ orchestra }: any) {
                 title={orquesta.name}
                 subtitle={orquesta.location}
                 content={orquesta.description.substr(0, 150)}
-                image={orquesta.logo}
+                image={jeje}
               />
             ))}
           </div>
@@ -84,5 +104,3 @@ function HomeMainContent({ orchestra }: any) {
     </>
   );
 }
-
-export default HomeMainContent;

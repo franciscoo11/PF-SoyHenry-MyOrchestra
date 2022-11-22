@@ -8,6 +8,7 @@ import Footer from "../../frontend/components/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { HOSTNAME } from "../_app";
+import { postImageCloudinary } from "../../controllers/cloudinary";
 
 const StyledForm = styled.div`
   background-image: url("/bg_01.jpg");
