@@ -39,6 +39,7 @@ export const unsubscribeMembership = async(query:any,body:any) => {
                 }
             }
         })
+
         return eliminateMembership ? eliminateMembership : null
 
     } catch (error) {
@@ -46,4 +47,25 @@ export const unsubscribeMembership = async(query:any,body:any) => {
     }
 }
 
-// UPDATE MEMBER
+export const updateRolMembership = async(query:any, body:any) => {
+    try {
+        if(!query || !body) return null
+        const updateRolMember = await prisma.users_on_orchestra.update({
+            where:{
+                userId_orchestraId_rolId:{
+                    orchestraId: query.orchestraId,
+                    rolId: body.rolId,
+                    userId: body.userId,
+                }  
+            },
+            data:{
+                status: body.status
+            }
+        })
+
+        return updateRolMember ? updateRolMember : null
+
+    } catch (error) {
+        return error
+    }
+}

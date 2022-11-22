@@ -2,17 +2,6 @@ import { prisma } from "../../lib/prisma";
 import bcrypt from "bcryptjs";
 import { transporter, emailerReg, emailerUpdate } from '../../config/nodemailer';
 
-const yearValidation = (year: any) => {
-  var text = /^[0-9]+$/;
-  if (year.length < 4) return null;
-  if (year != 0) {
-    if (year != "" && !text.test(year)) return null;
-    var current_year = new Date().getFullYear();
-    if (year < 1920 || year > current_year) return null;
-    return true;
-  }
-};
-
 const hashPassword = (password:string) => {
   const hash = bcrypt.hashSync(password)
   return hash
@@ -60,7 +49,11 @@ export const postUser = async (body: any) => {
 export const getUsers = async (id?: any) => {
   try {
     if (!id) {
-      const allUsers = await prisma.users.findMany();
+      const allUsers = await prisma.users.findMany({
+        include:{
+          user_on_orchestra:true
+        }
+      });
       return allUsers.length ? allUsers : null;
     }
     const user = await prisma.users.findUnique({
