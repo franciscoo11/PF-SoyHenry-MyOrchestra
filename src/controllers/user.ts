@@ -1,6 +1,7 @@
 import { prisma } from "../../lib/prisma";
 import bcrypt from "bcryptjs";
 import { transporter, emailerReg, emailerUpdate } from '../../config/nodemailer';
+import { convertToCloudinaryUrl } from "./cloudinary";
 
 const hashPassword = (password:string) => {
   const hash = bcrypt.hashSync(password)
@@ -15,9 +16,9 @@ const check_password = (password:string) => {
 export const postUser = async (body: any) => {
   try {
     if (!body) return null;
-    const { name, email, password, rolId, birthday } = body;
+    const { name, email, password, rolId, birthday,cover } = body;
     if ( !email || !password ) return null;
-
+    const cloudinaryCoverUrl= await convertToCloudinaryUrl(cover);
     if(!check_password(password)) return null
     const addUser = await prisma.users.upsert({
       where: {
@@ -30,13 +31,15 @@ export const postUser = async (body: any) => {
         email: email,
         password: hashPassword(password),
         rolId: rolId,
-        birthday: new Date(birthday)
+        birthday: new Date(birthday),
+        cover:cloudinaryCoverUrl
       },
 
       create: {
         ...body,
         password: hashPassword(password),
-        birthday: new Date(birthday)
+        birthday: new Date(birthday),
+        cover:cloudinaryCoverUrl
       },
     });
     await transporter.sendMail(emailerReg(addUser))
