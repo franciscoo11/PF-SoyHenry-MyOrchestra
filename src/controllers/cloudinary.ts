@@ -1,6 +1,5 @@
 import cloudinary from "../frontend/utils/cloudinaryConfig";
 export const convertToCloudinaryUrlUser = async (url:any,email:any) => {
-    let jeje='colombia-sonido'
     const options = {
         upload_preset: 'orquesta-net',
         allowed_formats: ['png', 'jpg', 'jpeg','gif'],
@@ -18,12 +17,11 @@ export const convertToCloudinaryUrlUser = async (url:any,email:any) => {
     return upImg.secure_url
 }
 
-export const convertToCloudinaryUrlOrchestras = async (url:any) => {
-    let jeje='colombia-sonido'
+export const convertToCloudinaryUrlOrchestras = async (url:any,name:any) => {
     const options = {
         upload_preset: 'orquesta-net',
         allowed_formats: ['png', 'jpg', 'jpeg','gif'],
-        folder:`orquesta-net/orchestras/${jeje}`,
+        folder:`orquesta-net/orchestras/${name}`,
         use_filename: true,
         unique_filename: false,
         overwrite: true,

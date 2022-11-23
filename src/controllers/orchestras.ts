@@ -1,4 +1,5 @@
 import { prisma } from "../../lib/prisma";
+import { convertToCloudinaryUrlOrchestras } from "./cloudinary";
 
 
 //GET ORCHESTRAS
@@ -108,10 +109,19 @@ export const getOrchestrasById = async (id: any) => {
 export const postOrchestras = async (body: any) => {
   try {
     if(!body) return undefined
-    const { name, phone, donation_account } = body;
+    const { name, phone, donation_account,logo,cover } = body;
+    let cloudinaryCoverUrl='';
+    let cloudinaryAvatarUrl='';
+    if(cover) {cloudinaryCoverUrl= await convertToCloudinaryUrlOrchestras(cover,name);}
+    if(logo){cloudinaryAvatarUrl= await convertToCloudinaryUrlOrchestras(logo,name)}
     if (!name || !donation_account || !phone) return undefined
     const orchestras = await prisma.orchestras.create({
-      data: body
+      data:{
+        ...body,
+        cover:cover,
+        logo:logo,
+
+      }
     });
     return orchestras ? orchestras : undefined;
   } catch (error) {
