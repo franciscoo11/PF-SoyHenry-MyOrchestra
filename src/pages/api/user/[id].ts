@@ -22,13 +22,13 @@ export default async function handler(
     let {
       method,
       body,
-      query:{id},
+      query:{email, id},
     } = req;
 
     try {
         switch (method) {
             case GET:
-              const getUser = await getUsers(id)
+              const getUser = await getUsers(email)
             return getUser ? res.status(200).json(getUser) : res.status(404).json({error: 'User not found, check if id is valid'})
             case PATCH:
               const fakeDeleteUser = await logicDeleteUser(id)

@@ -1,66 +1,96 @@
 import { prisma } from "../../lib/prisma";
 import bcrypt from "bcryptjs";
-import { transporter, emailerReg, emailerUpdate } from '../../config/nodemailer';
+import {
+  transporter,
+  emailerReg,
+  emailerUpdate,
+} from "../../config/nodemailer";
 import { convertToCloudinaryUrl } from "./cloudinary";
 
-const hashPassword = (password:string) => {
-  const hash = bcrypt.hashSync(password)
-  return hash
-}
 
-const check_password = (password:string) => {
-  const regex_pw = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/
-  return regex_pw.test(password)
+const hashPassword = (password: string) => {
+  const hash = bcrypt.hashSync(password);
+  return hash;
 };
 
-export const postUser = async (body: any) => {
+const check_password = (password: string) => {
+  const regex_pw = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/;
+  return regex_pw.test(password);
+};
+
+export const postUser = async (body: any, query: any) => {
   try {
     if (!body) return null;
-    const { name, email, password, rolId, birthday,cover } = body;
-    if ( !email || !password ) return null;
-    const cloudinaryCoverUrl= await convertToCloudinaryUrl(cover);
-    if(!check_password(password)) return null
-    const addUser = await prisma.users.upsert({
-      where: {
-        email: email,
-      },
-      
-      update: {
-        ...body,
+    const { name, email, password, rolId, birthday, avatar, cover } = body;
+    if (!email) return null;
+
+    if (!query.isGmail) {
+      const cloudinaryCoverUrl= await convertToCloudinaryUrl(cover);
+      const cloudinaryAvatarUrl= await convertToCloudinaryUrl(avatar);
+      if (!check_password(password)) return null;
+      const addUser = await prisma.users.upsert({
+        where: {
+          email: email,
+        },
+
+        update: {
+          ...body,
+          name: name,
+          email: email,
+          password: hashPassword(password),
+          rolId: rolId,
+          birthday: new Date(birthday),
+          avatar: cloudinaryAvatarUrl,
+          cover: cloudinaryCoverUrl
+        },
+
+        create: {
+          ...body,
+          avatar: cloudinaryAvatarUrl,
+          cover: cloudinaryCoverUrl,
+          password: hashPassword(password),
+          birthday: new Date(birthday),
+        },
+        include:{
+          rol:true
+        }
+      });
+      await transporter.sendMail(emailerReg(addUser));
+      return addUser ? addUser : null;
+    }
+   const cloudinaryAvatarUrl= await convertToCloudinaryUrl(avatar);
+   const addUserFromGmail = await prisma.users.create({
+      data: {
         name: name,
         email: email,
-        password: hashPassword(password),
-        rolId: rolId,
-        birthday: new Date(birthday),
-        cover:cloudinaryCoverUrl
+        avatar: cloudinaryAvatarUrl,
       },
-
-      create: {
-        ...body,
-        password: hashPassword(password),
-        birthday: new Date(birthday),
-        cover:cloudinaryCoverUrl
-      },
+      include:{
+        rol:true
+      }
     });
-    await transporter.sendMail(emailerReg(addUser))
-    return addUser ? addUser : null;
+    await transporter.sendMail(emailerReg(addUserFromGmail));
+    return addUserFromGmail ? addUserFromGmail : null;
   } catch (error) {
-    return console.log(error);
+    return error;
   }
 };
 
-export const getUsers = async (id?: any) => {
+export const getUsers = async (email?: any) => {
   try {
-    if (!id) {
+    if (!email) {
       const allUsers = await prisma.users.findMany({
-        include:{
-          user_on_orchestra:true
-        }
+        include: {
+          user_on_orchestra: true,
+        },
       });
       return allUsers.length ? allUsers : null;
     }
     const user = await prisma.users.findUnique({
-      where: { id: id },
+      where: { email: email },
+      include: {
+        rol: true
+      }
     });
     return user ? user : null;
   } catch (error) {
@@ -77,7 +107,7 @@ export const updateUser = async (id: any, body: any) => {
       },
       data: body,
     });
-    await transporter.sendMail(emailerUpdate(getUser))
+    await transporter.sendMail(emailerUpdate(getUser));
     return getUser ? getUser : null;
   } catch (error) {
     return error;
