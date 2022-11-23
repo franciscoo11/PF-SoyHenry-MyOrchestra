@@ -9,6 +9,7 @@ import { StyledMain } from "../../../frontend/styles/orchestras/sharedStyles";
 import { prisma } from "../../../../lib/prisma";
 import axios from "axios";
 import UserAsideLeft from "../../../frontend/components/users/AsideLeft";
+import UserCover from "../../../frontend/components/users/Cover";
 
 export interface DataModel {
   id: string;
@@ -26,7 +27,7 @@ export default function User(props: any) {
           <UserAsideLeft logo={Users[0].image} id={Users[0].id} />
         </aside>
         <section className="content">
-          <Cover
+          <UserCover
             cover={Users[0].cover}
             title={Users[0].name}
             location={Users[0].city}
