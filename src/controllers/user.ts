@@ -1,7 +1,7 @@
 import { prisma } from "../../lib/prisma";
 import bcrypt from "bcryptjs";
 import { transporter, emailerReg, emailerUpdate } from '../../config/nodemailer';
-import { convertToCloudinaryUrl } from "./cloudinary";
+import { convertToCloudinaryUrlUser } from "./cloudinary";
 
 const hashPassword = (password:string) => {
   const hash = bcrypt.hashSync(password)
@@ -16,10 +16,13 @@ const check_password = (password:string) => {
 export const postUser = async (body: any) => {
   try {
     if (!body) return null;
-    const { name, email, password, rolId, birthday,cover } = body;
+    const { name, email, password, rolId, birthday,cover, avatar  } = body;
     if ( !email || !password ) return null;
-    const cloudinaryCoverUrl= await convertToCloudinaryUrl(cover);
-    if(!check_password(password)) return null
+    let cloudinaryCoverUrl='';
+    let cloudinaryAvatarUrl='';
+    if(cover) {cloudinaryCoverUrl= await convertToCloudinaryUrlUser(cover,email);}
+    if(avatar){cloudinaryAvatarUrl= await convertToCloudinaryUrlUser(avatar,email)}
+    // if(!check_password(password)) return null
     const addUser = await prisma.users.upsert({
       where: {
         email: email,
@@ -32,17 +35,19 @@ export const postUser = async (body: any) => {
         password: hashPassword(password),
         rolId: rolId,
         birthday: new Date(birthday),
-        cover:cloudinaryCoverUrl
+        cover:cloudinaryCoverUrl,
+        avatar:cloudinaryAvatarUrl
       },
 
       create: {
         ...body,
         password: hashPassword(password),
         birthday: new Date(birthday),
-        cover:cloudinaryCoverUrl
+        cover:cloudinaryCoverUrl,
+        avatar:cloudinaryAvatarUrl
       },
     });
-    await transporter.sendMail(emailerReg(addUser))
+    // await transporter.sendMail(emailerReg(addUser))
     return addUser ? addUser : null;
   } catch (error) {
     return console.log(error);
@@ -71,13 +76,26 @@ export const getUsers = async (id?: any) => {
 export const updateUser = async (id: any, body: any) => {
   try {
     if (!id || !body) return null;
+    const { name, email, password, rolId, birthday,cover, avatar  } = body;
+    const cloudinaryCoverUrl= await convertToCloudinaryUrlUser(cover,email);
+    const cloudinaryAvatarUrl= await convertToCloudinaryUrlUser(avatar,email);
     const getUser = await prisma.users.update({
       where: {
         id: id,
       },
-      data: body,
+      data: {
+        ...body,
+        name: name,
+        email: email,
+        password: hashPassword(password),
+        rolId: rolId,
+        birthday: new Date(birthday),
+        cover:cloudinaryCoverUrl,
+        avatar:cloudinaryAvatarUrl
+
+      },
     });
-    await transporter.sendMail(emailerUpdate(getUser))
+    // await transporter.sendMail(emailerUpdate(getUser))
     return getUser ? getUser : null;
   } catch (error) {
     return error;
