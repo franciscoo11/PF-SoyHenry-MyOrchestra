@@ -34,6 +34,8 @@ export default function User({ allRols }: any) {
             title={Users[0].name}
             location={Users[0].city}
           />
+          <h2 className="user-form-title">Información Personal</h2>
+
           <EditUser allRols={allRols} />
         </section>
         <aside className="aside-right">

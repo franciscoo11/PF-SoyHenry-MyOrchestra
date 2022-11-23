@@ -15,7 +15,7 @@ export default function LoggedIn({ handlelogout }: any) {
     <>
       <StyledDiv>
         <div>
-          <Link href="#" className="log">
+          <Link href="/users/7" className="log">
             <span>Mi Perfil </span>
             <span>
               <FiUser />

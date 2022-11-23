@@ -151,7 +151,8 @@ const StyledMain = styled.main`
     flex-direction: column;
     gap: 24px;
 
-    .campaign-form-title {
+    .campaign-form-title,
+    .user-form-title {
       font-size: 1.4em;
       color: ${({ theme }) => theme.colors.secondary};
       margin: 0;
