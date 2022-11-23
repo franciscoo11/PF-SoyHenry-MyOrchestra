@@ -13,7 +13,7 @@ export default function Nav(propr: any) {
 
       <Link href="#">Multimedia </Link>
 
-      <Link href="#">Campañas </Link>
+      <Link href="/campaigns">Campañas </Link>
 
       <Link href="#">Acerca de </Link>
     </nav>
