@@ -1,15 +1,18 @@
-import cloudinary from "../frontend/utils/cloudinaryConfig"
+import cloudinary from "../frontend/utils/cloudinaryConfig";
 export const convertToCloudinaryUrl = async (url:any) => {
+    const options = {
+        upload_preset: 'orquesta-net',
+        allowed_formats: ['png', 'jpg', 'jpeg','gif'],
+        folder:'orquesta-net/users',
+        use_filename: true,
+        unique_filename: false,
+        overwrite: true,
+      };
     const upImg = await cloudinary.uploader.upload(
-        url, {
-            upload_preset: 'orchestras-uploads',
-            allowed_formats: ['png', 'jpg', 'jpeg', 'gif'],
-        },
+        url, options,
         (error:any) => {
-            if(error) console.log(error)
+            if(error) return error
         }
     )
-    console.log(upImg.secure_url)
-
     return upImg.secure_url
 }
