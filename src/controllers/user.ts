@@ -5,6 +5,8 @@ import {
   emailerReg,
   emailerUpdate,
 } from "../../config/nodemailer";
+import { convertToCloudinaryUrl } from "./cloudinary";
+
 
 const hashPassword = (password: string) => {
   const hash = bcrypt.hashSync(password);
@@ -19,10 +21,12 @@ const check_password = (password: string) => {
 export const postUser = async (body: any, query: any) => {
   try {
     if (!body) return null;
-    const { name, email, password, rolId, birthday, avatar } = body;
+    const { name, email, password, rolId, birthday, avatar, cover } = body;
     if (!email) return null;
 
     if (!query.isGmail) {
+      const cloudinaryCoverUrl= await convertToCloudinaryUrl(cover);
+      const cloudinaryAvatarUrl= await convertToCloudinaryUrl(avatar);
       if (!check_password(password)) return null;
       const addUser = await prisma.users.upsert({
         where: {
@@ -36,10 +40,14 @@ export const postUser = async (body: any, query: any) => {
           password: hashPassword(password),
           rolId: rolId,
           birthday: new Date(birthday),
+          avatar: cloudinaryAvatarUrl,
+          cover: cloudinaryCoverUrl
         },
 
         create: {
           ...body,
+          avatar: cloudinaryAvatarUrl,
+          cover: cloudinaryCoverUrl,
           password: hashPassword(password),
           birthday: new Date(birthday),
         },
@@ -50,12 +58,12 @@ export const postUser = async (body: any, query: any) => {
       await transporter.sendMail(emailerReg(addUser));
       return addUser ? addUser : null;
     }
-
-    const addUserFromGmail = await prisma.users.create({
+   const cloudinaryAvatarUrl= await convertToCloudinaryUrl(avatar);
+   const addUserFromGmail = await prisma.users.create({
       data: {
         name: name,
         email: email,
-        avatar: avatar,
+        avatar: cloudinaryAvatarUrl,
       },
       include:{
         rol:true
