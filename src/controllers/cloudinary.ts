@@ -1,9 +1,9 @@
 import cloudinary from "../frontend/utils/cloudinaryConfig";
-export const convertToCloudinaryUrlUser = async (url:any,email:any) => {
+export const convertToCloudinaryUrlUser = async (url:any,email:any,folder:any) => {
     const options = {
         upload_preset: 'orquesta-net',
         allowed_formats: ['png', 'jpg', 'jpeg','gif'],
-        folder:`orquesta-net/orchestras/${email}`,
+        folder:`orquesta-net/users/${email}/${folder}`,
         use_filename: true,
         unique_filename: false,
         overwrite: true,
@@ -17,11 +17,11 @@ export const convertToCloudinaryUrlUser = async (url:any,email:any) => {
     return upImg.secure_url
 }
 
-export const convertToCloudinaryUrlOrchestras = async (url:any,name:any) => {
+export const convertToCloudinaryUrlOrchestras = async (url:any,name:any,folder:any) => {
     const options = {
         upload_preset: 'orquesta-net',
         allowed_formats: ['png', 'jpg', 'jpeg','gif'],
-        folder:`orquesta-net/orchestras/${name}`,
+        folder:`orquesta-net/orchestras/${name}/${folder}`,
         use_filename: true,
         unique_filename: false,
         overwrite: true,
