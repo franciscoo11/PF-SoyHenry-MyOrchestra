@@ -12,7 +12,7 @@ export default async function handler(
   try {
     switch (method) {
       case GET:
-        const checkOrder = captureOrder(req, res);
+        const checkOrder = await captureOrder(req, res);
         return checkOrder;
       default:
         return res.status(400).json("method not allowed");
@@ -35,9 +35,20 @@ const captureOrder = async (req: NextApiRequest, res: NextApiResponse) => {
         password: process.env.PAYPAL_SECRET || "",
       },
     });
-    
-    res.json(ordersDetail.data);
+
+    if(!ordersDetail.data.id) return res.status(400).json({ errors: 'Pay not completed, check {id} order and try again'})
+
+    const response = {
+      id: ordersDetail.data.id,
+      status: ordersDetail.data.status,
+      payerEmail: ordersDetail.data.payment_source.paypal.email_address,
+      name: ordersDetail.data.purchase_units[0].shipping.name.full_name,
+      mount: ordersDetail.data.purchase_units[0].payments.captures[0].amount.value,
+      date: ordersDetail.data.purchase_units[0].payments.captures[0].create_time
+    }
+
+    res.status(200).json(response);
   } catch (error) {
-    res.status(500).json({ errors: "Something goes wrong with capture order" });
+    res.status(500).json({ errors: "Something goes wrong with capture order, try later" });
   }
 };
