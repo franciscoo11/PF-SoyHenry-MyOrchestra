@@ -81,7 +81,7 @@ export const getUsers = async (email?: any) => {
     if (!email) {
       const allUsers = await prisma.users.findMany({
         include: {
-          user_on_orchestra: true,
+          rol: true,
         },
       });
       return allUsers.length ? allUsers : null;
@@ -98,12 +98,12 @@ export const getUsers = async (email?: any) => {
   }
 };
 
-export const updateUser = async (id: any, body: any) => {
+export const updateUser = async (email: any, body: any) => {
   try {
-    if (!id || !body) return null;
+    if (!email || !body) return null;
     const getUser = await prisma.users.update({
       where: {
-        id: id,
+        email: email,
       },
       data: body,
     });
@@ -114,12 +114,12 @@ export const updateUser = async (id: any, body: any) => {
   }
 };
 
-export const logicDeleteUser = async (id: any) => {
+export const logicDeleteUser = async (email: any) => {
   try {
-    if (!id) return null;
+    if (!email) return null;
     const user = await prisma.users.update({
       where: {
-        id: id,
+        email: email,
       },
       data: {
         is_active: false,
@@ -131,12 +131,12 @@ export const logicDeleteUser = async (id: any) => {
   }
 };
 
-export const deleteUser = async (id: any) => {
+export const deleteUser = async (email: any) => {
   try {
-    if (!id) return null;
+    if (!email) return null;
     const user = await prisma.users.delete({
       where: {
-        id: id,
+        email: email,
       },
     });
     return user ? user : null;
