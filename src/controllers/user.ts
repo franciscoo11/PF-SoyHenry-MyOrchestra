@@ -23,10 +23,10 @@ export const postUser = async (body: any, query: any) => {
     if (!body) return null;
     const { name, email, password, rolId, birthday, avatar, cover } = body;
     if (!email) return null;
-
+    const cloudinaryAvatarUrl= await convertToCloudinaryUrl(avatar);
+    
     if (!query.isGmail) {
       const cloudinaryCoverUrl= await convertToCloudinaryUrl(cover);
-      const cloudinaryAvatarUrl= await convertToCloudinaryUrl(avatar);
       if (!check_password(password)) return null;
       const addUser = await prisma.users.upsert({
         where: {
@@ -58,7 +58,7 @@ export const postUser = async (body: any, query: any) => {
       await transporter.sendMail(emailerReg(addUser));
       return addUser ? addUser : null;
     }
-   const cloudinaryAvatarUrl= await convertToCloudinaryUrl(avatar);
+   
    const addUserFromGmail = await prisma.users.create({
       data: {
         name: name,
