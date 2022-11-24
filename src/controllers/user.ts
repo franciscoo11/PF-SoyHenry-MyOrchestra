@@ -25,14 +25,28 @@ export const postUser = async (body: any, query: any) => {
     if (!email) return null;
     const cloudinaryAvatarUrl= await convertToCloudinaryUrl(avatar);
     
-    if (!query.isGmail) {
-      const cloudinaryCoverUrl= await convertToCloudinaryUrl(cover);
+    if (query.isGmail) {
+      const addUserFromGmail = await prisma.users.create({
+        data: {
+          name: name,
+          email: email,
+          avatar: cloudinaryAvatarUrl,
+        },
+        include:{
+          rol:true
+        }
+      });
+      await transporter.sendMail(emailerReg(addUserFromGmail));
+      return addUserFromGmail ? addUserFromGmail : null;
+    } else {
+      
+      const cloudinaryCoverUrl = await convertToCloudinaryUrl(cover);
       if (!check_password(password)) return null;
       const addUser = await prisma.users.upsert({
         where: {
           email: email,
         },
-
+  
         update: {
           ...body,
           name: name,
@@ -43,7 +57,7 @@ export const postUser = async (body: any, query: any) => {
           avatar: cloudinaryAvatarUrl,
           cover: cloudinaryCoverUrl
         },
-
+  
         create: {
           ...body,
           avatar: cloudinaryAvatarUrl,
@@ -58,19 +72,7 @@ export const postUser = async (body: any, query: any) => {
       await transporter.sendMail(emailerReg(addUser));
       return addUser ? addUser : null;
     }
-   
-   const addUserFromGmail = await prisma.users.create({
-      data: {
-        name: name,
-        email: email,
-        avatar: cloudinaryAvatarUrl,
-      },
-      include:{
-        rol:true
-      }
-    });
-    await transporter.sendMail(emailerReg(addUserFromGmail));
-    return addUserFromGmail ? addUserFromGmail : null;
+
   } catch (error) {
     return error;
   }
