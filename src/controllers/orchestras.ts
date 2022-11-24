@@ -1,99 +1,143 @@
-import { prisma } from "../../lib/prisma";
 
+
+import { prisma } from "../../lib/prisma";
+import { convertToCloudinaryUrlOrchestras } from "./cloudinary";
 
 //GET ORCHESTRAS
 export const getOrchestras = async (query: any) => {
+  const {
+    name,
+    creation_date,
+    location,
+    orchestra_TypeId,
+    page,
+    resources,
+    order,
+  } = query;
 
-const { name, creation_date, location, orchestra_TypeId,page,resources,order } = query
+  const fulldataorder = async (
+    orderprop: any,
+    order: any,
+    prop1: any,
+    prop2: any,
+    date1: any,
+    date2: any
+  ) => {
+    const datos = await prisma.orchestras.findMany({
+      orderBy: { [orderprop]: order },
+      take: resources * 1 || 4,
+      skip: page * resources || page * 4 || 0,
+      where: {
+        [prop1]: { contains: date1, mode: "insensitive" },
+        [prop2]: date2,
+      },
+    });
+    return datos;
+  };
 
-  const fulldataorder =async(orderprop:any, order:any,prop1:any,prop2:any,date1:any,date2:any)=>{
-    const datos= await prisma.orchestras.findMany( 
-      { orderBy: { [orderprop]: order },
-      take: resources*1 ||4,
-      skip: page*resources||page*4||0,
-        where:{   
-          [prop1]:{ contains: date1, mode:'insensitive' },
-          [prop2]:date2 
-        }
-      })   
-      return datos
-  }
-  
-  const dataandorder =async(orderprop:any,order:any,prop1:any,date1:any)=>{
+  const dataandorder = async (
+    orderprop: any,
+    order: any,
+    prop1: any,
+    date1: any
+  ) => {
     let trimedName = date1.toLowerCase().trim();
-    let aux=date1;
-    if(prop1!="orchestra_TypeId"){
-       aux = { contains: trimedName, mode:'insensitive' }
+    let aux = date1;
+    if (prop1 != "orchestra_TypeId") {
+      aux = { contains: trimedName, mode: "insensitive" };
     }
-    const datos= await prisma.orchestras.findMany( 
-      { orderBy: { [orderprop]: order },
-      take: resources*1 ||4,
-      skip: page*resources||page*4||0,
-        where:{      
-          [prop1]:aux 
-        }
-      })
-      return datos
-  }
+    const datos = await prisma.orchestras.findMany({
+      orderBy: { [orderprop]: order },
+      take: resources * 1 || 4,
+      skip: page * resources || page * 4 || 0,
+      where: {
+        [prop1]: aux,
+      },
+    });
+    return datos;
+  };
 
-  const fulldata =async(prop1:any,prop2:any,date1:any,date2:any)=>{
-    const datos= await prisma.orchestras.findMany( 
-      { 
-      take: resources*1 ||4,
-      skip: page*resources||page*4||0,
-        where:{   
-          [prop1]:{ contains: date1, mode:'insensitive' },
-          [prop2]:date2 
-        }
-      })   
-      return datos
-  }
-  
-  const dataonly =async(prop1:any,date1:any)=>{
+  const fulldata = async (prop1: any, prop2: any, date1: any, date2: any) => {
+    const datos = await prisma.orchestras.findMany({
+      take: resources * 1 || 4,
+      skip: page * resources || page * 4 || 0,
+      where: {
+        [prop1]: { contains: date1, mode: "insensitive" },
+        [prop2]: date2,
+      },
+    });
+    return datos;
+  };
+
+  const dataonly = async (prop1: any, date1: any) => {
     let trimedName = date1.toLowerCase().trim();
-    let aux=date1;
-    if(prop1!="orchestra_TypeId"){
-       aux = { contains: trimedName, mode:'insensitive' }
+    let aux = date1;
+    if (prop1 != "orchestra_TypeId") {
+      aux = { contains: trimedName, mode: "insensitive" };
     }
-    const datos= await prisma.orchestras.findMany( 
-      {
-      take: resources*1 ||4,
-      skip: page*resources||page*4||0,
-        where:{      
-          [prop1]:aux 
-        }
-      })
-      return datos
-  }
+    const datos = await prisma.orchestras.findMany({
+      take: resources * 1 || 4,
+      skip: page * resources || page * 4 || 0,
+      where: {
+        [prop1]: aux,
+      },
+    });
+    return datos;
+  };
 
-  const onlyorder =async(orderprop:any,order:any)=>{
-  
-    const datos= await prisma.orchestras.findMany( 
-      { orderBy: { [orderprop]: order },
-      take: resources*1 ||4,
-      skip: page*resources||page*4||0,
-      })
-      return datos
-  }
+  const onlyorder = async (orderprop: any, order: any) => {
+    const datos = await prisma.orchestras.findMany({
+      orderBy: { [orderprop]: order },
+      take: resources * 1 || 4,
+      skip: page * resources || page * 4 || 0,
+    });
+    return datos;
+  };
 
-  if(order&&location&&orchestra_TypeId)return fulldataorder( "name",order,"location","orchestra_TypeId",location,orchestra_TypeId)
-  if(order&&location)return dataandorder("name",order,"location",location)
-  if(order&&orchestra_TypeId)return dataandorder("name",order,"orchestra_TypeId",orchestra_TypeId)
+  if (order && location && orchestra_TypeId)
+    return fulldataorder(
+      "name",
+      order,
+      "location",
+      "orchestra_TypeId",
+      location,
+      orchestra_TypeId
+    );
+  if (order && location)
+    return dataandorder("name", order, "location", location);
+  if (order && orchestra_TypeId)
+    return dataandorder("name", order, "orchestra_TypeId", orchestra_TypeId);
 
-  if(creation_date&&location&&orchestra_TypeId)return fulldataorder( "name",creation_date,"location","orchestra_TypeId",location,orchestra_TypeId)
-  if(creation_date&&location)return dataandorder("creation_date",creation_date,"location",location)
-  if(creation_date&&orchestra_TypeId)return dataandorder("creation_date",creation_date,"orchestra_TypeId",orchestra_TypeId)
+  if (creation_date && location && orchestra_TypeId)
+    return fulldataorder(
+      "name",
+      creation_date,
+      "location",
+      "orchestra_TypeId",
+      location,
+      orchestra_TypeId
+    );
+  if (creation_date && location)
+    return dataandorder("creation_date", creation_date, "location", location);
+  if (creation_date && orchestra_TypeId)
+    return dataandorder(
+      "creation_date",
+      creation_date,
+      "orchestra_TypeId",
+      orchestra_TypeId
+    );
 
-  if(location&&orchestra_TypeId)return fulldata("location","orchestra_TypeId",location,orchestra_TypeId)
-  if(location)return dataonly("location",location)
-  if(orchestra_TypeId)return dataonly("orchestra_TypeId",orchestra_TypeId)
+  if (location && orchestra_TypeId)
+    return fulldata("location", "orchestra_TypeId", location, orchestra_TypeId);
+  if (location) return dataonly("location", location);
+  if (orchestra_TypeId) return dataonly("orchestra_TypeId", orchestra_TypeId);
 
-  if(order)return onlyorder("name",order)
-  if(creation_date)return onlyorder("creation_date",creation_date)
+  if (order) return onlyorder("name", order);
+  if (creation_date) return onlyorder("creation_date", creation_date);
 
-  if(name)return dataandorder("name",order,"name",name)
+  if (name) return dataandorder("name", order, "name", name);
 
-  return await prisma.orchestras.findMany()
+  return await prisma.orchestras.findMany();
 };
 
 //GET ORCHESTRAS BY ID
@@ -107,62 +151,104 @@ export const getOrchestrasById = async (id: any) => {
 //POST ORCHESTRAS
 export const postOrchestras = async (body: any) => {
   try {
-    if(!body) return undefined
-    const { name, phone, donation_account } = body;
-    if (!name || !donation_account || !phone) return undefined
+    if (!body) return undefined;
+    const { name, phone, donation_account, logo, cover } = body;
+    let cloudinaryCoverUrl = "";
+    let cloudinaryLogoUrl = "";
+    let folder = "";
+    if (cover) {
+      folder = "cover";
+      cloudinaryCoverUrl = await convertToCloudinaryUrlOrchestras(
+        cover,
+        name,
+        folder
+      );
+    }
+    if (logo) {
+      folder = "logo";
+      cloudinaryLogoUrl = await convertToCloudinaryUrlOrchestras(
+        logo,
+        name,
+        folder
+      );
+    }
+    if (!name || !donation_account || !phone) return undefined;
     const orchestras = await prisma.orchestras.create({
-      data: body
+      data: {
+        ...body,
+        cover: cloudinaryCoverUrl,
+        logo: cloudinaryLogoUrl,
+      },
     });
     return orchestras ? orchestras : undefined;
   } catch (error) {
-    return error
+    return error;
   }
-
 };
 //BORRADO LOGICO
 export const logicDeleteOrchestra = async (id: any) => {
   try {
     const deactivate = await prisma.orchestras.update({
       where: {
-        id: id
+        id: id,
       },
       data: {
-        is_active: false
-      }
-    })
-    return deactivate ? deactivate : null
+        is_active: false,
+      },
+    });
+    return deactivate ? deactivate : null;
   } catch (error) {
-    return error
+    return error;
   }
-  
-}
+};
 //DELETE ORCHESTRAS
 export const deleteOrchestra = async (id: any) => {
   try {
-    if(!id) return undefined
+    if (!id) return undefined;
     const orchestraDelete = await prisma.orchestras.delete({
       where: { id: id },
     });
     return orchestraDelete ? orchestraDelete : null;
   } catch (error) {
-    return error
+    return error;
   }
-  
 };
 
 //UPDATE ORCHESTRAS
 export const updateOrchestra = async (id: any, body: any) => {
+  const { cover, logo, name } = body;
+  let cloudinaryCoverUrl = "";
+  let cloudinaryLogoUrl = "";
+  let folder = "";
+  if (cover) {
+    folder = "cover";
+    cloudinaryCoverUrl = await convertToCloudinaryUrlOrchestras(
+      cover,
+      name,
+      folder
+    );
+  }
+  if (logo) {
+    folder = "logo";
+    cloudinaryLogoUrl = await convertToCloudinaryUrlOrchestras(
+      logo,
+      name,
+      folder
+    );
+  }
   try {
     const updateOrchestra = await prisma.orchestras.update({
       where: {
         id,
       },
-      data: body,
-
+      data: {
+        ...body,
+        cover: cloudinaryCoverUrl,
+        logo: cloudinaryLogoUrl,
+      },
     });
     return updateOrchestra ? updateOrchestra : undefined;
   } catch (error) {
-    return error
+    return error;
   }
 };
-
