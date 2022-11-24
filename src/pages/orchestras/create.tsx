@@ -8,7 +8,7 @@ import Footer from "../../frontend/components/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { HOSTNAME } from "../_app";
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
 const StyledForm = styled.div`
   background-image: url("/bg_01.jpg");
@@ -78,36 +78,27 @@ const StyledForm = styled.div`
         grid-row: 3;
       }
 
-      .logo-field {
-        grid-column: 1/4;
-        grid-row: 4;
-      }
-      .cover-field {
-        grid-column: 4/7;
-        grid-row: 4;
-      }
-
       .date-field {
         grid-column: 1/3;
-        grid-row: 5;
+        grid-row: 4;
       }
 
       .orchesta-type-field {
         grid-column: 3/5;
-        grid-row: 5;
+        grid-row: 4;
       }
       .sponsor-field {
         grid-column: 5/7;
-        grid-row: 5;
+        grid-row: 4;
       }
 
       .description-field {
         grid-column: 1/7;
-        grid-row: 6;
+        grid-row: 5;
       }
       .btn-container {
         grid-column: 1/7;
-        grid-row: 7;
+        grid-row: 6;
         text-align: right;
 
         .submit {
@@ -131,7 +122,6 @@ const StyledForm = styled.div`
 `;
 
 interface Values {
-  logo: string;
   name: string;
   description: string;
   creation_date: string;
@@ -140,7 +130,6 @@ interface Values {
   donation_account: string;
   phone: string;
   orchestra_TypeId: string;
-  cover?: string;
 }
 
 interface Props {
@@ -159,7 +148,6 @@ export default function CreateOrchestra(props: Props) {
       <MainNavBar />
       <Formik
         initialValues={{
-          logo: "",
           name: "",
           description: "",
           creation_date: "",
@@ -168,7 +156,6 @@ export default function CreateOrchestra(props: Props) {
           donation_account: "",
           phone: "",
           orchestra_TypeId: "",
-          cover: "",
         }}
         validationSchema={Yup.object({
           name: Yup.string()
@@ -185,10 +172,6 @@ export default function CreateOrchestra(props: Props) {
           phone: Yup.string()
             .matches(phoneRegExp, "Numero de teléfono inválido")
             .required("Ningún número de teléfono ingresado"),
-          logo: Yup.string()
-            .url("URL inválido")
-            .required("Debes elegir un logo"),
-          cover: Yup.string().url("URL inválido"),
         })}
         onSubmit={(values, { setSubmitting }: FormikHelpers<Values>) => {
           axios
@@ -275,30 +258,6 @@ export default function CreateOrchestra(props: Props) {
               </p>
             </div>
 
-            <div className="logo-field">
-              <Field
-                name="logo"
-                type="text"
-                placeholder="Logotipo de la Orquesta"
-                className="input"
-              />
-              <p className="error">
-                <ErrorMessage name="logo" className="errorMessage" />
-              </p>
-            </div>
-
-            <div className="cover-field">
-              <Field
-                name="cover"
-                type="text"
-                placeholder="Imagen de portada"
-                className="input"
-              />
-              <p className="error">
-                <ErrorMessage name="cover" className="errorMessage" />
-              </p>
-            </div>
-
             <div className="date-field">
               {/* NO supe como validar las fechas :( */}
               <Field name="creation_date" type="date" className="input" />
@@ -373,16 +332,15 @@ export default function CreateOrchestra(props: Props) {
   );
 }
 
-
 export const getServerSideProps = withPageAuthRequired({
   async getServerSideProps() {
-  const res = await axios.get(`${HOSTNAME}/api/orchestras-types`);
-  const types_orchestras = await res.data;
+    const res = await axios.get(`${HOSTNAME}/api/orchestras-types`);
+    const types_orchestras = await res.data;
 
-  return {
-    props: {
-      types_orchestras,
-    },
-  };
-}
+    return {
+      props: {
+        types_orchestras,
+      },
+    };
+  },
 });
