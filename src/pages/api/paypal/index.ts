@@ -75,6 +75,6 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse) => {
     res.json({ id, link });
     // res.json(response.data)
   } catch (error) {
-    return res.status(500).send("Something goes wrong");
+    return res.status(500).send("Something goes wrong the order has not been generated");
   }
 };
