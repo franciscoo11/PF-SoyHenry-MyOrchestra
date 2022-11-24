@@ -5,7 +5,7 @@ import {
   emailerReg,
   emailerUpdate,
 } from "../../config/nodemailer";
-import { convertToCloudinaryUrl } from "./cloudinary";
+import {convertToCloudinaryUrlUser } from "./cloudinary";
 
 
 const hashPassword = (password: string) => {
@@ -23,7 +23,26 @@ export const postUser = async (body: any, query: any) => {
     if (!body) return null;
     const { name, email, password, rolId, birthday, avatar, cover } = body;
     if (!email) return null;
-    const cloudinaryAvatarUrl= await convertToCloudinaryUrl(avatar);
+    let cloudinaryCoverUrl = "";
+    let cloudinaryAvatarUrl = "";
+    let folder = "";
+
+    if (cover) {
+      folder = 'cover';
+      cloudinaryCoverUrl = await convertToCloudinaryUrlUser(
+        cover,
+        email,
+        folder
+      );
+    }
+    if (avatar) {
+      folder = 'avatar';
+      cloudinaryAvatarUrl = await convertToCloudinaryUrlUser(
+        avatar,
+        email,
+        folder
+      );
+    }
     
     if (query.isGmail) {
       const findUser = await prisma.users.findFirst({
@@ -45,8 +64,6 @@ export const postUser = async (body: any, query: any) => {
       await transporter.sendMail(emailerReg(addUserFromGmail));
       return addUserFromGmail ? addUserFromGmail : null;
     } else {
-
-      const cloudinaryCoverUrl = await convertToCloudinaryUrl(cover);
       if (!check_password(password)) return null;
       const addUser = await prisma.users.upsert({
         where: {
@@ -108,12 +125,40 @@ export const getUsers = async (email?: any) => {
 
 export const updateUser = async (email: any, body: any) => {
   try {
+    const {email,avatar, cover } = body;
+
     if (!email || !body) return null;
+    let cloudinaryCoverUrl = "";
+    let cloudinaryAvatarUrl = "";
+    let folder = "";
+
+    if (cover) {
+      folder = 'cover';
+      cloudinaryCoverUrl = await convertToCloudinaryUrlUser(
+        cover,
+        email,
+        folder
+      );
+    }
+    if (avatar) {
+      folder = 'avatar';
+      cloudinaryAvatarUrl = await convertToCloudinaryUrlUser(
+        avatar,
+        email,
+        folder
+      );
+    }
+    
+    
     const getUser = await prisma.users.update({
       where: {
         email: email,
       },
-      data: body,
+      data:{
+        ...body,
+        cover:cloudinaryCoverUrl,
+        avatar:cloudinaryAvatarUrl
+      },
     });
     await transporter.sendMail(emailerUpdate(getUser));
     return getUser ? getUser : null;
