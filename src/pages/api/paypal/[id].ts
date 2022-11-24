@@ -28,30 +28,14 @@ const captureOrder = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { id } = req.query;
 
-    const params = new URLSearchParams();
-    params.append("grant_type", "client_credentials");
-
-    const {
-      data: { access_token },
-    } = await axios.post(`${process.env.PAYPAL_OAUTH_URL}`, params, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      auth: {
+    const ordersDetail = await axios.post(
+      `${process.env.PAYPAL_BASE_URL}/v2/checkout/orders/${id}/capture`,{}, {
+        auth: {
         username: process.env.NEXT_PUBLIC_PAYPAY_CLIENT || "",
         password: process.env.PAYPAL_SECRET || "",
       },
     });
-
-    const ordersDetail = await axios.get(
-      `${process.env.PAYPAL_BASE_URL}/v2/checkout/orders/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      }
-    );
-
+    
     res.json(ordersDetail.data);
   } catch (error) {
     res.status(500).json({ errors: "Something goes wrong with capture order" });
