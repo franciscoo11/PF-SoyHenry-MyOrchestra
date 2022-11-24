@@ -1,4 +1,5 @@
 import { prisma } from "../../lib/prisma";
+import { convertToCloudinaryUrlOrchestras } from "./cloudinary";
 
 
 //GET ORCHESTRAS
@@ -108,10 +109,33 @@ export const getOrchestrasById = async (id: any) => {
 export const postOrchestras = async (body: any) => {
   try {
     if(!body) return undefined
-    const { name, phone, donation_account } = body;
+    const { name, phone, donation_account,cover,logo } = body;
+    let cloudinaryCoverUrl = "";
+    let cloudinaryLogoUrl = "";
+    let folder = "";
+    if (cover) {
+      folder = "cover";
+      cloudinaryCoverUrl = await convertToCloudinaryUrlOrchestras(
+        cover,
+        name,
+        folder
+      );
+    }
+    if (logo) {
+      folder = "logo";
+      cloudinaryLogoUrl = await convertToCloudinaryUrlOrchestras(
+        logo,
+        name,
+        folder
+      );
+    }
     if (!name || !donation_account || !phone) return undefined
     const orchestras = await prisma.orchestras.create({
-      data: body
+      data:{
+        ...body,
+        cover:cloudinaryCoverUrl,
+        logo:cloudinaryLogoUrl
+      }
     });
     return orchestras ? orchestras : undefined;
   } catch (error) {
@@ -140,6 +164,7 @@ export const logicDeleteOrchestra = async (id: any) => {
 export const deleteOrchestra = async (id: any) => {
   try {
     if(!id) return undefined
+    
     const orchestraDelete = await prisma.orchestras.delete({
       where: { id: id },
     });
@@ -153,11 +178,35 @@ export const deleteOrchestra = async (id: any) => {
 //UPDATE ORCHESTRAS
 export const updateOrchestra = async (id: any, body: any) => {
   try {
+    const { name,cover,logo } = body;
+    let cloudinaryCoverUrl = "";
+    let cloudinaryLogoUrl = "";
+    let folder = "";
+    if (cover) {
+      folder = "cover";
+      cloudinaryCoverUrl = await convertToCloudinaryUrlOrchestras(
+        cover,
+        name,
+        folder
+      );
+    }
+    if (logo) {
+      folder = "logo";
+      cloudinaryLogoUrl = await convertToCloudinaryUrlOrchestras(
+        logo,
+        name,
+        folder
+      );
+    }
     const updateOrchestra = await prisma.orchestras.update({
       where: {
         id,
       },
-      data: body,
+      data: {
+        ...body,
+        logo: cloudinaryLogoUrl,
+        cover: cloudinaryCoverUrl
+      },
 
     });
     return updateOrchestra ? updateOrchestra : undefined;
