@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Orquestas, Users, Comments } from "../utils/fakeDB";
 import { FiThumbsUp } from "react-icons/fi";
+import { Formik, Form, Field, FormikHelpers } from "formik";
+import axios from "axios";
 
 const StyledDiv = styled.div`
   width: 100%;
@@ -104,6 +106,8 @@ const StyledDiv = styled.div`
     .comment-form-container {
       .comment-form {
         width: 100%;
+        display: flex;
+        align-items: baseline;
       }
 
       .comment-input {
@@ -188,13 +192,29 @@ export default function OrchestraPosts(props: any) {
           </div>
         </div>
         <div className="comment-form-container">
-          <form className="comment-form">
-            <input
-              className="comment-input"
-              type="text"
-              placeholder="Agregar un comentario..."
-            />
-          </form>
+          <Formik
+            initialValues={{
+              content: "",
+              userId: "e94366db-087f-4456-8664-0af27ecd5a60",
+              postId: "clanjg9uz0016i5zzttf5gqbp",
+            }}
+            onSubmit={(values, { setSubmitting }) => {
+              axios.post("/api/comment", values);
+              setSubmitting(false);
+            }}
+          >
+            <Form className="comment-form">
+              <Field
+                name="content"
+                type="text"
+                className="comment-input"
+                placeholder="Agregar un comentario..."
+              />
+              <button type="submit" className="submit">
+                Comentar
+              </button>
+            </Form>
+          </Formik>
         </div>
         <div className="users-comments-container">
           <div

@@ -9,7 +9,7 @@ import AsideLeft from "../../../frontend/components/orchestras/AsideLeft";
 import AsideRight from "../../../frontend/components/orchestras/AsideRight";
 import { StyledMain } from "../../../frontend/styles/orchestras/sharedStyles";
 import { prisma } from "../../../../lib/prisma";
-import axios from "axios";
+import CreatePosts from "../../../frontend/components/CreatePosts";
 
 export interface DataModel {
   id: string;
@@ -33,9 +33,11 @@ export const getStaticProps = async ({ params }: any) => {
   try {
     const orchestrasById: any =
       await prisma.$queryRaw`SELECT * FROM orchestras WHERE id = ${params.id}`;
+    const typePost: any = await prisma.$queryRaw`SELECT * FROM type_post`;
     return {
       props: {
         orchestrasById,
+        typePost,
       },
     };
   } catch (error) {}
@@ -45,6 +47,7 @@ function OrchestraDetails(props: any) {
   const router = useRouter();
   const { id } = router.query;
   const orchestras = props.orchestrasById[0];
+  console.log(props.commentsPosts);
 
   return (
     <>
@@ -65,7 +68,7 @@ function OrchestraDetails(props: any) {
               className="pic"
               style={{ backgroundImage: `url(${Users[1].image})` }}
             ></div>
-            <form className="post-form">
+            {/* <form className="post-form">
               <input
                 className="post-input"
                 type="text"
@@ -76,7 +79,8 @@ function OrchestraDetails(props: any) {
                 <FiVideo />
                 <FiImage />
               </div>
-            </form>
+            </form> */}
+            <CreatePosts typePost={props.typePost} />
           </div>
           <div className="filter-container">
             <div className="divider"></div>
