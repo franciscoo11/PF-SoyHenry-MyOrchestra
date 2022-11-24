@@ -5,13 +5,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const POST: string = "POST";
+  const GET: string = "GET";
 
   let { method } = req;
 
   try {
     switch (method) {
-      case "GET":
+      case GET:
         const checkOrder = captureOrder(req, res);
         return checkOrder;
       default:
