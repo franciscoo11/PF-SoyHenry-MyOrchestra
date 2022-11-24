@@ -13,8 +13,6 @@ export const getUserEmail=async (user:any)=>{
             cookie.set("UserloginData", response.data, { path: "/" })
         }
         )
-
-    console.log("Entre al 1");
     
 }else if(user?.email){
 
@@ -23,10 +21,7 @@ export const getUserEmail=async (user:any)=>{
         (response)=>{
             cookie.set("UserloginData", response.data, { path: "/" })
         }
-        )
-
-     console.log(user?.email);
-        
+        )      
 }
 }
 
