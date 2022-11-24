@@ -70,7 +70,7 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     );
 
-    const link = response.data.links[1];
+    const link = response.data.links[1].href;
     const id = response.data.id;
     res.json({ id, link });
     // res.json(response.data)
