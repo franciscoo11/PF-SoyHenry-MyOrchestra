@@ -12,6 +12,8 @@ import { prisma } from "../../../../lib/prisma";
 import CreatePosts from "../../../frontend/components/CreatePosts";
 import { HOSTNAME } from "../../_app";
 import axios from "axios";
+import { UpdateCover } from "../../../frontend/components/orchestras/UpdateCover";
+import { UpdateLogo } from "../../../frontend/components/orchestras/UpdateLogo";
 
 export interface DataModel {
   id: string;
@@ -58,6 +60,7 @@ function OrchestraDetails(props: any) {
 
       <StyledMain>
         <aside className="aside-left">
+          <UpdateLogo orchestrasById={props.orchestrasById} />
           <AsideLeft logo={orchestras.logo} id={orchestras.id} />
         </aside>
         <section className="content">
@@ -65,8 +68,8 @@ function OrchestraDetails(props: any) {
             cover={orchestras.cover}
             title={orchestras.name}
             location={orchestras.location}
-            orchestrasById={props.orchestrasById}
           />
+          <UpdateCover orchestrasById={props.orchestrasById} />
           <div className="form-container">
             <div
               className="pic"
