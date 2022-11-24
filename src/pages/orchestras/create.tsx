@@ -138,7 +138,10 @@ interface Props {
     type: string;
   }[];
 }
-
+const coverDefault =
+  "https://res.cloudinary.com/dzup1ckpy/image/upload/v1669319729/WhatsApp_Image_2022-11-24_at_3.50.31_PM_clq5jn.jpg";
+const logoDefault =
+  "https://res.cloudinary.com/dzup1ckpy/image/upload/v1669319739/WhatsApp_Image_2022-11-24_at_3.51.52_PM_aol2p1.jpg";
 export default function CreateOrchestra(props: Props) {
   const router = useRouter();
   const phoneRegExp =
@@ -156,6 +159,8 @@ export default function CreateOrchestra(props: Props) {
           donation_account: "",
           phone: "",
           orchestra_TypeId: "",
+          logo: logoDefault,
+          cover: coverDefault,
         }}
         validationSchema={Yup.object({
           name: Yup.string()
