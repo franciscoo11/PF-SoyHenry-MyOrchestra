@@ -44,7 +44,7 @@ const captureOrder = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     const ordersDetail = await axios.get(
-      `https://api.sandbox.paypal.com/v2/checkout/orders/${id}`,
+      `${process.env.PAYPAL_BASE_URL}/v2/checkout/orders/${id}`,
       {
         headers: {
           Authorization: `Bearer ${access_token}`,

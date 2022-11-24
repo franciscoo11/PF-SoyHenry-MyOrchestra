@@ -61,7 +61,7 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     const response = await axios.post(
-      `https://api-m.sandbox.paypal.com/v2/checkout/orders`,
+      `${process.env.PAYPAL_BASE_URL}/v2/checkout/orders`,
       order,
       {
         headers: {
