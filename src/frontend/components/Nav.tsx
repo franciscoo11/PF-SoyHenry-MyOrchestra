@@ -7,7 +7,7 @@ export default function Nav(propr: any) {
 
       <Link href="/orchestras">Orquestas </Link>
 
-      <Link href="#">Noticias </Link>
+      <Link href="/news">Noticias </Link>
 
       <Link href="#">Eventos </Link>
 
