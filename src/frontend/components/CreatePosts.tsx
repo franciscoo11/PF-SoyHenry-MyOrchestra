@@ -39,6 +39,7 @@ const StyledForm = styled.div`
 `;
 
 export default function CreatePosts({ typePost }: any) {
+  
   return (
     <StyledForm>
       <div className="container-top">
@@ -46,24 +47,35 @@ export default function CreatePosts({ typePost }: any) {
       </div>
       <Formik
         initialValues={{
-          title: "Post Prueba",
+          title: "kekeOscarcu",
           content: "",
-          url_file: "",
-          orchestraId: "clania754000hi5zzcjoz2dmy",
-          userCreator: "143ad8c3-91dd-4149-b8ac-b623cacb1de7",
-          type_post: "",
+          orchestraId: "clau9rlob0003vge02vmq17gb",
+          userCreator: "b043f99a-7672-4474-a689-6e19c138c673",
+          type_PostId: "",
         }}
-        onSubmit={async (values, { setSubmitting }) => {
-          const file: any = values.url_file;
+        onSubmit={async (values:any, { setSubmitting }) => {
+          const file: any = values.file;
           const formData = new FormData();
-          console.log(file);
+       
           try {
             formData.append("file", file);
             formData.append("upload_preset", "orchestras-uploads");
-            await axios.post(
+           const uploadImage:any=  await axios.post(
               `https://api.cloudinary.com/v1_1/orchestrascloudinary/image/upload`,
               formData
-            );
+            )
+            let postData = {
+              title: values.title,
+              content: values.content,
+            orchestraId:values.orchestraId,
+          userCreator:values.userCreator,
+        type_PostId: values.type_PostId,
+        url_file:uploadImage.data.secure_url
+            }
+            console.log(uploadImage.data.secure_url)
+            console.log(postData)
+
+           await axios.post('/api/post',postData)
           } catch (error) {
             console.log(error);
           }
@@ -83,7 +95,7 @@ export default function CreatePosts({ typePost }: any) {
             </div>
             <div className="container">
               <div className="select-field">
-                <Field name="type_post" as="select" className="select">
+                <Field name="type_PostId" as="select" className="select">
                   <option disabled value="">
                     Tipo de Publicación
                   </option>
@@ -98,7 +110,7 @@ export default function CreatePosts({ typePost }: any) {
               <div className="file-field">
                 <Field
                   type="file"
-                  name="url_file"
+                  name="image"
                   onChange={(event: any) => {
                     setFieldValue("file", event.target.files[0]);
                   }}
