@@ -16,8 +16,10 @@ const StyledMain = styled.main`
     flex-direction: column;
     gap: 24px;
 
-    .orchestra-nav-container {
-      .orchestra-logo {
+    .orchestra-nav-container,
+    .user-nav-container {
+      .orchestra-logo,
+      .user-pic {
         width: 110px;
         height: 110px;
         margin: 0 auto;
@@ -31,7 +33,8 @@ const StyledMain = styled.main`
         background-color: white;
       }
 
-      .orchestra-nav {
+      .orchestra-nav,
+      .user-nav {
         margin-top: -55px;
         border: 1px solid lightgrey;
         padding: 80px 24px;
@@ -64,6 +67,18 @@ const StyledMain = styled.main`
           }
         }
       }
+
+      .user-nav {
+        padding-left: 12px;
+        border-radius: 10px;
+        border-bottom-right-radius: 0;
+        padding-bottom: 24px;
+      }
+    }
+
+    .user-nav-container {
+      position: sticky;
+      top: 24px;
     }
 
     .notification-container {
@@ -136,7 +151,8 @@ const StyledMain = styled.main`
     flex-direction: column;
     gap: 24px;
 
-    .campaign-form-title {
+    .campaign-form-title,
+    .user-form-title {
       font-size: 1.4em;
       color: ${({ theme }) => theme.colors.secondary};
       margin: 0;

@@ -55,6 +55,8 @@ export const Orquestas = [
 
 export const Users = [
   {
+    id: "1",
+    cover: "http://placeimg.com/640/480/people",
     name: "Kellie Auer",
     email: "River.Koch@example.net",
     password: "wmAosoOrBGF2uKg",
@@ -63,8 +65,12 @@ export const Users = [
     birthday: "Fri Apr 08 2022 12:07:36 GMT+0000 (Coordinated Universal Time)",
     city: "Port Wilmahaven",
     rol: "Teacher",
+    about:
+      "Quia explicabo porro similique. Sint voluptate dolorem nesciunt dignissimos inventore. A quia sed neque rerum. Vero deleniti sapiente quasi repellendus assumenda ea dolor optio. Repellendus facere itaque voluptatem sit ipsam. Qui in necessitatibus consequuntur illum ex et voluptates.",
   },
   {
+    id: "2",
+    cover: "http://placeimg.com/640/480/animals",
     name: "Beverly Buckridge II",
     email: "Dale_Doyle18@gmail.com",
     password: "jRbVqZDJlewevyQ",
@@ -73,8 +79,12 @@ export const Users = [
     birthday: "Sat Dec 25 2021 15:36:17 GMT+0000 (Coordinated Universal Time)",
     city: "Tinley Park",
     rol: "Director",
+    about:
+      "Quae ratione quia omnis quaerat ab. Eos ut nobis qui molestiae nihil voluptatem. Ullam voluptas cum nemo dolorem voluptatem omnis pariatur. Iusto veniam quos reprehenderit est voluptatibus voluptatem. Ipsam sint eius. Aliquam deserunt a fugit sequi est iure est.",
   },
   {
+    id: "3",
+    cover: "http://placeimg.com/640/480/city",
     name: "Latoya Klein",
     email: "Don8@hotmail.com",
     password: "hGOziQSu67eSoHQ",
@@ -83,8 +93,12 @@ export const Users = [
     birthday: "Mon Jan 03 2022 01:24:08 GMT+0000 (Coordinated Universal Time)",
     city: "East Romainetown",
     rol: "Student",
+    about:
+      "Eaque rerum deserunt est et cupiditate suscipit aut. Quae voluptates in est. Dolores recusandae ipsa voluptas fuga. Natus non sapiente quia fugiat. Eum excepturi voluptatem libero dolorem molestiae. Explicabo consequatur incidunt.",
   },
   {
+    id: "4",
+    cover: "http://placeimg.com/640/480/nature",
     name: "Cody Roberts",
     email: "Nicola_Franecki@gmail.com",
     password: "2sJ_KRysfWFszpW",
@@ -93,6 +107,8 @@ export const Users = [
     birthday: "Fri Dec 17 2021 12:24:29 GMT+0000 (Coordinated Universal Time)",
     city: "Remingtonport",
     rol: "Student",
+    about:
+      "Esse voluptatum qui architecto ex facere. Sed qui animi quibusdam amet. A sed id consequatur totam mollitia laborum et ducimus. Quisquam aut quo delectus tempore quo sit labore. Dicta corporis blanditiis quam et est quas cupiditate ut.",
   },
 ];
 
