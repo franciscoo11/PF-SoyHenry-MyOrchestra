@@ -42,7 +42,7 @@ export const postUser = async (body: any) => {
         folder
       );
     }
-    // if(!check_password(password)) return null
+    if(!check_password(password)) return null
     const addUser = await prisma.users.upsert({
       where: {
         email: email,
@@ -67,7 +67,7 @@ export const postUser = async (body: any) => {
         avatar: cloudinaryAvatarUrl,
       },
     });
-    // await transporter.sendMail(emailerReg(addUser))
+    await transporter.sendMail(emailerReg(addUser))
     return addUser ? addUser : null;
   } catch (error) {
     return console.log(error);
