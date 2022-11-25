@@ -69,36 +69,27 @@ const StyledForm = styled.div`
         grid-row: 3;
       }
 
-      .logo-field {
-        grid-column: 1/4;
-        grid-row: 4;
-      }
-      .cover-field {
-        grid-column: 4/7;
-        grid-row: 4;
-      }
-
       .date-field {
         grid-column: 1/3;
-        grid-row: 5;
+        grid-row: 4;
       }
 
       .orchesta-type-field {
         grid-column: 3/5;
-        grid-row: 5;
+        grid-row: 4;
       }
       .sponsor-field {
         grid-column: 5/7;
-        grid-row: 5;
+        grid-row: 4;
       }
 
       .description-field {
         grid-column: 1/7;
-        grid-row: 6;
+        grid-row: 5;
       }
       .btn-container {
         grid-column: 1/7;
-        grid-row: 7;
+        grid-row: 6;
         text-align: right;
 
         .submit {
@@ -126,7 +117,6 @@ const StyledForm = styled.div`
 `;
 
 interface Values {
-  logo: string;
   name: string;
   description: string;
   creation_date: string;
@@ -134,7 +124,6 @@ interface Values {
   location: string;
   donation_account: string;
   phone: string;
-  cover?: string;
   orchestra_TypeId: string;
 }
 
@@ -144,8 +133,6 @@ export default function OrchestraEditForm({
 }: any) {
   const {
     id,
-    logo,
-    cover,
     name,
     location,
     description,
@@ -163,7 +150,6 @@ export default function OrchestraEditForm({
       <StyledForm>
         <Formik
           initialValues={{
-            logo: logo,
             name: name,
             description: description,
             creation_date: creation_date,
@@ -171,7 +157,6 @@ export default function OrchestraEditForm({
             location: location,
             donation_account: donation_account,
             phone: phone,
-            cover: cover,
             orchestra_TypeId: orchestra_TypeId,
           }}
           validationSchema={Yup.object({
@@ -279,31 +264,6 @@ export default function OrchestraEditForm({
                   <ErrorMessage name="phone" className="errorMessage" />
                 </p>
               </div>
-
-              <div className="logo-field">
-                <Field
-                  name="logo"
-                  type="text"
-                  placeholder="Logotipo de la Orquesta"
-                  className="input"
-                />
-                <p className="error">
-                  <ErrorMessage name="logo" className="errorMessage" />
-                </p>
-              </div>
-
-              <div className="cover-field">
-                <Field
-                  name="cover"
-                  type="text"
-                  placeholder="Imagen de portada"
-                  className="input"
-                />
-                <p className="error">
-                  <ErrorMessage name="cover" className="errorMessage" />
-                </p>
-              </div>
-
               <div className="date-field">
                 {/* NO supe como validar las fechas :( */}
                 <Field name="creation_date" type="date" className="input" />

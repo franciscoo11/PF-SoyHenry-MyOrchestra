@@ -39,7 +39,6 @@ const StyledForm = styled.div`
 `;
 
 export default function CreatePosts({ typePost }: any) {
-  
   return (
     <StyledForm>
       <div className="container-top">
@@ -53,29 +52,28 @@ export default function CreatePosts({ typePost }: any) {
           userCreator: "b043f99a-7672-4474-a689-6e19c138c673",
           type_PostId: "",
         }}
-        onSubmit={async (values:any, { setSubmitting }) => {
+        onSubmit={async (values: any, { setSubmitting }) => {
           const file: any = values.file;
           const formData = new FormData();
-       
+
           try {
             formData.append("file", file);
             formData.append("upload_preset", "orchestras-uploads");
-           const uploadImage:any=  await axios.post(
+            const uploadImage: any = await axios.post(
               `https://api.cloudinary.com/v1_1/orchestrascloudinary/image/upload`,
               formData
-            )
+            );
             let postData = {
               title: values.title,
               content: values.content,
-            orchestraId:values.orchestraId,
-          userCreator:values.userCreator,
-        type_PostId: values.type_PostId,
-        url_file:uploadImage.data.secure_url
-            }
-            console.log(uploadImage.data.secure_url)
-            console.log(postData)
+              orchestraId: values.orchestraId,
+              userCreator: values.userCreator,
+              type_PostId: values.type_PostId,
+              url_file: uploadImage.data.secure_url,
+            };
 
-           await axios.post('/api/post',postData)
+            await axios.post("/api/post", postData);
+            setSubmitting(false);
           } catch (error) {
             console.log(error);
           }
