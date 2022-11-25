@@ -9,13 +9,13 @@ export default function Nav(propr: any) {
 
       <Link href="/news">Noticias </Link>
 
-      <Link href="#">Eventos </Link>
+      <Link href="/events">Eventos </Link>
 
-      <Link href="#">Multimedia </Link>
+      {/* <Link href="#">Multimedia </Link> */}
 
       <Link href="/campaigns">Campañas </Link>
 
-      <Link href="#">Acerca de </Link>
+      {/* <Link href="#">Acerca de </Link> */}
     </nav>
   );
 }

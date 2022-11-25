@@ -58,7 +58,7 @@ export default function AsideLeft(props: any) {
                 </Link>
               </div>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <FiVideo />
               <div>
                 <Link
@@ -67,7 +67,7 @@ export default function AsideLeft(props: any) {
                   Multimedia
                 </Link>
               </div>
-            </li>
+            </li> */}
             {/* <li className="nav-item">
               <FiFile />
               <div>Archivos</div>
