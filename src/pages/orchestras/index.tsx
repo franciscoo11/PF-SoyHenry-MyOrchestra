@@ -144,22 +144,18 @@ export default function Orquestas({ orchestra }: any) {
 
   async function nameSortDesc() {
     const res = await axios.get(`api/orchestra?order=desc`);
-    setData(await res.data);
+    setData(await res.data.data);
   }
 
   async function nameSortAsc() {
     const res = await axios.get(`api/orchestra?order=asc`);
-    setData(await res.data);
+    setData(await res.data.data);
   }
 
   return (
     <>
       <Head>
         <title>Listado de Orquestas Populares de Música Latinoamericana</title>
-        <style>
-          @import
-          url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
-        </style>
       </Head>
       <OrchestasNavBar
         setCurrentPage={setCurrentPage}
@@ -216,7 +212,7 @@ export default function Orquestas({ orchestra }: any) {
 
 export const getServerSideProps = async () => {
   const res = await axios.get(`${HOSTNAME}/api/orchestra`);
-  const orchestra = await res.data;
+  const orchestra = await res.data.data;
 
   return {
     props: {

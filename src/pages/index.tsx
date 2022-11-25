@@ -11,10 +11,6 @@ export default function Home(props: any) {
     <>
       <Head>
         <title>Red de Orquestas Populares de Música Latinoamericana</title>
-        <style>
-          @import
-          url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
-        </style>
       </Head>
       <MainNavBar />
       <HeroImage />
@@ -26,7 +22,7 @@ export default function Home(props: any) {
 
 export const getServerSideProps = async () => {
   const res = await axios.get(`${HOSTNAME}/api/orchestra`);
-  const orchestra = await res.data;
+  const orchestra = await res.data.data;
 
   return {
     props: {
