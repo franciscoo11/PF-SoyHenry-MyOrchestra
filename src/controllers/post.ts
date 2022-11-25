@@ -2,10 +2,22 @@ import { date } from "yup";
 import { prisma } from "../../lib/prisma";
 //GET USERSPOST
 export const getPost = async (query:any) => {
+  
   try {
-    const {event_date, views,resources,page,orchestra} = query
+    
+    const {event_date, views,resources,page,orchestra,id} = query
 
     const results =  (await prisma.posts.findMany()).length
+    if (id){
+      const data= await prisma.posts.findMany( 
+      {
+        where:{
+          id: id
+        },
+        })
+        return data
+
+    }
 
     const onlyorder =async(orderprop:any,order:any)=>{
       const data= await prisma.posts.findMany( 
@@ -172,3 +184,4 @@ export const deletePost = async (post_id: any) => {
     return null;
   }
 };
+

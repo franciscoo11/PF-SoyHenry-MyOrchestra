@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import NextCors from 'nextjs-cors';
-import { putPost,logicDeletePost,deletePost } from '../../../controllers/post';
+import { putPost,logicDeletePost,deletePost, getPost } from '../../../controllers/post';
 
 
 
@@ -14,7 +14,7 @@ export default async function handler(
     origin: "*",
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
-
+    const GET:string = "GET"
     const DELETE:string="DELETE";
     const PUT:string="PUT";
     const PATCH:string="PATCH"
@@ -28,12 +28,15 @@ export default async function handler(
 
     try {
         switch (method) {
+          case GET:
+            const getUserId = await getPost(req.query)
+          return getUserId ? res.status(200).json(getUserId) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
             case PATCH:
               const fakeDeleteUser = await logicDeletePost(id)
-            return fakeDeleteUser ? res.status(204).json(fakeDeleteUser) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
+            return fakeDeleteUser ? res.status(200).json(fakeDeleteUser) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
             case PUT:
               const modifyUser = await putPost(id,body)
-            return modifyUser ? res.status(204).json(modifyUser) : res.status(404).json({error:"Something goes wrong, try again or check id"})
+            return modifyUser ? res.status(200).json(modifyUser) : res.status(404).json({error:"Something goes wrong, try again or check id"})
             case DELETE:
               const removeUser = await deletePost(id)
               return removeUser ? res.status(200).json(removeUser) : res.status(404).json({error: 'Something goes wrong, check id and try again'})

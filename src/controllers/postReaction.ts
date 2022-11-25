@@ -12,14 +12,13 @@ export const allReactionFromPosts = async() => {
 export const addReactionToPost = async(query:any, body:any) => {
     try {
         if(!query || !body) return null
-        const isDuplicateReaction = await prisma.post_user_on_reactions.findFirst({
+        const findDuplicate = await prisma.post_user_on_reactions.findFirst({
             where:{
-                userId:body.userId,
-                postId:query.id,
-                reactionId: body.reactionId
+                userId: body.userId,
+                postId: query.id
             }
         })
-        if(isDuplicateReaction) return null
+        if(findDuplicate) return null
         const subscribeReaction = await prisma.post_user_on_reactions.create({
             data:{
                 postId: query.id,
@@ -27,7 +26,7 @@ export const addReactionToPost = async(query:any, body:any) => {
                 userId: body.userId
             }
         })
-        return subscribeReaction ? subscribeReaction : null
+        return subscribeReaction ? subscribeReaction: null
     } catch (error) {
         return error
     }
