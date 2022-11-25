@@ -1,11 +1,14 @@
+import { date } from "yup";
 import { prisma } from "../../lib/prisma";
 //GET USERSPOST
 export const getPost = async (query:any) => {
   try {
     const {event_date, views,resources,page,orchestra} = query
 
+    const results =  (await prisma.posts.findMany()).length
+
     const onlyorder =async(orderprop:any,order:any)=>{
-      const datos= await prisma.posts.findMany( 
+      const data= await prisma.posts.findMany( 
         { orderBy: { [orderprop]: order },
         take: resources*1 ||4,
         skip: page*resources||page*4||0,
@@ -16,19 +19,21 @@ export const getPost = async (query:any) => {
           comments:true
         }
         })
-        return datos
+        return {results,data}
     }
 
     if(event_date)return onlyorder("event_date",event_date)
     if(views)return onlyorder("views",views)
 
-    return await prisma.posts.findMany({
+    const data = await prisma.posts.findMany({
       take: resources*1 ||4,
       skip: page*resources||page*4||0,
       include: {
         comments:true
       }}
       )
+
+    return {results,data}
   } catch (error) {
     return null
   }

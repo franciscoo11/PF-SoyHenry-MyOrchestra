@@ -1,14 +1,15 @@
 import { prisma } from "../../lib/prisma";
 import { convertToCloudinaryUrlOrchestras } from "./cloudinary";
 
-
 //GET ORCHESTRAS
 export const getOrchestras = async (query: any) => {
+
+  const results =  (await prisma.orchestras.findMany()).length
 
 const { name, creation_date, location, orchestra_TypeId,page,resources,order } = query
 
   const fulldataorder =async(orderprop:any, order:any,prop1:any,prop2:any,date1:any,date2:any)=>{
-    const datos= await prisma.orchestras.findMany( 
+    const data= await prisma.orchestras.findMany( 
       { orderBy: { [orderprop]: order },
       take: resources*1 ||4,
       skip: page*resources||page*4||0,
@@ -17,7 +18,7 @@ const { name, creation_date, location, orchestra_TypeId,page,resources,order } =
           [prop2]:date2 
         }
       })   
-      return datos
+      return {results,data}
   }
   
   const dataandorder =async(orderprop:any,order:any,prop1:any,date1:any)=>{
@@ -26,7 +27,7 @@ const { name, creation_date, location, orchestra_TypeId,page,resources,order } =
     if(prop1!="orchestra_TypeId"){
        aux = { contains: trimedName, mode:'insensitive' }
     }
-    const datos= await prisma.orchestras.findMany( 
+    const data= await prisma.orchestras.findMany( 
       { orderBy: { [orderprop]: order },
       take: resources*1 ||4,
       skip: page*resources||page*4||0,
@@ -34,11 +35,11 @@ const { name, creation_date, location, orchestra_TypeId,page,resources,order } =
           [prop1]:aux 
         }
       })
-      return datos
+      return {results,data}
   }
 
   const fulldata =async(prop1:any,prop2:any,date1:any,date2:any)=>{
-    const datos= await prisma.orchestras.findMany( 
+    const data= await prisma.orchestras.findMany( 
       { 
       take: resources*1 ||4,
       skip: page*resources||page*4||0,
@@ -47,7 +48,7 @@ const { name, creation_date, location, orchestra_TypeId,page,resources,order } =
           [prop2]:date2 
         }
       })   
-      return datos
+      return {results,data}
   }
   
   const dataonly =async(prop1:any,date1:any)=>{
@@ -56,7 +57,7 @@ const { name, creation_date, location, orchestra_TypeId,page,resources,order } =
     if(prop1!="orchestra_TypeId"){
        aux = { contains: trimedName, mode:'insensitive' }
     }
-    const datos= await prisma.orchestras.findMany( 
+    const data= await prisma.orchestras.findMany( 
       {
       take: resources*1 ||4,
       skip: page*resources||page*4||0,
@@ -64,17 +65,17 @@ const { name, creation_date, location, orchestra_TypeId,page,resources,order } =
           [prop1]:aux 
         }
       })
-      return datos
+      return {results,data}
   }
 
   const onlyorder =async(orderprop:any,order:any)=>{
   
-    const datos= await prisma.orchestras.findMany( 
+    const data= await prisma.orchestras.findMany( 
       { orderBy: { [orderprop]: order },
       take: resources*1 ||4,
       skip: page*resources||page*4||0,
       })
-      return datos
+      return {results,data}
   }
 
   if(order&&location&&orchestra_TypeId)return fulldataorder( "name",order,"location","orchestra_TypeId",location,orchestra_TypeId)
@@ -94,7 +95,12 @@ const { name, creation_date, location, orchestra_TypeId,page,resources,order } =
 
   if(name)return dataandorder("name",order,"name",name)
 
-  return await prisma.orchestras.findMany()
+  const data =  await prisma.orchestras.findMany({
+    take: resources*1 ||4,
+    skip: page*resources||page*4||0,
+    })
+
+  return {results,data}
 };
 
 //GET ORCHESTRAS BY ID
