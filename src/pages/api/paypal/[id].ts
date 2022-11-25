@@ -44,7 +44,8 @@ const captureOrder = async (req: NextApiRequest, res: NextApiResponse) => {
       payerEmail: ordersDetail.data.payment_source.paypal.email_address,
       name: ordersDetail.data.purchase_units[0].shipping.name.full_name,
       mount: ordersDetail.data.purchase_units[0].payments.captures[0].amount.value,
-      date: ordersDetail.data.purchase_units[0].payments.captures[0].create_time
+      date: ordersDetail.data.purchase_units[0].payments.captures[0].create_time,
+      idCampaign: ordersDetail.data.purchase_units[0].reference_id
     }
 
     res.status(200).json(response);

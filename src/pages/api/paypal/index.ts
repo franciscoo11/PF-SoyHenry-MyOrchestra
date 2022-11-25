@@ -30,11 +30,12 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse) => {
       intent: "CAPTURE",
       purchase_units: [
         {
+          reference_id: req.body.idCampaign,
           amount: {
             currency_code: "USD",
             value: req.body.value,
           },
-          description: "donation",
+          description: "donation"
         },
       ],
       application_context: {
