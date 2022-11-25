@@ -14,9 +14,9 @@ datasource db {
 model orchestras {
   id                 String               @id @default(cuid())
   name               String               @unique @db.VarChar()
-  description        String
-  logo               String?
-  cover              String?
+  description        String 
+  logo               String? @default("../public/blank_logo.png")
+  cover              String? @default("../public/orchestra_cover.png")
   creation_date      String
   sponsor            String?
   location           String
@@ -38,8 +38,8 @@ model users {
   name                   String?
   email                  String                   @unique
   password               String?
-  avatar                 String?
-  cover                  String?
+  avatar                 String?  @default("../public/blank_profile.png")
+  cover                  String?  @default("../public/user_cover.png")
   birthday               DateTime? @db.Date 
   city                   String?
   state                  String?
