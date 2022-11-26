@@ -1,10 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
+import NextCors from "nextjs-cors";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  await NextCors(req, res, {
+    // Options
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    origin: "*",
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
+  
   const POST: string = "POST";
 
   let { method } = req;
@@ -73,7 +81,7 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const link = response.data.links[1].href;
     const id = response.data.id;
-    res.json({ id, link });
+    res.status(201).json({ id, link });
     // res.json(response.data)
   } catch (error) {
     return res.status(500).send("Something goes wrong the order has not been generated");

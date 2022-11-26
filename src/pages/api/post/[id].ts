@@ -25,15 +25,14 @@ export default async function handler(
       query:{id},
     } = req;
 
-
     try {
         switch (method) {
             case PATCH:
               const fakeDeleteUser = await logicDeletePost(id)
-            return fakeDeleteUser ? res.status(204).json(fakeDeleteUser) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
+            return fakeDeleteUser ? res.status(200).json(fakeDeleteUser) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
             case PUT:
               const modifyUser = await putPost(id,body)
-            return modifyUser ? res.status(204).json(modifyUser) : res.status(404).json({error:"Something goes wrong, try again or check id"})
+            return modifyUser ? res.status(200).json(modifyUser) : res.status(404).json({error:"Something goes wrong, try again or check id"})
             case DELETE:
               const removeUser = await deletePost(id)
               return removeUser ? res.status(200).json(removeUser) : res.status(404).json({error: 'Something goes wrong, check id and try again'})
