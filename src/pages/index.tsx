@@ -4,9 +4,9 @@ import Footer from "../frontend/components/Footer";
 import HeroImage from "../frontend/components/HeroImage";
 import HomeMainContent from "../frontend/components/HomeMainContent";
 import MainNavBar from "../frontend/components/MainNavBar";
-import { HOSTNAME } from "./_app";
+import { prisma } from "./../../lib/prisma";
 
-export default function Home({ orchestra }: any) {
+export default function Home({ orchestras }: any) {
   return (
     <>
       <Head>
@@ -14,19 +14,18 @@ export default function Home({ orchestra }: any) {
       </Head>
       <MainNavBar />
       <HeroImage />
-      <HomeMainContent orchestra={orchestra} />
+      <HomeMainContent orchestras={orchestras} />
       <Footer />
     </>
   );
 }
 
 export const getServerSideProps = async () => {
-  const res = await axios.get(`${HOSTNAME}/api/orchestra`);
-  const orchestra = await res.data.data;
+  try {
+    const orchestras = await prisma.orchestras.findMany();
 
-  return {
-    props: {
-      orchestra,
-    },
-  };
+    return { props: { orchestras } };
+  } catch (error) {
+    console.log(error);
+  }
 };
