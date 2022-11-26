@@ -12,6 +12,8 @@ import { HOSTNAME } from "../../_app";
 import axios from "axios";
 import { UpdateCover } from "../../../frontend/components/orchestras/UpdateCover";
 import { UpdateLogo } from "../../../frontend/components/orchestras/UpdateLogo";
+import { useUser } from "@auth0/nextjs-auth0";
+import { useEffect, useState } from "react";
 
 // export const getStaticPaths = async () => {
 //   try {
@@ -49,16 +51,25 @@ export async function getServerSideProps({ params }: any) {
         id: params.id,
       },
     });
-    const postTypes = await prisma.type_post.findMany();
 
-    return { props: { orchestra, postTypes } };
+    return { props: { orchestra } };
   } catch (error) {
     console.log(error);
   }
 }
 
-function OrchestraDetails({ orchestra, postTypes }: any) {
+function OrchestraDetails({ orchestra }: any) {
   const { id, name, description, logo, cover, location } = orchestra;
+  const { user } = useUser();
+  const [userId, setUserId] = useState();
+
+  useEffect(() => {
+    if (user) {
+      axios
+        .get(`/api/user/${user.email}`)
+        .then((res: any) => setUserId(res.data.id));
+    }
+  }, [user]);
 
   return (
     <>
@@ -72,9 +83,11 @@ function OrchestraDetails({ orchestra, postTypes }: any) {
         <section className="content">
           <Cover cover={cover} title={name} location={location} />
           {/* <UpdateCover orchestrasById={props.orchestrasById} /> */}
-          <div className="form-container">
-            <CreatePosts typePost={postTypes} />
-          </div>
+          {user ? (
+            <div className="form-container">
+              {<CreatePosts orchestraId={id} userCreator={userId} />}
+            </div>
+          ) : null}
           <div className="filter-container">
             <div className="divider"></div>
             <div className="post-filter">

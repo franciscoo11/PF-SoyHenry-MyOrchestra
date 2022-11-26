@@ -6,7 +6,7 @@ import HomeMainContent from "../frontend/components/HomeMainContent";
 import MainNavBar from "../frontend/components/MainNavBar";
 import { HOSTNAME } from "./_app";
 
-export default function Home(props: any) {
+export default function Home({ orchestra }: any) {
   return (
     <>
       <Head>
@@ -14,7 +14,7 @@ export default function Home(props: any) {
       </Head>
       <MainNavBar />
       <HeroImage />
-      <HomeMainContent orchestra={props.orchestra} />
+      <HomeMainContent orchestra={orchestra} />
       <Footer />
     </>
   );

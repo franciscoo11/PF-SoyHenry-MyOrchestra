@@ -10,13 +10,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model orchestras {
   id                 String               @id @default(cuid())
   name               String               @unique @db.VarChar()
-  description        String 
-  logo               String? @default("blank_logo.png")
-  cover              String? @default("orchestra_cover.png")
+  description        String
+  logo               String?              @default("blank_logo.png")
+  cover              String?              @default("orchestra_cover.png")
   creation_date      String
   sponsor            String?
   location           String
@@ -38,9 +37,9 @@ model users {
   name                   String?
   email                  String                   @unique
   password               String?
-  avatar                 String?  @default("blank_profile.png")
-  cover                  String?  @default("user_cover.png")
-  birthday               DateTime? @db.Date 
+  avatar                 String?
+  cover                  String?
+  birthday               DateTime?                @db.Date
   city                   String?
   state                  String?
   country                String?
