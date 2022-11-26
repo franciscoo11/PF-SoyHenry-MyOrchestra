@@ -1,4 +1,3 @@
-
 import { NextApiRequest, NextApiResponse } from "next"
 const mercadopago = require("mercadopago");
 
@@ -12,10 +11,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const addPay = await postPay(req, res)
     return addPay;
   case 'GET':
-    const findPay = await searchPay(req,res)
+    const findPay = await capturePay(req,res)
     return findPay
   default:
-    break;
+    return res.status(400).json("method not allowed");
  }
 }
 
@@ -24,76 +23,44 @@ async function postPay(req: NextApiRequest, res: NextApiResponse<any>) {
   let preference = {
     items: [
       {
-        id: req.body.id,
-        title: req.body.title,
+        id: req.body.idCampaign,
+        title: 'donation',
         unit_price: parseInt(req.body.price),
         quantity: 1,
       }
     ],
-    // notification_url:`http://localhost.com/api/${req.body.id}`,
     back_urls: {
       success: `http://localhost:3000/success`,
       failure: `http://localhost:3000/`,
-      pending: `http://localhost:3000/`
     },
-    // payer: {
-    //   email: req.body.email,
-    // },
-    // external_reference: "Reference_1234",
     auto_return: "approved",
-      payer: {
-        email: req.body.email,
-    },
-    
   }
 
   await mercadopago.preferences
   .create(preference)
   .then(function (response:any) {
-    const response2 = {
-      link: response.body.init_point,
-      id: '123456789'
-    }
-    res.json(response2);
+    res.json(response.body.init_point);
   })
   .catch(function (error:any) {
-    console.log(error);
+    return error
   });
 }
 
-async function searchPay(req: NextApiRequest, res: NextApiResponse<any>) {
-  var filters = {
-    range: 'date_created',
-    begin_date: 'NOW-1MONTH',
-    end_date: 'NOW',
-    status: 'approved',
-    operation_type: 'regular_payment'
-  };
-
-  // DATE AND EMAIL FILTER
-  // var filters = {
-  //   payer_email: 'test_user_3931694@testuser.com',
-  //   begin_date: mercadopago.utils.date.now().subtract(60).toString(),
-  //   end_date: mercadopago.utils.date.now().toString()
-  // };
-
-  await mercadopago.payment.search({
-    qs: filters
-  }).then(function (data:any) {
-    res.json(data);
-  }).catch(function (error:any) {
-    res.json(error);
+async function capturePay(req: NextApiRequest, res: NextApiResponse<any>){
+  const { paymentId } = req.query
+  mercadopago.payment.capture(paymentId, mercadopago, (error:any, response:any) => {
+    try {
+      const payData = {
+        status: response.body.status,
+        status_detail: response.body.status_detail,
+        date: response.body.date_approved,
+        mount: response.body.transaction_amount,
+        payerEmail: response.body.payer.email,
+        idCampaign: response.body.additional_info.items[0].id
+      }
+      return res.json(payData)
+    } catch (error) {
+      return res.status(500).json({ errors: 'Something goes wrong'})
+    }
   });
 }
-
-// async function capturePay(req: NextApiRequest, res: NextApiResponse<any>){
-//   const { paymentId } = req.query
-//   mercadopago.payment.capture(paymentId, mercadopago, (error:any, response:any) => {
-//     try {
-//       console.log(response)
-//       return res.json(response)
-//     } catch (error) {
-//       return res.status(500).json({ errors: 'Something goes wrong'})
-//     }
-// });
-// }
