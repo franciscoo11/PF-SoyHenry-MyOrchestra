@@ -39,10 +39,10 @@ async function postPay(req: NextApiRequest, res: NextApiResponse<any>) {
   await mercadopago.preferences
   .create(preference)
   .then(function (response:any) {
-    res.json(response.body.init_point);
+    res.status(200).json({ payLink: response.body.init_point });
   })
   .catch(function (error:any) {
-    return error
+    return res.status(500).json({ errors: error })
   });
 }
 
@@ -58,9 +58,9 @@ async function capturePay(req: NextApiRequest, res: NextApiResponse<any>){
         payerEmail: response.body.payer.email,
         idCampaign: response.body.additional_info.items[0].id
       }
-      return res.json(payData)
+      return res.status(200).json(payData)
     } catch (error) {
-      return res.status(500).json({ errors: 'Something goes wrong'})
+      return res.status(500).json({ errors: 'Something goes wrong' })
     }
   });
 }
