@@ -4,33 +4,28 @@ import Footer from "../frontend/components/Footer";
 import HeroImage from "../frontend/components/HeroImage";
 import HomeMainContent from "../frontend/components/HomeMainContent";
 import MainNavBar from "../frontend/components/MainNavBar";
-import { HOSTNAME } from "./_app";
+import { prisma } from "./../../lib/prisma";
 
-export default function Home(props: any) {
+export default function Home({ orchestras }: any) {
   return (
     <>
       <Head>
         <title>Red de Orquestas Populares de Música Latinoamericana</title>
-        <style>
-          @import
-          url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
-        </style>
       </Head>
       <MainNavBar />
       <HeroImage />
-      <HomeMainContent orchestra={props.orchestra} />
+      <HomeMainContent orchestras={orchestras} />
       <Footer />
     </>
   );
 }
 
 export const getServerSideProps = async () => {
-  const res = await axios.get(`${HOSTNAME}/api/orchestra`);
-  const orchestra = await res.data;
+  try {
+    const orchestras = await prisma.orchestras.findMany();
 
-  return {
-    props: {
-      orchestra,
-    },
-  };
+    return { props: { orchestras } };
+  } catch (error) {
+    console.log(error);
+  }
 };

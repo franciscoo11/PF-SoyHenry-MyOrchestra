@@ -23,8 +23,8 @@ export const postUser = async (body: any, query: any) => {
     if (!body) return null;
     const { name, email, password, rolId, birthday, avatar, cover } = body;
     if (!email) return null;
-    let cloudinaryCoverUrl = "";
-    let cloudinaryAvatarUrl = "";
+    let cloudinaryCoverUrl = "/user_cover.png";
+    let cloudinaryAvatarUrl = "/blank_profile.png";
     let folder = "";
 
     if (cover) {
@@ -128,8 +128,8 @@ export const updateUser = async (email: any, body: any) => {
     const {email,avatar, cover } = body;
 
     if (!email || !body) return null;
-    let cloudinaryCoverUrl = "";
-    let cloudinaryAvatarUrl = "";
+    let cloudinaryCoverUrl = cover;
+    let cloudinaryAvatarUrl = avatar;
     let folder = "";
 
     if (cover) {

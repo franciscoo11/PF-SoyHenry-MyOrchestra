@@ -51,7 +51,12 @@ const NavStyle = styled.header`
   }
 `;
 
-export default function OrchestasNavBar(props: any) {
+export default function OrchestasNavBar({
+  router,
+  search,
+  setSearch,
+  setCurrentPage,
+}: any) {
   return (
     <NavStyle>
       <div className="nav-container">
@@ -60,11 +65,10 @@ export default function OrchestasNavBar(props: any) {
           <Auth />
         </div>
         <SearchBar
-          setCurrentPage={props.setCurrentPage}
-          data={props.data}
-          setData={props.setData}
-          search={props.search}
-          setSearch={props.setSearch}
+          search={search}
+          setSearch={setSearch}
+          router={router}
+          setCurrentPage={setCurrentPage}
         />
       </div>
     </NavStyle>

@@ -43,9 +43,9 @@ export const StyledMain = styled.main`
   }
 `;
 
-function HomeMainContent({ orchestra }: any) {
+function HomeMainContent({ orchestras }: any) {
   const firstEntrys = () => {
-    return orchestra.slice(0, 3);
+    return orchestras.slice(0, 3);
   };
 
   return (

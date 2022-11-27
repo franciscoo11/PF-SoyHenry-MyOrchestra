@@ -116,8 +116,8 @@ export const postOrchestras = async (body: any) => {
   try {
     if(!body) return undefined
     const { name, phone, donation_account,cover,logo } = body;
-    let cloudinaryCoverUrl = "";
-    let cloudinaryLogoUrl = "";
+    let cloudinaryCoverUrl = "/orchestra_cover.png";
+    let cloudinaryLogoUrl = "/blank_logo.png";
     let folder = "";
     if (cover) {
       folder = "cover";
@@ -185,8 +185,8 @@ export const deleteOrchestra = async (id: any) => {
 export const updateOrchestra = async (id: any, body: any) => {
   try {
     const { name,cover,logo } = body;
-    let cloudinaryCoverUrl = "";
-    let cloudinaryLogoUrl = "";
+    let cloudinaryCoverUrl = cover;
+    let cloudinaryLogoUrl = logo;
     let folder = "";
     if (cover) {
       folder = "cover";
