@@ -11,21 +11,26 @@ import {
   FiEdit3,
 } from "react-icons/fi";
 import Link from "next/link";
+import { UpdateLogo } from "./UpdateLogo";
 
-export default function AsideLeft(props: any) {
+export default function AsideLeft({ logo, id }: any) {
   return (
     <>
       <div className="orchestra-nav-container">
         <div
           className="orchestra-logo"
-          style={{ backgroundImage: `url(${props.logo})` }}
-        ></div>
+          style={{ backgroundImage: `url(${logo})` }}
+        >
+          <div className="logo-update-icon-container">
+            <UpdateLogo id={id} />
+          </div>
+        </div>
         <nav className="orchestra-nav">
           <ul className="nav-list">
             <li className="nav-item">
               <FiHome />
               <div>
-                <Link href={`/orchestras/${encodeURIComponent(props.id)}`}>
+                <Link href={`/orchestras/${encodeURIComponent(id)}`}>
                   Inicio
                 </Link>
               </div>
@@ -33,9 +38,7 @@ export default function AsideLeft(props: any) {
             <li className="nav-item">
               <FiInfo />
               <div>
-                <Link
-                  href={`/orchestras/${encodeURIComponent(props.id)}/about`}
-                >
+                <Link href={`/orchestras/${encodeURIComponent(id)}/about`}>
                   Acerca de
                 </Link>
               </div>
@@ -43,9 +46,7 @@ export default function AsideLeft(props: any) {
             <li className="nav-item">
               <FiUsers />
               <div>
-                <Link
-                  href={`/orchestras/${encodeURIComponent(props.id)}/members`}
-                >
+                <Link href={`/orchestras/${encodeURIComponent(id)}/members`}>
                   Integrantes
                 </Link>
               </div>
@@ -53,7 +54,7 @@ export default function AsideLeft(props: any) {
             <li className="nav-item">
               <FiEye />
               <div>
-                <Link href={`/orchestras/${encodeURIComponent(props.id)}/news`}>
+                <Link href={`/orchestras/${encodeURIComponent(id)}/news`}>
                   Noticias
                 </Link>
               </div>
@@ -75,9 +76,7 @@ export default function AsideLeft(props: any) {
             <li className="nav-item">
               <FiCalendar />
               <div>
-                <Link
-                  href={`/orchestras/${encodeURIComponent(props.id)}/events`}
-                >
+                <Link href={`/orchestras/${encodeURIComponent(id)}/events`}>
                   Eventos
                 </Link>
               </div>
@@ -85,9 +84,7 @@ export default function AsideLeft(props: any) {
             <li className="nav-item">
               <FiHeart />
               <div>
-                <Link
-                  href={`/orchestras/${encodeURIComponent(props.id)}/campaigns`}
-                >
+                <Link href={`/orchestras/${encodeURIComponent(id)}/campaigns`}>
                   Campañas
                 </Link>
               </div>
@@ -95,7 +92,7 @@ export default function AsideLeft(props: any) {
             <li className="nav-item">
               <FiEdit3 />
               <div>
-                <Link href={`/orchestras/${encodeURIComponent(props.id)}/edit`}>
+                <Link href={`/orchestras/${encodeURIComponent(id)}/edit`}>
                   Editar Orquesta
                 </Link>
               </div>

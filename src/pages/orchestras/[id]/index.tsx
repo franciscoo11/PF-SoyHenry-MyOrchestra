@@ -77,7 +77,6 @@ function OrchestraDetails({ orchestra }: any) {
 
       <StyledMain>
         <aside className="aside-left">
-          {/* <UpdateLogo orchestrasById={props.orchestrasById} /> */}
           <AsideLeft logo={logo} id={id} />
         </aside>
         <section className="content">
