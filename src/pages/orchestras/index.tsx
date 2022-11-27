@@ -3,9 +3,8 @@ import HomeCards from "../../frontend/components/HomeCards";
 import styled from "styled-components";
 import axios from "axios";
 import Footer from "../../frontend/components/Footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OrchestasNavBar from "../../frontend/components/OrchestasNavBar";
-import { prisma } from "../../../lib/prisma";
 
 const StyledMain = styled.main`
   margin: 25px auto;
@@ -32,6 +31,16 @@ const StyledMain = styled.main`
         cursor: pointer;
         background-color: ${({ theme }) => theme.colors.secondary};
         color: white;
+        &:disabled {
+          cursor: unset;
+          color: lightgray;
+          background-color: white;
+        }
+      }
+
+      :disabled {
+        cursor: unset;
+        color: lightgray;
       }
     }
 
@@ -94,7 +103,8 @@ const StyledMain = styled.main`
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 24px;
 
-      .search-alert {
+      .search-alert,
+      .loading-msg {
         grid-column: 1/5;
         margin: 242px auto;
         font-size: 2em;
@@ -109,47 +119,58 @@ const StyledMain = styled.main`
   }
 `;
 
-export default function Orquestas({ orchestras }: any) {
-  const [data, setData] = useState(orchestras);
+export default function Orquestas() {
+  const [orchestras, setOrchestras] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+  const itemsPerPage = 4;
 
-  const paginatedData = () => {
-    if (search.length === 0) {
-      return data.slice(currentPage, currentPage + 4);
-    }
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get("api/orchestra")
+      .then((res) => setOrchestras(res.data))
+      .finally(() => setLoading(false));
+  }, []);
 
-    const searchResults = data.filter((element: any) =>
-      element.name.includes(search)
-    );
-    return searchResults.slice(currentPage, currentPage + 4);
-  };
+  const { data = [{}], results = 1 }: any = orchestras;
+  let pages = Math.ceil(results / itemsPerPage);
 
   const nextPage = () => {
-    const pagesNumber = data.length;
-    console.log(pagesNumber);
-
-    if (currentPage < pagesNumber) {
-      if (data.length > currentPage + 4) {
-        setCurrentPage(currentPage + 4);
-      }
+    if (currentPage < pages - 1) {
+      setLoading(true);
+      axios
+        .get(`api/orchestra?page=${currentPage + 1}`)
+        .then((res) => setOrchestras(res.data))
+        .then(() => setCurrentPage(currentPage + 1))
+        .finally(() => setLoading(false));
     }
   };
 
   const prevPage = () => {
     if (currentPage > 0) {
-      setCurrentPage(currentPage - 4);
+      setLoading(true);
+      axios
+        .get(`api/orchestra?page=${currentPage - 1}`)
+        .then((res) => setOrchestras(res.data))
+        .then(() => setCurrentPage(currentPage - 1))
+        .finally(() => setLoading(false));
     }
   };
 
   async function nameSortDesc() {
+    setLoading(true);
     const res = await axios.get(`api/orchestra?order=desc`);
-    setData(await res.data.data);
+    setOrchestras(res.data);
+    setLoading(false);
   }
 
   async function nameSortAsc() {
+    setLoading(true);
     const res = await axios.get(`api/orchestra?order=asc`);
-    setData(await res.data.data);
+    setOrchestras(res.data);
+    setLoading(false);
   }
 
   return (
@@ -159,7 +180,7 @@ export default function Orquestas({ orchestras }: any) {
       </Head>
       <OrchestasNavBar
         setCurrentPage={setCurrentPage}
-        setData={setData}
+        setData={setOrchestras}
         data={data}
         search={search}
         setSearch={setSearch}
@@ -180,8 +201,10 @@ export default function Orquestas({ orchestras }: any) {
             </div>
           </div>
           <div className="orquestas">
-            {paginatedData().length > 0 ? (
-              paginatedData().map((orquesta: any, index: number) => (
+            {loading ? (
+              <p className="loading-msg">Loading...</p>
+            ) : data ? (
+              data.map((orquesta: any, index: number) => (
                 <HomeCards
                   key={orquesta.id}
                   id={orquesta.id}
@@ -196,10 +219,18 @@ export default function Orquestas({ orchestras }: any) {
             )}
           </div>
           <div className="paginacion">
-            <button className="nav-btn" onClick={prevPage}>
+            <button
+              className="nav-btn"
+              onClick={prevPage}
+              disabled={currentPage === 0}
+            >
               Anterior
             </button>
-            <button className="nav-btn" onClick={nextPage}>
+            <button
+              className="nav-btn"
+              onClick={nextPage}
+              disabled={currentPage === pages - 1}
+            >
               Siguiente
             </button>
           </div>
@@ -209,13 +240,3 @@ export default function Orquestas({ orchestras }: any) {
     </>
   );
 }
-
-export const getServerSideProps = async () => {
-  try {
-    const orchestras = await prisma.orchestras.findMany();
-
-    return { props: { orchestras } };
-  } catch (error) {
-    console.log(error);
-  }
-};
