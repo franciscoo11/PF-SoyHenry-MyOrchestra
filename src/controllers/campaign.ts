@@ -31,6 +31,15 @@ export const getCampaigns = async (query?:any) => {
             }
           })
 
+        const results= (await prisma.campaigns.findMany( 
+            {
+              where:{      
+                [prop1]:aux 
+              },
+              include:{
+                  donations:true
+              }
+            })).length
           return {results,data}
       }
 

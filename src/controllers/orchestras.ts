@@ -3,104 +3,139 @@ import { convertToCloudinaryUrlOrchestras } from "./cloudinary";
 
 //GET ORCHESTRAS
 export const getOrchestras = async (query: any) => {
-
-  const results =  (await prisma.orchestras.findMany()).length
-
-const { name, creation_date, location, orchestra_TypeId,page,resources,order } = query
-
-  const fulldataorder =async(orderprop:any, order:any,prop1:any,prop2:any,date1:any,date2:any)=>{
-    const data= await prisma.orchestras.findMany( 
-      { orderBy: { [orderprop]: order },
-      take: resources*1 ||4,
-      skip: page*resources||page*4||0,
-        where:{   
-          [prop1]:{ contains: date1, mode:'insensitive' },
-          [prop2]:date2 
-        }
-      })   
-      return {results,data}
-  }
-  
-  const dataandorder =async(orderprop:any,order:any,prop1:any,date1:any)=>{
-    let trimedName = date1.toLowerCase().trim();
-    let aux=date1;
-    if(prop1!="orchestra_TypeId"){
-       aux = { contains: trimedName, mode:'insensitive' }
-    }
-    const data= await prisma.orchestras.findMany( 
-      { orderBy: { [orderprop]: order },
-      take: resources*1 ||4,
-      skip: page*resources||page*4||0,
-        where:{      
-          [prop1]:aux 
-        }
-      })
-      return {results,data}
-  }
-
-  const fulldata =async(prop1:any,prop2:any,date1:any,date2:any)=>{
-    const data= await prisma.orchestras.findMany( 
-      { 
-      take: resources*1 ||4,
-      skip: page*resources||page*4||0,
-        where:{   
-          [prop1]:{ contains: date1, mode:'insensitive' },
-          [prop2]:date2 
-        }
-      })   
-      return {results,data}
-  }
-  
-  const dataonly =async(prop1:any,date1:any)=>{
-    let trimedName = date1.toLowerCase().trim();
-    let aux=date1;
-    if(prop1!="orchestra_TypeId"){
-       aux = { contains: trimedName, mode:'insensitive' }
-    }
-    const data= await prisma.orchestras.findMany( 
+  const results = (await prisma.orchestras.findMany()).length
+  const { name, creation_date, location, orchestra_TypeId, page, resources, order } = query
+  const fulldataorder = async (orderprop: any, order: any, prop1: any, prop2: any, date1: any, date2: any) => {
+    
+    const data = await prisma.orchestras.findMany(
       {
-      take: resources*1 ||4,
-      skip: page*resources||page*4||0,
-        where:{      
-          [prop1]:aux 
+        orderBy: { [orderprop]: order },
+        take: resources * 1 || 4,
+        skip: page * resources || page * 4 || 0,
+        where: {
+          [prop1]: { contains: date1, mode: 'insensitive' },
+          [prop2]: date2
         }
       })
-      return {results,data}
+
+  const results = (await prisma.orchestras.findMany(
+    {
+      orderBy: { [orderprop]: order },
+      where: {
+        [prop1]: { contains: date1, mode: 'insensitive' },
+        [prop2]: date2
+      }
+    })).length
+    return { results, data }
   }
 
-  const onlyorder =async(orderprop:any,order:any)=>{
-  
-    const data= await prisma.orchestras.findMany( 
-      { orderBy: { [orderprop]: order },
-      take: resources*1 ||4,
-      skip: page*resources||page*4||0,
+  const dataandorder = async (orderprop: any, order: any, prop1: any, date1: any) => {
+    let trimedName = date1.toLowerCase().trim();
+    let aux = date1;
+    if (prop1 != "orchestra_TypeId") {
+      aux = { contains: trimedName, mode: 'insensitive' }
+    }
+    const data = await prisma.orchestras.findMany(
+      {
+        orderBy: { [orderprop]: order },
+        take: resources * 1 || 4,
+        skip: page * resources || page * 4 || 0,
+        where: {
+          [prop1]: aux
+        }
       })
-      return {results,data}
+
+
+    const results = (await prisma.orchestras.findMany(
+      {
+        orderBy: { [orderprop]: order },
+        where: {
+          [prop1]: aux
+        }
+      })).length
+
+    return { results, data }
   }
 
-  if(order&&location&&orchestra_TypeId)return fulldataorder( "name",order,"location","orchestra_TypeId",location,orchestra_TypeId)
-  if(order&&location)return dataandorder("name",order,"location",location)
-  if(order&&orchestra_TypeId)return dataandorder("name",order,"orchestra_TypeId",orchestra_TypeId)
+  const fulldata = async (prop1: any, prop2: any, date1: any, date2: any) => {
+    const data = await prisma.orchestras.findMany(
+      {
+        take: resources * 1 || 4,
+        skip: page * resources || page * 4 || 0,
+        where: {
+          [prop1]: { contains: date1, mode: 'insensitive' },
+          [prop2]: date2
+        }
+      })
+    const results = (await prisma.orchestras.findMany(
+      {
+        where: {
+          [prop1]: { contains: date1, mode: 'insensitive' },
+          [prop2]: date2
+        }
+      })).length
+    return { results, data }
+  }
 
-  if(creation_date&&location&&orchestra_TypeId)return fulldataorder( "name",creation_date,"location","orchestra_TypeId",location,orchestra_TypeId)
-  if(creation_date&&location)return dataandorder("creation_date",creation_date,"location",location)
-  if(creation_date&&orchestra_TypeId)return dataandorder("creation_date",creation_date,"orchestra_TypeId",orchestra_TypeId)
+  const dataonly = async (prop1: any, date1: any) => {
+    let trimedName = date1.toLowerCase().trim();
+    let aux = date1;
+    if (prop1 != "orchestra_TypeId") {
+      aux = { contains: trimedName, mode: 'insensitive' }
+    }
+    const data = await prisma.orchestras.findMany(
+      {
+        take: resources * 1 || 4,
+        skip: page * resources || page * 4 || 0,
+        where: {
+          [prop1]: aux
+        }
+      })
+    const results = (await prisma.orchestras.findMany(
+      {
+        where: {
+          [prop1]: aux
+        }
+      })).length
+    return { results, data }
+  }
 
-  if(location&&orchestra_TypeId)return fulldata("location","orchestra_TypeId",location,orchestra_TypeId)
-  if(location)return dataonly("location",location)
-  if(orchestra_TypeId)return dataonly("orchestra_TypeId",orchestra_TypeId)
+  const onlyorder = async (orderprop: any, order: any) => {
 
-  if(order)return onlyorder("name",order)
-  if(creation_date)return onlyorder("creation_date",creation_date)
+    const data = await prisma.orchestras.findMany(
+      {
+        orderBy: { [orderprop]: order },
+        take: resources * 1 || 4,
+        skip: page * resources || page * 4 || 0,
+      })
+    return { results, data }
+  }
 
-  if(name)return dataandorder("name",order,"name",name)
+  if (order && location && orchestra_TypeId) return fulldataorder("name", order, "location", "orchestra_TypeId", location, orchestra_TypeId)
+  if (order && location) return dataandorder("name", order, "location", location)
+  if (order && orchestra_TypeId) return dataandorder("name", order, "orchestra_TypeId", orchestra_TypeId)
 
-  const data =  await prisma.orchestras.findMany({
-    take: resources*1 ||4,
-    skip: page*resources||page*4||0,
-    })
+  if (creation_date && location && orchestra_TypeId) return fulldataorder("name", creation_date, "location", "orchestra_TypeId", location, orchestra_TypeId)
+  if (creation_date && location) return dataandorder("creation_date", creation_date, "location", location)
+  if (creation_date && orchestra_TypeId) return dataandorder("creation_date", creation_date, "orchestra_TypeId", orchestra_TypeId)
 
-  return {results,data}
+  if (location && orchestra_TypeId) return fulldata("location", "orchestra_TypeId", location, orchestra_TypeId)
+  if (location) return dataonly("location", location)
+  if (orchestra_TypeId) return dataonly("orchestra_TypeId", orchestra_TypeId)
+
+  if (order) return onlyorder("name", order)
+  if (creation_date) return onlyorder("creation_date", creation_date)
+
+  if (name) return dataandorder("name", order, "name", name)
+
+  const data = await prisma.orchestras.findMany({
+    take: resources * 1 || 4,
+    skip: page * resources || page * 4 || 0,
+  })
+
+ 
+
+  return { results, data }
 };
 
 //GET ORCHESTRAS BY ID
@@ -114,8 +149,8 @@ export const getOrchestrasById = async (id: any) => {
 //POST ORCHESTRAS
 export const postOrchestras = async (body: any) => {
   try {
-    if(!body) return undefined
-    const { name, phone, donation_account,cover,logo } = body;
+    if (!body) return undefined
+    const { name, phone, donation_account, cover, logo } = body;
     let cloudinaryCoverUrl = "/orchestra_cover.png";
     let cloudinaryLogoUrl = "/blank_logo.png";
     let folder = "";
@@ -137,10 +172,10 @@ export const postOrchestras = async (body: any) => {
     }
     if (!name || !donation_account || !phone) return undefined
     const orchestras = await prisma.orchestras.create({
-      data:{
+      data: {
         ...body,
-        cover:cloudinaryCoverUrl,
-        logo:cloudinaryLogoUrl
+        cover: cloudinaryCoverUrl,
+        logo: cloudinaryLogoUrl
       }
     });
     return orchestras ? orchestras : undefined;
@@ -164,13 +199,13 @@ export const logicDeleteOrchestra = async (id: any) => {
   } catch (error) {
     return error
   }
-  
+
 }
 //DELETE ORCHESTRAS
 export const deleteOrchestra = async (id: any) => {
   try {
-    if(!id) return undefined
-    
+    if (!id) return undefined
+
     const orchestraDelete = await prisma.orchestras.delete({
       where: { id: id },
     });
@@ -178,13 +213,13 @@ export const deleteOrchestra = async (id: any) => {
   } catch (error) {
     return error
   }
-  
+
 };
 
 //UPDATE ORCHESTRAS
 export const updateOrchestra = async (id: any, body: any) => {
   try {
-    const { name,cover,logo } = body;
+    const { name, cover, logo } = body;
     let cloudinaryCoverUrl = cover;
     let cloudinaryLogoUrl = logo;
     let folder = "";
