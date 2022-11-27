@@ -1,6 +1,6 @@
 import { prisma } from '../../lib/prisma';
 
-export const getAllUserOnOrchestras = async() => {
+export const getAllUserOnOrchestras = async(query:any) => {
     try {
         if(!query.orchestraId){
             const allUsersOnOrchestras = await prisma.users_on_orchestra.findMany()
