@@ -179,9 +179,9 @@ export default function Orquestas() {
         <title>Listado de Orquestas Populares de Música Latinoamericana</title>
       </Head>
       <OrchestasNavBar
-        setCurrentPage={setCurrentPage}
-        setData={setOrchestras}
-        data={data}
+        setLoading={setLoading}
+        setOrchestras={setOrchestras}
+        axios={axios}
         search={search}
         setSearch={setSearch}
       />

@@ -1,5 +1,6 @@
-import React from "react";
+import React, { ReactEventHandler } from "react";
 import styled from "styled-components";
+import { FiSearch } from "react-icons/fi";
 
 const searchlogo =
   "https://res.cloudinary.com/dzup1ckpy/image/upload/v1667940299/clipart4618545_kd7rwh.png";
@@ -22,23 +23,37 @@ const SearchStyles = styled.div`
     cursor: pointer;
   }
 `;
-const SearchBar = (props: any) => {
-  const onSearchChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    props.setCurrentPage(0);
-    props.setSearch(target.value);
+const SearchBar = ({
+  setLoading,
+  setOrchestras,
+  axios,
+  search,
+  setSearch,
+}: any) => {
+  const onSubmitHandler = async (event: any) => {
+    event.preventDefault();
+    setLoading(true);
+    const res = await axios.get(`api/orchestra?name=${search}`);
+    setOrchestras(res.data);
+    setSearch("");
+    setLoading(false);
+  };
+
+  const onChangeHandler = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(target.value);
   };
 
   return (
     <SearchStyles>
-      <form>
+      <form onSubmit={onSubmitHandler}>
         <button>
-          <img src={searchlogo} width="15px" height="15px" />
+          <FiSearch />
         </button>
         <input
           type="text"
           placeholder="Buscar"
-          value={props.search}
-          onChange={onSearchChange}
+          value={search}
+          onChange={onChangeHandler}
         />
       </form>
     </SearchStyles>
