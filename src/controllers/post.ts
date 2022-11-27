@@ -3,7 +3,7 @@ import { prisma } from "../../lib/prisma";
 //GET USERSPOST
 export const getPost = async (query:any) => {
   try {
-    const {event_date, views,resources,page,orchestra} = query
+    const {event_date, views,resources,page,orchestraId, type_PostId} = query
 
     const results =  (await prisma.posts.findMany()).length
 
@@ -13,7 +13,7 @@ export const getPost = async (query:any) => {
         take: resources*1 ||4,
         skip: page*resources||page*4||0,
         where:{
-          orchestraId: orchestra
+          orchestraId: orchestraId
         },
         include:{
           comments:true
@@ -22,8 +22,35 @@ export const getPost = async (query:any) => {
         return {results,data}
     }
 
+    const dataonly =async(type_PostId:any)=>{
+     
+      const data= await prisma.posts.findMany( 
+        {
+        take: resources*1 ||4,
+        skip: page*resources||page*4||0,
+          where:{      
+            type_PostId:type_PostId
+          },
+          include:{
+              comments:true
+          }
+        })
+
+      const results= (await prisma.posts.findMany( 
+          {
+            where:{      
+              type_PostId:type_PostId
+            },
+            include:{
+                comments:true
+            }
+          })).length
+        return {results,data}
+    }
+
     if(event_date)return onlyorder("event_date",event_date)
     if(views)return onlyorder("views",views)
+    if(type_PostId)return dataonly(type_PostId)
 
     const data = await prisma.posts.findMany({
       take: resources*1 ||4,
