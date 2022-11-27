@@ -12,7 +12,7 @@ export default async function handler(
     origin: "*",
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
-  
+
   const POST: string = "POST";
 
   let { method } = req;
@@ -41,16 +41,16 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse) => {
           reference_id: req.body.idCampaign,
           amount: {
             currency_code: "USD",
-            value: req.body.value,
+            value: parseInt(req.body.value),
           },
-          description: "donation"
+          description: "donation",
         },
       ],
       application_context: {
         brand_name: "myorchestras.net",
         landing_page: "LOGIN",
         user_action: "PAY_NOW",
-        return_url: "http://localhost:3000/api/paypal-capture",
+        return_url: "http://localhost:3000/paypalSuccess",
       },
     };
 
@@ -84,6 +84,8 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(201).json({ id, link });
     // res.json(response.data)
   } catch (error) {
-    return res.status(500).send("Something goes wrong the order has not been generated");
+    return res
+      .status(500)
+      .send("Something goes wrong the order has not been generated");
   }
 };
