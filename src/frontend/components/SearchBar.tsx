@@ -23,20 +23,19 @@ const SearchStyles = styled.div`
     cursor: pointer;
   }
 `;
-const SearchBar = ({
-  setLoading,
-  setOrchestras,
-  axios,
-  search,
-  setSearch,
-}: any) => {
+const SearchBar = ({ router, search, setSearch, setCurrentPage }: any) => {
   const onSubmitHandler = async (event: any) => {
     event.preventDefault();
-    setLoading(true);
-    const res = await axios.get(`api/orchestra?name=${search}`);
-    setOrchestras(res.data);
+    router.push(
+      {
+        pathname: "/orchestras",
+        query: { ...router.query, name: search },
+      },
+      undefined,
+      {}
+    );
     setSearch("");
-    setLoading(false);
+    setCurrentPage(0);
   };
 
   const onChangeHandler = ({ target }: React.ChangeEvent<HTMLInputElement>) => {

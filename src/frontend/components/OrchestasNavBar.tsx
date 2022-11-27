@@ -52,11 +52,10 @@ const NavStyle = styled.header`
 `;
 
 export default function OrchestasNavBar({
-  setLoading,
-  setOrchestras,
-  axios,
+  router,
   search,
   setSearch,
+  setCurrentPage,
 }: any) {
   return (
     <NavStyle>
@@ -66,11 +65,10 @@ export default function OrchestasNavBar({
           <Auth />
         </div>
         <SearchBar
-          setLoading={setLoading}
-          setOrchestras={setOrchestras}
-          axios={axios}
           search={search}
           setSearch={setSearch}
+          router={router}
+          setCurrentPage={setCurrentPage}
         />
       </div>
     </NavStyle>

@@ -5,6 +5,8 @@ import axios from "axios";
 import Footer from "../../frontend/components/Footer";
 import { useEffect, useState } from "react";
 import OrchestasNavBar from "../../frontend/components/OrchestasNavBar";
+import { prisma } from "../../../lib/prisma";
+import { useRouter } from "next/router";
 
 const StyledMain = styled.main`
   margin: 25px auto;
@@ -45,17 +47,27 @@ const StyledMain = styled.main`
     }
 
     .filters-container {
-      margin: 15px 0;
+      margin: 24px 0;
       display: flex;
-      justify-content: flex-end;
+      justify-content: center;
+      gap: 24px;
 
-      .dropbtn {
+      .dropbtn,
+      .reset-btn {
         padding: 12px;
         font-size: 12px;
         border: 1px solid lightgray;
         border-radius: 12px;
         font-weight: bold;
         background-color: white;
+      }
+
+      .reset-btn {
+        :hover {
+          cursor: pointer;
+          background-color: ${({ theme }) => theme.colors.secondary};
+          color: white;
+        }
       }
 
       .dropdown {
@@ -119,58 +131,99 @@ const StyledMain = styled.main`
   }
 `;
 
-export default function Orquestas() {
+export default function Orquestas({ orchestraTypes }: any) {
   const [orchestras, setOrchestras] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const itemsPerPage = 4;
+  const router = useRouter();
+  const searchQuery = router.asPath.split("?").pop();
 
   useEffect(() => {
     setLoading(true);
     axios
-      .get("api/orchestra")
+      .get(`api/orchestra?${searchQuery}`)
       .then((res) => setOrchestras(res.data))
       .finally(() => setLoading(false));
-  }, []);
+  }, [searchQuery]);
 
-  const { data = [{}], results = 1 }: any = orchestras;
+  const { data = [], results = 1 }: any = orchestras;
   let pages = Math.ceil(results / itemsPerPage);
 
   const nextPage = () => {
     if (currentPage < pages - 1) {
-      setLoading(true);
-      axios
-        .get(`api/orchestra?page=${currentPage + 1}`)
-        .then((res) => setOrchestras(res.data))
-        .then(() => setCurrentPage(currentPage + 1))
-        .finally(() => setLoading(false));
+      router.push(
+        {
+          pathname: "/orchestras",
+          query: { ...router.query, page: currentPage + 1 },
+        },
+        undefined,
+        {}
+      );
+      setCurrentPage(currentPage + 1);
     }
   };
 
   const prevPage = () => {
     if (currentPage > 0) {
-      setLoading(true);
-      axios
-        .get(`api/orchestra?page=${currentPage - 1}`)
-        .then((res) => setOrchestras(res.data))
-        .then(() => setCurrentPage(currentPage - 1))
-        .finally(() => setLoading(false));
+      router.push(
+        {
+          pathname: "/orchestras",
+          query: { ...router.query, page: currentPage - 1 },
+        },
+        undefined,
+        {}
+      );
+      setCurrentPage(currentPage - 1);
     }
   };
 
-  async function nameSortDesc() {
-    setLoading(true);
-    const res = await axios.get(`api/orchestra?order=desc`);
-    setOrchestras(res.data);
-    setLoading(false);
+  function nameSortDesc() {
+    router.push(
+      {
+        pathname: "/orchestras",
+        query: { ...router.query, order: "desc", page: 0 },
+      },
+      undefined,
+      {}
+    );
+    setCurrentPage(0);
   }
 
-  async function nameSortAsc() {
-    setLoading(true);
-    const res = await axios.get(`api/orchestra?order=asc`);
-    setOrchestras(res.data);
-    setLoading(false);
+  function nameSortAsc() {
+    router.push(
+      {
+        pathname: "/orchestras",
+        query: { ...router.query, order: "asc", page: 0 },
+      },
+      undefined,
+      {}
+    );
+    setCurrentPage(0);
+  }
+
+  function typeFilterHandler(id: string) {
+    router.push(
+      {
+        pathname: "/orchestras",
+        query: { ...router.query, orchestra_TypeId: id, page: 0 },
+      },
+      undefined,
+      {}
+    );
+    setCurrentPage(0);
+  }
+
+  function resetHandler() {
+    router.push(
+      {
+        pathname: "/orchestras",
+      },
+      undefined,
+      {}
+    );
+    setCurrentPage(0);
   }
 
   return (
@@ -179,15 +232,31 @@ export default function Orquestas() {
         <title>Listado de Orquestas Populares de Música Latinoamericana</title>
       </Head>
       <OrchestasNavBar
-        setLoading={setLoading}
-        setOrchestras={setOrchestras}
-        axios={axios}
         search={search}
         setSearch={setSearch}
+        router={router}
+        setCurrentPage={setCurrentPage}
       />
       <StyledMain>
         <section className="content">
           <div className="filters-container">
+            <div className="dropdown">
+              <button className="dropbtn">Tipo de Orquesta</button>
+              <div className="dropdown-content">
+                {orchestraTypes.map((orchestraType: any) => {
+                  const { id, type } = orchestraType;
+                  return (
+                    <a
+                      className="filter-option"
+                      key={id}
+                      onClick={() => typeFilterHandler(id)}
+                    >
+                      {type}
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
             <div className="dropdown">
               <button className="dropbtn">Ordernar por:</button>
               <div className="dropdown-content">
@@ -199,11 +268,16 @@ export default function Orquestas() {
                 </a>
               </div>
             </div>
+            <div className="dropdown">
+              <button className="reset-btn" onClick={resetHandler}>
+                Restablecer
+              </button>
+            </div>
           </div>
           <div className="orquestas">
             {loading ? (
               <p className="loading-msg">Loading...</p>
-            ) : data ? (
+            ) : data.length > 0 ? (
               data.map((orquesta: any, index: number) => (
                 <HomeCards
                   key={orquesta.id}
@@ -239,4 +313,11 @@ export default function Orquestas() {
       <Footer />
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const orchestraTypes = await prisma.orchestra_type.findMany();
+  return {
+    props: { orchestraTypes },
+  };
 }
