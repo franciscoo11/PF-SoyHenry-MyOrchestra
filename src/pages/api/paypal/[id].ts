@@ -39,14 +39,14 @@ const captureOrder = async (req: NextApiRequest, res: NextApiResponse) => {
     const ordersDetail = await axios.post(
       `${process.env.PAYPAL_BASE_URL}/v2/checkout/orders/${id}/capture`,{}, {
         auth: {
-        username: process.env.NEXT_PUBLIC_PAYPAY_CLIENT || "",
+        username: process.env.PAYPAY_CLIENT || "",
         password: process.env.PAYPAL_SECRET || "",
       },
     });
 
     if(!ordersDetail.data.id) return res.status(400).json({ errors: 'Pay not completed, check {id} order and try again'})
 
-    const response = {
+    const capturePayment = {
       id: ordersDetail.data.id,
       status: ordersDetail.data.status,
       payerEmail: ordersDetail.data.payment_source.paypal.email_address,
@@ -56,7 +56,7 @@ const captureOrder = async (req: NextApiRequest, res: NextApiResponse) => {
       idCampaign: ordersDetail.data.purchase_units[0].reference_id
     }
 
-    res.status(200).json(response);
+    res.status(200).json(capturePayment);
   } catch (error) {
     res.status(500).json({ errors: "Something goes wrong with capture order, try later" });
   }
