@@ -61,29 +61,24 @@ const StyledForm = styled.div`
         grid-column: 1/7;
         grid-row: 3;
       }
-      .avatar-field {
-        grid-column: 1/4;
-        grid-row: 4;
-      }
-      .cover-field {
-        grid-column: 4/7;
-        grid-row: 4;
-      }
 
       .city-field {
-        grid-column: 1/3;
-        grid-row: 5;
+        grid-column: 3/5;
+        grid-row: 4;
       }
 
       .birthday-field {
+        grid-column: 5/7;
+        grid-row: 4;
+      }
+      .rolId-field {
         grid-column: 3/5;
         grid-row: 5;
       }
-      .rolId-field {
+      .orchestraId-field {
         grid-column: 5/7;
         grid-row: 5;
       }
-
       .btn-container {
         grid-column: 1/7;
         grid-row: 6;
@@ -120,9 +115,13 @@ interface Values {
   cover?: string;
   birthday: string;
   city: string;
+  rolId: string;
 }
 
-export default function EditUser({ allRols }: any) {
+export default function EditUser({ allRols, allUsers, allOrchestras }: any) {
+  console.log(allOrchestras);
+  const { results, data } = allOrchestras;
+  const { rolId, name, email, password, birthday, city } = allUsers;
   const router = useRouter();
   const passwordRegex =
     /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/;
@@ -130,13 +129,12 @@ export default function EditUser({ allRols }: any) {
     <StyledForm>
       <Formik
         initialValues={{
-          name: "",
-          email: "",
-          password: "",
-          avatar: "",
-          cover: "",
-          birthday: "",
-          city: "",
+          name: name,
+          email: email,
+          password: password,
+          birthday: birthday,
+          city: city,
+          rolId: rolId,
         }}
         validationSchema={Yup.object({
           name: Yup.string().required("Requerido"),
@@ -225,28 +223,6 @@ export default function EditUser({ allRols }: any) {
                 <ErrorMessage name="password" className="errorMessage" />
               </p>
             </div>
-            <div className="avatar-field">
-              <Field
-                name="avatar"
-                type="text"
-                placeholder="Avatar"
-                className="input"
-              />
-              <p className="error">
-                <ErrorMessage name="avatar" className="errorMessage" />
-              </p>
-            </div>
-            <div className="cover-field">
-              <Field
-                name="cover"
-                type="text"
-                placeholder="Imagen de portada"
-                className="input"
-              />
-              <p className="error">
-                <ErrorMessage name="cover" className="errorMessage" />
-              </p>
-            </div>
 
             <div className="birthday-field">
               <Field name="birthday" type="date" className="input" />
@@ -285,7 +261,18 @@ export default function EditUser({ allRols }: any) {
                 <ErrorMessage name="rolId" className="errorMessage" />
               </p>
             </div>
-
+            <div className="orchestraId-field">
+              <Field as="select" placeholder="ORQUESTA" className="input">
+                {data.map((orchestra: any) => (
+                  <option value={orchestra.id} key={orchestra.id}>
+                    {orchestra.name}
+                  </option>
+                ))}
+              </Field>
+              <p className="error">
+                <ErrorMessage name="rolId" className="errorMessage" />
+              </p>
+            </div>
             <div className="btn-container">
               <button type="submit" className="submitted">
                 Guardar Cambios

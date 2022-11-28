@@ -58,6 +58,7 @@ export const postDonation =async (body:any)=>{
     try { 
       if(!body) return null
 
+
       const createDonation = await prisma.donations.create({
         data:{
           amount: parseFloat(body.amount),
@@ -70,7 +71,7 @@ export const postDonation =async (body:any)=>{
       
       return createDonation ? createDonation: null
     } catch (error) {
-        return error
+      return error
     }
 
 }

@@ -17,7 +17,22 @@ export interface DataModel {
   id: string;
 }
 
-export default function User({ allRols }: any) {
+export const getServerSideProps = async ({ params }: any) => {
+  try {
+    const user = await axios.get(`${HOSTNAME}/api/user`);
+    const allUsers = await user.data;
+    const rols = await axios.get(`${HOSTNAME}/api/rols`);
+    const allRols = await rols.data;
+    const orchestras = await axios.get(`${HOSTNAME}/api/orchestra`);
+    const allOrchestras = await orchestras.data;
+
+    return { props: { allUsers, allRols, allOrchestras } };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export default function User({ allRols, allUsers, allOrchestras }: any) {
   const router = useRouter();
   const { id } = router.query;
   return (
@@ -36,7 +51,11 @@ export default function User({ allRols }: any) {
           />
           <h2 className="user-form-title">Información Personal</h2>
 
-          <EditUser allRols={allRols} />
+          <EditUser
+            allRols={allRols}
+            allUsers={allUsers}
+            allOrchestras={allOrchestras}
+          />
         </section>
         <aside className="aside-right">
           <AsideRight />
@@ -46,14 +65,3 @@ export default function User({ allRols }: any) {
     </>
   );
 }
-
-export const getServerSideProps = async () => {
-  const rols = await axios.get(`${HOSTNAME}/api/rols`);
-  const allRols = await rols.data;
-
-  return {
-    props: {
-      allRols,
-    },
-  };
-};

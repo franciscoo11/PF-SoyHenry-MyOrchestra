@@ -35,7 +35,7 @@ export default async function handler(
 const captureOrder = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { id } = req.query;
-
+    
     const ordersDetail = await axios.post(
       `${process.env.PAYPAL_BASE_URL}/v2/checkout/orders/${id}/capture`,{}, {
         auth: {
