@@ -32,6 +32,7 @@ function OrchestraDetails({ orchestra }: any) {
   const [userId, setUserId] = useState();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [commentPosted, setCommentPosted] = useState(false);
   const itemsPerPage = 4;
 
   useEffect(() => {
@@ -50,7 +51,7 @@ function OrchestraDetails({ orchestra }: any) {
       .get(`/api/post?orchestraId=${id}&type_PostId=clanisg15000wi5zzxjvr2hu8`)
       .then((res: any) => setPosts(res.data))
       .finally(() => setLoading(false));
-  }, []);
+  }, [commentPosted]);
 
   const { data = [], results = 1 }: any = posts;
   let pages = Math.ceil(results / itemsPerPage);
@@ -87,6 +88,9 @@ function OrchestraDetails({ orchestra }: any) {
                   key={post.id}
                   post={post}
                   orchestra={orchestra}
+                  userId={userId}
+                  setCommentPosted={setCommentPosted}
+                  user={user}
                 />
               ))
             )}
