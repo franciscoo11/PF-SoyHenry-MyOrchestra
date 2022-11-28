@@ -48,7 +48,9 @@ function OrchestraDetails({ orchestra }: any) {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`/api/post?orchestraId=${id}&type_PostId=clanisg15000wi5zzxjvr2hu8`)
+      .get(
+        `/api/post?orchestraId=${id}&type_PostId=clanisg15000wi5zzxjvr2hu8&optionOrder=desc`
+      )
       .then((res: any) => setPosts(res.data))
       .finally(() => setLoading(false));
   }, [commentPosted]);
@@ -59,7 +61,7 @@ function OrchestraDetails({ orchestra }: any) {
   async function postAppend() {
     if (currentPage < pages - 1) {
       const nextPosts = await axios.get(
-        `/api/post?orchestraId=${id}&type_PostId=clanisg15000wi5zzxjvr2hu8&page=${
+        `/api/post?orchestraId=${id}&type_PostId=clanisg15000wi5zzxjvr2hu8&optionOrder=desc&page=${
           currentPage + 1
         }`
       );
