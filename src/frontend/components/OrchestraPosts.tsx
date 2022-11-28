@@ -158,12 +158,15 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default function OrchestraPosts(props: any) {
-  const { title, content, media } = props.post;
+export default function OrchestraPosts({ id, post }: any) {
+  const { title, content, url_file } = post;
 
   return (
     <StyledDiv>
-      <div className="media" style={{ backgroundImage: `url(${media})` }}></div>
+      <div
+        className="media"
+        style={{ backgroundImage: `url(${url_file})` }}
+      ></div>
       <div className="content">
         <h4 className="post-title">{title}</h4>
         <div className="post-user">
