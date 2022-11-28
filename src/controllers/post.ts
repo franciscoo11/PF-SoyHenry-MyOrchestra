@@ -1,4 +1,3 @@
-import { date } from "yup";
 import { prisma } from "../../lib/prisma";
 //GET USERSPOST
 export const getPost = async (query:any) => {
@@ -22,14 +21,14 @@ export const getPost = async (query:any) => {
         return {results,data}
     }
 
-    const dataonly =async(type_PostId:any)=>{
+    const dataonly =async(prop1:any, data1:any)=>{
      
       const data= await prisma.posts.findMany( 
         {
         take: resources*1 ||4,
         skip: page*resources||page*4||0,
           where:{      
-            type_PostId:type_PostId
+            [prop1]:data1
           },
           include:{
               comments:true
@@ -39,7 +38,7 @@ export const getPost = async (query:any) => {
       const results= (await prisma.posts.findMany( 
           {
             where:{      
-              type_PostId:type_PostId
+              [prop1]:data1
             },
             include:{
                 comments:true
@@ -50,7 +49,8 @@ export const getPost = async (query:any) => {
 
     if(event_date)return onlyorder("event_date",event_date)
     if(views)return onlyorder("views",views)
-    if(type_PostId)return dataonly(type_PostId)
+    if(type_PostId)return dataonly("type_PostId", type_PostId)
+    if(orchestraId) return dataonly("orchestraId", orchestraId)
 
     const data = await prisma.posts.findMany({
       take: resources*1 ||4,
