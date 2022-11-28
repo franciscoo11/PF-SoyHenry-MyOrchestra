@@ -28,7 +28,7 @@ export default async function handler(
   try {
     switch (method) {
       case GET:
-        const allUsersOnOrchestras = await getAllUserOnOrchestras();
+        const allUsersOnOrchestras = await getAllUserOnOrchestras(query);
         return allUsersOnOrchestras
           ? res.status(200).json(allUsersOnOrchestras)
           : res.status(404).json([]);

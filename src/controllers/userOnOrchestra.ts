@@ -1,9 +1,21 @@
 import { prisma } from '../../lib/prisma';
 
-export const getAllUserOnOrchestras = async() => {
+export const getAllUserOnOrchestras = async(query:any) => {
     try {
-        const allUsersOnOrchestras = await prisma.users_on_orchestra.findMany()
-        return allUsersOnOrchestras.length ? allUsersOnOrchestras : null
+        if(!query.orchestraId){
+            const allUsersOnOrchestras = await prisma.users_on_orchestra.findMany()
+            return allUsersOnOrchestras.length ? allUsersOnOrchestras : null
+        }
+
+        const findByOrchestra = await prisma.users_on_orchestra.findMany({
+            where:{
+                orchestraId: query.orchestraId
+            },
+            include:{
+                rol:true
+            }
+        })
+        return findByOrchestra ? findByOrchestra : null
     } catch (error) {
         return error
     }

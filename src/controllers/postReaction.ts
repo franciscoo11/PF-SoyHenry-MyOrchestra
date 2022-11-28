@@ -1,10 +1,17 @@
-import { requestToBodyStream } from "next/dist/server/body-streams";
 import { prisma } from "../../lib/prisma";
 
-export const allReactionFromPosts = async() => {
+export const allReactionFromPosts = async(query:any) => {
     try {
-        const allReactionsPosts = await prisma.post_user_on_reactions.findMany()
-        return allReactionsPosts ? allReactionsPosts : null
+        if(!query.userId){
+            const allReactionsPosts = await prisma.post_user_on_reactions.findMany()
+            return allReactionsPosts ? allReactionsPosts : null
+        }
+        const findReactionsByUserId = await prisma.post_user_on_reactions.findMany({
+            where:{
+                userId: query.userId
+            }
+        })
+        return findReactionsByUserId ? findReactionsByUserId : null
     } catch (error) {
         return null
     }

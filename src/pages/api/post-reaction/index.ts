@@ -22,7 +22,7 @@ export default async function handler(
   try {
     switch (method) {
       case GET:
-        const getAllReactionsFromPosts = await allReactionFromPosts()
+        const getAllReactionsFromPosts = await allReactionFromPosts(query)
         return getAllReactionsFromPosts ? res.status(200).json(getAllReactionsFromPosts) : res.status(404).json([])
       case POST:
         const generateReactionToPost = await addReactionToPost(query,body);
