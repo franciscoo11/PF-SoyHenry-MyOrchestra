@@ -11,38 +11,8 @@ import CreatePosts from "../../../frontend/components/CreatePosts";
 import { HOSTNAME } from "../../_app";
 import axios from "axios";
 import { UpdateCover } from "../../../frontend/components/orchestras/UpdateCover";
-import { UpdateLogo } from "../../../frontend/components/orchestras/UpdateLogo";
 import { useUser } from "@auth0/nextjs-auth0";
 import { useEffect, useState } from "react";
-
-// export const getStaticPaths = async () => {
-//   try {
-//     const orchestrasById: any =
-//       await prisma.$queryRaw`SELECT id FROM orchestras`;
-//     const paths = orchestrasById.map(({ id }: any) => ({ params: { id } }));
-//     return {
-//       paths,
-//       fallback: false,
-//     };
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// export const getStaticProps = async ({ params }: any) => {
-//   try {
-//     const orchestrasById: any =
-//       await prisma.$queryRaw`SELECT * FROM orchestras WHERE id = ${params.id}`;
-//     const response = await axios.get(`${HOSTNAME}/api/typesPosts`);
-//     const typePost = await response.data;
-//     return {
-//       props: {
-//         orchestrasById,
-//         typePost,
-//       },
-//     };
-//   } catch (error) {}
-// };
 
 export async function getServerSideProps({ params }: any) {
   try {
@@ -77,7 +47,7 @@ function OrchestraDetails({ orchestra }: any) {
 
       <StyledMain>
         <aside className="aside-left">
-          <AsideLeft logo={logo} id={id} />
+          <AsideLeft logo={logo} id={id} user={user} />
         </aside>
         <section className="content">
           <Cover cover={cover} title={name} location={location} />
