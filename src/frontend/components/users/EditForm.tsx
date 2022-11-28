@@ -119,9 +119,8 @@ interface Values {
 }
 
 export default function EditUser({ allRols, allUsers, allOrchestras }: any) {
-  console.log(allUsers);
   console.log(allOrchestras);
-  const orchestrita = allOrchestras;
+  const { results, data } = allOrchestras;
   const { rolId, name, email, password, birthday, city } = allUsers;
   const router = useRouter();
   const passwordRegex =
@@ -264,7 +263,7 @@ export default function EditUser({ allRols, allUsers, allOrchestras }: any) {
             </div>
             <div className="orchestraId-field">
               <Field as="select" placeholder="ORQUESTA" className="input">
-                {orchestrita?.map((orchestra: any) => (
+                {data.map((orchestra: any) => (
                   <option value={orchestra.id} key={orchestra.id}>
                     {orchestra.name}
                   </option>
