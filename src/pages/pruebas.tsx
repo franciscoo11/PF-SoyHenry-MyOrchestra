@@ -10,7 +10,7 @@ export default function Lr() {
     { reaction: "", id: "" },
   ]);
   const [userReactions, setUserReactions] = useState([
-    { postId: "", userId: "", reactionsId: "" },
+    { postId: "", userId: "", reactionId: "" },
   ]);
    const[dataUser,setDataUser]=useState({id:""})
 
@@ -37,11 +37,13 @@ export default function Lr() {
       userId: user_id,
       reactionId: reaction_id,
     });
+    window.location.href= window.location.href
   };
-  const handleRemoveReaction = async (number: any, id: any) => {
-    await axios.delete("/api/post-reaction?id=claww932l0004vg1whw6e5xdx", {
-      data: { userId: "d790b777-f480-4270-82bb-0939c3cfd80e", reactionId: id },
+  const handleRemoveReaction = async (user_id:any,post_id:any,id: any) => {
+    await axios.delete(`/api/post-reaction?id=${post_id}`, {
+      data: { userId: user_id, reactionId: id },
     });
+    window.location.href= window.location.href
   };
   const findReaction = async () => {
     await axios
@@ -50,9 +52,11 @@ export default function Lr() {
   };
 
   const findReacionMap=(post_Id:any,user_id:any)=>{
-    return userReactions.find((a)=>{
+    const casiReturn= userReactions.find((a)=>{
        return   a.postId==post_Id&&a.userId==user_id   
      })
+    console.log(casiReturn?.reactionId)
+     return casiReturn?.reactionId
      
    }
 
@@ -73,47 +77,33 @@ export default function Lr() {
             <div>
                 
             </div>
-            {  findReacionMap(propsData.id,dataUser.id)?<button
-              onClick={() =>
-                handlePostReaction(propsData.id, dataUser.id, reactions[0].id)
+            {  findReacionMap(propsData.id,dataUser.id)==reactions[0].id?<button
+          
+             onClick={() =>
+                handleRemoveReaction(dataUser.id, propsData.id, reactions[0].id,)
               }
             >
                 
-              <img src="" alt="" />
-            </button>:<button
+              <img src={reactions[0].reaction} alt="" />
+            </button>: findReacionMap(propsData.id,dataUser.id)==reactions[1].id?<button
               onClick={() =>
-                handlePostReaction(propsData.id, dataUser.id, reactions[0].id)
+                handleRemoveReaction(dataUser.id, propsData.id, reactions[1].id,)
               }
             >
-              no reaccion
-            </button> }
-            
-            
+              <img src={reactions[1].reaction} alt="" />
+            </button> :
+            <div>
+            <button  onClick={() =>
+                handlePostReaction(propsData.id, dataUser.id, reactions[0].id)
+              }><img src={reactions[0].reaction} alt="" /></button>
+                  <button  onClick={() =>
+                handlePostReaction(propsData.id, dataUser.id, reactions[1].id)
+              }><img src={reactions[1].reaction} alt="" /></button>
+            </div>
+}
           </div>
         </div>
       ))}
     </>
   );
 }
-
-// {count === 0 ? (
-
-//     <div>
-//       <button onClick={() => handlePostReaction(1, id0)}>
-//         <img src={url0} width="50px" />{" "}
-//       </button>
-//       <button onClick={() => handlePostReaction(2, id1)}>
-//         <img src={url1} width="50px" />
-//       </button>
-//     </div>
-//   ) : count === 1 ? (
-//     <button onClick={() => handleRemoveReaction(0, id0)}>
-//       <img src={url0} width="100px" />
-//     </button>
-//   ) : count === 2 ? (
-//     <button onClick={() => handleRemoveReaction(0, id1)}>
-//       <img src={url1} width="100px" />
-//     </button>
-//   ) : (
-//     "null"
-//   )}
