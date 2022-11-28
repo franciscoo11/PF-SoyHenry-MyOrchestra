@@ -12,12 +12,8 @@ export default function Lr() {
   const [userReactions, setUserReactions] = useState([
     { postId: "", userId: "", reactionsId: "" },
   ]);
-  const [count, setCount] = useState(0);
-  const url0 = reactions[0].reaction;
-  const url1 = reactions[1].reaction;
-  const id0 = reactions[0].id;
-  const id1 = reactions[1].id;
-  const idUser = cookie.get("UserloginData");
+   const[dataUser,setDataUser]=useState({id:""})
+
   async function getPostData() {
     await axios
       .get(`/api/post?orchestraId=claww4lat0003vg1wuau9d3dz`)
@@ -43,26 +39,33 @@ export default function Lr() {
     });
   };
   const handleRemoveReaction = async (number: any, id: any) => {
-    setCount(number);
     await axios.delete("/api/post-reaction?id=claww932l0004vg1whw6e5xdx", {
       data: { userId: "d790b777-f480-4270-82bb-0939c3cfd80e", reactionId: id },
     });
   };
   const findReaction = async () => {
-    const data: any = await axios
-      .get(`/api/post-reaction?userId=${idUser.id}`)
+    await axios
+      .get(`/api/post-reaction?userId=${dataUser.id}`)
       .then((response) => setUserReactions(response.data));
   };
 
+  const findReacionMap=(post_Id:any,user_id:any)=>{
+    return userReactions.find((a)=>{
+       return   a.postId==post_Id&&a.userId==user_id   
+     })
+     
+   }
+
   useEffect(() => {
+    setDataUser(cookie.get("UserloginData")) ;
     getPostData();
     getReactions();
     findReaction();
   }, []);
+  
 
   return (
     <>
-      {console.log(userReactions)}
       {postData.map((propsData) => (
         <div>
           <div>{propsData.title}</div>
@@ -70,17 +73,22 @@ export default function Lr() {
             <div>
                 
             </div>
-            <button
+            {  findReacionMap(propsData.id,dataUser.id)?<button
               onClick={() =>
-                handlePostReaction(propsData.id, idUser.id, reactions[0].id)
+                handlePostReaction(propsData.id, dataUser.id, reactions[0].id)
               }
             >
-              reaction{" "}
-            </button>
-            <div>
-            {userReactions}
-
-            </div>
+                
+              <img src="" alt="" />
+            </button>:<button
+              onClick={() =>
+                handlePostReaction(propsData.id, dataUser.id, reactions[0].id)
+              }
+            >
+              no reaccion
+            </button> }
+            
+            
           </div>
         </div>
       ))}
