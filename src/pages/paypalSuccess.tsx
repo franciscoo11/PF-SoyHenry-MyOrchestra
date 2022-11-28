@@ -34,7 +34,6 @@ const paypalSuccess = ({paymentDetail}:IPaymentDetail) =>{
     router.push('/')
   }
 
-  console.log(paymentDetail)
   const handleButtonRedirect = async (e:any) => {
     e.preventDefault()
 
