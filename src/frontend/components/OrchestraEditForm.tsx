@@ -161,7 +161,7 @@ export default function OrchestraEditForm({
           }}
           validationSchema={Yup.object({
             name: Yup.string()
-              .max(25, "Debes ingresar 25 caracteres máximo")
+              .max(60, "Debes ingresar 25 caracteres máximo")
               .required("Requerido"),
             description: Yup.string()
               .max(250, "No debes ingresar más de 250 caracteres")
