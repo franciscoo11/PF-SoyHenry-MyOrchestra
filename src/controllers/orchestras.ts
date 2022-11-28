@@ -189,15 +189,32 @@ export const postOrchestras = async (body: any) => {
 //BORRADO LOGICO
 export const logicDeleteOrchestra = async (id: any) => {
   try {
-    const deactivate = await prisma.orchestras.update({
-      where: {
-        id: id
-      },
-      data: {
-        is_active: false
-      }
-    })
-    return deactivate ? deactivate : null
+    const orch = await prisma.orchestras.findUnique({where:{id}})
+    console.log(orch?.is_active)
+    if(orch?.is_active){
+      const deactivate = await prisma.orchestras.update({
+        where: {
+          id: id
+        },
+        data: {
+          is_active: false
+        }
+      })
+      return deactivate
+    }
+    if(!orch?.is_active){
+      const activate = await prisma.orchestras.update({
+        where: {
+          id: id
+        },
+        data: {
+          is_active: true
+        }
+      })
+      return activate
+    }
+   
+   
   } catch (error) {
     return error
   }
@@ -209,7 +226,7 @@ export const deleteOrchestra = async (id: any) => {
     if (!id) return undefined
 
     const orchestraDelete = await prisma.orchestras.delete({
-      where: { id: id },
+      where: { id: id }
     });
     return orchestraDelete ? orchestraDelete : null;
   } catch (error) {
