@@ -116,10 +116,13 @@ export const getOrchestras = async (query: any) => {
 
   if (order && location) return dataandorder("name", order, "location", location)
   if (order && orchestra_TypeId) return dataandorder("name", order, "orchestra_TypeId", orchestra_TypeId)
+  if (order && name ) return dataandorder("name",order,"name",name)
+  if (creation_date && name ) return dataandorder("creation_date",creation_date,"name",name)
   if (creation_date && location) return dataandorder("creation_date", creation_date, "location", location)
   if (creation_date && orchestra_TypeId) return dataandorder("creation_date", creation_date, "orchestra_TypeId", orchestra_TypeId)
-  if (location && orchestra_TypeId) return fulldata("location", "orchestra_TypeId", location, orchestra_TypeId)
-  if(name && order ) return dataandorder("name",order,"name",name)
+  if (name && orchestra_TypeId) return fulldata("name", "orchestra_TypeId", name, orchestra_TypeId)
+  if (name && location) return fulldata("location", "name", location, name)
+
 
   if (creation_date) return onlyorder("creation_date", creation_date)
   if (location) return dataonly("location", location)
