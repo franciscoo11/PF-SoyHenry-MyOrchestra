@@ -30,9 +30,10 @@ function OrchestraDetails({ orchestra }: any) {
   const { id, name, description, logo, cover, location } = orchestra;
   const { user } = useUser();
   const [userId, setUserId] = useState();
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState({ results: 1, data: [] });
   const [loading, setLoading] = useState(true);
   const [commentPosted, setCommentPosted] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 4;
 
   useEffect(() => {
@@ -53,8 +54,21 @@ function OrchestraDetails({ orchestra }: any) {
       .finally(() => setLoading(false));
   }, [commentPosted]);
 
-  const { data = [], results = 1 }: any = posts;
+  const { data, results }: any = posts;
   let pages = Math.ceil(results / itemsPerPage);
+
+  async function postAppend() {
+    if (currentPage < pages - 1) {
+      const nextPosts = await axios.get(
+        `/api/post?orchestraId=${id}&type_PostId=clanisg15000wi5zzxjvr2hu8&page=${
+          currentPage + 1
+        }`
+      );
+
+      setPosts({ ...posts, data: data.concat(nextPosts.data.data) });
+      setCurrentPage(currentPage + 1);
+    }
+  }
 
   return (
     <>
@@ -94,6 +108,15 @@ function OrchestraDetails({ orchestra }: any) {
                 />
               ))
             )}
+          </div>
+          <div className="more-btn-container">
+            <button
+              className="more-btn"
+              onClick={postAppend}
+              disabled={currentPage === pages - 1}
+            >
+              Ver más...
+            </button>
           </div>
         </section>
         <aside className="aside-right">

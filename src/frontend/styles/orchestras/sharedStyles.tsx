@@ -151,6 +151,35 @@ const StyledMain = styled.main`
     flex-direction: column;
     gap: 24px;
 
+    .more-btn-container {
+      display: flex;
+      justify-content: flex-end;
+      .more-btn {
+        background-color: transparent;
+        border: 1px solid lightgrey;
+        font-size: 0.8em;
+        padding: 8px 16px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        span {
+          font-size: 0.8em;
+        }
+
+        &:hover {
+          background-color: #f1f2f6;
+          cursor: pointer;
+
+          &:disabled {
+            cursor: default;
+            background-color: transparent;
+          }
+        }
+      }
+    }
+
     .campaign-form-title,
     .user-form-title {
       font-size: 1.4em;
