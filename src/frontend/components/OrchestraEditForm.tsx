@@ -174,10 +174,6 @@ export default function OrchestraEditForm({
             phone: Yup.string()
               .matches(phoneRegExp, "Numero de teléfono inválido")
               .required("Ningún número de teléfono ingresado"),
-            logo: Yup.string()
-              .url("URL inválido")
-              .required("Debes elegir un logo"),
-            cover: Yup.string().url("URL inválido"),
           })}
           onSubmit={(values, { setSubmitting }: FormikHelpers<Values>) => {
             axios
