@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import NextCors from "nextjs-cors";
-import { removeFavorite } from '../../../controllers/favorites';
+import { removeFavorite,getFavoritesidOrchestra } from '../../../controllers/favorites';
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,11 +14,16 @@ export default async function handler(
   });
 
   const PUT: string = "PUT";
+  const GET: string = "GET";
  
   let { method, body, query } = req;
 
   try {
     switch (method) {
+
+      case GET:
+        const getexist = await getFavoritesidOrchestra(query.id, body.orchestra_id)
+        return getexist? res.status(200).json(getexist):[]
       case PUT:
         const deleteFavorite = await removeFavorite(query.id, body.orchestra_id);
         return deleteFavorite

@@ -26,7 +26,7 @@ export default async function handler(
           ? res.status(200).json(allFavorites)
           : res.status(404).json([]);
       case POST:
-        const insertFavorite = await addFavorite(query.user_id,body.orchestra_id);
+        const insertFavorite = await addFavorite(body.user_id,body.orchestra_id);
         return insertFavorite
           ? res.status(201).json(insertFavorite)
           : res.status(404).json({ error: "Wrong orchestra_id or user_id check information and try again" });

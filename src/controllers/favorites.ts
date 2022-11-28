@@ -1,5 +1,20 @@
 import { prisma } from "../../lib/prisma";
 
+export const getFavoritesidOrchestra = async (user_Id:any,orchestra_Id: any) => {
+  try {
+
+    const findFavoriteExist = await prisma.favorites.findMany({
+      where:{
+        userId:user_Id,
+        orchestraId: orchestra_Id
+      },
+    })
+    return findFavoriteExist ? true : null
+  } catch (error) {
+    return error
+  }
+};
+
 export const getFavorites = async (user_id: any) => {
   try {
     if(!user_id){

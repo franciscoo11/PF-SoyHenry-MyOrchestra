@@ -1,5 +1,8 @@
+import axios from "axios";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import Cookies from "universal-cookie";
 
 const filesLogo =
   "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668090828/abrir-documento_ifj9cl.png";
@@ -85,6 +88,25 @@ const CardStyle = styled.div`
 `;
 
 function HomeCards(props: any) {
+const cookie = new Cookies
+
+const dataexist = async ()=>{
+ return  await axios.get(`/api/favorites/${cookie.get("UserloginData").id}`, { params: { orchestra_id: props.id } }).then(response=>response.data )
+   
+}
+  const handleClickFavorite= async ()=>{
+    const responsExist= await dataexist()
+    if(responsExist){
+      axios.put(`/api/favorites/${cookie.get("UserloginData").id}`, { orchestra_id: props.id } ).then(response=>response.data )
+    }
+
+    await axios.post("/api/favorites",{
+      orchestra_id:props.id,
+      user_id:cookie.get("UserloginData").id
+    })
+  }
+   
+
   return (
     <>
       <CardStyle>
@@ -114,12 +136,16 @@ function HomeCards(props: any) {
             </div>
           </div>
           <div className="card-btn-container">
+            <button onClick={()=>handleClickFavorite()}>
+            <a>♡</a>
+            </button>
             <Link
               href={`/orchestras/${encodeURIComponent(props.id)}`}
               legacyBehavior
             >
               <a className="card-btn">Ver más</a>
             </Link>
+          
           </div>
         </div>
       </CardStyle>
