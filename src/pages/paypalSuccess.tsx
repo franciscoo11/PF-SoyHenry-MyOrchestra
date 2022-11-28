@@ -7,6 +7,7 @@ export default function paypalSuccess() {
   const { token }: any = router.query;
 
   const [datapayment, setDataPayment] = useState({
+    id: "",
     status: "",
     mount: "",
     payerEmail: "",
@@ -14,32 +15,42 @@ export default function paypalSuccess() {
     date: "",
     idCampaign: "",
   });
-  console.log(datapayment);
-
-  const [tokenId, setToken] = useState("");
-
-  const getDataPayment = async (token: any) => {
-    await axios
-      .get(`/api/paypal/${token}`)
-      .then((response) => setDataPayment(response.data));
+  const [messi, setMessi] = useState(false);
+  // useEffect(() => {
+  //   const req = async () => {
+  //     try {
+  //       const response = await axios.get(`/api/paypal/${token}`);
+  //       const datita = response.data;
+  //       setDataPayment(datita);
+  //     } catch (error) {
+  //       return error;
+  //     }
+  //   };
+  //   req();
+  // }, []);
+  const req: any = async () => {
+    if (messi === false) {
+      if (token !== undefined) {
+        const request: any = await axios.get(`/api/paypal/${token}`);
+        console.log(request);
+        setMessi(true);
+        return request;
+      }
+    }
   };
 
+  const result = req();
   useEffect(() => {
-    console.log(tokenId);
-
-    () => setToken(token);
-    // axios.get(`/api/paypal/${token}`).then((res) => setDataPayment(res.data));
-    getDataPayment(tokenId);
-    // const funcionadaleee = async () => {
-    //   await getDataPayment(token).then((res) => setDataPayment(res));
-    // };
+    (async function anyNameFunction() {
+      await result;
+    })();
   }, []);
 
   return (
     <div>
       <h1>paypalSuccess</h1>
       {datapayment.status == "COMPLETED"
-        ? "Gracias"
+        ? "Gracias, pero no me mientas"
         : "El pago no fue concretado"}
     </div>
   );
