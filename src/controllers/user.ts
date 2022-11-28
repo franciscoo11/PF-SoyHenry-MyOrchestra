@@ -101,9 +101,17 @@ export const postUser = async (body: any, query: any) => {
   }
 };
 
-export const getUsers = async (email?: any) => {
+export const getUsers = async (query:any) => {
   try {
-    if (!email) {
+    if(query.userId){
+      const findUserById = await prisma.users.findUnique({
+        where:{
+          id: query.userId
+        }
+      })
+      return findUserById ? findUserById : null
+    }
+    if (!query.email) {
       const allUsers = await prisma.users.findMany({
         include: {
           rol: true,
@@ -112,7 +120,7 @@ export const getUsers = async (email?: any) => {
       return allUsers.length ? allUsers : null;
     }
     const user = await prisma.users.findUnique({
-      where: { email: email },
+      where: { email: query.email },
       include: {
         rol: true
       }
