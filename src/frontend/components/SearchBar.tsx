@@ -29,7 +29,7 @@ const SearchBar = ({ router, search, setSearch, setCurrentPage }: any) => {
     router.push(
       {
         pathname: "/orchestras",
-        query: { ...router.query, name: search },
+        query: { name: search },
       },
       undefined,
       {}

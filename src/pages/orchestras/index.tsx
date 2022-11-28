@@ -150,6 +150,7 @@ export default function Orquestas({ orchestraTypes }: any) {
 
   const { data = [], results = 1 }: any = orchestras;
   let pages = Math.ceil(results / itemsPerPage);
+  console.log(pages);
 
   const nextPage = () => {
     if (currentPage < pages - 1) {
@@ -303,7 +304,7 @@ export default function Orquestas({ orchestraTypes }: any) {
             <button
               className="nav-btn"
               onClick={nextPage}
-              disabled={currentPage === pages - 1}
+              disabled={currentPage >= pages - 1}
             >
               Siguiente
             </button>
