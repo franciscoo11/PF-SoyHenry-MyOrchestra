@@ -1,6 +1,8 @@
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import axios from "axios";
 import styled from "styled-components";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const StyledForm = styled.div`
   .form {
@@ -132,8 +134,28 @@ export default function CreatePosts({ orchestraId, userCreator }: any) {
 
               await axios.post("/api/post", postData);
               setSubmitting(false);
+              toast.success("Tu publicación se envió.", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+              window.location.reload();
             } catch (error) {
-              console.log(error);
+              toast.error("Verifica e intenta nuevamente.", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
             }
           }}
         >
@@ -189,6 +211,7 @@ export default function CreatePosts({ orchestraId, userCreator }: any) {
             </Form>
           )}
         </Formik>
+        <ToastContainer />
       </StyledForm>
     );
   } else {
