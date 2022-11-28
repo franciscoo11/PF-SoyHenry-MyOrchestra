@@ -29,7 +29,10 @@ export const getPost = async (query:any) => {
           skip: page * resources || page * 4 || 0,
           where: {
             [prop1]: date1
-          }
+          },
+          include:{
+            comments:true
+        }
         })
   
   
@@ -53,7 +56,10 @@ export const getPost = async (query:any) => {
           where: {
             [prop1]: date1,
             [prop2]: date2
-          }
+          },
+          include:{
+            comments:true
+        }
         })
       const results = (await prisma.posts.findMany(
         {
