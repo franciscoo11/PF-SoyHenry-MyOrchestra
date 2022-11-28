@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import Cover from "../../../frontend/components/Cover";
 import MainNavBar from "../../../frontend/components/MainNavBar";
-import { Orquestas, Users } from "../../../frontend/utils/fakeDB";
 import Footer from "../../../frontend/components/Footer";
 import AsideLeft from "../../../frontend/components/orchestras/AsideLeft";
 import AsideRight from "../../../frontend/components/orchestras/AsideRight";
@@ -15,7 +14,15 @@ export interface DataModel {
   id: string;
 }
 
-export default function User(props: any) {
+export const getServerSideProps = async ({ params }: any) => {
+  const user = await prisma.users.findUnique({
+    where: {
+      id: params.id,
+    },
+  });
+  return { props: { user } };
+};
+export default function User({ user }: any) {
   const router = useRouter();
   const { id } = router.query;
   return (
@@ -24,17 +31,17 @@ export default function User(props: any) {
 
       <StyledMain>
         <aside className="aside-left">
-          <UserAsideLeft logo={Users[0].image} id={Users[0].id} />
+          <UserAsideLeft logo={user.avatar} id={user.id} />
         </aside>
         <section className="content">
           <UserCover
-            cover={Users[0].cover}
-            title={Users[0].name}
-            location={Users[0].city}
+            cover={user.cover}
+            title={user.name}
+            location={user.city}
           />
           <div className="about-container">
-            <h2 className="about-title">Acerca de {Users[0].name}</h2>
-            <p className="about-content">{Users[0].about}</p>
+            <h2 className="about-title">Acerca de {user.name}</h2>
+            <p className="about-content">{user.about}</p>
           </div>
         </section>
         <aside className="aside-right">
