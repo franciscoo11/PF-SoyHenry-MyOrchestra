@@ -22,7 +22,7 @@ export const getPost = async (query:any) => {
     }
 
     const dataandorder = async (orderprop: any, order: any, prop1: any, date1: any) => {
-      const data = await prisma.orchestras.findMany(
+      const data = await prisma.posts.findMany(
         {
           orderBy: { [orderprop]: order },
           take: resources * 1 || 4,
@@ -33,7 +33,7 @@ export const getPost = async (query:any) => {
         })
   
   
-      const results = (await prisma.orchestras.findMany(
+      const results = (await prisma.posts.findMany(
         {
           orderBy: { [orderprop]: order },
           where: {
@@ -46,19 +46,19 @@ export const getPost = async (query:any) => {
 
 
     const fulldata = async (prop1: any, prop2: any, date1: any, date2: any) => {
-      const data = await prisma.orchestras.findMany(
+      const data = await prisma.posts.findMany(
         {
           take: resources * 1 || 4,
           skip: page * resources || page * 4 || 0,
           where: {
-            [prop1]: { contains: date1, mode: 'insensitive' },
+            [prop1]: date1,
             [prop2]: date2
           }
         })
-      const results = (await prisma.orchestras.findMany(
+      const results = (await prisma.posts.findMany(
         {
           where: {
-            [prop1]: { contains: date1, mode: 'insensitive' },
+            [prop1]: date1,
             [prop2]: date2
           }
         })).length
