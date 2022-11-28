@@ -8,7 +8,6 @@ import { StyledMain } from "../../../frontend/styles/orchestras/sharedStyles";
 import { prisma } from "../../../../lib/prisma";
 import CreatePosts from "../../../frontend/components/CreatePosts";
 import axios from "axios";
-import { UpdateCover } from "../../../frontend/components/orchestras/UpdateCover";
 import { useUser } from "@auth0/nextjs-auth0";
 import { useEffect, useState } from "react";
 
@@ -20,7 +19,6 @@ export async function getServerSideProps({ params }: any) {
       },
     });
 
-    
     return { props: { orchestra } };
   } catch (error) {
     console.log(error);
@@ -80,8 +78,8 @@ function OrchestraDetails({ orchestra }: any) {
           <AsideLeft logo={logo} id={id} user={user} />
         </aside>
         <section className="content">
-          <Cover cover={cover} title={name} location={location} />
-          {/* <UpdateCover orchestrasById={props.orchestrasById} /> */}
+          <Cover cover={cover} title={name} location={location} id={id} />
+
           {user ? (
             <div className="form-container">
               {<CreatePosts orchestraId={id} userCreator={userId} />}
