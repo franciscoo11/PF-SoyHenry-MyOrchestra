@@ -150,7 +150,6 @@ export default function Orquestas({ orchestraTypes }: any) {
 
   const { data = [], results = 1 }: any = orchestras;
   let pages = Math.ceil(results / itemsPerPage);
-  console.log(pages);
 
   const nextPage = () => {
     if (currentPage < pages - 1) {
