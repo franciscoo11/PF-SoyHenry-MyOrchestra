@@ -13,7 +13,7 @@ import {
 import Link from "next/link";
 import { UpdateLogo } from "./UpdateLogo";
 
-export default function AsideLeft({ logo, id }: any) {
+export default function AsideLeft({ logo, id, user }: any) {
   return (
     <>
       <div className="orchestra-nav-container">
@@ -22,7 +22,7 @@ export default function AsideLeft({ logo, id }: any) {
           style={{ backgroundImage: `url(${logo})` }}
         >
           <div className="logo-update-icon-container">
-            <UpdateLogo id={id} />
+            {user ? <UpdateLogo id={id} /> : null}
           </div>
         </div>
         <nav className="orchestra-nav">
@@ -89,39 +89,43 @@ export default function AsideLeft({ logo, id }: any) {
                 </Link>
               </div>
             </li>
-            <li className="nav-item">
-              <FiEdit3 />
-              <div>
-                <Link href={`/orchestras/${encodeURIComponent(id)}/edit`}>
-                  Editar Orquesta
-                </Link>
-              </div>
-            </li>
+            {user ? (
+              <li className="nav-item">
+                <FiEdit3 />
+                <div>
+                  <Link href={`/orchestras/${encodeURIComponent(id)}/edit`}>
+                    Editar Orquesta
+                  </Link>
+                </div>
+              </li>
+            ) : null}
           </ul>
         </nav>
       </div>
-      <div className="notification-container">
-        <div
-          className="admin-pic"
-          style={{ backgroundImage: `url(${Users[1].image})` }}
-        ></div>
-        <div className="notification-content">
-          <p className="user-name">{Users[1].name}</p>
-          <p className="user-role">{Users[1].rol}</p>
-          <hr />
-          <ul className="notifications-list">
-            <li className="notification-item">
-              Notificaciones <span>3</span>{" "}
-            </li>
-            <li className="notification-item">
-              Mensajes <span>2</span>{" "}
-            </li>
-            <li className="notification-item">
-              Pendiente <span>1</span>{" "}
-            </li>
-          </ul>
+      {user ? (
+        <div className="notification-container">
+          <div
+            className="admin-pic"
+            style={{ backgroundImage: `url(${Users[1].image})` }}
+          ></div>
+          <div className="notification-content">
+            <p className="user-name">{Users[1].name}</p>
+            <p className="user-role">{Users[1].rol}</p>
+            <hr />
+            <ul className="notifications-list">
+              <li className="notification-item">
+                Notificaciones <span>3</span>{" "}
+              </li>
+              <li className="notification-item">
+                Mensajes <span>2</span>{" "}
+              </li>
+              <li className="notification-item">
+                Pendiente <span>1</span>{" "}
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
+      ) : null}
     </>
   );
 }
