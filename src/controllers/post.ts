@@ -21,8 +21,51 @@ export const getPost = async (query:any) => {
         return {results,data}
     }
 
+    const dataandorder = async (orderprop: any, order: any, prop1: any, date1: any) => {
+      const data = await prisma.orchestras.findMany(
+        {
+          orderBy: { [orderprop]: order },
+          take: resources * 1 || 4,
+          skip: page * resources || page * 4 || 0,
+          where: {
+            [prop1]: date1
+          }
+        })
+  
+  
+      const results = (await prisma.orchestras.findMany(
+        {
+          orderBy: { [orderprop]: order },
+          where: {
+            [prop1]: date1
+          }
+        })).length
+  
+      return { results, data }
+    }
+
+
+    const fulldata = async (prop1: any, prop2: any, date1: any, date2: any) => {
+      const data = await prisma.orchestras.findMany(
+        {
+          take: resources * 1 || 4,
+          skip: page * resources || page * 4 || 0,
+          where: {
+            [prop1]: { contains: date1, mode: 'insensitive' },
+            [prop2]: date2
+          }
+        })
+      const results = (await prisma.orchestras.findMany(
+        {
+          where: {
+            [prop1]: { contains: date1, mode: 'insensitive' },
+            [prop2]: date2
+          }
+        })).length
+      return { results, data }
+    }
+
     const dataonly =async(prop1:any, data1:any)=>{
-     
       const data= await prisma.posts.findMany( 
         {
         take: resources*1 ||4,
@@ -46,6 +89,13 @@ export const getPost = async (query:any) => {
           })).length
         return {results,data}
     }
+
+    if(orchestraId && type_PostId) return fulldata("orchestraId","type_PostId", orchestraId,type_PostId)
+    if(views&&type_PostId)return dataandorder("views",views,"type_PostId", type_PostId)
+    if(views&&orchestraId)return dataandorder("views",views,"orchestraId", orchestraId)
+    if(event_date&&type_PostId)return dataandorder("event_date",event_date,"type_PostId", type_PostId)
+    if(event_date&&orchestraId)return dataandorder("event_date",event_date,"orchestraId", orchestraId)
+
 
     if(event_date)return onlyorder("event_date",event_date)
     if(views)return onlyorder("views",views)
