@@ -2,7 +2,7 @@ import { prisma } from "../../lib/prisma";
 //GET USERSPOST
 export const getPost = async (query:any) => {
   try {
-    const {event_date, views,resources,page,orchestraId, type_PostId} = query
+    const {event_date, views,resources,page,orchestraId, type_PostId, creation_date } = query
 
     const results =  (await prisma.posts.findMany()).length
 
@@ -107,6 +107,7 @@ export const getPost = async (query:any) => {
     if(views)return onlyorder("views",views)
     if(type_PostId)return dataonly("type_PostId", type_PostId)
     if(orchestraId) return dataonly("orchestraId", orchestraId)
+    if(creation_date)return onlyorder("creation_date","desc")
 
     const data = await prisma.posts.findMany({
       take: resources*1 ||4,

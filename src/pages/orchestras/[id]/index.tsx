@@ -20,6 +20,7 @@ export async function getServerSideProps({ params }: any) {
       },
     });
 
+    
     return { props: { orchestra } };
   } catch (error) {
     console.log(error);
