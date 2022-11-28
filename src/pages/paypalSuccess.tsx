@@ -2,6 +2,7 @@ import axios from "axios";
 import React from "react";
 import { HOSTNAME } from "./_app";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 interface IPaymentDetail {
   paymentDetail: {
@@ -10,7 +11,7 @@ interface IPaymentDetail {
     payerEmail: string
     name: string
     mount: string
-    data: string
+    date: string
     idCampaign: string
   }
 }
@@ -19,13 +20,43 @@ const paypalSuccess = ({paymentDetail}:IPaymentDetail) =>{
   const router = useRouter()
 
   if(!paymentDetail){
-    alert('Lo sentimos pero su donación no fue exitosa, intente nuevamente')
+    toast.error("Lo sentimos pero su donación no fue exitosa, intente nuevamente", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+    
     router.push('/')
   }
 
+  console.log(paymentDetail)
   const handleButtonRedirect = async (e:any) => {
     e.preventDefault()
-    //LLAMAR ENDPOINT CREAR DONACION
+
+    toast.success("Lo estamos redirigiendo aguarde unos instantes...", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+    await axios.post(`/api/donation`, {
+      campaignId: "clazl9pd7000esdowmyesripq",
+      userId: "76b14f11-bd78-4026-ac38-e6c97d76eba2",
+      amount: paymentDetail.mount,
+      date: paymentDetail.date,
+      orchestraId: "claww4lat0003vg1wuau9d3dz"
+    })
+
     router.push('/')
   }
 
@@ -45,12 +76,18 @@ const paypalSuccess = ({paymentDetail}:IPaymentDetail) =>{
 }
 
 export async function getServerSideProps(context:any) {
-  const {data:response} = await axios.get(`${HOSTNAME}/api/paypal/${context.query.token}`)
-  return {
-    props:{
-      paymentDetail: response
+  try {
+    const { data:response } = await axios.get(`${HOSTNAME}/api/paypal/${context.query.token}`)
+
+    return {
+      props:{
+        paymentDetail: response
+      }
     }
+  } catch (error) {
+    return { redirect: { destination: "/" } }
   }
+  
 }
 
 export default paypalSuccess
