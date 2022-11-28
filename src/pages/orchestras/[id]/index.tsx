@@ -83,7 +83,11 @@ function OrchestraDetails({ orchestra }: any) {
               <p>Loading...</p>
             ) : (
               data.map((post: any) => (
-                <OrchestraPosts key={post.id} post={post} />
+                <OrchestraPosts
+                  key={post.id}
+                  post={post}
+                  orchestra={orchestra}
+                />
               ))
             )}
           </div>
