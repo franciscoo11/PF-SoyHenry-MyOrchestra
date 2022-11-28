@@ -112,21 +112,20 @@ export const getOrchestras = async (query: any) => {
   }
 
   if (order && location && orchestra_TypeId) return fulldataorder("name", order, "location", "orchestra_TypeId", location, orchestra_TypeId)
+  if (creation_date && location && orchestra_TypeId) return fulldataorder("name", creation_date, "location", "orchestra_TypeId", location, orchestra_TypeId)
+
   if (order && location) return dataandorder("name", order, "location", location)
   if (order && orchestra_TypeId) return dataandorder("name", order, "orchestra_TypeId", orchestra_TypeId)
-
-  if (creation_date && location && orchestra_TypeId) return fulldataorder("name", creation_date, "location", "orchestra_TypeId", location, orchestra_TypeId)
   if (creation_date && location) return dataandorder("creation_date", creation_date, "location", location)
   if (creation_date && orchestra_TypeId) return dataandorder("creation_date", creation_date, "orchestra_TypeId", orchestra_TypeId)
-
   if (location && orchestra_TypeId) return fulldata("location", "orchestra_TypeId", location, orchestra_TypeId)
+  if(name && order ) return dataandorder("name",order,"name",name)
+
+  if (creation_date) return onlyorder("creation_date", creation_date)
   if (location) return dataonly("location", location)
   if (orchestra_TypeId) return dataonly("orchestra_TypeId", orchestra_TypeId)
-
   if (order) return onlyorder("name", order)
-  if (creation_date) return onlyorder("creation_date", creation_date)
-
-  if (name) return dataandorder("name", order, "name", name)
+  if (name) return dataonly("name", name)
 
   const data = await prisma.orchestras.findMany({
     take: resources * 1 || 4,
