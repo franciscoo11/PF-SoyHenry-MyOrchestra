@@ -3,8 +3,18 @@ import { prisma } from "../../lib/prisma";
 export const allReactionFromPosts = async(query:any) => {
     try {
         if(!query.userId){
+
             const allReactionsPosts = await prisma.post_user_on_reactions.findMany()
             return allReactionsPosts ? allReactionsPosts : null
+        }
+        if(query.duplicate){
+            const findByUserIdAndPostId = await prisma.post_user_on_reactions.findFirst({
+                where:{
+                    userId: query.userId,
+                    postId: query.post_id
+                }
+            })
+            return findByUserIdAndPostId ? findByUserIdAndPostId : null
         }
         const findReactionsByUserId = await prisma.post_user_on_reactions.findMany({
             where:{
