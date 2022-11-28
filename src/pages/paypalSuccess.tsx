@@ -3,6 +3,7 @@ import React from "react";
 import { HOSTNAME } from "./_app";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import Cookies from "universal-cookie";
 
 interface IPaymentDetail {
   paymentDetail: {
@@ -18,6 +19,8 @@ interface IPaymentDetail {
 
 const paypalSuccess = ({paymentDetail}:IPaymentDetail) =>{
   const router = useRouter()
+  const cookie = new Cookies();
+  const user = cookie.get("UserloginData")
 
   if(!paymentDetail){
     toast.error("Lo sentimos pero su donación no fue exitosa, intente nuevamente", {
@@ -50,7 +53,7 @@ const paypalSuccess = ({paymentDetail}:IPaymentDetail) =>{
 
     await axios.post(`/api/donation`, {
       campaignId: "clazl9pd7000esdowmyesripq",
-      userId: "76b14f11-bd78-4026-ac38-e6c97d76eba2",
+      userId: user.id,
       amount: paymentDetail.mount,
       date: paymentDetail.date,
       orchestraId: "claww4lat0003vg1wuau9d3dz"
