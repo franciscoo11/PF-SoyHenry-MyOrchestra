@@ -54,12 +54,20 @@ export const getDonationsById = async (id:any) => {
 }
 
 export const postDonation =async (body:any)=>{
-    try {
-      const {userId,orchestraId,amount}=body;
-    const createDonation = await prisma.donations.create({
-    data:body
-    })
-    return createDonation?createDonation: null
+    try { 
+      if(!body) return null
+      
+      const createDonation = await prisma.donations.create({
+        data:{
+          amount: parseFloat(body.amount),
+          campaignId: body.campaignId,
+          date: body.date,
+          orchestraId: body.orchestraId,
+          userId: body.userId
+        }
+      })
+      
+      return createDonation ? createDonation: null
     } catch (error) {
         return error
     }
