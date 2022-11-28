@@ -2,7 +2,7 @@ import { prisma } from "../../lib/prisma";
 //GET USERSPOST
 export const getPost = async (query:any) => {
   try {
-    const {event_date, views,resources,page,orchestraId, type_PostId} = query
+    const { event_date, views,resources,page,orchestraId, type_PostId, optionOrder } = query
 
     const results =  (await prisma.posts.findMany()).length
 
@@ -48,11 +48,12 @@ export const getPost = async (query:any) => {
     }
 
 
-    const fulldata = async (prop1: any, prop2: any, date1: any, date2: any) => {
+    const fulldata = async (prop1: any, prop2: any, date1: any, date2: any, optionOrder:any ) => {
       const data = await prisma.posts.findMany(
         {
           take: resources * 1 || 4,
           skip: page * resources || page * 4 || 0,
+          orderBy: { creation_date : optionOrder },
           where: {
             [prop1]: date1,
             [prop2]: date2
@@ -96,17 +97,17 @@ export const getPost = async (query:any) => {
         return {results,data}
     }
 
-    if(orchestraId && type_PostId) return fulldata("orchestraId","type_PostId", orchestraId,type_PostId)
+    if(orchestraId && type_PostId) return fulldata("orchestraId","type_PostId", orchestraId,type_PostId, optionOrder)
     if(views&&type_PostId)return dataandorder("views",views,"type_PostId", type_PostId)
     if(views&&orchestraId)return dataandorder("views",views,"orchestraId", orchestraId)
     if(event_date&&type_PostId)return dataandorder("event_date",event_date,"type_PostId", type_PostId)
     if(event_date&&orchestraId)return dataandorder("event_date",event_date,"orchestraId", orchestraId)
 
-
     if(event_date)return onlyorder("event_date",event_date)
     if(views)return onlyorder("views",views)
     if(type_PostId)return dataonly("type_PostId", type_PostId)
     if(orchestraId) return dataonly("orchestraId", orchestraId)
+    
 
     const data = await prisma.posts.findMany({
       take: resources*1 ||4,
