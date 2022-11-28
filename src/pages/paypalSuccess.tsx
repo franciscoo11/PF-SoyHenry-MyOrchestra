@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 export default function paypalSuccess() {
-  const { query } = useRouter();
+  const router = useRouter();
+  const { token }: any = router.query;
 
   const [datapayment, setDataPayment] = useState({
     status: "",
@@ -13,21 +14,27 @@ export default function paypalSuccess() {
     date: "",
     idCampaign: "",
   });
+  console.log(datapayment);
 
-  // const req: any = async () => {
-  //   console.log(query.token);
-  //   const request: any = await axios.get(`/api/paypal/${query.token}`);
-  //   setDataPayment(request.data);
-  //   return request;
-  // };
+  const [tokenId, setToken] = useState("");
+
+  const getDataPayment = async (token: any) => {
+    await axios
+      .get(`/api/paypal/${token}`)
+      .then((response) => setDataPayment(response.data));
+  };
+
   useEffect(() => {
-    const axiosdata = async () => {
-      const datita = await axios.get(`/api/paypal/${query.token}`);
-      console.log(query.token);
-      setDataPayment(datita.data);
-    };
-    axiosdata();
+    console.log(tokenId);
+
+    () => setToken(token);
+    // axios.get(`/api/paypal/${token}`).then((res) => setDataPayment(res.data));
+    getDataPayment(tokenId);
+    // const funcionadaleee = async () => {
+    //   await getDataPayment(token).then((res) => setDataPayment(res));
+    // };
   }, []);
+
   return (
     <div>
       <h1>paypalSuccess</h1>
