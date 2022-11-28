@@ -64,7 +64,7 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse) => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       auth: {
-        username: process.env.NEXT_PUBLIC_PAYPAY_CLIENT || "",
+        username: process.env.PAYPAY_CLIENT || "",
         password: process.env.PAYPAL_SECRET || "",
       },
     });
@@ -82,7 +82,7 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse) => {
     const link = response.data.links[1].href;
     const id = response.data.id;
     res.status(201).json({ id, link });
-    // res.json(response.data)
+    
   } catch (error) {
     return res
       .status(500)

@@ -1,57 +1,56 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { HOSTNAME } from "./_app";
 import { useRouter } from "next/router";
 
-export default function paypalSuccess() {
-  const router = useRouter();
-  const { token }: any = router.query;
+interface IPaymentDetail {
+  paymentDetail: {
+    id: string
+    status: string
+    payerEmail: string
+    name: string
+    mount: string
+    data: string
+    idCampaign: string
+  }
+}
 
-  const [datapayment, setDataPayment] = useState({
-    id: "",
-    status: "",
-    mount: "",
-    payerEmail: "",
-    name: "",
-    date: "",
-    idCampaign: "",
-  });
-  const [messi, setMessi] = useState(false);
-  // useEffect(() => {
-  //   const req = async () => {
-  //     try {
-  //       const response = await axios.get(`/api/paypal/${token}`);
-  //       const datita = response.data;
-  //       setDataPayment(datita);
-  //     } catch (error) {
-  //       return error;
-  //     }
-  //   };
-  //   req();
-  // }, []);
-  const req: any = async () => {
-    if (messi === false) {
-      if (token !== undefined) {
-        const request: any = await axios.get(`/api/paypal/${token}`);
-        console.log(request);
-        setMessi(true);
-        return request;
-      }
-    }
-  };
+const paypalSuccess = ({paymentDetail}:IPaymentDetail) =>{
+  const router = useRouter()
 
-  const result = req();
-  useEffect(() => {
-    (async function anyNameFunction() {
-      await result;
-    })();
-  }, []);
+  if(!paymentDetail){
+    alert('Lo sentimos pero su donación no fue exitosa, intente nuevamente')
+    router.push('/')
+  }
+
+  const handleButtonRedirect = async (e:any) => {
+    e.preventDefault()
+    //LLAMAR ENDPOINT CREAR DONACION
+    router.push('/')
+  }
 
   return (
-    <div>
-      <h1>paypalSuccess</h1>
-      {datapayment.status == "COMPLETED"
-        ? "Gracias, pero no me mientas"
-        : "El pago no fue concretado"}
-    </div>
-  );
+    <>
+      {
+        paymentDetail.status == 'COMPLETED' ? 
+        <div>
+          <h2>GRACIAS POR TU COLABORACIÓN, EN UNOS INSTANTES SERÁS REDIRIGIDO...</h2>
+          <button onClick={(e) => handleButtonRedirect(e)}>CONTINUAR</button>
+        </div>
+        :
+        null
+      }
+    </>
+    );
 }
+
+export async function getServerSideProps(context:any) {
+  const {data:response} = await axios.get(`${HOSTNAME}/api/paypal/${context.query.token}`)
+  return {
+    props:{
+      paymentDetail: response
+    }
+  }
+}
+
+export default paypalSuccess
