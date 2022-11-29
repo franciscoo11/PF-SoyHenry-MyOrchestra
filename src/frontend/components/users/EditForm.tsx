@@ -57,31 +57,34 @@ const StyledForm = styled.div`
         grid-column: 1/7;
         grid-row: 2;
       }
-      .password {
-        grid-column: 1/7;
+
+      .pais-field {
+        grid-column: 1/3;
         grid-row: 3;
       }
-
-      .city-field {
+      .state-field {
         grid-column: 3/5;
-        grid-row: 4;
+        grid-row: 3;
       }
-
-      .birthday-field {
+      .city-field {
         grid-column: 5/7;
+        grid-row: 3;
+      }
+      .birthday-field {
+        grid-column: 1/3;
         grid-row: 4;
       }
       .rolId-field {
         grid-column: 3/5;
-        grid-row: 5;
+        grid-row: 4;
       }
       .orchestraId-field {
         grid-column: 5/7;
-        grid-row: 5;
+        grid-row: 4;
       }
       .btn-container {
         grid-column: 1/7;
-        grid-row: 6;
+        grid-row: 5;
         text-align: right;
 
         .submitted {
@@ -116,12 +119,25 @@ interface Values {
   birthday: string;
   city: string;
   rolId: string;
+  state: string;
+  country: string;
 }
 
 export default function EditUser({ user, orchestras, userRoles }: any) {
   const router = useRouter();
-  const { avatar, birthday, city, country, email, name, rolId, password } =
-    user;
+
+  const {
+    avatar,
+    birthday,
+    city,
+    country,
+    email,
+    name,
+    rolId,
+    password,
+    state,
+  } = user;
+  // const birthdaylocal = birthday.toLocaleDateString();
 
   const passwordRegex =
     /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/;
@@ -131,61 +147,72 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
         initialValues={{
           name: name ? name : "",
           email: email ? email : "",
-          password: password ? password : "",
+          password: "Jose100105.123.",
           birthday: birthday ? birthday : "",
+          country: country ? country : "",
+          state: state ? state : "",
           city: city ? city : "",
           rolId: rolId ? rolId : "",
+          orchestras: orchestras ? orchestras : "",
         }}
         validationSchema={Yup.object({
           name: Yup.string().required("Requerido"),
           email: Yup.string()
             .email("Correo inválido")
             .required("Ningún correo ingresado"),
-          password: Yup.string()
-            .min(8)
-            .matches(
-              passwordRegex,
-              `La contraseña debe tener al menos 8 digitos, un caracter especial, al menos una minúscula, debe contener algun numero y al menos una mayúscula`
-            )
-            .required("Ninguna contraseña ingresada"),
-          avatar: Yup.string().url("URL inválido"),
-          cover: Yup.string().url("URL inválido"),
           birthday: Yup.date()
             .max(new Date(), "Fecha incorrecta, ingrese una fecha valida")
             .required("Requerido"),
           city: Yup.string().required("Requerido"),
+          state: Yup.string().required("Requerido"),
+          country: Yup.string().required("Requerido"),
         })}
-        onSubmit={(values, { setSubmitting }: FormikHelpers<Values>) => {
-          axios
-            .post("/api/user", values)
-            .then(() => {
-              toast.success("Usuario creado exitosamente", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
-              setSubmitting(false);
-            })
-            .catch(() => {
-              toast.error(
-                "Verifica los datos ingresados, y vuelve a intentar.",
-                {
-                  position: "top-right",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "light",
-                }
-              );
+        onSubmit={async (values, { setSubmitting }: FormikHelpers<Values>) => {
+          try {
+            let postData = {
+              rolId: values.rolId,
+              userId: user.id,
+            };
+            await axios.post(
+              `/api/useronorchestra?orchestraId=claq40vof0006r5mcu7zsw2bb`,
+              postData
+            );
+            let postUser = {
+              name: values.name,
+              email: values.email,
+              password: values.password,
+              birthday: values.birthday,
+              country: values.country,
+              state: values.state,
+              city: values.city,
+            };
+            await axios.put("/api/user", postUser);
+            console.log(postData);
+            console.log(postUser);
+
+            toast.success("Datos actualizados correctamente", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
             });
+            setSubmitting(false);
+          } catch (error) {
+            toast.error("Verifica los datos ingresados, y vuelve a intentar.", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
         }}
       >
         <Form className="form">
@@ -219,7 +246,22 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
                 <ErrorMessage name="birthday" className="errorMessage" />
               </p>
             </div>
-
+            <div className="pais-field">
+              <Field
+                name="country"
+                type="text"
+                placeholder="País"
+                className="input"
+              />
+            </div>
+            <div className="state-field">
+              <Field
+                name="state"
+                type="text"
+                placeholder="Estado"
+                className="input"
+              />
+            </div>
             <div className="city-field">
               <Field
                 name="city"
@@ -251,7 +293,7 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
               </p>
             </div>
             <div className="orchestraId-field">
-              <Field as="select" className="input">
+              <Field name="orchestras" as="select" className="input">
                 <option value="">Orquesta</option>
                 {orchestras.map((orchestra: any) => (
                   <option value={orchestra.id} key={orchestra.id}>

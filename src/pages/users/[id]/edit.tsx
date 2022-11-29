@@ -18,6 +18,7 @@ export const getServerSideProps = async ({ params }: any) => {
         email: params.id,
       },
     });
+    // user?.birthday?.toString();
     const orchestras = await prisma.orchestras.findMany({
       select: {
         id: true,
@@ -34,7 +35,18 @@ export const getServerSideProps = async ({ params }: any) => {
 
 export default function User({ user, orchestras, userRoles }: any) {
   const router = useRouter();
-  const { avatar, birthday, city, country, cover, email, name, rolId } = user;
+  const {
+    avatar,
+    birthday,
+    city,
+    country,
+    email,
+    name,
+    rolId,
+    password,
+    state,
+    cover,
+  } = user;
 
   return (
     <>
