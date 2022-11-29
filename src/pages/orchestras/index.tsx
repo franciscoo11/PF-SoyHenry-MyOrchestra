@@ -278,16 +278,17 @@ export default function Orquestas({ orchestraTypes }: any) {
             {loading ? (
               <p className="loading-msg">Loading...</p>
             ) : data.length > 0 ? (
-              data.map((orquesta: any, index: number) => (
-                <HomeCards
+              data.map((orquesta: any, index: number) => {
+                if(orquesta.is_active){
+                return <HomeCards
                   key={orquesta.id}
                   id={orquesta.id}
                   title={orquesta.name}
                   subtitle={orquesta.location}
                   content={orquesta.description.substr(0, 150)}
                   image={orquesta.logo}
-                />
-              ))
+                />}
+})
             ) : (
               <p className="search-alert">Sin coincidencias</p>
             )}
