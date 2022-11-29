@@ -8,6 +8,7 @@ import Link from "next/link";
 import { verifyUser } from "../frontend/utils/login";
 import { toast, ToastContainer } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
+import Cookies from "universal-cookie";
 
 const StyledForm = styled.div`
   background-image: url("/bg_01.jpg");
@@ -106,6 +107,7 @@ const StyledForm = styled.div`
 `;
 
 export default function LoginUser() {
+  const cookie = new Cookies()
   const router = useRouter();
   const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/;
   return (
@@ -148,6 +150,7 @@ export default function LoginUser() {
               );
             }
             if(checkUser && checkUser.first_time && checkUser.is_active){
+              cookie.set("UserloginData", checkUser, { path: "/" })
               toast.success(`Bienvenido/a ${checkUser.name} a My Orchestras!`, {
                 position: "top-right",
                 autoClose: 5000,
