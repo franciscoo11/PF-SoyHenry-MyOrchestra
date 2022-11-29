@@ -161,7 +161,14 @@ const StyledDiv = styled.div`
       }
     }
 
-    .reaction-img{
+    .reaction-img-nochose{
+      width: 10px;
+      height: 10px;
+      gap: 5px;
+
+    }
+
+    .reaction-img-chose{
       width: 20px;
       height: 20px;
       gap: 5px;
@@ -181,7 +188,6 @@ export default function OrchestraPosts({
   const { id, title, content, url_file, comments, userCreator,user_reaction } = post;
   const { logo, name } = orchestra;
   const [username, setUsername] = useState("");
-
 
   const cookie = new Cookies();
   const [reactions, setReactions] = useState([
@@ -234,10 +240,10 @@ export default function OrchestraPosts({
 
 
 
-  const findReacionMap = (post_Id: any, user_id: any) => {
+  const findReacionMap = (post_Id: any, user_id: any,reaction_Id:any) => {
     if (!user_id) return []
     const casiReturn = userReactions.find((a) => {
-      return a.postId == post_Id && a.userId == user_id
+      return a.postId == post_Id && a.userId == user_id && a.reactionId==reaction_Id
     })
 
     return casiReturn?.reactionId
@@ -251,11 +257,7 @@ export default function OrchestraPosts({
     axios
       .get(`/api/user?userId=${userCreator}`)
       .then((res) => setUsername(res.data.name));
-  }, [userReactions,contReaction]);
-
-
-
-
+  }, [contReaction]);
 
   return (
     <StyledDiv>
@@ -288,56 +290,26 @@ export default function OrchestraPosts({
 
           </div>
           <div>
-            <div>
-
-              {findReacionMap(id, dataUser.id) == reactions[0].id ? <button
-                onClick={() =>
-                  handleRemoveReaction(dataUser.id, id, reactions[0].id,)
-                }
-              >
-                <img className="reaction-img" src={reactions[0].reaction} alt="" />
-              </button> :
-                findReacionMap(id, dataUser.id) == reactions[1].id ? <button
-                  onClick={() =>
-                    handleRemoveReaction(dataUser.id, id, reactions[1].id,)
-                  }
-                >
-                  <img className="reaction-img" src={reactions[1].reaction} alt="" />
-                </button> :
-                  findReacionMap(id, dataUser.id) == reactions[2].id ? <button
-                    onClick={() =>
-                      handleRemoveReaction(dataUser.id, id, reactions[2].id,)
-                    }
-                  >
-                    <img className="reaction-img" src={reactions[2].reaction} alt="" />
-                  </button> :
-                    findReacionMap(id, dataUser.id) == reactions[3].id ? <button
-                      onClick={() =>
-                        handleRemoveReaction(dataUser.id, id, reactions[3].id,)
-                      }
-                    >
-                      <img className="reaction-img" src={reactions[3].reaction} alt="" />
-                    </button> :
-                      findReacionMap(id, dataUser.id) == reactions[4].id ? <button
-                        onClick={() =>
-                          handleRemoveReaction(dataUser.id, id, reactions[4].id,)
-                        }
-                      >
-                        <img className="reaction-img" src={reactions[4].reaction} alt="" />
-                      </button> :
-
-
-                        <div>
+            <div>       
                           {reactions.map((data) =>
                           (
-                            <button className="reaction-button" onClick={() =>
-                              handlePostReaction(id, dataUser.id, data.id)
-                            }><img className="reaction-img" src={data.reaction} alt="" /></button>
+                            
+                            findReacionMap(id, dataUser.id,data.id) == data.id ?
+                            <button  onClick={() =>
+                              handleRemoveReaction(dataUser.id, id, data.id,)
+                            }> 
+                            <img className="reaction-img-chose" src={data.reaction} alt="" />
+                            </button>:
+                            
+                          <button className="reaction-button" onClick={() =>
+                            handlePostReaction(id, dataUser.id, data.id)
+                          }><img className="reaction-img-nochose" src={data.reaction} alt="" />
+                          </button>
                           )
                           )}
 
-                        </div>
-              }
+                      
+        
             </div>
 
 
