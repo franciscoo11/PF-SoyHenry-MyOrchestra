@@ -149,14 +149,6 @@ export default function AdminOrchestras({orchestraTypes}: any) {
   const { data = [], results = 1 }: any = orchestras;
   let pages = Math.ceil(results / itemsPerPage);
 
-  // const logicDelete = async (props:any)=>{
-  // return await axios.patch(`/api/orchestra/${props.id}`).then(response=>response.data )  
-  // }
-  // const handleClickLogicDelete= async (id:any, is_active:any)=>{
-  // const response = await logicDelete(id)
-  // setOrchestras(is_active)
-  // return response
-  // }
 
   const nextPage = () => {
     if (currentPage < pages - 1) {

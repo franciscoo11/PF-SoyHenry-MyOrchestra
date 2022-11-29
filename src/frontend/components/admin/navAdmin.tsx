@@ -5,9 +5,9 @@ export default function NavAdmin(propr: any) {
     <nav>
       <Link href="/admin/orchestras">Orquestas</Link>
 
-      {/* <Link href="/orchestras">Orquestas </Link> */}
+      <Link href="/admin/users">Usuarios </Link>
 
-      {/* <Link href="/news">Noticias </Link> */}
+      {/* <Link href="/"> </Link> */}
 
     </nav>
   );
