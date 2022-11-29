@@ -163,13 +163,13 @@ const StyledDiv = styled.div`
       width: 20px;
       height: 20px;
       gap: 5px;
-      transition: 0.3s;
+      transition:0.3s;
     }
-    .reaction-img-nochoose {
+    .reaction-img-nochoose{
       width: 10px;
       height: 10px;
       gap: 5px;
-      transition: 0.2s;
+      transition:0.2s;
     }
   }
 `;
@@ -236,7 +236,7 @@ export default function OrchestraPosts({
     });
     const auxRemoveCount = countReactions[id as keyof typeof countReactions];
     setCountReaction(countReaction - 1);
-    setCountReactions({ ...countReactions, [id]: auxRemoveCount - 1 });
+    setCountReactions({ ...countReactions, [id]: auxRemoveCount > 0 ? auxRemoveCount - 1 : 0});
   };
 
   const findReactions = async () => {
@@ -290,15 +290,15 @@ export default function OrchestraPosts({
         </div>
         <p>{content}</p>
         {/* <div className="read-more">leer más</div> */}
+        
         <div className="post-reactions">
           <div>
             <p>
               {countReaction} reacciones / {comments.length} comentarios{" "}
             </p>
           </div>
-        </div>
-        <div>
-          {user ? (
+          <div>
+            { user ? 
             <div>
               {reactions.map((data) => {
                 let id_aux_reaction: any = data.id;
@@ -342,11 +342,10 @@ export default function OrchestraPosts({
                     />
                   </button>
                 );
-              })}
-            </div>
-          ) : null}
+              })} 
+            </div> : null }
+          </div>
         </div>
-
         {user ? (
           <div className="comment-form-container">
             <Formik
