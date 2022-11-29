@@ -189,9 +189,8 @@ export const postOrchestras = async (body: any) => {
 //BORRADO LOGICO
 export const logicDeleteOrchestra = async (id: any) => {
   try {
-    const orch = await prisma.orchestras.findUnique({where:{id}})
-    console.log(orch?.is_active)
-    if(orch?.is_active){
+    const orchestra = await prisma.orchestras.findUnique({where:{id}})
+    if(orchestra?.is_active){
       const deactivate = await prisma.orchestras.update({
         where: {
           id: id
@@ -202,7 +201,7 @@ export const logicDeleteOrchestra = async (id: any) => {
       })
       return deactivate
     }
-    if(!orch?.is_active){
+    if(!orchestra?.is_active){
       const activate = await prisma.orchestras.update({
         where: {
           id: id

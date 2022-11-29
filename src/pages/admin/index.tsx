@@ -6,8 +6,8 @@ import AdminOrchestras from "./orchestras";
 export default function AdminDashboard(){
     return(
         <>
-        {/* <NavAdmin/> */}
-        <AdminOrchestras/>
+        <NavAdmin/>
+        {/* <AdminOrchestras/> */}
         </>
     )
 }

@@ -129,10 +129,11 @@ const StyledMain = styled.main`
   }
 `;
 
-export default function AdminOrchestras() {
+export default function AdminOrchestras({orchestraTypes}: any) {
   const [orchestras, setOrchestras] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [change, setChange] = useState("")
   const itemsPerPage = 4;
   const router = useRouter();
   const searchQuery = router.asPath.split("?").pop();
@@ -140,13 +141,22 @@ export default function AdminOrchestras() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`api/orchestra?${searchQuery}`)
+      .get(`/api/orchestra?${searchQuery}`)
       .then((res) => setOrchestras(res.data))
       .finally(() => setLoading(false));
   }, [searchQuery]);
 
   const { data = [], results = 1 }: any = orchestras;
   let pages = Math.ceil(results / itemsPerPage);
+
+  // const logicDelete = async (props:any)=>{
+  // return await axios.patch(`/api/orchestra/${props.id}`).then(response=>response.data )  
+  // }
+  // const handleClickLogicDelete= async (id:any, is_active:any)=>{
+  // const response = await logicDelete(id)
+  // setOrchestras(is_active)
+  // return response
+  // }
 
   const nextPage = () => {
     if (currentPage < pages - 1) {
@@ -234,7 +244,7 @@ export default function AdminOrchestras() {
             <div className="dropdown">
               <button className="dropbtn">Tipo de Orquesta</button>
               <div className="dropdown-content">
-                {/* {orchestraTypes.map((orchestraType: any) => {
+                {orchestraTypes.map((orchestraType: any) => {
                   const { id, type } = orchestraType;
                   return (
                     <a
@@ -245,7 +255,7 @@ export default function AdminOrchestras() {
                       {type}
                     </a>
                   );
-                })} */}
+                })}
               </div>
             </div>
             <div className="dropdown">
@@ -278,6 +288,8 @@ export default function AdminOrchestras() {
                   content={orquesta.description.substr(0, 150)}
                   image={orquesta.logo}
                   is_active={orquesta.is_active}
+                  // handleClickLogicDelete={handleClickLogicDelete}
+
                 />
               ))
             ) : (
@@ -306,9 +318,9 @@ export default function AdminOrchestras() {
   );
 }
 
-// export async function getServerSideProps() {
-//   const orchestraTypes = await prisma.orchestra_type.findMany();
-//   return {
-//     props: { orchestraTypes },
-//   };
-// }
+export async function getServerSideProps() {
+  const orchestraTypes = await prisma.orchestra_type.findMany();
+  return {
+    props: { orchestraTypes },
+  };
+}

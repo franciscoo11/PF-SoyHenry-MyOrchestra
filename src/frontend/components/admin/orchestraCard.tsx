@@ -88,15 +88,19 @@ const CardStyle = styled.div`
 `;
 
 function OrchestraCards(props: any) {
-   console.log(props.is_active);
+   const [change, setChange] = useState(props.is_active)
    
     const logicDelete = async ()=>{
     return await axios.patch(`/api/orchestra/${props.id}`).then(response=>response.data )  
     }
     const handleClickLogicDelete= async ()=>{
     const response = await logicDelete()
+    setChange(props.is_active)
+    window.location.href = window.location.href
     return response
     }
+  
+    
 
     const deleteReal = async ()=>{  
     return await axios.delete(`/api/orchestra/${props.id}`).then(response=>response.data )  
