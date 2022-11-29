@@ -31,16 +31,16 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default function UserCover(props: any) {
+export default function UserCover({ cover, title, location, rolId }: any) {
   return (
     <StyledDiv>
       <div
         className="cover"
-        style={{ backgroundImage: `url(${props.cover})` }}
+        style={{ backgroundImage: `url(${cover ? cover : "/user_cover.png"})` }}
       ></div>
       <div className="info">
-        <h2 className="title">{props.title}</h2>
-        <p className="location">{props.location}</p>
+        <h2 className="title">{title}</h2>
+        <p className="location">{location}</p>
         <p>
           <b>Integrante de: </b> Nombre orquesta
         </p>

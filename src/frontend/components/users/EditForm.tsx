@@ -118,23 +118,23 @@ interface Values {
   rolId: string;
 }
 
-export default function EditUser({ allRols, allUsers, allOrchestras }: any) {
-  console.log(allOrchestras);
-  const { results, data } = allOrchestras;
-  const { rolId, name, email, password, birthday, city } = allUsers;
+export default function EditUser({ user, orchestras, userRoles }: any) {
   const router = useRouter();
+  const { avatar, birthday, city, country, email, name, rolId, password } =
+    user;
+
   const passwordRegex =
     /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/;
   return (
     <StyledForm>
       <Formik
         initialValues={{
-          name: name,
-          email: email,
-          password: password,
-          birthday: birthday,
-          city: city,
-          rolId: rolId,
+          name: name ? name : "",
+          email: email ? email : "",
+          password: password ? password : "",
+          birthday: birthday ? birthday : "",
+          city: city ? city : "",
+          rolId: rolId ? rolId : "",
         }}
         validationSchema={Yup.object({
           name: Yup.string().required("Requerido"),
@@ -212,17 +212,6 @@ export default function EditUser({ allRols, allUsers, allOrchestras }: any) {
                 <ErrorMessage name="email" className="errorMessage" />
               </p>
             </div>
-            <div className="password">
-              <Field
-                name="password"
-                type="password"
-                placeholder="Contraseña"
-                className="input"
-              />
-              <p className="error">
-                <ErrorMessage name="password" className="errorMessage" />
-              </p>
-            </div>
 
             <div className="birthday-field">
               <Field name="birthday" type="date" className="input" />
@@ -250,20 +239,21 @@ export default function EditUser({ allRols, allUsers, allOrchestras }: any) {
                 placeholder="ACTIVIDAD"
                 className="input"
               >
-                {allRols &&
-                  allRols.map((rol: any) => (
-                    <option value={rol.id} key={rol.id}>
-                      {rol.name}
-                    </option>
-                  ))}
+                <option value="">Elige un rol</option>
+                {userRoles.map((rol: any) => (
+                  <option value={rol.id} key={rol.id}>
+                    {rol.name}
+                  </option>
+                ))}
               </Field>
               <p className="error">
                 <ErrorMessage name="rolId" className="errorMessage" />
               </p>
             </div>
             <div className="orchestraId-field">
-              <Field as="select" placeholder="ORQUESTA" className="input">
-                {data.map((orchestra: any) => (
+              <Field as="select" className="input">
+                <option value="">Orquesta</option>
+                {orchestras.map((orchestra: any) => (
                   <option value={orchestra.id} key={orchestra.id}>
                     {orchestra.name}
                   </option>
