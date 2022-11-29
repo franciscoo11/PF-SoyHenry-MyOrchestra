@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { UpdateCover } from "./orchestras/UpdateCover";
+import { prisma } from "../../../lib/prisma";
 
 const StyledDiv = styled.div`
   border-radius: 12px;
@@ -31,7 +32,15 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default function Cover({ cover, id, title, location, user }: any) {
+export default function Cover({
+  cover,
+  id,
+  title,
+  location,
+  user,
+  members,
+}: any) {
+  const count = members.length;
   return (
     <StyledDiv>
       <div className="cover" style={{ backgroundImage: `url(${cover})` }}>
@@ -40,7 +49,7 @@ export default function Cover({ cover, id, title, location, user }: any) {
       <div className="info">
         <h2 className="title">{title}</h2>
         <p className="location">{location}</p>
-        <p>27 integrantes</p>
+        <p>{count} integrantes</p>
       </div>
     </StyledDiv>
   );

@@ -54,6 +54,7 @@ function OrchestraMembers({ orchestra, members }: any) {
             location={location}
             id={id}
             user={user}
+            members={members}
           />
           <div className="members-container">
             <h2 className="members-title">Integrantes</h2>
