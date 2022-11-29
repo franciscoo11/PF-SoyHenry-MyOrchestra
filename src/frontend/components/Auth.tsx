@@ -27,7 +27,12 @@ export default function Auth() {
   };
   if (loging === "undefined" || loging === undefined) {
     return <LoggedOut  />;
-  } else {
+  } else if (!cookie.get("UserloginData").is_active) {
+    alert("Usuario Banneado")
+    cookie.remove("Userlogin");
+    cookie.remove("UserloginData");
+    setLoging(cookie.get("Userlogin"));  
+  }else{
     return <LoggedIn handlelogout={handlelogout} />;
   }
 }

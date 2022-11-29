@@ -15,13 +15,13 @@ const StyledDiv = styled.div`
 
 export default function LoggedIn({ handlelogout }: any) {
   const cookie = new Cookies()
-//   const data = cookie.get("UserloginData")
-//   const isActive = data.is_active
-//   const router = useRouter()
+  const data = cookie.get("UserloginData")
+  const isActive = data.is_active
+  const router = useRouter()
   
-//  if(!isActive){
-//   router.push("/bannedPage")
-//  }
+ if(!isActive){
+  router.push("/bannedPage")
+ }
   return (
     <>
       <StyledDiv>
