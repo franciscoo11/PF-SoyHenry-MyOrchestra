@@ -134,7 +134,7 @@ export default function LoginUser() {
           })}
           onSubmit={async (values, { setSubmitting }) => {
             const checkUser = await verifyUser(values.email, values.password)
-            if(!checkUser){
+            if(!checkUser || !checkUser.is_active){
               toast.error(
                 "Credenciales invalidas, intenta de nuevo",
                 {
