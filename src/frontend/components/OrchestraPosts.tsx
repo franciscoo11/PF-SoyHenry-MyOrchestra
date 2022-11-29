@@ -308,8 +308,7 @@ export default function OrchestraPosts({
             <div>       
                           {reactions.map((data) =>
                          {
-                          let yeo:any=data.id;
-                          type T= keyof typeof countReactions;
+                          let id_aux_reaction:any=data.id;
                           return(
                             findReacionMap(id, dataUser.id,data.id) == data.id ?
                             <button  onClick={() =>
@@ -319,14 +318,14 @@ export default function OrchestraPosts({
                             
                             <div>
                               { }
-                            <p>{countReactions[yeo as keyof typeof countReactions]}</p>
+                            <p>{countReactions[id_aux_reaction as keyof typeof countReactions]}</p>
                             </div>
                             <img className="reaction-img-chose" src={data?.reaction} alt="" />
                             </button>:
                             
                           <button className="reaction-button" onClick={() =>
                             handlePostReaction(id, dataUser.id, data.id)
-                          }><p>{countReactions[yeo as keyof typeof countReactions]} </p>
+                          }><p>{countReactions[id_aux_reaction as keyof typeof countReactions]} </p>
                             <img className="reaction-img-nochose" src={data?.reaction} alt="" />
                           </button>
                           )
