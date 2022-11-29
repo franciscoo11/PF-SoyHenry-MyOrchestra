@@ -15,7 +15,9 @@ export const getPost = async (query:any) => {
           orchestraId: orchestraId
         },
         include:{
-          comments:true
+          comments:true,
+          user_reaction:true
+          
         }
         })
         return {results,data}
@@ -31,7 +33,8 @@ export const getPost = async (query:any) => {
             [prop1]: date1
           },
           include:{
-            comments:true
+            comments:true,
+            user_reaction:true
         }
         })
   
@@ -59,6 +62,7 @@ export const getPost = async (query:any) => {
             [prop2]: date2
           },
           include:{
+            user_reaction:true,
             comments:true
         }
         })
@@ -81,7 +85,8 @@ export const getPost = async (query:any) => {
             [prop1]:data1
           },
           include:{
-              comments:true
+            user_reaction:true,
+            comments:true
           }
         })
 

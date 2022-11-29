@@ -178,7 +178,7 @@ export default function OrchestraPosts({
   user,
 }: any) {
 
-  const { id, title, content, url_file, comments, userCreator } = post;
+  const { id, title, content, url_file, comments, userCreator,user_reaction } = post;
   const { logo, name } = orchestra;
   const [username, setUsername] = useState("");
 
@@ -191,6 +191,7 @@ export default function OrchestraPosts({
     { reaction: "", id: "" },
     { reaction: "", id: "" }
   ]);
+  const[contReaction,setContReaction]=useState(user_reaction.length)
   const [userReactions, setUserReactions] = useState([
     { postId: "", userId: "", reactionId: "" },
   ]);
@@ -214,6 +215,7 @@ export default function OrchestraPosts({
       userId: user_id,
       reactionId: reaction_id,
     });
+    setContReaction(contReaction+1)  
   };
 
   const handleRemoveReaction = async (user_id: any, post_id: any, id: any) => {
@@ -221,6 +223,7 @@ export default function OrchestraPosts({
     await axios.delete(`/api/post-reaction?id=${post_id}`, {
       data: { userId: user_id, reactionId: id },
     });
+    setContReaction(contReaction-1)
   };
 
   const findReaction = async () => {
@@ -241,8 +244,6 @@ export default function OrchestraPosts({
 
 
   }
-  console.log(reactions);
-
   useEffect(() => {
     setDataUser(cookie.get("UserloginData"));
     getReactions();
@@ -250,7 +251,7 @@ export default function OrchestraPosts({
     axios
       .get(`/api/user?userId=${userCreator}`)
       .then((res) => setUsername(res.data.name));
-  }, [userReactions]);
+  }, [userReactions,contReaction]);
 
 
 
@@ -283,7 +284,8 @@ export default function OrchestraPosts({
         {/* <div className="read-more">leer más</div> */}
         <div className="post-reactions">
           <div>
-            <p>7 reacciones / {comments.length} comentarios </p>
+            <p>{contReaction} reacciones / {comments.length} comentarios </p>
+
           </div>
           <div>
             <div>
