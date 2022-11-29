@@ -36,7 +36,13 @@ function OrchestraAbout({ orchestra }: any) {
           <AsideLeft logo={logo} id={id} user={user} />
         </aside>
         <section className="content">
-          <Cover cover={cover} title={name} location={location} id={id} />
+          <Cover
+            cover={cover}
+            title={name}
+            location={location}
+            id={id}
+            user={user}
+          />
           <div className="about-container">
             <h2 className="about-title">Acerca de</h2>
             <p className="about-content">{description}</p>

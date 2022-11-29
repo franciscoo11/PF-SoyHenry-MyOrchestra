@@ -31,11 +31,11 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default function Cover({ cover, id, title, location }: any) {
+export default function Cover({ cover, id, title, location, user }: any) {
   return (
     <StyledDiv>
       <div className="cover" style={{ backgroundImage: `url(${cover})` }}>
-        <UpdateCover id={id} />
+        {user ? <UpdateCover id={id} /> : null}
       </div>
       <div className="info">
         <h2 className="title">{title}</h2>

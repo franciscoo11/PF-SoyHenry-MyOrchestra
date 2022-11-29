@@ -80,7 +80,13 @@ function OrchestraDetails({ orchestra }: any) {
           <AsideLeft logo={logo} id={id} user={user} />
         </aside>
         <section className="content">
-          <Cover cover={cover} title={name} location={location} id={id} />
+          <Cover
+            cover={cover}
+            title={name}
+            location={location}
+            id={id}
+            user={user}
+          />
 
           {user ? (
             <div className="form-container">

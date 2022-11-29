@@ -1,76 +1,79 @@
 import { useRouter } from "next/router";
 import Cover from "../../../frontend/components/Cover";
 import MainNavBar from "../../../frontend/components/MainNavBar";
-import { Users } from "../../../frontend/utils/fakeDB";
 import Footer from "../../../frontend/components/Footer";
 import AsideLeft from "../../../frontend/components/orchestras/AsideLeft";
 import AsideRight from "../../../frontend/components/orchestras/AsideRight";
 import { StyledMain } from "../../../frontend/styles/orchestras/sharedStyles";
 import { prisma } from "../../../../lib/prisma";
-import axios from "axios";
 import MemberCard from "../../../frontend/components/MemberCards";
+import { useUser } from "@auth0/nextjs-auth0";
 
-export interface DataModel {
-  id: string;
-}
-
-export const getStaticPaths = async () => {
+export async function getServerSideProps({ params }: any) {
   try {
-    const orchestrasById: any =
-      await prisma.$queryRaw`SELECT id FROM orchestras`;
-    const paths = orchestrasById.map(({ id }: any) => ({ params: { id } }));
-    return {
-      paths,
-      fallback: false,
-    };
+    const orchestra = await prisma.orchestras.findUnique({
+      where: {
+        id: params.id,
+      },
+    });
+
+    const members = await prisma.users_on_orchestra.findMany({
+      where: {
+        orchestraId: params.id,
+      },
+      include: {
+        user: true,
+        rol: true,
+      },
+    });
+
+    return { props: { orchestra, members } };
   } catch (error) {
     console.log(error);
   }
-};
+}
 
-export const getStaticProps = async ({ params }: any) => {
-  try {
-    const orchestrasById: any =
-      await prisma.$queryRaw`SELECT * FROM orchestras WHERE id = ${params.id}`;
-    return {
-      props: {
-        orchestrasById,
-      },
-    };
-  } catch (error) {}
-};
-
-function OrchestraMembers(props: any) {
+function OrchestraMembers({ orchestra, members }: any) {
   const router = useRouter();
-  const { id } = router.query;
-  const orchestras = props.orchestrasById[0];
+  const { user } = useUser();
+
+  const { id, logo, cover, name, location } = orchestra;
+
   return (
     <>
       <MainNavBar />
 
       <StyledMain>
         <aside className="aside-left">
-          <AsideLeft logo={orchestras.logo} id={orchestras.id} />
+          <AsideLeft logo={logo} id={id} user={user} />
         </aside>
         <section className="content">
           <Cover
-            cover={orchestras.cover}
-            title={orchestras.name}
-            location={orchestras.location}
+            cover={cover}
+            title={name}
+            location={location}
+            id={id}
+            user={user}
           />
           <div className="members-container">
             <h2 className="members-title">Integrantes</h2>
-            <p className="members-content">
-              {Users.map((user, index) => (
-                <MemberCard
-                  key={index}
-                  pic={user.image}
-                  logo={orchestras.logo}
-                  role={user.rol}
-                  name={user.name}
-                />
-              ))}
-            </p>
+            <div className="members-content">
+              {members.map((member: any) => {
+                const rol = member.rol.name;
+                const { id, avatar, name, email } = member.user;
+
+                return (
+                  <MemberCard
+                    key={id}
+                    pic={avatar}
+                    logo={logo}
+                    role={rol}
+                    name={name}
+                    email={email}
+                  />
+                );
+              })}
+            </div>
           </div>
         </section>
         <aside className="aside-right">

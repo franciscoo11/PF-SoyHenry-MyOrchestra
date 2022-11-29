@@ -192,6 +192,7 @@ const StyledMain = styled.main`
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
+      margin-top: 18px;
     }
 
     .form-container,
