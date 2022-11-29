@@ -132,20 +132,7 @@ export default function LoginUser() {
           })}
           onSubmit={async (values, { setSubmitting }) => {
             const checkUser = await verifyUser(values.email, values.password)
-            if(checkUser){
-              toast.success("Hola de nuevo!", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
-              router.push("/");
-              setSubmitting(false);
-            } else {
+            if(!checkUser){
               toast.error(
                 "Credenciales invalidas, intenta de nuevo",
                 {
@@ -160,6 +147,34 @@ export default function LoginUser() {
                 }
               );
             }
+            if(checkUser && checkUser.first_time && checkUser.is_active){
+              toast.success(`Bienvenido ${checkUser.name} a My Orchestras!`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              })
+              router.push(`/users/${checkUser.id}`)
+              setSubmitting(false);
+            } 
+            if(checkUser && !checkUser.first_time && checkUser.is_active){
+              toast.success(`Hola de nuevo ${checkUser.name}!`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              })
+              router.push('/')
+              setSubmitting(false);
+            } 
             
           }}
         >
