@@ -1,24 +1,24 @@
-import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
-import NextCors from 'nextjs-cors';
+import axios from "axios";
+import { NextApiRequest, NextApiResponse } from "next";
+import NextCors from "nextjs-cors";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   await NextCors(req, res, {
     // Options
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    origin: '*',
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    origin: "*",
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
 
   switch (req.method) {
-    case 'POST':
+    case "POST":
       const createPreference = await generatePreference(req, res);
       return createPreference;
-    case 'GET':
+    case "GET":
       const findPaymentById = await capturePayment(req, res);
       return findPaymentById;
     default:
-      return res.status(400).json('method not allowed');
+      return res.status(400).json("method not allowed");
   }
 };
 
@@ -33,33 +33,30 @@ async function generatePreference(
       items: [
         {
           id: req.body.idCampaign,
-          title: 'donation',
+          title: "donation",
           unit_price: parseInt(req.body.price),
           quantity: 1,
         },
       ],
       back_urls: {
-        success: `http://localhost:3000/success`,
+        success: `http://localhost:3000/mpsuccess`,
         failure: `http://localhost:3000/`,
       },
-      auto_return: 'approved',
+      auto_return: "approved",
     };
 
     const payment = await axios.post(url, body, {
       headers: {
-        'Content-Type': 'application-json',
+        "Content-Type": "application-json",
         Authorization: `Bearer ${process.env.MERCADOPAGO_ACCESS_TOKEN}`,
       },
     });
 
     return res.status(201).json({ paymentLink: payment.data.init_point });
   } catch (error) {
-    return res
-      .status(500)
-      .json({
-        errors:
-          'Something goes wrong preference has not been created, try again',
-      });
+    return res.status(500).json({
+      errors: "Something goes wrong preference has not been created, try again",
+    });
   }
 }
 
@@ -70,7 +67,7 @@ async function capturePayment(req: NextApiRequest, res: NextApiResponse<any>) {
 
     const getPayment = await axios.get(url, {
       headers: {
-        'Content-Type': 'application-json',
+        "Content-Type": "application-json",
         Authorization: `Bearer ${process.env.MERCADOPAGO_ACCESS_TOKEN}`,
       },
     });
@@ -88,6 +85,6 @@ async function capturePayment(req: NextApiRequest, res: NextApiResponse<any>) {
   } catch (error) {
     return res
       .status(500)
-      .json({ errors: 'Something goes wrong paymentId provided is not valid' });
+      .json({ errors: "Something goes wrong paymentId provided is not valid" });
   }
 }
