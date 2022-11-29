@@ -141,7 +141,7 @@ export default function AdminOrchestras({orchestraTypes}: any) {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`/api/orchestra?${searchQuery}`)
+      .get(`/api/orchestra?admin=true&${searchQuery}`)
       .then((res) => setOrchestras(res.data))
       .finally(() => setLoading(false));
   }, [searchQuery]);

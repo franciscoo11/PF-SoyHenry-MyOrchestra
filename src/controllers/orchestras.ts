@@ -3,10 +3,25 @@ import { convertToCloudinaryUrlOrchestras } from "./cloudinary";
 
 //GET ORCHESTRAS
 export const getOrchestras = async (query: any) => {
-  const results = (await prisma.orchestras.findMany()).length
-  const { name, creation_date, location, orchestra_TypeId, page, resources, order } = query
+  const { name, creation_date, location, orchestra_TypeId, page, resources, order,admin } = query
+  let isBaned = true; 
+  if (admin){
+    isBaned=false
+  }
+  const results = (await prisma.orchestras.findMany(
+    {where:{
+      OR: [
+        {
+          is_active: true
+        },
+        { is_active: isBaned},
+      ],
+    }}
+  )).length
+  
+
+  
   const fulldataorder = async (orderprop: any, order: any, prop1: any, prop2: any, date1: any, date2: any) => {
-    
     const data = await prisma.orchestras.findMany(
       {
         orderBy: { [orderprop]: order },
@@ -14,16 +29,27 @@ export const getOrchestras = async (query: any) => {
         skip: page * resources || page * 4 || 0,
         where: {
           [prop1]: { contains: date1, mode: 'insensitive' },
-          [prop2]: date2
+          [prop2]: date2,
+          OR: [
+            {
+              is_active: true
+            },
+            { is_active: isBaned},
+          ],
         }
       })
-
   const results = (await prisma.orchestras.findMany(
     {
       orderBy: { [orderprop]: order },
       where: {
         [prop1]: { contains: date1, mode: 'insensitive' },
-        [prop2]: date2
+        [prop2]: date2,
+        OR: [
+          {
+            is_active: true
+          },
+          { is_active: isBaned},
+        ],
       }
     })).length
     return { results, data }
@@ -41,19 +67,28 @@ export const getOrchestras = async (query: any) => {
         take: resources * 1 || 4,
         skip: page * resources || page * 4 || 0,
         where: {
-          [prop1]: aux
+          [prop1]: aux,
+          OR: [
+            {
+              is_active: true
+            },
+            { is_active: isBaned},
+          ],
         }
       })
-
-
     const results = (await prisma.orchestras.findMany(
       {
         orderBy: { [orderprop]: order },
         where: {
-          [prop1]: aux
+          [prop1]: aux,
+          OR: [
+            {
+              is_active: true
+            },
+            { is_active: isBaned},
+          ],
         }
       })).length
-
     return { results, data }
   }
 
@@ -64,14 +99,26 @@ export const getOrchestras = async (query: any) => {
         skip: page * resources || page * 4 || 0,
         where: {
           [prop1]: { contains: date1, mode: 'insensitive' },
-          [prop2]: date2
+          [prop2]: date2,
+          OR: [
+            {
+              is_active: true
+            },
+            { is_active: isBaned},
+          ],
         }
       })
     const results = (await prisma.orchestras.findMany(
       {
         where: {
           [prop1]: { contains: date1, mode: 'insensitive' },
-          [prop2]: date2
+          [prop2]: date2,
+          OR: [
+            {
+              is_active: true
+            },
+            { is_active: isBaned},
+          ],
         }
       })).length
     return { results, data }
@@ -88,22 +135,41 @@ export const getOrchestras = async (query: any) => {
         take: resources * 1 || 4,
         skip: page * resources || page * 4 || 0,
         where: {
-          [prop1]: aux
+          [prop1]: aux,
+          OR: [
+            {
+              is_active: true
+            },
+            { is_active: isBaned},
+          ],
         }
       })
     const results = (await prisma.orchestras.findMany(
       {
         where: {
-          [prop1]: aux
+          [prop1]: aux,
+          OR: [
+            {
+              is_active: true
+            },
+            { is_active: isBaned},
+          ],
         }
       })).length
     return { results, data }
   }
 
   const onlyorder = async (orderprop: any, order: any) => {
-
     const data = await prisma.orchestras.findMany(
       {
+        where:{
+          OR: [
+            {
+              is_active: true
+            },
+            { is_active: isBaned},
+          ],
+        },
         orderBy: { [orderprop]: order },
         take: resources * 1 || 4,
         skip: page * resources || page * 4 || 0,
@@ -131,6 +197,15 @@ export const getOrchestras = async (query: any) => {
   if (name) return dataonly("name", name)
 
   const data = await prisma.orchestras.findMany({
+
+    where: {
+      OR: [
+        {
+          is_active: true
+        },
+        { is_active: isBaned},
+      ],
+    },
     take: resources * 1 || 4,
     skip: page * resources || page * 4 || 0,
   })
