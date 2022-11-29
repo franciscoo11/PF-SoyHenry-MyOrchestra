@@ -6,6 +6,7 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import { useEffect, useState } from "react";
 import UserComments from "./orchestras/UserComments";
+import { number } from "yup/lib/locale";
 
 
 const StyledDiv = styled.div`
@@ -190,13 +191,26 @@ export default function OrchestraPosts({
   const [username, setUsername] = useState("");
 
   const cookie = new Cookies();
-  const [reactions, setReactions] = useState([
+  const [reactions, setReactions] = useState ([
     { reaction: "", id: "" },
-    { reaction: "", id: "" },
-    { reaction: "", id: "" },
-    { reaction: "", id: "" },
-    { reaction: "", id: "" }
   ]);
+  const countReactionUnique = (reaction_Id:any)=>{
+    const casiReturn = user_reaction.filter((a:{id:any,reactionId:any}) => {
+      return a.reactionId==reaction_Id
+    })
+    return Number(casiReturn.length);
+  }
+  //const count = {} as { [key: number]: number };
+  
+  const [countReactions,setCountReactions]= useState({
+    'clb1d3hn60000sdk8xa3krzjv':countReactionUnique('clb1d3hn60000sdk8xa3krzjv'),
+    'clb1d8oud0002sdk883o611p0':countReactionUnique('clb1d8oud0002sdk883o611p0'),
+    'clb1ef3kk0004sdk8tovfneux':countReactionUnique('clb1ef3kk0004sdk8tovfneux'),
+    'clb1eg3ze0006sdk8hr8ioe0l':countReactionUnique('clb1eg3ze0006sdk8hr8ioe0l'),
+    'clb1ei3w00008sdk8nviwowvz':countReactionUnique('clb1ei3w00008sdk8nviwowvz'),
+
+
+  })
   const[contReaction,setContReaction]=useState(user_reaction.length)
   const [userReactions, setUserReactions] = useState([
     { postId: "", userId: "", reactionId: "" },
@@ -222,6 +236,7 @@ export default function OrchestraPosts({
       reactionId: reaction_id,
     });
     setContReaction(contReaction+1)  
+
   };
 
   const handleRemoveReaction = async (user_id: any, post_id: any, id: any) => {
@@ -258,7 +273,7 @@ export default function OrchestraPosts({
       .get(`/api/user?userId=${userCreator}`)
       .then((res) => setUsername(res.data.name));
   }, [contReaction]);
-
+  let prueba= '';
   return (
     <StyledDiv>
       {url_file ? (
@@ -292,20 +307,28 @@ export default function OrchestraPosts({
           <div>
             <div>       
                           {reactions.map((data) =>
-                          (
-                            
+                         {
+                          let yeo:any=data.id;
+                          return(
                             findReacionMap(id, dataUser.id,data.id) == data.id ?
                             <button  onClick={() =>
                               handleRemoveReaction(dataUser.id, id, data.id,)
+                              
                             }> 
-                            <img className="reaction-img-chose" src={data.reaction} alt="" />
+                            
+                            <div>
+                            <p>{countReactions[yeo]}</p>
+                            </div>
+                            <img className="reaction-img-chose" src={data?.reaction} alt="" />
                             </button>:
                             
                           <button className="reaction-button" onClick={() =>
                             handlePostReaction(id, dataUser.id, data.id)
-                          }><img className="reaction-img-nochose" src={data.reaction} alt="" />
+                          }><p>{countReactions['clb1d3hn60000sdk8xa3krzjv']} </p>
+                            <img className="reaction-img-nochose" src={data?.reaction} alt="" />
                           </button>
                           )
+                        }   
                           )}
 
                       
