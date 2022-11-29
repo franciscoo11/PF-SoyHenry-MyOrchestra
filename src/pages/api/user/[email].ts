@@ -26,20 +26,20 @@ export default async function handler(
   let {
     method,
     body,
-    query: { email },
+    query
   } = req;
 
   try {
     switch (method) {
       case GET:
-        const getUser = await getUsers(email);
+        const getUser = await getUsers(query);
         return getUser
           ? res.status(200).json(getUser)
           : res
               .status(404)
               .json({ error: "User not found, check if id is valid" });
       case PATCH:
-        const fakeDeleteUser = await logicDeleteUser(email);
+        const fakeDeleteUser = await logicDeleteUser(query.email);
         return fakeDeleteUser
           ? res.status(200).json(fakeDeleteUser)
           : res
@@ -49,7 +49,7 @@ export default async function handler(
                   "Something goes wrong, check if id is correct and try again",
               });
       case PUT:
-        const modifyUser = await updateUser(email, body);
+        const modifyUser = await updateUser(query.email, body);
         return modifyUser
           ? res.status(200).json(modifyUser)
           : res
@@ -59,7 +59,7 @@ export default async function handler(
                   "Something goes wrong, check if id is correct and try again",
               });
       case DELETE:
-        const removeUser = await deleteUser(email);
+        const removeUser = await deleteUser(query.email);
         return removeUser
           ? res.status(200).json(removeUser)
           : res

@@ -21,7 +21,7 @@ export default async function handler(
   try {
     switch (method) {
       case GET:
-        const allUsers = await getUsers();
+        const allUsers = await getUsers(query);
         return allUsers
           ? res.status(200).json(allUsers)
           : res.status(404).json([]);

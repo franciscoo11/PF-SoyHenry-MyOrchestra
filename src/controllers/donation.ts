@@ -44,24 +44,34 @@ export const getDonations = async (query:any) => {
 
 export const getDonationsById = async (id:any) => {
   try {
-    const donation = await prisma.donations.findUnique({
+    if(!id) return null
+    const findDonationById = await prisma.donations.findUnique({
       where: { id: id },
     });
-    return donation ? donation : undefined;
+    return findDonationById ? findDonationById : undefined;
   } catch (error) {
     return error
   }
 }
 
 export const postDonation =async (body:any)=>{
-    try {
-      const {userId,orchestraId,amount}=body;
-    const createDonation = await prisma.donations.create({
-    data:body
-    })
-    return createDonation?createDonation: null
+    try { 
+      if(!body) return null
+
+
+      const createDonation = await prisma.donations.create({
+        data:{
+          amount: parseFloat(body.amount),
+          campaignId: body.campaignId,
+          date: body.date,
+          orchestraId: body.orchestraId,
+          userId: body.userId
+        }
+      })
+      
+      return createDonation ? createDonation: null
     } catch (error) {
-        return error
+      return error
     }
 
 }

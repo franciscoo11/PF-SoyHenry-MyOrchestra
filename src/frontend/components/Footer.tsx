@@ -107,8 +107,8 @@ export default function Footer(props: any) {
               <li className="footer-nav-item">Eventos</li>
               <li className="footer-nav-item">Campañas</li>
               <li className="footer-nav-item">Noticias</li>
-              <li className="footer-nav-item">Multimedia</li>
-              <li className="footer-nav-item">Acerca de</li>
+              {/* <li className="footer-nav-item">Multimedia</li>
+              <li className="footer-nav-item">Acerca de</li> */}
             </ul>
           </nav>
         </div>

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { UpdateCover } from "./orchestras/UpdateCover";
 
 const StyledDiv = styled.div`
   border-radius: 12px;
@@ -30,16 +31,15 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default function Cover(props: any) {
+export default function Cover({ cover, id, title, location }: any) {
   return (
     <StyledDiv>
-      <div
-        className="cover"
-        style={{ backgroundImage: `url(${props.cover})` }}
-      ></div>
+      <div className="cover" style={{ backgroundImage: `url(${cover})` }}>
+        <UpdateCover id={id} />
+      </div>
       <div className="info">
-        <h2 className="title">{props.title}</h2>
-        <p className="location">{props.location}</p>
+        <h2 className="title">{title}</h2>
+        <p className="location">{location}</p>
         <p>27 integrantes</p>
       </div>
     </StyledDiv>

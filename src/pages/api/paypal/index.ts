@@ -21,7 +21,7 @@ export default async function handler(
     switch (method) {
       case POST:
         const buildOrder = createOrder(req, res);
-        return buildOrder;
+        return buildOrder
       default:
         return res.status(400).json("method not allowed");
     }
@@ -64,12 +64,12 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse) => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       auth: {
-        username: process.env.NEXT_PUBLIC_PAYPAY_CLIENT || "",
+        username: process.env.PAYPAY_CLIENT || "",
         password: process.env.PAYPAL_SECRET || "",
       },
     });
 
-    const response = await axios.post(
+    const makeOrder = await axios.post(
       `${process.env.PAYPAL_BASE_URL}/v2/checkout/orders`,
       order,
       {
@@ -79,10 +79,8 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     );
 
-    const link = response.data.links[1].href;
-    const id = response.data.id;
-    res.status(201).json({ id, link });
-    // res.json(response.data)
+    res.status(201).json({ id: makeOrder.data.id, paymentLink: makeOrder.data.links[1].href });
+
   } catch (error) {
     return res
       .status(500)
