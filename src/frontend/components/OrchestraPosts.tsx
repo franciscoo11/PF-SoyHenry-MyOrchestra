@@ -159,10 +159,17 @@ const StyledDiv = styled.div`
       }
     }
 
-    .reaction-img {
+    .reaction-img-choose {
       width: 20px;
       height: 20px;
       gap: 5px;
+      transition:0.3s;
+    }
+    .reaction-img-nochoose{
+      width: 10px;
+      height: 10px;
+      gap: 5px;
+      transition:0.2s;
     }
   }
 `;
@@ -180,19 +187,27 @@ export default function OrchestraPosts({
   const [username, setUsername] = useState("");
 
   const cookie = new Cookies();
-  const [reactions, setReactions] = useState([
-    { reaction: "", id: "" },
-    { reaction: "", id: "" },
-    { reaction: "", id: "" },
-    { reaction: "", id: "" },
-    { reaction: "", id: "" },
-  ]);
-  const [contReaction, setContReaction] = useState(user_reaction.length);
+  const [reactions, setReactions] = useState([{ reaction: "", id: "" }]);
+  const countReactionUnique = (reaction_Id: any) => {
+    const returnSize = user_reaction.filter(
+      (a: { id: any; reactionId: any }) => {
+        return a.reactionId == reaction_Id;
+      }
+    );
+    return Number(returnSize.length);
+  };
+  const [countReactions, setCountReactions] = useState({
+    clb1d3hn60000sdk8xa3krzjv: countReactionUnique("clb1d3hn60000sdk8xa3krzjv"),
+    clb1d8oud0002sdk883o611p0: countReactionUnique("clb1d8oud0002sdk883o611p0"),
+    clb1ef3kk0004sdk8tovfneux: countReactionUnique("clb1ef3kk0004sdk8tovfneux"),
+    clb1eg3ze0006sdk8hr8ioe0l: countReactionUnique("clb1eg3ze0006sdk8hr8ioe0l"),
+    clb1ei3w00008sdk8nviwowvz: countReactionUnique("clb1ei3w00008sdk8nviwowvz"),
+  });
+  const [countReaction, setCountReaction] = useState(user_reaction.length);
   const [userReactions, setUserReactions] = useState([
     { postId: "", userId: "", reactionId: "" },
   ]);
   const [dataUser, setDataUser] = useState({ id: "" });
-
   async function getReactions() {
     await axios.get("/api/reaction").then((response) => {
       setReactions(response.data);
@@ -208,7 +223,10 @@ export default function OrchestraPosts({
       userId: user_id,
       reactionId: reaction_id,
     });
-    setContReaction(contReaction + 1);
+    const auxPostCount =
+      countReactions[reaction_id as keyof typeof countReactions];
+    setCountReaction(countReaction + 1);
+    setCountReactions({ ...countReactions, [reaction_id]: auxPostCount + 1 });
   };
 
   const handleRemoveReaction = async (user_id: any, post_id: any, id: any) => {
@@ -216,32 +234,37 @@ export default function OrchestraPosts({
     await axios.delete(`/api/post-reaction?id=${post_id}`, {
       data: { userId: user_id, reactionId: id },
     });
-    setContReaction(contReaction - 1);
+    const auxRemoveCount = countReactions[id as keyof typeof countReactions];
+    setCountReaction(countReaction - 1);
+    setCountReactions({ ...countReactions, [id]: auxRemoveCount - 1 });
   };
 
-  const findReaction = async () => {
+  const findReactions = async () => {
     await axios
       .get(`/api/post-reaction?userId=${dataUser.id}`)
       .then((response) => setUserReactions(response.data));
   };
 
-  const findReacionMap = (post_Id: any, user_id: any) => {
+  const findReactionMap = (post_Id: any, user_id: any, reaction_Id: any) => {
     if (!user_id) return [];
-    const casiReturn = userReactions.find((a) => {
-      return a.postId == post_Id && a.userId == user_id;
+    const returnSize = userReactions.find((a) => {
+      return (
+        a.postId == post_Id &&
+        a.userId == user_id &&
+        a.reactionId == reaction_Id
+      );
     });
 
-    return casiReturn?.reactionId;
+    return returnSize?.reactionId;
   };
   useEffect(() => {
     setDataUser(cookie.get("UserloginData"));
     getReactions();
-    findReaction();
+    findReactions();
     axios
       .get(`/api/user?userId=${userCreator}`)
       .then((res) => setUsername(res.data.name));
-  }, [contReaction]);
-
+  }, [countReaction]);
   return (
     <StyledDiv>
       {url_file ? (
@@ -270,89 +293,54 @@ export default function OrchestraPosts({
         <div className="post-reactions">
           <div>
             <p>
-              {contReaction} reacciones / {comments.length} comentarios{" "}
+              {countReaction} reacciones / {comments.length} comentarios{" "}
             </p>
           </div>
           <div>
             <div>
-              {findReacionMap(id, dataUser.id) == reactions[0].id ? (
-                <button
-                  onClick={() =>
-                    handleRemoveReaction(dataUser.id, id, reactions[0].id)
-                  }
-                >
-                  <img
-                    className="reaction-img"
-                    src={reactions[0].reaction}
-                    alt=""
-                  />
-                </button>
-              ) : findReacionMap(id, dataUser.id) == reactions[1].id ? (
-                <button
-                  onClick={() =>
-                    handleRemoveReaction(dataUser.id, id, reactions[1].id)
-                  }
-                >
-                  <img
-                    className="reaction-img"
-                    src={reactions[1].reaction}
-                    alt=""
-                  />
-                </button>
-              ) : findReacionMap(id, dataUser.id) == reactions[2].id ? (
-                <button
-                  onClick={() =>
-                    handleRemoveReaction(dataUser.id, id, reactions[2].id)
-                  }
-                >
-                  <img
-                    className="reaction-img"
-                    src={reactions[2].reaction}
-                    alt=""
-                  />
-                </button>
-              ) : findReacionMap(id, dataUser.id) == reactions[3].id ? (
-                <button
-                  onClick={() =>
-                    handleRemoveReaction(dataUser.id, id, reactions[3].id)
-                  }
-                >
-                  <img
-                    className="reaction-img"
-                    src={reactions[3].reaction}
-                    alt=""
-                  />
-                </button>
-              ) : findReacionMap(id, dataUser.id) == reactions[4].id ? (
-                <button
-                  onClick={() =>
-                    handleRemoveReaction(dataUser.id, id, reactions[4].id)
-                  }
-                >
-                  <img
-                    className="reaction-img"
-                    src={reactions[4].reaction}
-                    alt=""
-                  />
-                </button>
-              ) : (
-                <div>
-                  {reactions.map((data) => (
-                    <button
-                      className="reaction-button"
-                      onClick={() =>
-                        handlePostReaction(id, dataUser.id, data.id)
-                      }
-                    >
-                      <img
-                        className="reaction-img"
-                        src={data.reaction}
-                        alt=""
-                      />
-                    </button>
-                  ))}
-                </div>
-              )}
+              {reactions.map((data) => {
+                let id_aux_reaction: any = data.id;
+                return findReactionMap(id, dataUser.id, data.id) == data.id ? (
+                  <button
+                    onClick={() =>
+                      handleRemoveReaction(dataUser.id, id, data.id)
+                    }
+                  >
+                    <div>
+                      <p>
+                        {
+                          countReactions[
+                            id_aux_reaction as keyof typeof countReactions
+                          ]
+                        }
+                      </p>
+                    </div>
+                    <img
+                      className="reaction-img-choose"
+                      src={data?.reaction}
+                      alt=""
+                    />
+                  </button>
+                ) : (
+                  <button
+                    className="reaction-button"
+                    onClick={() => handlePostReaction(id, dataUser.id, data.id)}
+                  >
+                    <p>
+                      {
+                        countReactions[
+                          id_aux_reaction as keyof typeof countReactions
+                        ]
+                      }{" "}
+                    </p>
+                    <img
+                      className="reaction-img-nochoose"
+                      src={data?.reaction}
+                      alt=""
+                    />
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
