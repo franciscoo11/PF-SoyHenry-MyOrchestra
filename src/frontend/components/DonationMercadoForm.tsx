@@ -1,4 +1,4 @@
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
+import { Formik, Form, Field, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import MainNavBar from "./MainNavBar";
@@ -76,14 +76,12 @@ const StyledForm = styled.div`
     }
   }
 `;
-
 interface Values {
   idCampaign: string;
-
-  value: string;
+  price: string;
 }
 
-export default function DonationForm() {
+export default function DonationMercadoForm() {
   const router = useRouter();
   return (
     <>
@@ -92,19 +90,20 @@ export default function DonationForm() {
         <Formik
           initialValues={{
             idCampaign: "clanmc8wb001ni5zzsnvy42ee",
-            value: "",
+            price: "",
           }}
           onSubmit={async (
             values,
             { setSubmitting }: FormikHelpers<Values>
           ) => {
             try {
-              const pago = await axios.post(`/api/paypal`, values);
-              router.push(pago.data.link);
+              const pago = await axios.post(`/api/mercadopago`, values);
               console.log(pago.data);
-              console.log(values);
+              router.push(pago.data.paymentLink);
+
+              setSubmitting(false);
             } catch (error) {
-              console.log(error);
+              return error;
             }
           }}
         >
@@ -115,10 +114,10 @@ export default function DonationForm() {
                   <Field
                     className="input"
                     type="checkbox"
-                    name="value"
-                    value="5"
+                    name="price"
+                    value="300"
                   />
-                  $5
+                  $300
                 </label>
               </div>
               <div className="qui-container">
@@ -126,10 +125,10 @@ export default function DonationForm() {
                   <Field
                     className="input"
                     type="checkbox"
-                    name="value"
-                    value="25"
+                    name="price"
+                    value="500"
                   />
-                  $25
+                  $500
                 </label>
               </div>
               <div className="mil-container">
@@ -137,10 +136,10 @@ export default function DonationForm() {
                   <Field
                     className="input"
                     type="checkbox"
-                    name="value"
+                    name="price"
                     value="50"
                   />
-                  $50
+                  $1000
                 </label>
               </div>
 
@@ -148,12 +147,12 @@ export default function DonationForm() {
                 <Field
                   type="text"
                   className="input"
-                  name="value"
+                  name="price"
                   placeholder="Especifique un monto"
                 />
               </div>
               <div className="button-container">
-                <button type="submit">Paypal</button>
+                <button type="submit">Mercado Pago</button>
               </div>
             </div>
           </Form>
