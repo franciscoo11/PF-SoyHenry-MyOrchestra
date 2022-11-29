@@ -3,8 +3,10 @@ import { Orquestas, Users, Comments } from "../utils/fakeDB";
 import { FiThumbsUp } from "react-icons/fi";
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import axios from "axios";
+import Cookies from "universal-cookie";
 import { useEffect, useState } from "react";
 import UserComments from "./orchestras/UserComments";
+
 
 const StyledDiv = styled.div`
   width: 100%;
@@ -146,6 +148,7 @@ const StyledDiv = styled.div`
           border-bottom: 6px solid transparent;
           border-right: 12px solid #f1f2f6;
         }
+
       }
 
       .user-pic {
@@ -157,6 +160,13 @@ const StyledDiv = styled.div`
         background-position: center;
       }
     }
+
+    .reaction-img{
+      width: 20px;
+      height: 20px;
+      gap: 5px;
+
+    }
   }
 `;
 
@@ -167,15 +177,84 @@ export default function OrchestraPosts({
   setCommentPosted,
   user,
 }: any) {
+
   const { id, title, content, url_file, comments, userCreator } = post;
   const { logo, name } = orchestra;
   const [username, setUsername] = useState("");
 
+
+  const cookie = new Cookies();
+  const [reactions, setReactions] = useState([
+    { reaction: "", id: "" },
+    { reaction: "", id: "" },
+    { reaction: "", id: "" },
+    { reaction: "", id: "" },
+    { reaction: "", id: "" }
+  ]);
+  const [userReactions, setUserReactions] = useState([
+    { postId: "", userId: "", reactionId: "" },
+  ]);
+  const [dataUser, setDataUser] = useState({ id: "" })
+
+
+  async function getReactions() {
+    await axios.get("/api/reaction").then((response) => {
+      setReactions(response.data);
+    });
+
+
+  }
+
+  const handlePostReaction = async (
+    post_id: any,
+    user_id: any,
+    reaction_id: any
+  ) => {
+    await axios.post(`/api/post-reaction?id=${post_id}`, {
+      userId: user_id,
+      reactionId: reaction_id,
+    });
+  };
+
+  const handleRemoveReaction = async (user_id: any, post_id: any, id: any) => {
+    if (!user_id) return []
+    await axios.delete(`/api/post-reaction?id=${post_id}`, {
+      data: { userId: user_id, reactionId: id },
+    });
+  };
+
+  const findReaction = async () => {
+    await axios
+      .get(`/api/post-reaction?userId=${dataUser.id}`)
+      .then((response) => setUserReactions(response.data));
+  };
+
+
+
+  const findReacionMap = (post_Id: any, user_id: any) => {
+    if (!user_id) return []
+    const casiReturn = userReactions.find((a) => {
+      return a.postId == post_Id && a.userId == user_id
+    })
+
+    return casiReturn?.reactionId
+
+
+  }
+  console.log(reactions);
+
   useEffect(() => {
+    setDataUser(cookie.get("UserloginData"));
+    getReactions();
+    findReaction();
     axios
       .get(`/api/user?userId=${userCreator}`)
       .then((res) => setUsername(res.data.name));
-  }, []);
+  }, [userReactions]);
+
+
+
+
 
   return (
     <StyledDiv>
@@ -207,10 +286,59 @@ export default function OrchestraPosts({
             <p>7 reacciones / {comments.length} comentarios </p>
           </div>
           <div>
-            <button className="post-reaction-btn">
-              <span>Reaccionar</span>
-              <FiThumbsUp />
-            </button>
+            <div>
+
+              {findReacionMap(id, dataUser.id) == reactions[0].id ? <button
+                onClick={() =>
+                  handleRemoveReaction(dataUser.id, id, reactions[0].id,)
+                }
+              >
+                <img className="reaction-img" src={reactions[0].reaction} alt="" />
+              </button> :
+                findReacionMap(id, dataUser.id) == reactions[1].id ? <button
+                  onClick={() =>
+                    handleRemoveReaction(dataUser.id, id, reactions[1].id,)
+                  }
+                >
+                  <img className="reaction-img" src={reactions[1].reaction} alt="" />
+                </button> :
+                  findReacionMap(id, dataUser.id) == reactions[2].id ? <button
+                    onClick={() =>
+                      handleRemoveReaction(dataUser.id, id, reactions[2].id,)
+                    }
+                  >
+                    <img className="reaction-img" src={reactions[2].reaction} alt="" />
+                  </button> :
+                    findReacionMap(id, dataUser.id) == reactions[3].id ? <button
+                      onClick={() =>
+                        handleRemoveReaction(dataUser.id, id, reactions[3].id,)
+                      }
+                    >
+                      <img className="reaction-img" src={reactions[3].reaction} alt="" />
+                    </button> :
+                      findReacionMap(id, dataUser.id) == reactions[4].id ? <button
+                        onClick={() =>
+                          handleRemoveReaction(dataUser.id, id, reactions[4].id,)
+                        }
+                      >
+                        <img className="reaction-img" src={reactions[4].reaction} alt="" />
+                      </button> :
+
+
+                        <div>
+                          {reactions.map((data) =>
+                          (
+                            <button className="reaction-button" onClick={() =>
+                              handlePostReaction(id, dataUser.id, data.id)
+                            }><img className="reaction-img" src={data.reaction} alt="" /></button>
+                          )
+                          )}
+
+                        </div>
+              }
+            </div>
+
+
           </div>
         </div>
         {user ? (
