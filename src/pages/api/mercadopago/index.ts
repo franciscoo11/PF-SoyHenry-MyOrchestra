@@ -39,7 +39,7 @@ async function generatePreference(
         },
       ],
       back_urls: {
-        success: `http://localhost:3000/success`,
+        success: `http://localhost:3000/mpsuccess`,
         failure: `http://localhost:3000/`,
       },
       auto_return: 'approved',
@@ -83,7 +83,7 @@ async function capturePayment(req: NextApiRequest, res: NextApiResponse<any>) {
       payerEmail: getPayment.data.payer.email,
       idCampaign: getPayment.data.additional_info.items[0].id,
     };
-
+    
     return res.status(200).json(paymentInformation);
   } catch (error) {
     return res

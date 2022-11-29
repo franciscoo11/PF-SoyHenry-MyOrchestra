@@ -81,7 +81,7 @@ const mpSuccess = ({ paymentDetail }: IPaymentDetail) => {
 export async function getServerSideProps(context: any) {
   try {
     const { data: response } = await axios.get(
-      `${HOSTNAME}/api/mercadopago/${context.query.payment_id}`
+      `${HOSTNAME}/api/mercadopago?id=${context.query.payment_id}`
     );
 
     return {
