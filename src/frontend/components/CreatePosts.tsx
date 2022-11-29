@@ -1,7 +1,9 @@
-import { Formik, Form, Field, FormikHelpers } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
 import styled from "styled-components";
+import * as Yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 
 const StyledForm = styled.div`
@@ -12,6 +14,20 @@ const StyledForm = styled.div`
     grid-template-columns: repeat(9, minmax(0, 1fr));
     gap: 24px;
 
+    .error {
+      font-family: "Lato";
+      padding: 6px;
+      display: block;
+      color: #000000;
+      font-size: 0.7em;
+      text-align: center;
+    }
+
+    .error {
+      margin: 0;
+      text-align: unset;
+      margin-bottom: -12px;
+    }
     .form-header {
       grid-column: 1/7;
       grid-row: 1;
@@ -106,6 +122,10 @@ export default function CreatePosts({ orchestraId, userCreator }: any) {
             userCreator,
             type_PostId: "clanisg15000wi5zzxjvr2hu8",
           }}
+          validationSchema={Yup.object({
+            title: Yup.string().required("Requerido"),
+            content: Yup.string().required("Requerido"),
+          })}
           onSubmit={async (values: any, { setSubmitting }) => {
             const file: any = values.file;
             const formData = new FormData();
@@ -182,6 +202,9 @@ export default function CreatePosts({ orchestraId, userCreator }: any) {
                   placeholder="Titulo"
                   className="input"
                 />
+                <p className="error">
+                  <ErrorMessage name="title" className="errorMessage" />
+                </p>
               </div>
 
               <div className="post-content">
@@ -193,6 +216,9 @@ export default function CreatePosts({ orchestraId, userCreator }: any) {
                   rows="5"
                   cols="30"
                 />
+                <p className="error">
+                  <ErrorMessage name="content" className="errorMessage" />
+                </p>
               </div>
               <div className="post-file">
                 <Field
