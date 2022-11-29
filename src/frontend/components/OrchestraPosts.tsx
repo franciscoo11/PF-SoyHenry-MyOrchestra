@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import UserComments from "./orchestras/UserComments";
 import { number } from "yup/lib/locale";
 
-
 const StyledDiv = styled.div`
   width: 100%;
   border: 1px solid lightgrey;
@@ -149,7 +148,6 @@ const StyledDiv = styled.div`
           border-bottom: 6px solid transparent;
           border-right: 12px solid #f1f2f6;
         }
-
       }
 
       .user-pic {
@@ -162,18 +160,16 @@ const StyledDiv = styled.div`
       }
     }
 
-    .reaction-img-nochose{
+    .reaction-img-nochose {
       width: 10px;
       height: 10px;
       gap: 5px;
-
     }
 
-    .reaction-img-chose{
+    .reaction-img-chose {
       width: 20px;
       height: 20px;
       gap: 5px;
-
     }
   }
 `;
@@ -185,45 +181,40 @@ export default function OrchestraPosts({
   setCommentPosted,
   user,
 }: any) {
-
-  const { id, title, content, url_file, comments, userCreator,user_reaction } = post;
+  const { id, title, content, url_file, comments, userCreator, user_reaction } =
+    post;
   const { logo, name } = orchestra;
   const [username, setUsername] = useState("");
 
   const cookie = new Cookies();
-  const [reactions, setReactions] = useState ([
-    { reaction: "", id: "" },
-  ]);
-  const countReactionUnique = (reaction_Id:any)=>{
-    const casiReturn = user_reaction.filter((a:{id:any,reactionId:any}) => {
-      return a.reactionId==reaction_Id
-    })
+  const [reactions, setReactions] = useState([{ reaction: "", id: "" }]);
+  const countReactionUnique = (reaction_Id: any) => {
+    const casiReturn = user_reaction.filter(
+      (a: { id: any; reactionId: any }) => {
+        return a.reactionId == reaction_Id;
+      }
+    );
     return Number(casiReturn.length);
-  }
+  };
   //const count = {} as { [key: number]: number };
-  
-  const [countReactions,setCountReactions]= useState({
-    'clb1d3hn60000sdk8xa3krzjv':countReactionUnique('clb1d3hn60000sdk8xa3krzjv'),
-    'clb1d8oud0002sdk883o611p0':countReactionUnique('clb1d8oud0002sdk883o611p0'),
-    'clb1ef3kk0004sdk8tovfneux':countReactionUnique('clb1ef3kk0004sdk8tovfneux'),
-    'clb1eg3ze0006sdk8hr8ioe0l':countReactionUnique('clb1eg3ze0006sdk8hr8ioe0l'),
-    'clb1ei3w00008sdk8nviwowvz':countReactionUnique('clb1ei3w00008sdk8nviwowvz'),
 
-
-  })
-  const[contReaction,setContReaction]=useState(user_reaction.length)
+  const [countReactions, setCountReactions] = useState({
+    clb1d3hn60000sdk8xa3krzjv: countReactionUnique("clb1d3hn60000sdk8xa3krzjv"),
+    clb1d8oud0002sdk883o611p0: countReactionUnique("clb1d8oud0002sdk883o611p0"),
+    clb1ef3kk0004sdk8tovfneux: countReactionUnique("clb1ef3kk0004sdk8tovfneux"),
+    clb1eg3ze0006sdk8hr8ioe0l: countReactionUnique("clb1eg3ze0006sdk8hr8ioe0l"),
+    clb1ei3w00008sdk8nviwowvz: countReactionUnique("clb1ei3w00008sdk8nviwowvz"),
+  });
+  const [contReaction, setContReaction] = useState(user_reaction.length);
   const [userReactions, setUserReactions] = useState([
     { postId: "", userId: "", reactionId: "" },
   ]);
-  const [dataUser, setDataUser] = useState({ id: "" })
-
+  const [dataUser, setDataUser] = useState({ id: "" });
 
   async function getReactions() {
     await axios.get("/api/reaction").then((response) => {
       setReactions(response.data);
     });
-
-
   }
 
   const handlePostReaction = async (
@@ -235,16 +226,20 @@ export default function OrchestraPosts({
       userId: user_id,
       reactionId: reaction_id,
     });
-    setContReaction(contReaction+1)  
-
+    const auxPostCount =
+      countReactions[reaction_id as keyof typeof countReactions];
+    setContReaction(contReaction + 1);
+    setCountReactions({ ...countReactions, [reaction_id]: auxPostCount + 1 });
   };
 
   const handleRemoveReaction = async (user_id: any, post_id: any, id: any) => {
-    if (!user_id) return []
+    if (!user_id) return [];
     await axios.delete(`/api/post-reaction?id=${post_id}`, {
       data: { userId: user_id, reactionId: id },
     });
-    setContReaction(contReaction-1)
+    const auxRemoveCount = countReactions[id as keyof typeof countReactions];
+    setContReaction(contReaction - 1);
+    setCountReactions({ ...countReactions, [id]: auxRemoveCount - 1 });
   };
 
   const findReaction = async () => {
@@ -253,18 +248,18 @@ export default function OrchestraPosts({
       .then((response) => setUserReactions(response.data));
   };
 
-
-
-  const findReacionMap = (post_Id: any, user_id: any,reaction_Id:any) => {
-    if (!user_id) return []
+  const findReacionMap = (post_Id: any, user_id: any, reaction_Id: any) => {
+    if (!user_id) return [];
     const casiReturn = userReactions.find((a) => {
-      return a.postId == post_Id && a.userId == user_id && a.reactionId==reaction_Id
-    })
+      return (
+        a.postId == post_Id &&
+        a.userId == user_id &&
+        a.reactionId == reaction_Id
+      );
+    });
 
-    return casiReturn?.reactionId
-
-
-  }
+    return casiReturn?.reactionId;
+  };
   useEffect(() => {
     setDataUser(cookie.get("UserloginData"));
     getReactions();
@@ -273,7 +268,7 @@ export default function OrchestraPosts({
       .get(`/api/user?userId=${userCreator}`)
       .then((res) => setUsername(res.data.name));
   }, [contReaction]);
-  let prueba= '';
+  let prueba = "";
   return (
     <StyledDiv>
       {url_file ? (
@@ -301,42 +296,56 @@ export default function OrchestraPosts({
         {/* <div className="read-more">leer más</div> */}
         <div className="post-reactions">
           <div>
-            <p>{contReaction} reacciones / {comments.length} comentarios </p>
-
+            <p>
+              {contReaction} reacciones / {comments.length} comentarios{" "}
+            </p>
           </div>
           <div>
-            <div>       
-                          {reactions.map((data) =>
-                         {
-                          let id_aux_reaction:any=data.id;
-                          return(
-                            findReacionMap(id, dataUser.id,data.id) == data.id ?
-                            <button  onClick={() =>
-                              handleRemoveReaction(dataUser.id, id, data.id,)
-                              
-                            }> 
-                            
-                            <div>
-                              { }
-                            <p>{countReactions[id_aux_reaction as keyof typeof countReactions]}</p>
-                            </div>
-                            <img className="reaction-img-chose" src={data?.reaction} alt="" />
-                            </button>:
-                            
-                          <button className="reaction-button" onClick={() =>
-                            handlePostReaction(id, dataUser.id, data.id)
-                          }><p>{countReactions[id_aux_reaction as keyof typeof countReactions]} </p>
-                            <img className="reaction-img-nochose" src={data?.reaction} alt="" />
-                          </button>
-                          )
-                        }   
-                          )}
-
-                      
-        
+            <div>
+              {reactions.map((data) => {
+                let id_aux_reaction: any = data.id;
+                return findReacionMap(id, dataUser.id, data.id) == data.id ? (
+                  <button
+                    onClick={() =>
+                      handleRemoveReaction(dataUser.id, id, data.id)
+                    }
+                  >
+                    <div>
+                      <p>
+                        {
+                          countReactions[
+                            id_aux_reaction as keyof typeof countReactions
+                          ]
+                        }
+                      </p>
+                    </div>
+                    <img
+                      className="reaction-img-chose"
+                      src={data?.reaction}
+                      alt=""
+                    />
+                  </button>
+                ) : (
+                  <button
+                    className="reaction-button"
+                    onClick={() => handlePostReaction(id, dataUser.id, data.id)}
+                  >
+                    <p>
+                      {
+                        countReactions[
+                          id_aux_reaction as keyof typeof countReactions
+                        ]
+                      }{" "}
+                    </p>
+                    <img
+                      className="reaction-img-nochose"
+                      src={data?.reaction}
+                      alt=""
+                    />
+                  </button>
+                );
+              })}
             </div>
-
-
           </div>
         </div>
         {user ? (
