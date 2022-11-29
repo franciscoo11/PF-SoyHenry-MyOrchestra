@@ -148,7 +148,7 @@ export default function LoginUser() {
               );
             }
             if(checkUser && checkUser.first_time && checkUser.is_active){
-              toast.success(`Bienvenido ${checkUser.name} a My Orchestras!`, {
+              toast.success(`Bienvenido/a ${checkUser.name} a My Orchestras!`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
