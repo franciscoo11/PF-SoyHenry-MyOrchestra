@@ -7,62 +7,39 @@ import AsideLeft from "../../../frontend/components/orchestras/AsideLeft";
 import AsideRight from "../../../frontend/components/orchestras/AsideRight";
 import { StyledMain } from "../../../frontend/styles/orchestras/sharedStyles";
 import { prisma } from "../../../../lib/prisma";
-import axios from "axios";
+import { useUser } from "@auth0/nextjs-auth0";
 
-export interface DataModel {
-  id: string;
-}
-
-export const getStaticPaths = async () => {
+export async function getServerSideProps({ params }: any) {
   try {
-    const orchestrasById: any =
-      await prisma.$queryRaw`SELECT id FROM orchestras`;
-    const paths = orchestrasById.map(({ id }: any) => ({ params: { id } }));
-    //
-    // const data: any = res.data;
-    // const paths = data.map(({ id }:any) => ({ params: { id } }));
-    return {
-      paths,
-      fallback: false,
-    };
+    const orchestra = await prisma.orchestras.findUnique({
+      where: {
+        id: params.id,
+      },
+    });
+
+    return { props: { orchestra } };
   } catch (error) {
     console.log(error);
   }
-};
+}
 
-export const getStaticProps = async ({ params }: any) => {
-  try {
-    const orchestrasById: any =
-      await prisma.$queryRaw`SELECT * FROM orchestras WHERE id = ${params.id}`;
-    return {
-      props: {
-        orchestrasById,
-      },
-    };
-  } catch (error) {}
-};
+function OrchestraAbout({ orchestra }: any) {
+  const { id, name, description, logo, cover, location } = orchestra;
+  const { user } = useUser();
 
-function OrchestraAbout(props: any) {
-  const router = useRouter();
-  const { id } = router.query;
-  const orchestras = props.orchestrasById[0];
   return (
     <>
       <MainNavBar />
 
       <StyledMain>
         <aside className="aside-left">
-          <AsideLeft logo={orchestras.logo} id={orchestras.id} />
+          <AsideLeft logo={logo} id={id} user={user} />
         </aside>
         <section className="content">
-          <Cover
-            cover={orchestras.cover}
-            title={orchestras.name}
-            location={orchestras.location}
-          />
+          <Cover cover={cover} title={name} location={location} id={id} />
           <div className="about-container">
             <h2 className="about-title">Acerca de</h2>
-            <p className="about-content">{orchestras.description}</p>
+            <p className="about-content">{description}</p>
           </div>
         </section>
         <aside className="aside-right">

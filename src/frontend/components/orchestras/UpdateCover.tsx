@@ -100,11 +100,11 @@ export const UpdateCover = ({ id }: any) => {
         <input
           className="inputfile inputfile-2"
           type="file"
-          name="file"
-          id="file"
+          name="cover"
+          id="cover"
           onChange={handleImageLoad}
         />
-        <label htmlFor="file">
+        <label htmlFor="cover">
           <span className="iborrainputfile">Cambiar </span>
           <FiCamera className="iborrainputfile" />
         </label>
