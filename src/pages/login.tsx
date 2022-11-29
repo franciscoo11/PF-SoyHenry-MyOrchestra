@@ -5,7 +5,10 @@ import MainNavBar from "../frontend/components/MainNavBar";
 import Footer from "../frontend/components/Footer";
 import styled from "styled-components";
 import Link from "next/link";
-import { useUser } from "@auth0/nextjs-auth0";
+import { verifyUser } from "../frontend/utils/login";
+import { toast, ToastContainer } from "react-toastify";
+import { FcGoogle } from "react-icons/fc";
+import Cookies from "universal-cookie";
 
 const StyledForm = styled.div`
   background-image: url("/bg_01.jpg");
@@ -104,10 +107,9 @@ const StyledForm = styled.div`
 `;
 
 export default function LoginUser() {
+  const cookie = new Cookies()
   const router = useRouter();
-  const { user, error, isLoading } = useUser();
-
-  const passwordRegex = /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/;
+  const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/;
   return (
     <>
       <MainNavBar />
@@ -130,11 +132,53 @@ export default function LoginUser() {
               )
               .required("Ninguna contraseña ingresada"),
           })}
-          onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
+          onSubmit={async (values, { setSubmitting }) => {
+            const checkUser = await verifyUser(values.email, values.password)
+            if(!checkUser){
+              toast.error(
+                "Credenciales invalidas, intenta de nuevo",
+                {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                }
+              );
+            }
+            if(checkUser && checkUser.first_time && checkUser.is_active){
+              cookie.set("UserloginData", checkUser, { path: "/" })
+              toast.success(`Bienvenido/a ${checkUser.name} a My Orchestras!`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              })
+              router.push(`/users/${checkUser.id}`)
               setSubmitting(false);
-            }, 400);
+            } 
+            if(checkUser && !checkUser.first_time && checkUser.is_active){
+              toast.success(`Hola de nuevo ${checkUser.name}!`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              })
+              router.push('/')
+              setSubmitting(false);
+            } 
+            
           }}
         >
           <Form className="form">
@@ -161,12 +205,15 @@ export default function LoginUser() {
                   <ErrorMessage name="password" className="errorMessage" />
                 </p>
               </div>
-
+              <div>
+                <Link href='/api/auth/login'>
+                  <FcGoogle />
+                </Link>
+              </div>
               <div className="botonGoogle">
                 <button
                   type="submit"
                   className="submitted"
-                  onClick={() => router.push("/api/auth/login")}
                 >
                   {" "}
                   Iniciar Sesion{" "}
@@ -179,6 +226,7 @@ export default function LoginUser() {
                 </label>
               </div>
             </div>
+            <ToastContainer />
           </Form>
         </Formik>
         <Footer />
