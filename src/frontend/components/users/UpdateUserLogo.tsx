@@ -81,7 +81,7 @@ const StyledDiv = styled.div`
   }
 `;
 
-export const UpdateLogo = ({ id }: any) => {
+export const UpdateUserLogo = ({ email }: any) => {
   const router = useRouter();
 
   async function handleImageLoad(event: any) {
@@ -97,17 +97,19 @@ export const UpdateLogo = ({ id }: any) => {
           formData
         ),
         {
-          pending: "Carga de logo pendiente",
-          success: "Carga de logo en proceso",
-          error: "Error de carga de logo",
+          pending: "Carga de avatar pendiente",
+          success: "Carga de avatar en proceso",
+          error: "Error de carga de avatar",
         }
       );
 
       let postData = {
-        logo: uploadImage.data.secure_url,
+        avatar: uploadImage.data.secure_url,
       };
-      await axios.put(`/api/orchestra/${id}`, postData);
-      toast.success("Logo actualizado correctamente", {
+      console.log(postData);
+
+      await axios.put(`/api/user/${email}`, postData);
+      toast.success("Avatar actualizado correctamente", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -117,7 +119,7 @@ export const UpdateLogo = ({ id }: any) => {
         progress: undefined,
         theme: "light",
       });
-      router.push(`/orchestras/${id}`);
+      router.push(`/users/${email}`);
     } catch (error) {}
   }
   return (
