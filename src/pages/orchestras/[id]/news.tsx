@@ -10,41 +10,81 @@ import AsideRight from "../../../frontend/components/orchestras/AsideRight";
 import { StyledMain } from "../../../frontend/styles/orchestras/sharedStyles";
 import { prisma } from "../../../../lib/prisma";
 import axios from "axios";
+import { useUser } from "@auth0/nextjs-auth0";
+import { useEffect, useState } from "react";
+import CreatePosts from "../../../frontend/components/CreatePosts";
 
-export interface DataModel {
-  id: string;
-}
-
-export const getStaticPaths = async () => {
+export async function getServerSideProps({ params }: any) {
   try {
-    const orchestrasById: any =
-      await prisma.$queryRaw`SELECT id FROM orchestras`;
-    const paths = orchestrasById.map(({ id }: any) => ({ params: { id } }));
-    return {
-      paths,
-      fallback: false,
-    };
+    const orchestra = await prisma.orchestras.findUnique({
+      where: {
+        id: params.id,
+      },
+    });
+
+    const members = await prisma.users_on_orchestra.findMany({
+      where: {
+        orchestraId: params.id,
+      },
+      include: {
+        user: true,
+        rol: true,
+      },
+    });
+
+    return { props: { orchestra, members } };
   } catch (error) {
     console.log(error);
   }
-};
+}
 
-export const getStaticProps = async ({ params }: any) => {
-  try {
-    const orchestrasById: any =
-      await prisma.$queryRaw`SELECT * FROM orchestras WHERE id = ${params.id}`;
-    return {
-      props: {
-        orchestrasById,
-      },
-    };
-  } catch (error) {}
-};
-
-function OrchestraNews(props: any) {
+function OrchestraNews({ orchestra, members }: any) {
   const router = useRouter();
-  const { id } = router.query;
-  const orchestras = props.orchestrasById[0];
+  const { id, name, description, logo, cover, location } = orchestra;
+  const { user } = useUser();
+  const [userId, setUserId] = useState();
+  const [posts, setPosts] = useState({ results: 1, data: [] });
+  const [loading, setLoading] = useState(true);
+  const [commentPosted, setCommentPosted] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 4;
+  const postType = "clanisoey000yi5zzxnd76pwo";
+
+  useEffect(() => {
+    setLoading(true);
+    if (user) {
+      axios
+        .get(`/api/user/${user.email}`)
+        .then((res: any) => setUserId(res.data.id))
+        .finally(() => setLoading(false));
+    }
+  }, [user]);
+
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(
+        `/api/post?orchestraId=${id}&type_PostId=${postType}&optionOrder=desc`
+      )
+      .then((res: any) => setPosts(res.data))
+      .finally(() => setLoading(false));
+  }, [commentPosted]);
+
+  const { data, results }: any = posts;
+  let pages = Math.ceil(results / itemsPerPage);
+
+  async function postAppend() {
+    if (currentPage < pages - 1) {
+      const nextPosts = await axios.get(
+        `/api/post?orchestraId=${id}&type_PostId=${postType}&optionOrder=desc&page=${
+          currentPage + 1
+        }`
+      );
+
+      setPosts({ ...posts, data: data.concat(nextPosts.data.data) });
+      setCurrentPage(currentPage + 1);
+    }
+  }
 
   return (
     <>
@@ -52,10 +92,10 @@ function OrchestraNews(props: any) {
 
       <StyledMain>
         <aside className="aside-left">
-          <AsideLeft logo={orchestras.logo} id={orchestras.id} />
+          <AsideLeft logo={logo} id={id} user={user} />
         </aside>
         <section className="content">
-          <div className="form-container">
+          {/* <div className="form-container">
             <div
               className="pic"
               style={{ backgroundImage: `url(${Users[1].image})` }}
@@ -72,19 +112,52 @@ function OrchestraNews(props: any) {
                 <FiImage />
               </div>
             </form>
-          </div>
-          <div className="filter-container">
+          </div> */}
+          {user ? (
+            <div className="form-container">
+              {
+                <CreatePosts
+                  orchestraId={id}
+                  userCreator={userId}
+                  postType={postType}
+                />
+              }
+            </div>
+          ) : null}
+          {/* <div className="filter-container">
             <div className="divider"></div>
             <div className="post-filter">
               Ordenar por: <b>Mas recientes</b>
             </div>
-          </div>
+          </div> */}
 
           <div className="posts">
-            {Posts.map((post, index) => (
-              <OrchestraPosts key={index} post={post} />
-            ))}
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              data.map((post: any) => (
+                <OrchestraPosts
+                  key={post.id}
+                  post={post}
+                  orchestra={orchestra}
+                  userId={userId}
+                  setCommentPosted={setCommentPosted}
+                  user={user}
+                />
+              ))
+            )}
           </div>
+          {data.length ? (
+            <div className="more-btn-container">
+              <button
+                className="more-btn"
+                onClick={postAppend}
+                disabled={currentPage === pages - 1}
+              >
+                Ver más...
+              </button>
+            </div>
+          ) : null}
         </section>
         <aside className="aside-right">
           <AsideRight />

@@ -110,7 +110,12 @@ const StyledForm = styled.div`
   }
 `;
 
-export default function CreatePosts({ orchestraId, userCreator }: any) {
+export default function CreatePosts({
+  orchestraId,
+  userCreator,
+  postType,
+  setPosting,
+}: any) {
   if (userCreator) {
     return (
       <StyledForm>
@@ -120,7 +125,7 @@ export default function CreatePosts({ orchestraId, userCreator }: any) {
             content: "",
             orchestraId,
             userCreator,
-            type_PostId: "clanisg15000wi5zzxjvr2hu8",
+            type_PostId: postType,
           }}
           validationSchema={Yup.object({
             title: Yup.string().required("Requerido"),
@@ -132,6 +137,7 @@ export default function CreatePosts({ orchestraId, userCreator }: any) {
             let url_file: string = "";
 
             try {
+              setPosting(true);
               if (file) {
                 formData.append("file", file);
                 formData.append("upload_preset", "orchestras-uploads");
@@ -157,8 +163,6 @@ export default function CreatePosts({ orchestraId, userCreator }: any) {
                 url_file,
               };
 
-              console.log(postData);
-
               await axios.post("/api/post", postData);
               setSubmitting(false);
               toast.success("Tu publicación se envió.", {
@@ -171,7 +175,7 @@ export default function CreatePosts({ orchestraId, userCreator }: any) {
                 progress: undefined,
                 theme: "light",
               });
-              window.location.reload();
+              setPosting(false);
             } catch (error) {
               toast.error("Verifica e intenta nuevamente.", {
                 position: "top-right",
