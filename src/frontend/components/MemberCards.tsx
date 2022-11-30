@@ -1,4 +1,3 @@
-import { Users, Orquestas } from "./../utils/fakeDB";
 import styled from "styled-components";
 import { FiMail } from "react-icons/fi";
 
@@ -67,14 +66,21 @@ interface MemberCardProps {
   logo: string;
   role: string;
   name: string;
+  email: string;
 }
 
-export default function MemberCard({ pic, logo, role, name }: MemberCardProps) {
+export default function MemberCard({
+  pic,
+  logo,
+  role,
+  name,
+  email,
+}: MemberCardProps) {
   return (
     <StyledMemberCard>
       <div
         className="profile-pic"
-        style={{ backgroundImage: `url(${pic})` }}
+        style={{ backgroundImage: `url(${pic ? pic : "/blank_profile.png"})` }}
       ></div>
       <div
         className="orchestra-logo"
@@ -84,7 +90,9 @@ export default function MemberCard({ pic, logo, role, name }: MemberCardProps) {
         <p className="user-role">{role}</p>
         <p className="user-name">{name}</p>
         <div className="card-icons">
-          <FiMail />
+          <a href={`mailto:${email}`}>
+            <FiMail />
+          </a>
         </div>
       </div>
     </StyledMemberCard>

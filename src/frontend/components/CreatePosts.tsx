@@ -135,9 +135,16 @@ export default function CreatePosts({ orchestraId, userCreator }: any) {
               if (file) {
                 formData.append("file", file);
                 formData.append("upload_preset", "orchestras-uploads");
-                const uploadImage = await axios.post(
-                  `https://api.cloudinary.com/v1_1/orchestrascloudinary/image/upload`,
-                  formData
+                const uploadImage = await toast.promise(
+                  axios.post(
+                    `https://api.cloudinary.com/v1_1/orchestrascloudinary/image/upload`,
+                    formData
+                  ),
+                  {
+                    pending: "Carga de imagen pendiente",
+                    success: "Carga de imagen en proceso",
+                    error: "Error de carga de imagen",
+                  }
                 );
                 url_file = uploadImage.data.secure_url;
               }

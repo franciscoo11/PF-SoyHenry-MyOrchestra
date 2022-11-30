@@ -12,7 +12,8 @@ export const getAllUserOnOrchestras = async(query:any) => {
                 orchestraId: query.orchestraId
             },
             include:{
-                rol:true
+                rol:true,
+                user: true
             }
         })
         return findByOrchestra ? findByOrchestra : null

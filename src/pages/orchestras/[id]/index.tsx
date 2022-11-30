@@ -19,13 +19,23 @@ export async function getServerSideProps({ params }: any) {
       },
     });
 
-    return { props: { orchestra } };
+    const members = await prisma.users_on_orchestra.findMany({
+      where: {
+        orchestraId: params.id,
+      },
+      include: {
+        user: true,
+        rol: true,
+      },
+    });
+
+    return { props: { orchestra, members } };
   } catch (error) {
     console.log(error);
   }
 }
 
-function OrchestraDetails({ orchestra }: any) {
+function OrchestraDetails({ orchestra, members }: any) {
   const { id, name, description, logo, cover, location } = orchestra;
   const { user } = useUser();
   const [userId, setUserId] = useState();
@@ -80,19 +90,26 @@ function OrchestraDetails({ orchestra }: any) {
           <AsideLeft logo={logo} id={id} user={user} />
         </aside>
         <section className="content">
-          <Cover cover={cover} title={name} location={location} id={id} />
+          <Cover
+            cover={cover}
+            title={name}
+            location={location}
+            id={id}
+            user={user}
+            members={members}
+          />
 
           {user ? (
             <div className="form-container">
               {<CreatePosts orchestraId={id} userCreator={userId} />}
             </div>
           ) : null}
-          <div className="filter-container">
+          {/* <div className="filter-container">
             <div className="divider"></div>
             <div className="post-filter">
               Ordenar por: <b>Mas recientes</b>
             </div>
-          </div>
+          </div> */}
 
           <div className="posts">
             {loading ? (

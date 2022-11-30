@@ -17,13 +17,23 @@ export async function getServerSideProps({ params }: any) {
       },
     });
 
-    return { props: { orchestra } };
+    const members = await prisma.users_on_orchestra.findMany({
+      where: {
+        orchestraId: params.id,
+      },
+      include: {
+        user: true,
+        rol: true,
+      },
+    });
+
+    return { props: { orchestra, members } };
   } catch (error) {
     console.log(error);
   }
 }
 
-function OrchestraAbout({ orchestra }: any) {
+function OrchestraAbout({ orchestra, members }: any) {
   const { id, name, description, logo, cover, location } = orchestra;
   const { user } = useUser();
 
@@ -36,7 +46,14 @@ function OrchestraAbout({ orchestra }: any) {
           <AsideLeft logo={logo} id={id} user={user} />
         </aside>
         <section className="content">
-          <Cover cover={cover} title={name} location={location} id={id} />
+          <Cover
+            cover={cover}
+            title={name}
+            location={location}
+            id={id}
+            user={user}
+            members={members}
+          />
           <div className="about-container">
             <h2 className="about-title">Acerca de</h2>
             <p className="about-content">{description}</p>
