@@ -1,15 +1,12 @@
 import { useRouter } from "next/router";
 import MainNavBar from "../../../frontend/components/MainNavBar";
-import { Orquestas, Users } from "../../../frontend/utils/fakeDB";
 import Footer from "../../../frontend/components/Footer";
 import AsideRight from "../../../frontend/components/orchestras/AsideRight";
 import { StyledMain } from "../../../frontend/styles/orchestras/sharedStyles";
 import { prisma } from "../../../../lib/prisma";
-import axios from "axios";
 import UserAsideLeft from "../../../frontend/components/users/AsideLeft";
 import UserCover from "../../../frontend/components/users/Cover";
 import EditUser from "../../../frontend/components/users/EditForm";
-import { HOSTNAME } from "../../_app";
 
 export const getServerSideProps = async ({ params }: any) => {
   try {
@@ -18,6 +15,7 @@ export const getServerSideProps = async ({ params }: any) => {
         email: params.id,
       },
     });
+    // user?.birthday?.toString();
     const orchestras = await prisma.orchestras.findMany({
       select: {
         id: true,
@@ -34,7 +32,18 @@ export const getServerSideProps = async ({ params }: any) => {
 
 export default function User({ user, orchestras, userRoles }: any) {
   const router = useRouter();
-  const { avatar, birthday, city, country, cover, email, name, rolId } = user;
+  const {
+    avatar,
+    birthday,
+    city,
+    country,
+    email,
+    name,
+    rolId,
+    password,
+    state,
+    cover,
+  } = user;
 
   return (
     <>
