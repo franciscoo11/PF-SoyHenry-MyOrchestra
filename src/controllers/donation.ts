@@ -2,7 +2,6 @@ import { prisma } from "../../lib/prisma";
 import {
   transporter,
   notifyDonation,
-  notifyDonationToOrchestra
 } from "../../config/nodemailer";
 
 export const getDonations = async (query:any) => {
@@ -73,20 +72,12 @@ export const postDonation =async (body:any)=>{
           userId: body.userId
         }
       })
-      const takeUserEmail = await prisma.users.findFirst({
+      const takeUser = await prisma.users.findFirst({
         where:{
-          id: createDonation.userId
+          id: body.userId
         }
       })
-      const takeEmailOrchestra = await prisma.users.findFirst({
-        where:{
-          id: createDonation.orchestraId
-        }
-      })
-      if(takeUserEmail && takeEmailOrchestra){
-        await transporter.sendMail(notifyDonation(takeUserEmail.email))
-        await transporter.sendMail(notifyDonationToOrchestra(takeEmailOrchestra.email))
-      }
+      await transporter.sendMail(notifyDonation(takeUser))
       return createDonation ? createDonation: null
     } catch (error) {
       return error
