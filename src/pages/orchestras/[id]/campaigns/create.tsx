@@ -1,50 +1,58 @@
-import { useRouter } from "next/router";
 import Cover from "../../../../frontend/components/Cover";
 import MainNavBar from "../../../../frontend/components/MainNavBar";
-import { Campaigns, Posts, Users } from "../../../../frontend/utils/fakeDB";
 import Footer from "../../../../frontend/components/Footer";
 import AsideLeft from "../../../../frontend/components/orchestras/AsideLeft";
 import AsideRight from "../../../../frontend/components/orchestras/AsideRight";
 import { StyledMain } from "../../../../frontend/styles/orchestras/sharedStyles";
 import { prisma } from "../../../../../lib/prisma";
 import CampaignForm from "../../../../frontend/components/orchestras/CampaignForm";
-import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-export interface DataModel {
-  id: string;
-}
+import { useUser, withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-export const getStaticPaths = async () => {
+export async function getServerSideProps({ params }: any) {
   try {
-    const orchestrasById: any =
-      await prisma.$queryRaw`SELECT id FROM orchestras`;
-    const paths = orchestrasById.map(({ id }: any) => ({ params: { id } }));
-    return {
-      paths,
-      fallback: false,
-    };
+    const orchestra = await prisma.orchestras.findUnique({
+      where: {
+        id: params.id,
+      },
+    });
+
+    const members = await prisma.users_on_orchestra.findMany({
+      where: {
+        orchestraId: params.id,
+      },
+      include: {
+        user: true,
+        rol: true,
+      },
+    });
+
+    return { props: { orchestra, members } };
   } catch (error) {
     console.log(error);
   }
-};
+}
 
-export const getStaticProps = async ({ params }: any) => {
-  try {
-    const orchestrasById: any =
-      await prisma.$queryRaw`SELECT * FROM orchestras WHERE id = ${params.id}`;
-    return {
-      props: {
-        orchestrasById,
-      },
-    };
-  } catch (error) {}
-};
+export default withPageAuthRequired(function OrchestraCreateCampaign({
+  orchestra,
+  members,
+}: any) {
+  const { id, name, description, logo, cover, location } = orchestra;
+  const { user } = useUser();
+  const [userId, setUserId] = useState();
+  const [loading, setLoading] = useState(true);
+  const [posting, setPosting] = useState(true);
 
-export default withPageAuthRequired( function OrchestraCreateCampaign(props: any) {
-  const router = useRouter();
-  // const { id } = router.query;
-  const orchestra = props.orchestrasById[0];
-
-  const { id, logo, cover, name, location } = orchestra;
+  useEffect(() => {
+    setLoading(true);
+    if (user) {
+      axios
+        .get(`/api/user/${user.email}`)
+        .then((res: any) => setUserId(res.data.id))
+        .finally(() => setLoading(false));
+    }
+  }, [user]);
 
   return (
     <>
@@ -52,10 +60,17 @@ export default withPageAuthRequired( function OrchestraCreateCampaign(props: any
 
       <StyledMain>
         <aside className="aside-left">
-          <AsideLeft logo={logo} id={id} />
+          <AsideLeft logo={logo} id={id} user={user} />
         </aside>
         <section className="content">
-          <Cover cover={cover} title={name} location={location} />
+          <Cover
+            cover={cover}
+            title={name}
+            location={location}
+            id={id}
+            user={user}
+            members={members}
+          />
           <h2 className="campaign-form-title">Nueva Campaña</h2>
           <CampaignForm orchestra={orchestra} />
         </section>
@@ -66,6 +81,4 @@ export default withPageAuthRequired( function OrchestraCreateCampaign(props: any
       <Footer />
     </>
   );
-}
-
-)
+});

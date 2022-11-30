@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { FaHeart } from "react-icons/fa";
 import { FiTarget, FiCalendar, FiSmile } from "react-icons/fi";
+import Link from "next/link";
 
 const StyledEventCard = styled.div`
   width: 100%;
@@ -54,6 +55,28 @@ const StyledEventCard = styled.div`
     .campaign-description {
       color: gray;
     }
+
+    .donate-btn-container {
+      margin: 12px auto;
+
+      .donate-btn {
+        text-align: center;
+        display: block;
+        background-color: ${({ theme }) => theme.colors.secondary};
+        width: 100%;
+        padding: 12px;
+        font-size: 1em;
+        color: white;
+        border: none;
+        border-radius: 6px;
+
+        :hover {
+          filter: brightness(110%);
+          cursor: pointer;
+        }
+      }
+    }
+
     .campaign-details-title {
       color: ${({ theme }) => theme.colors.secondary};
       font-weight: 500;
@@ -89,18 +112,33 @@ const StyledEventCard = styled.div`
 interface CampaignCardModel {
   title: string;
   end: string;
-  image: string;
+  // image: string;
   description: string;
   goal: number;
+  id: string;
+  orchestraId: string;
+  donations: any;
 }
 
 export default function OrchestraCampaignCard({
+  id,
   title,
   end,
-  image,
   description,
   goal,
+  orchestraId,
+  donations,
 }: CampaignCardModel) {
+  const getSum = (donations: any) => {
+    let sum = 0;
+    for (let i = 0; i < donations.length; i++) {
+      sum += donations[i].amount;
+    }
+    return sum;
+  };
+
+  const amountRaised = getSum(donations);
+
   return (
     <StyledEventCard>
       <div className="campaign-header">
@@ -108,17 +146,25 @@ export default function OrchestraCampaignCard({
           <FaHeart />
         </div>
         <div className="campaign-header-content">
-          <h2 className="campaign-title">{title}</h2>
+          <h2 className="campaign-title">
+            <Link
+              href={`/orchestras/${encodeURIComponent(
+                orchestraId
+              )}/campaigns/${encodeURIComponent(id)}`}
+            >
+              {title}
+            </Link>
+          </h2>
           <p className="campaign-date">Finaliza: {end}</p>
         </div>
       </div>
 
-      <div
+      {/* <div
         className="campaign-image"
         style={{
           backgroundImage: `url(${image})`,
         }}
-      ></div>
+      ></div> */}
       <div className="campaign-details">
         <p className="campaign-description">{description}</p>
         <h3 className="campaign-details-title">Detalles</h3>
@@ -144,8 +190,18 @@ export default function OrchestraCampaignCard({
             <FiSmile />
           </div>
           <div className="detail-text">
-            <b>Alcanzado:&nbsp;</b> ${(goal - 10000).toLocaleString()}
+            <b>Alcanzado:&nbsp;</b> ${amountRaised.toLocaleString()}
           </div>
+        </div>
+        <div className="donate-btn-container">
+          <Link
+            href={`/orchestras/${encodeURIComponent(
+              orchestraId
+            )}/campaigns/${encodeURIComponent(id)}`}
+            className="donate-btn"
+          >
+            Colaborar
+          </Link>
         </div>
       </div>
     </StyledEventCard>

@@ -10,46 +10,64 @@ import { prisma } from "../../../../../lib/prisma";
 import OrchestraCampaignCard from "../../../../frontend/components/OrchestraCampaignCard";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import { useUser } from "@auth0/nextjs-auth0";
 
-export interface DataModel {
-  id: string;
-}
-
-export const getStaticPaths = async () => {
+export async function getServerSideProps({ params }: any) {
   try {
-    const orchestrasById: any =
-      await prisma.$queryRaw`SELECT id FROM orchestras`;
-    const paths = orchestrasById.map(({ id }: any) => ({ params: { id } }));
+    const orchestra = await prisma.orchestras.findUnique({
+      where: {
+        id: params.id,
+      },
+    });
+
+    const members = await prisma.users_on_orchestra.findMany({
+      where: {
+        orchestraId: params.id,
+      },
+      include: {
+        user: true,
+        rol: true,
+      },
+    });
+
+    const campaigns = await prisma.campaigns.findMany({
+      orderBy: { end_date: "asc" },
+      where: {
+        orchestraId: params.id,
+      },
+      include: {
+        donations: true,
+      },
+    });
+
     return {
-      paths,
-      fallback: false,
+      props: {
+        orchestra,
+        members,
+        campaigns: JSON.parse(JSON.stringify(campaigns)),
+      },
     };
   } catch (error) {
     console.log(error);
   }
-};
+}
 
-export const getStaticProps = async ({ params }: any) => {
-  try {
-    const orchestrasById: any =
-      await prisma.$queryRaw`SELECT * FROM orchestras WHERE id = ${params.id}`;
-    return {
-      props: {
-        orchestrasById,
-      },
-    };
-  } catch (error) {}
-};
+function OrchestraCampaigns({ orchestra, members, campaigns }: any) {
+  const { id, name, description, logo, cover, location } = orchestra;
+  const { user } = useUser();
+  const [userId, setUserId] = useState();
+  const [loading, setLoading] = useState(true);
 
-function OrchestraCampaigns(props: any) {
-  const router = useRouter();
-  // const { id } = router.query;
-  const orchestras = props.orchestrasById[0];
-  const [data, setData] = useState(orchestras);
-
-  useEffect(() => setData(orchestras), []);
-
-  const { id, logo, cover, name, location, description } = data;
+  useEffect(() => {
+    setLoading(true);
+    if (user) {
+      axios
+        .get(`/api/user/${user.email}`)
+        .then((res: any) => setUserId(res.data.id))
+        .finally(() => setLoading(false));
+    }
+  }, [user]);
 
   return (
     <>
@@ -57,32 +75,48 @@ function OrchestraCampaigns(props: any) {
 
       <StyledMain>
         <aside className="aside-left">
-          <AsideLeft logo={logo} id={id} />
+          <AsideLeft logo={logo} id={id} user={user} />
         </aside>
         <section className="content">
-          <Cover cover={cover} title={name} location={location} />
+          <Cover
+            cover={cover}
+            title={name}
+            location={location}
+            id={id}
+            user={user}
+            members={members}
+          />
           <div className="about-container">
             <h2 className="about-title">Campañas de recaudación de fondos</h2>
             <p className="about-content">{description}</p>
           </div>
 
-          <div className="filter-container">
+          {/* <div className="filter-container">
             <div className="divider"></div>
             <div className="post-filter">
               Ordenar por: <b>Mas recientes</b>
             </div>
-          </div>
+          </div> */}
 
           <div className="posts">
-            {Campaigns.map(
-              ({ title, description, media, goal_amount, end_date }, index) => (
+            {campaigns.map(
+              ({
+                title,
+                description,
+                goal_amount,
+                end_date,
+                id,
+                donations,
+              }: any) => (
                 <OrchestraCampaignCard
-                  key={index}
+                  key={id}
+                  id={id}
                   title={title}
                   end={end_date}
-                  image={media}
                   description={description}
                   goal={goal_amount}
+                  orchestraId={id}
+                  donations={donations}
                 />
               )
             )}
