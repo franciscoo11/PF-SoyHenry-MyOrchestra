@@ -236,7 +236,9 @@ export default function OrchestraPosts({
     });
     const auxRemoveCount = countReactions[id as keyof typeof countReactions];
     setCountReaction(countReaction - 1);
+
     setCountReactions({ ...countReactions, [id]: auxRemoveCount > 0 ? auxRemoveCount - 1 : 0});
+
   };
 
   const findReactions = async () => {
@@ -342,8 +344,10 @@ export default function OrchestraPosts({
                     />
                   </button>
                 );
+
               })} 
             </div> : null }
+
           </div>
         </div>
         {user ? (

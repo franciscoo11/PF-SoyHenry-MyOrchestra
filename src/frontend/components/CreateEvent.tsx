@@ -1,8 +1,9 @@
-import { Formik, Form, Field, FormikHelpers } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
 import styled from "styled-components";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import * as Yup from "yup";
 
 const StyledForm = styled.div`
   .form {
@@ -11,6 +12,21 @@ const StyledForm = styled.div`
     display: grid;
     grid-template-columns: repeat(9, minmax(0, 1fr));
     gap: 24px;
+
+    .error {
+      font-family: "Lato";
+      padding: 6px;
+      display: block;
+      color: #000000;
+      font-size: 0.7em;
+      text-align: center;
+    }
+
+    .error {
+      margin: 0;
+      text-align: unset;
+      margin-bottom: -12px;
+    }
 
     .form-header {
       grid-column: 1/7;
@@ -115,6 +131,13 @@ export default function CreateEvent({ orchestraId, userCreator }: any) {
             userCreator,
             type_PostId: "clanisuvd0010i5zzyrbr1nn0",
           }}
+          validationSchema={Yup.object({
+            title: Yup.string().required("Requerido"),
+            content: Yup.string().required("Requerido"),
+            event_hour: Yup.string().required(
+              "Seleccioná una hora para tu evento"
+            ),
+          })}
           onSubmit={async (values: any, { setSubmitting }) => {
             const file: any = values.file;
             const formData = new FormData();
@@ -193,6 +216,9 @@ export default function CreateEvent({ orchestraId, userCreator }: any) {
                   placeholder="Titulo"
                   className="input"
                 />
+                <p className="error">
+                  <ErrorMessage name="title" className="errorMessage" />
+                </p>
               </div>
 
               <div className="post-content">
@@ -204,14 +230,23 @@ export default function CreateEvent({ orchestraId, userCreator }: any) {
                   rows="5"
                   cols="30"
                 />
+                <p className="error">
+                  <ErrorMessage name="content" className="errorMessage" />
+                </p>
               </div>
               <div className="date-container">
                 <Field name="event_date" type="date" className="input" />
                 <label>Fecha del evento</label>
+                <p className="error">
+                  <ErrorMessage name="event_date" className="errorMessage" />
+                </p>
               </div>
               <div className="hour-container">
                 <Field name="event_hour" type="time" className="input" />
                 <label>Hora del evento</label>
+                <p className="error">
+                  <ErrorMessage name="event_hour" className="errorMessage" />
+                </p>
               </div>
               <div className="post-file">
                 <Field

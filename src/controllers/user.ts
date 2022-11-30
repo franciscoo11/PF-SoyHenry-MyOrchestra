@@ -21,7 +21,7 @@ const check_password = (password: string) => {
 export const postUser = async (body: any, query: any) => {
   try {
     if (!body) return null;
-    const { name, email, password, rolId, birthday, avatar, cover } = body;
+    const { name, email, password, rolId, avatar, cover } = body;
     if (!email) return null;
     let cloudinaryCoverUrl = "/user_cover.png";
     let cloudinaryAvatarUrl = "/blank_profile.png";
@@ -76,7 +76,6 @@ export const postUser = async (body: any, query: any) => {
           email: email,
           password: hashPassword(password),
           rolId: rolId,
-          birthday: new Date(birthday),
           avatar: cloudinaryAvatarUrl,
           cover: cloudinaryCoverUrl
         },
@@ -86,7 +85,6 @@ export const postUser = async (body: any, query: any) => {
           avatar: cloudinaryAvatarUrl,
           cover: cloudinaryCoverUrl,
           password: hashPassword(password),
-          birthday: new Date(birthday),
         },
         include:{
           rol:true
@@ -131,11 +129,11 @@ export const getUsers = async (query:any) => {
   }
 };
 
-export const updateUser = async (email: any, body: any) => {
+export const updateUser = async (query: any, body: any) => {
   try {
-    const {email,avatar, cover } = body;
+    let {avatar, cover, password, name } = body;
 
-    if (!email || !body) return null;
+    if (!query.email || !body) return null;
     let cloudinaryCoverUrl = cover;
     let cloudinaryAvatarUrl = avatar;
     let folder = "";
@@ -144,7 +142,7 @@ export const updateUser = async (email: any, body: any) => {
       folder = 'cover';
       cloudinaryCoverUrl = await convertToCloudinaryUrlUser(
         cover,
-        email,
+        query.email,
         folder
       );
     }
@@ -152,22 +150,29 @@ export const updateUser = async (email: any, body: any) => {
       folder = 'avatar';
       cloudinaryAvatarUrl = await convertToCloudinaryUrlUser(
         avatar,
-        email,
+        query.email,
         folder
       );
     }
-    
-    
+    ;
+
+    if(password) {
+      password = hashPassword(password)
+    }
+
     const getUser = await prisma.users.update({
       where: {
-        email: email,
+        email: query.email,
       },
       data:{
         ...body,
         cover:cloudinaryCoverUrl,
-        avatar:cloudinaryAvatarUrl
+        avatar:cloudinaryAvatarUrl,
+        name: name,
+        password: password,
       },
     });
+
     await transporter.sendMail(emailerUpdate(getUser));
     return getUser ? getUser : null;
   } catch (error) {
