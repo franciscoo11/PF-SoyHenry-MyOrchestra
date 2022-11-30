@@ -1,8 +1,4 @@
 import { prisma } from '../../lib/prisma';
-import {
-    transporter,
-    notifyUnsuscribeOrchestra
-  } from "../../config/nodemailer";  
 
 export const getAllUserOnOrchestras = async(query:any) => {
     try {
@@ -55,22 +51,6 @@ export const unsubscribeMembership = async (query: any, body: any) => {
         },
       },
     });
-
-    const takeUserEmail = await prisma.users.findFirst({
-      where: {
-        id: eliminateMembership.userId,
-      },
-    });
-    const takeNameOrchestra = await prisma.orchestras.findFirst({
-      where: {
-        id: eliminateMembership.orchestraId,
-      },
-    });
-    takeUserEmail && takeNameOrchestra
-      ? await transporter.sendMail(
-          notifyUnsuscribeOrchestra(takeUserEmail.email, takeNameOrchestra.name)
-        )
-      : null;
 
     return eliminateMembership ? eliminateMembership : null;
   } catch (error) {
