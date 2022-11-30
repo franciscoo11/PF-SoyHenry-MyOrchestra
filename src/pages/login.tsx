@@ -161,10 +161,11 @@ export default function LoginUser() {
                 progress: undefined,
                 theme: "light",
               })
-              router.push(`/users/${checkUser.id}`)
+              router.push(`/users/${checkUser.email}/edit`)
               setSubmitting(false);
             } 
             if(checkUser && !checkUser.first_time && checkUser.is_active){
+              cookie.set("UserloginData", checkUser, { path: "/" })
               toast.success(`Hola de nuevo ${checkUser.name}!`, {
                 position: "top-right",
                 autoClose: 5000,
