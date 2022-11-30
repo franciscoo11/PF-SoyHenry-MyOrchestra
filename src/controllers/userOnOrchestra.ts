@@ -1,4 +1,8 @@
 import { prisma } from '../../lib/prisma';
+import {
+    transporter,
+    notifyUnsuscribeOrchestra
+  } from "../../config/nodemailer";  
 
 export const getAllUserOnOrchestras = async(query:any) => {
     try {
@@ -22,43 +26,57 @@ export const getAllUserOnOrchestras = async(query:any) => {
     }
 }
 
-export const sendMembership = async(query: any, body:any) => {
-    try {
-        if(!query || !body) return null;
-        const sendRequestMember = await prisma.users_on_orchestra.create({
-            data:{
-                orchestraId: query.orchestraId,
-                rolId: body.rolId,
-                userId: body.userId,
-            }
-        });
+export const sendMembership = async (query: any, body: any) => {
+  try {
+    if (!query || !body) return null;
+    const sendRequestMember = await prisma.users_on_orchestra.create({
+      data: {
+        orchestraId: query.orchestraId,
+        rolId: body.rolId,
+        userId: body.userId,
+      },
+    });
 
-        return sendRequestMember ? sendRequestMember : null
+    return sendRequestMember ? sendRequestMember : null;
+  } catch (error) {
+    return error;
+  }
+};
 
-    } catch (error) {
-        return error
-    }
-}
+export const unsubscribeMembership = async (query: any, body: any) => {
+  try {
+    if (!query || !body) return null;
+    const eliminateMembership = await prisma.users_on_orchestra.delete({
+      where: {
+        userId_orchestraId_rolId: {
+          orchestraId: query.orchestraId,
+          rolId: body.rolId,
+          userId: body.userId,
+        },
+      },
+    });
 
-export const unsubscribeMembership = async(query:any,body:any) => {
-    try {
-        if(!query || !body) return null
-        const eliminateMembership = await prisma.users_on_orchestra.delete({
-            where:{
-                userId_orchestraId_rolId:{
-                    orchestraId: query.orchestraId,
-                    rolId: body.rolId,
-                    userId: body.userId,
-                }
-            }
-        })
+    const takeUserEmail = await prisma.users.findFirst({
+      where: {
+        id: eliminateMembership.userId,
+      },
+    });
+    const takeNameOrchestra = await prisma.orchestras.findFirst({
+      where: {
+        id: eliminateMembership.orchestraId,
+      },
+    });
+    takeUserEmail && takeNameOrchestra
+      ? await transporter.sendMail(
+          notifyUnsuscribeOrchestra(takeUserEmail.email, takeNameOrchestra.name)
+        )
+      : null;
 
-        return eliminateMembership ? eliminateMembership : null
-
-    } catch (error) {
-        return error
-    }
-}
+    return eliminateMembership ? eliminateMembership : null;
+  } catch (error) {
+    return error;
+  }
+};
 
 export const updateRolMembership = async(query:any, body:any) => {
     try {

@@ -5,6 +5,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { prisma } from "../../../lib/prisma";
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 const StyledMain = styled.main`
   margin: 25px auto;
@@ -142,7 +143,18 @@ export default function AdminUser(props: any) {
     axios
       .get(`/api/user`)
       .then((res) => setUsers(res.data))
-      .finally(() => setLoading(false));
+      .finally(() => setLoading(false))
+      .catch(() => {
+        Swal.fire({
+          title: '<strong> <u>No hay users</u></strong>',
+          icon: 'error',
+          allowOutsideClick:false,
+          focusConfirm: true,
+          timer:2500,
+          confirmButtonText:
+            '<a href="/bannedPage">Ok</a>',
+        }).then(()=>{window.location.href="/admin"})
+      })
   }, []);
 
  

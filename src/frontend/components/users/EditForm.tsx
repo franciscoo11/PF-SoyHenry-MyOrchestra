@@ -180,6 +180,7 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
               country: values.country,
               state: values.state,
               city: values.city,
+              first_time: false,
             };
             await axios.put(`/api/user/${values.email}`, postUser);
             console.log(values.email);

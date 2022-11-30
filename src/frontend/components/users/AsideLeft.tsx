@@ -17,8 +17,9 @@ import {
   FiBell,
 } from "react-icons/fi";
 import Link from "next/link";
+import { UpdateUserLogo } from "./UpdateUserLogo";
 
-export default function UserAsideLeft({ avatar, id }: any) {
+export default function UserAsideLeft({ avatar, email, user }: any) {
   return (
     <>
       <div className="user-nav-container">
@@ -27,19 +28,23 @@ export default function UserAsideLeft({ avatar, id }: any) {
           style={{
             backgroundImage: `url(${avatar ? avatar : "/blank_profile.png"})`,
           }}
-        ></div>
+        >
+          {user ? <UpdateUserLogo email={email} user={user} /> : null}
+        </div>
         <nav className="user-nav">
           <ul className="nav-list">
             <li className="nav-item">
               <FiUser />
               <div>
-                <Link href={`/users/${encodeURIComponent(id)}`}>Principal</Link>
+                <Link href={`/users/${encodeURIComponent(email)}`}>
+                  Principal
+                </Link>
               </div>
             </li>
             <li className="nav-item">
               <FiSettings />
               <div>
-                <Link href={`/users/${encodeURIComponent(id)}/edit`}>
+                <Link href={`/users/${encodeURIComponent(email)}/edit`}>
                   Mis datos
                 </Link>
               </div>
@@ -47,7 +52,7 @@ export default function UserAsideLeft({ avatar, id }: any) {
             <li className="nav-item">
               <FiStar />
               <div>
-                <Link href={`/users/${encodeURIComponent(id)}/favs`}>
+                <Link href={`/users/${encodeURIComponent(email)}/favs`}>
                   Favoritos
                 </Link>
               </div>
@@ -55,7 +60,7 @@ export default function UserAsideLeft({ avatar, id }: any) {
             <li className="nav-item">
               <FiMusic />
               <div>
-                <Link href={`/orchestras/${encodeURIComponent(id)}`}>
+                <Link href={`/orchestras/${encodeURIComponent(email)}`}>
                   Mi orquesta
                 </Link>
               </div>

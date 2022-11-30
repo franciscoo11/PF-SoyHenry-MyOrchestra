@@ -5,6 +5,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { prisma } from "../../../lib/prisma";
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 const StyledMain = styled.main`
   margin: 25px auto;
@@ -142,7 +143,18 @@ export default function AdminDonation(props: any) {
     axios
       .get(`/api/donation`)
       .then((res) => setDonations(res.data))
-      .finally(() => setLoading(false));
+      .finally(() => setLoading(false))
+      .catch(() => {
+        Swal.fire({
+          title: '<strong> <u>No hay donaciones</u></strong>',
+          icon: 'error',
+          allowOutsideClick:false,
+          focusConfirm: true,
+          timer:2500,
+          confirmButtonText:
+            '<a href="/bannedPage">Ok</a>',
+        }).then(()=>{window.location.href="/admin"})
+      })
   }, []);
 
  

@@ -5,6 +5,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { prisma } from "../../../lib/prisma";
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 const StyledMain = styled.main`
   margin: 25px auto;
@@ -143,7 +144,18 @@ export default function AdminOrchestras({orchestraTypes}: any) {
     axios
       .get(`/api/orchestra?admin=true&${searchQuery}`)
       .then((res) => setOrchestras(res.data))
-      .finally(() => setLoading(false));
+      .finally(() => setLoading(false))
+      .catch(() => {
+        Swal.fire({
+          title: '<strong> <u>No hay orquestas</u></strong>',
+          icon: 'error',
+          allowOutsideClick:false,
+          focusConfirm: true,
+          timer:2500,
+          confirmButtonText:
+            '<a href="/bannedPage">Ok</a>',
+        }).then(()=>{window.location.href="/admin"})
+      })
   }, [searchQuery]);
 
   const { data = [], results = 1 }: any = orchestras;
