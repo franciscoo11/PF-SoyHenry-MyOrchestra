@@ -97,7 +97,7 @@ const StyledForm = styled.div`
     }
   }
 `;
-// Jose100105.123.
+
 interface Values {
   password: string;
   password1: string;
@@ -156,7 +156,20 @@ function ChangePassword({ user }: any) {
                 ? await axios.put(`/api/user/${email}`, {
                     password: values.password2,
                   })
-                : alert("error");
+                : toast.error(
+                    "Verifica los datos ingresados y vuelve a intentar.",
+                    {
+                      position: "top-right",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "light",
+                    }
+                  );
+
               toast.success("Contraseña actualizada correctamente", {
                 position: "top-right",
                 autoClose: 5000,
@@ -168,6 +181,7 @@ function ChangePassword({ user }: any) {
                 theme: "light",
               });
               setSubmitting(false);
+              router.push("/");
             } catch (error) {}
           }}
         >
