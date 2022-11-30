@@ -97,7 +97,7 @@ const StyledForm = styled.div`
     }
   }
 `;
-// Jose100105.123.
+
 interface Values {
   password: string;
   password1: string;
