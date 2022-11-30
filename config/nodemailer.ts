@@ -63,3 +63,50 @@ export const emailerUpdate = function (user: any) {
       </ul> `,
   };
 };
+
+export const notifyDonation = function (user: any) {
+  return {
+    from: `"My Orchestras App" <${EMAIL}>`,
+    to: user.email,
+    subject: "Donacion recibida",
+    html: ` 
+      <div style="background-color: #2b9423; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3px 10px; font-weight: bold; border-radius: 5px;">
+      <ul>
+      <h2 style="color: #fff;">Hola ${user.name}, te informamos que agradecemos tu apoyo!</h2>
+      </ul>
+      </div>
+
+      <h3 style="color: #000000;">Si no fuiste tú, comunicate con nosotros!</h3>
+     
+      <ul><br><br>
+      <h3 style="color: #000000;">Politicas de seguridad:</h3>
+      <li style="color: #000000;">Pon tus datos en un lugar seguro.</li>
+      <li style="color: #000000;">No compartas tu información personal con otras personas.</li>
+      <li style="color: #000000;">Si tienes dudas sobre algun movimiento extraño en tu cuenta, haganos saber!</li>
+      </ul> `,
+  };
+};
+
+
+export const notifyAdmin = function (user: any) {
+  return {
+    from: `"My Orchestras App" <${EMAIL}>`,
+    to: user.email,
+    subject: "Donacion recibida",
+    html: ` 
+      <div style="background-color: #2b9423; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3px 10px; font-weight: bold; border-radius: 5px;">
+      <ul>
+      <h2 style="color: #fff;">Hola ${user.name}, te informamos que agradecemos tu apoyo!</h2>
+      </ul>
+      </div>
+
+      <h3 style="color: #000000;">Si no fuiste tú, comunicate con nosotros!</h3>
+     
+      <ul><br><br>
+      <h3 style="color: #000000;">Politicas de seguridad:</h3>
+      <li style="color: #000000;">Pon tus datos en un lugar seguro.</li>
+      <li style="color: #000000;">No compartas tu información personal con otras personas.</li>
+      <li style="color: #000000;">Si tienes dudas sobre algun movimiento extraño en tu cuenta, haganos saber!</li>
+      </ul> `,
+  };
+};
