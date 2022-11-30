@@ -104,9 +104,11 @@ function OrchestraCards(props: any) {
     return await axios.delete(`/api/orchestra/${props.id}`).then(response=>response.data )  
     }
     const handleClickDeleteReal= async ()=>{
+      if(window.confirm("Estas seguro que queres eliminar esta orquesta?")){
         const response= await deleteReal()
         return response
-        }
+      }
+    }
 
    
 
