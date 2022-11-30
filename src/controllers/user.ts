@@ -76,7 +76,6 @@ export const postUser = async (body: any, query: any) => {
           email: email,
           password: hashPassword(password),
           rolId: rolId,
-          birthday: new Date(birthday),
           avatar: cloudinaryAvatarUrl,
           cover: cloudinaryCoverUrl
         },
@@ -86,7 +85,6 @@ export const postUser = async (body: any, query: any) => {
           avatar: cloudinaryAvatarUrl,
           cover: cloudinaryCoverUrl,
           password: hashPassword(password),
-          birthday: new Date(birthday),
         },
         include:{
           rol:true
@@ -172,7 +170,6 @@ export const updateUser = async (query: any, body: any) => {
         avatar:cloudinaryAvatarUrl,
         name: name,
         password: password,
-        birthday: new Date(birthday)
       },
     });
 
