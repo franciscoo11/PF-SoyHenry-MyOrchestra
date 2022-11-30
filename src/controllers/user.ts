@@ -182,20 +182,36 @@ export const updateUser = async (query: any, body: any) => {
 
 export const logicDeleteUser = async (email: any) => {
   try {
-    if (!email) return null;
-    const user = await prisma.users.update({
-      where: {
-        email: email,
-      },
-      data: {
-        is_active: false,
-      },
-    });
-    return user ? user : null;
+    const user = await prisma.users.findUnique({where:{email}})
+    if(user?.is_active){
+      const deactivate = await prisma.users.update({
+        where: {
+          email:email
+        },
+        data: {
+          is_active: false
+        }
+      })
+      return deactivate
+    }
+    if(!user?.is_active){
+      const activate = await prisma.users.update({
+        where: {
+          email:email
+        },
+        data: {
+          is_active: true
+        }
+      })
+      return activate
+    }
+   
+   
   } catch (error) {
-    return error;
+    return error
   }
 };
+
 
 export const deleteUser = async (email: any) => {
   try {
