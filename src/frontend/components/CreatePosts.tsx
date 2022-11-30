@@ -131,7 +131,7 @@ export default function CreatePosts({
             title: Yup.string().required("Requerido"),
             content: Yup.string().required("Requerido"),
           })}
-          onSubmit={async (values: any, { setSubmitting }) => {
+          onSubmit={async (values: any, { setSubmitting, resetForm }) => {
             const file: any = values.file;
             const formData = new FormData();
             let url_file: string = "";
@@ -175,6 +175,7 @@ export default function CreatePosts({
                 progress: undefined,
                 theme: "light",
               });
+              resetForm();
               setPosting(false);
             } catch (error) {
               toast.error("Verifica e intenta nuevamente.", {

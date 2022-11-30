@@ -1,8 +1,6 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { FiUser } from "react-icons/fi";
 import styled from "styled-components";
-import Cookies from "universal-cookie";
 
 const StyledDiv = styled.div`
   .log {
@@ -12,14 +10,12 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default function LoggedIn({ handlelogout }: any) {
-  const cookie = new Cookies()
-
+export default function LoggedIn({ handlelogout, id }: any) {
   return (
     <>
       <StyledDiv>
         <div>
-          <Link href="/users/7" className="log">
+          <Link href={`/users/${id}`} className="log">
             <span>Mi Perfil </span>
             <span>
               <FiUser />
@@ -38,4 +34,3 @@ export default function LoggedIn({ handlelogout }: any) {
     </>
   );
 }
-
