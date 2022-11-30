@@ -21,7 +21,7 @@ const check_password = (password: string) => {
 export const postUser = async (body: any, query: any) => {
   try {
     if (!body) return null;
-    const { name, email, password, rolId, birthday, avatar, cover } = body;
+    const { name, email, password, rolId, avatar, cover } = body;
     if (!email) return null;
     let cloudinaryCoverUrl = "/user_cover.png";
     let cloudinaryAvatarUrl = "/blank_profile.png";
@@ -131,7 +131,7 @@ export const getUsers = async (query:any) => {
 
 export const updateUser = async (query: any, body: any) => {
   try {
-    let {avatar, cover, password, birthday, name } = body;
+    let {avatar, cover, password, name } = body;
 
     if (!query.email || !body) return null;
     let cloudinaryCoverUrl = cover;
