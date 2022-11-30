@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Cookies from "universal-cookie";
+import Swal from "sweetalert2";
 
 const filesLogo =
   "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668090828/abrir-documento_ifj9cl.png";
@@ -104,10 +105,21 @@ function OrchestraCards(props: any) {
     return await axios.delete(`/api/orchestra/${props.id}`).then(response=>response.data )  
     }
     const handleClickDeleteReal= async ()=>{
-      if(window.confirm("Estas seguro que queres eliminar esta orquesta?")){
-        const response= await deleteReal()
-        return response
-      }
+        Swal.fire({
+          title: 'Estas seguro de eliminar esta orquesta?',
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'Confirmar',
+          denyButtonText: `Cancelar`,
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            const response= await deleteReal()
+            Swal.fire('Eliminada!', '', 'success')
+            return response
+          } else if (result.isDenied) {
+            Swal.fire('Los cambios no fueron guardados', '', 'info')
+          }
+        })
     }
 
    
