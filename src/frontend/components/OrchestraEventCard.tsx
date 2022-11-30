@@ -93,7 +93,6 @@ interface EventCardModel {
   hour: string;
   image: string;
   description: string;
-  location: string;
 }
 
 export default function OrchestraEventCard({
@@ -102,7 +101,6 @@ export default function OrchestraEventCard({
   hour,
   image,
   description,
-  location,
 }: EventCardModel) {
   return (
     <StyledEventCard>
@@ -118,21 +116,23 @@ export default function OrchestraEventCard({
         </div>
       </div>
 
-      <div
-        className="event-image"
-        style={{
-          backgroundImage: `url(${image})`,
-        }}
-      ></div>
+      {image ? (
+        <div
+          className="event-image"
+          style={{
+            backgroundImage: `url(${image})`,
+          }}
+        ></div>
+      ) : null}
       <div className="event-details">
         <p className="event-description">{description}</p>
         <h3 className="event-details-title">Detalles</h3>
-        <div className="detail">
+        {/* <div className="detail">
           <div className="detail-icon">
             <FiMapPin />
           </div>
           <div className="detail-text">{location}</div>
-        </div>
+        </div> */}
         <div className="detail">
           <div className="detail-icon">
             <FiCalendar />

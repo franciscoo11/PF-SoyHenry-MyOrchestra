@@ -15,7 +15,6 @@ export default function Auth() {
   useEffect(() => {
     getUserEmail(user);
     setLoging(cookie.get("Userlogin"));
-    console.log(cookie.get("UserloginData"));
   }, [cookies.Userlogin, user]);
 
   const handlelogout = () => {

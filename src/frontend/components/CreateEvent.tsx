@@ -10,7 +10,7 @@ const StyledForm = styled.div`
     box-sizing: border-box;
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(9, minmax(0, 1fr));
+    grid-template-columns: repeat(8, minmax(0, 1fr));
     gap: 24px;
 
     .error {
@@ -29,7 +29,7 @@ const StyledForm = styled.div`
     }
 
     .form-header {
-      grid-column: 1/7;
+      grid-column: 1/9;
       grid-row: 1;
 
       .title {
@@ -39,26 +39,38 @@ const StyledForm = styled.div`
     }
 
     .post-type-select {
-      grid-column: 7/10;
+      grid-column: 7/9;
       grid-row: 1;
     }
 
     .post-title {
-      grid-column: 1/10;
+      grid-column: 1/9;
       grid-row: 2;
     }
 
     .post-content {
-      grid-column: 1/10;
+      grid-column: 1/9;
       grid-row: 3;
     }
     .hour-container {
-      grid-column: 1/5;
+      grid-column: 5/9;
       grid-row: 4;
+
+      label {
+        margin: 12px 0;
+        font-size: 0.8em;
+        font-weight: bold;
+      }
     }
     .date-container {
-      grid-column: 5/10;
+      grid-column: 1/5;
       grid-row: 4;
+
+      label {
+        margin: 12px 0;
+        font-size: 0.8em;
+        font-weight: bold;
+      }
     }
     .post-file {
       grid-column: 1/5;
@@ -66,7 +78,7 @@ const StyledForm = styled.div`
     }
 
     .post-submit {
-      grid-column: 7/10;
+      grid-column: 7/9;
       grid-row: 5;
       text-align: right;
 
@@ -117,7 +129,12 @@ const StyledForm = styled.div`
   }
 `;
 
-export default function CreateEvent({ orchestraId, userCreator }: any) {
+export default function CreateEvent({
+  orchestraId,
+  userCreator,
+  postType,
+  setPosting,
+}: any) {
   if (userCreator) {
     return (
       <StyledForm>
@@ -129,7 +146,8 @@ export default function CreateEvent({ orchestraId, userCreator }: any) {
             event_hour: "",
             orchestraId,
             userCreator,
-            type_PostId: "clanisuvd0010i5zzyrbr1nn0",
+            type_PostId: postType,
+            file: "",
           }}
           validationSchema={Yup.object({
             title: Yup.string().required("Requerido"),
@@ -138,19 +156,29 @@ export default function CreateEvent({ orchestraId, userCreator }: any) {
               "Seleccioná una hora para tu evento"
             ),
           })}
-          onSubmit={async (values: any, { setSubmitting }) => {
+          onSubmit={async (values: any, { setSubmitting, resetForm }) => {
             const file: any = values.file;
             const formData = new FormData();
             let url_file: string = "";
 
             try {
+              setPosting(true);
               if (file) {
                 formData.append("file", file);
                 formData.append("upload_preset", "orchestras-uploads");
-                const uploadImage = await axios.post(
-                  `https://api.cloudinary.com/v1_1/orchestrascloudinary/image/upload`,
-                  formData
+
+                const uploadImage = await toast.promise(
+                  axios.post(
+                    `https://api.cloudinary.com/v1_1/orchestrascloudinary/image/upload`,
+                    formData
+                  ),
+                  {
+                    pending: "Carga de imagen pendiente",
+                    success: "Carga de imagen en proceso",
+                    error: "Error de carga de imagen",
+                  }
                 );
+
                 url_file = uploadImage.data.secure_url;
               }
               let postData = {
@@ -164,8 +192,6 @@ export default function CreateEvent({ orchestraId, userCreator }: any) {
                 url_file,
               };
 
-              console.log(postData);
-
               await axios.post("/api/post", postData);
               setSubmitting(false);
               toast.success("Evento creado exitosamente", {
@@ -178,7 +204,8 @@ export default function CreateEvent({ orchestraId, userCreator }: any) {
                 progress: undefined,
                 theme: "light",
               });
-              window.location.reload();
+              resetForm();
+              setPosting(false);
             } catch (error) {
               toast.error("Verifica e intenta nuevamente.", {
                 position: "top-right",
@@ -235,15 +262,15 @@ export default function CreateEvent({ orchestraId, userCreator }: any) {
                 </p>
               </div>
               <div className="date-container">
-                <Field name="event_date" type="date" className="input" />
                 <label>Fecha del evento</label>
+                <Field name="event_date" type="date" className="input" />
                 <p className="error">
                   <ErrorMessage name="event_date" className="errorMessage" />
                 </p>
               </div>
               <div className="hour-container">
-                <Field name="event_hour" type="time" className="input" />
                 <label>Hora del evento</label>
+                <Field name="event_hour" type="time" className="input" />
                 <p className="error">
                   <ErrorMessage name="event_hour" className="errorMessage" />
                 </p>

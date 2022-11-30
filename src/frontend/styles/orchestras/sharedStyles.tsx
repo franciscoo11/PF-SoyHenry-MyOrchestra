@@ -241,11 +241,6 @@ const StyledMain = styled.main`
       }
     }
 
-    .form-container {
-      display: flex;
-      gap: 12px;
-    }
-
     .filter-container {
       display: flex;
       justify-content: space-between;
