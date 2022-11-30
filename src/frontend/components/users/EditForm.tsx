@@ -120,13 +120,11 @@ interface Values {
   rolId: string;
   state: string;
   country: string;
+  orchestraId: string;
 }
 
 export default function EditUser({ user, orchestras, userRoles }: any) {
   const router = useRouter();
-  const orchestraId = orchestras.id;
-
-  console.log(orchestraId);
 
   const {
     avatar,
@@ -152,8 +150,8 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
           country: country ? country : "",
           state: state ? state : "",
           city: city ? city : "",
-          rolId: rolId ? rolId : "",
-          orchestras: orchestras ? orchestras : "",
+          rolId: "",
+          orchestraId: "",
         }}
         validationSchema={Yup.object({
           name: Yup.string().required("Requerido"),
@@ -169,9 +167,10 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
             let postData = {
               rolId: values.rolId,
               userId: user.id,
+              orchestraId: values.orchestraId,
             };
             await axios.post(
-              `/api/useronorchestra?orchestraId=${orchestraId}`,
+              `/api/useronorchestra?orchestraId=${postData.orchestraId}`,
               postData
             );
             let postUser = {
@@ -282,7 +281,7 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
               </p>
             </div>
             <div className="orchestraId-field">
-              <Field name="orchestras" as="select" className="input">
+              <Field name="orchestraId" as="select" className="input">
                 <option value="">Orquesta</option>
                 {orchestras.map((orchestra: any) => (
                   <option value={orchestra.id} key={orchestra.id}>
