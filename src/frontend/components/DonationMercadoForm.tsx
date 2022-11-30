@@ -10,68 +10,105 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 
 const StyledForm = styled.div`
-  background-image: url("/bg_01.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: 0 -100px;
+  width: 100%;
 
   .form {
     box-sizing: border-box;
-    margin: 25px auto;
+    margin: 24px auto;
     width: 100%;
-    max-width: 1440px;
-    display: grid;
-    grid-template-columns: repeat(16, minmax(0, 1fr));
-    gap: 24px;
-    padding: 0 80px;
 
     .fields-container {
-      grid-column: 5/13;
-      grid-row: 1;
+      width: 100%;
       display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 24px;
-      padding: 120px 0px;
+
+      input[type="radio"] {
+        display: none;
+      }
+
+      input[type="radio"] + .donation-amount {
+        display: block;
+        background-color: ${({ theme }) => theme.colors.secondary};
+        color: white;
+        font-size: 1.2em;
+        border-radius: 12px;
+      }
+
+      input[type="radio"]:checked + .donation-amount {
+        filter: brightness(135%);
+      }
+
+      input[type="radio"]:hover + .donation-amount {
+        filter: brightness(135%);
+      }
+
+      .another_amount {
+        display: block;
+        width: 100%;
+        font-size: 0.9em;
+        padding: 0;
+        font-weight: bold;
+      }
+
+      .donate-btn {
+        background-color: ${({ theme }) => theme.colors.secondary};
+        color: white;
+        font-size: 1.2em;
+        border-radius: 12px;
+        padding: 12px 24px;
+        border: none;
+        :hover {
+          cursor: pointer;
+          filter: brightness(135%);
+        }
+      }
 
       .input {
         display: block;
         width: 100%;
         font-family: "Lato";
+        font-weight: bold;
         font-size: 0.9em;
         padding: 10px 15px;
         border-radius: 12px;
-        border: none;
+        border: 1px solid lightgrey;
+        background-color: #f1f2f6;
+
+        :focus {
+          border: none;
+          outline: 1px solid ${({ theme }) => theme.colors.secondary};
+        }
       }
 
       label,
       .error {
         padding: 6px;
-        display: block;
-        color: white;
         font-size: 0.7em;
         text-align: center;
       }
 
       .tre-container {
-        grid-column: 1/3;
+        grid-column: 2/3;
         grid-row: 1;
       }
 
       .qui-container {
-        grid-column: 3/5;
+        grid-column: 3/4;
         grid-row: 1;
       }
       .mil-container {
-        grid-column: 5/7;
+        grid-column: 4/5;
         grid-row: 1;
       }
       .field-container {
-        grid-column: 3/5;
+        grid-column: 3/4;
         grid-row: 2;
       }
       .button-container {
-        grid-column: 3/5;
+        grid-column: 3/4;
         grid-row: 3;
+        text-align: center;
       }
     }
   }
@@ -81,15 +118,14 @@ interface Values {
   price: string;
 }
 
-export default function DonationMercadoForm() {
+export default function DonationMercadoForm({ id }: any) {
   const router = useRouter();
   return (
     <>
-      <MainNavBar />
       <StyledForm>
         <Formik
           initialValues={{
-            idCampaign: "clanmc8wb001ni5zzsnvy42ee",
+            idCampaign: id,
             price: "",
           }}
           onSubmit={async (
@@ -110,55 +146,63 @@ export default function DonationMercadoForm() {
           <Form className="form">
             <div className="fields-container">
               <div className="tre-container">
-                <label>
-                  <Field
-                    className="input"
-                    type="checkbox"
-                    name="price"
-                    value="300"
-                  />
+                <Field
+                  className="monto"
+                  type="radio"
+                  name="price"
+                  value="300"
+                  id="300"
+                />
+                <label htmlFor="300" className="donation-amount">
                   $300
                 </label>
               </div>
               <div className="qui-container">
-                <label>
-                  <Field
-                    className="input"
-                    type="checkbox"
-                    name="price"
-                    value="500"
-                  />
+                <Field
+                  className="monto"
+                  type="radio"
+                  name="price"
+                  value="500"
+                  id="500"
+                />
+                <label htmlFor="500" className="donation-amount">
                   $500
                 </label>
               </div>
               <div className="mil-container">
-                <label className="1000">
-                  <Field
-                    className="input"
-                    type="checkbox"
-                    name="price"
-                    value="50"
-                  />
+                <Field
+                  className="monto"
+                  type="radio"
+                  name="price"
+                  value="1000"
+                  id="1000"
+                />
+                <label htmlFor="1000" className="donation-amount">
                   $1000
                 </label>
               </div>
 
               <div className="field-container">
+                <label htmlFor="custom" className="another_amount">
+                  Otra cantidad:
+                </label>
                 <Field
                   type="text"
                   className="input"
                   name="price"
-                  placeholder="Especifique un monto"
+                  id="custom"
+                  placeholder="0"
                 />
               </div>
               <div className="button-container">
-                <button type="submit">Mercado Pago</button>
+                <button type="submit" className="donate-btn">
+                  Donar
+                </button>
               </div>
             </div>
           </Form>
         </Formik>
       </StyledForm>
-      <Footer />
     </>
   );
 }

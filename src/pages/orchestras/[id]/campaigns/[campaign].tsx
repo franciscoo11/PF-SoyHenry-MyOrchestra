@@ -12,6 +12,8 @@ import { useUser } from "@auth0/nextjs-auth0";
 import styled from "styled-components";
 import { FaHeart } from "react-icons/fa";
 import { FiTarget, FiCalendar, FiSmile } from "react-icons/fi";
+import DonationMercadoForm from "../../../../frontend/components/DonationMercadoForm";
+import DonationForm from "../../../../frontend/components/DonationForm";
 
 const StyledEventCard = styled.div`
   width: 100%;
@@ -60,14 +62,25 @@ const StyledEventCard = styled.div`
     background-repeat: no-repeat;
   }
 
-  .campaign-details {
+  .campaign-details,
+  .donation-forms {
     padding: 12px 24px;
     .campaign-description {
       color: gray;
     }
-    .campaign-details-title {
+    .campaign-details-title,
+    .donation-title {
       color: ${({ theme }) => theme.colors.secondary};
       font-weight: 500;
+    }
+
+    .banner-container {
+      display: flex;
+      align-items: center;
+
+      img {
+        margin-left: 12px;
+      }
     }
 
     .detail {
@@ -121,6 +134,7 @@ function OrchestraCampaigns({ campaign }: any) {
   const [userId, setUserId] = useState();
   const [loading, setLoading] = useState(true);
   const { title, end_date, goal_amount, description, donations } = campaign;
+  const [display, setDisplay] = useState("");
 
   const getSum = (donations: any) => {
     let sum = 0;
@@ -197,6 +211,59 @@ function OrchestraCampaigns({ campaign }: any) {
                 </div>
               </div>
             </div>
+          </StyledEventCard>
+          <StyledEventCard>
+            <div className="donation-forms">
+              <p className="donation-text">
+                No hay contribución pequeña, cualquier cantidad que gustes
+                aportar a esta campaña de recaudación de fondos es muy valiosa y
+                contribuye al alcance de la meta.
+              </p>
+              <h3 className="donation-title">Elige tu forma de pago:</h3>
+              <div className="banner-container">
+                <input
+                  type="radio"
+                  name="pago"
+                  id="mercado"
+                  value="mercado"
+                  onFocus={(event) => setDisplay(event.target.value)}
+                />
+                <label htmlFor="mercado">
+                  <img
+                    src="https://imgmp.mlstatic.com/org-img/banners/mx/medios/MLM_468X60_new.jpg"
+                    title="Mercado Pago - Medios de pago"
+                    alt="Mercado Pago - Medios de pago"
+                    width="468"
+                    height="60"
+                  />
+                </label>
+              </div>
+
+              <div className="banner-container">
+                <input
+                  type="radio"
+                  name="pago"
+                  id="paypal"
+                  value="paypal"
+                  onFocus={(event) => setDisplay(event.target.value)}
+                />
+                <label htmlFor="paypal">
+                  <img
+                    src="https://www.paypalobjects.com/webstatic/mktg/logo-center/logotipo_paypal_pagos_tarjetas.jpg"
+                    alt="Marcas de aceptación"
+                  />
+                </label>
+              </div>
+            </div>
+          </StyledEventCard>
+          <StyledEventCard>
+            {display !== "" ? (
+              display === "mercado" ? (
+                <DonationMercadoForm id={campaign.id} />
+              ) : (
+                <DonationForm id={campaign.id} />
+              )
+            ) : null}
           </StyledEventCard>
         </section>
         <aside className="aside-right">
