@@ -4,6 +4,8 @@ import { useUser } from "@auth0/nextjs-auth0/dist/frontend/use-user";
 import Cookies from "universal-cookie";
 import { useEffect, useState } from "react";
 import {getUserEmail  } from "../utils/getUserEmail";
+import Swal from "sweetalert2";
+import { redirect } from "next/dist/server/api-utils";
 
 
 export default function Auth() {
@@ -32,12 +34,18 @@ export default function Auth() {
   
   } else if(cookie.get('UserloginData')){
     if (!cookie.get("UserloginData").is_active) {
-      alert('usuario baneado ')
       cookie.remove("Userlogin");
       cookie.remove("UserloginData");
       setLoging(cookie.get("Userlogin"));  
-      window.location.href='/bannedPage';
-       
+      Swal.fire({
+        title: '<strong> <u>Estas Baneado</u></strong>',
+        icon: 'error',
+        allowOutsideClick:false,
+        focusConfirm: true,
+        timer:2500,
+        confirmButtonText:
+          '<a href="/bannedPage">Ok</a>',
+      }).then(()=>{window.location.href="/bannedPage"})  
     }else{
       return <LoggedIn handlelogout={handlelogout} />;
     }
