@@ -5,7 +5,6 @@ import Cookies from "universal-cookie";
 import { useEffect, useState } from "react";
 import {getUserEmail  } from "../utils/getUserEmail";
 import Swal from "sweetalert2";
-import { redirect } from "next/dist/server/api-utils";
 
 
 export default function Auth() {
