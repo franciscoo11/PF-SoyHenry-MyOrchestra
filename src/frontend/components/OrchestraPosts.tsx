@@ -163,13 +163,13 @@ const StyledDiv = styled.div`
       width: 20px;
       height: 20px;
       gap: 5px;
-      transition:0.3s;
+      transition: 0.3s;
     }
-    .reaction-img-nochoose{
+    .reaction-img-nochoose {
       width: 10px;
       height: 10px;
       gap: 5px;
-      transition:0.2s;
+      transition: 0.2s;
     }
   }
 `;
@@ -237,8 +237,10 @@ export default function OrchestraPosts({
     const auxRemoveCount = countReactions[id as keyof typeof countReactions];
     setCountReaction(countReaction - 1);
 
-    setCountReactions({ ...countReactions, [id]: auxRemoveCount > 0 ? auxRemoveCount - 1 : 0});
-
+    setCountReactions({
+      ...countReactions,
+      [id]: auxRemoveCount > 0 ? auxRemoveCount - 1 : 0,
+    });
   };
 
   const findReactions = async () => {
@@ -292,7 +294,7 @@ export default function OrchestraPosts({
         </div>
         <p>{content}</p>
         {/* <div className="read-more">leer más</div> */}
-        
+
         <div className="post-reactions">
           <div>
             <p>
@@ -300,54 +302,58 @@ export default function OrchestraPosts({
             </p>
           </div>
           <div>
-            { user ? 
-            <div>
-              {reactions.map((data) => {
-                let id_aux_reaction: any = data.id;
-                return findReactionMap(id, dataUser.id, data.id) == data.id ? (
-                  <button
-                    onClick={() =>
-                      handleRemoveReaction(dataUser.id, id, data.id)
-                    }
-                  >
-                    <div>
+            {user ? (
+              <div>
+                {reactions.map((data) => {
+                  let id_aux_reaction: any = data.id;
+                  return findReactionMap(id, dataUser.id, data.id) ==
+                    data.id ? (
+                    <button
+                      key={data.id}
+                      onClick={() =>
+                        handleRemoveReaction(dataUser.id, id, data.id)
+                      }
+                    >
+                      <div>
+                        <p>
+                          {
+                            countReactions[
+                              id_aux_reaction as keyof typeof countReactions
+                            ]
+                          }
+                        </p>
+                      </div>
+                      <img
+                        className="reaction-img-choose"
+                        src={data?.reaction}
+                        alt=""
+                      />
+                    </button>
+                  ) : (
+                    <button
+                      key={data.id}
+                      className="reaction-button"
+                      onClick={() =>
+                        handlePostReaction(id, dataUser.id, data.id)
+                      }
+                    >
                       <p>
                         {
                           countReactions[
                             id_aux_reaction as keyof typeof countReactions
                           ]
-                        }
+                        }{" "}
                       </p>
-                    </div>
-                    <img
-                      className="reaction-img-choose"
-                      src={data?.reaction}
-                      alt=""
-                    />
-                  </button>
-                ) : (
-                  <button
-                    className="reaction-button"
-                    onClick={() => handlePostReaction(id, dataUser.id, data.id)}
-                  >
-                    <p>
-                      {
-                        countReactions[
-                          id_aux_reaction as keyof typeof countReactions
-                        ]
-                      }{" "}
-                    </p>
-                    <img
-                      className="reaction-img-nochoose"
-                      src={data?.reaction}
-                      alt=""
-                    />
-                  </button>
-                );
-
-              })} 
-            </div> : null }
-
+                      <img
+                        className="reaction-img-nochoose"
+                        src={data?.reaction}
+                        alt=""
+                      />
+                    </button>
+                  );
+                })}
+              </div>
+            ) : null}
           </div>
         </div>
         {user ? (
