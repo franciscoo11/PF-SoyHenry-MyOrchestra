@@ -186,7 +186,7 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
               state: values.state,
               city: values.city,
             };
-            await axios.put("/api/user", postUser);
+            await axios.put(`/api/user/${values.email}`, postUser);
             console.log(postData);
             console.log(postUser);
 
