@@ -116,11 +116,11 @@ interface Values {
   password: string;
   avatar?: string;
   cover?: string;
-  birthday: string;
   city: string;
   rolId: string;
   state: string;
   country: string;
+  orchestraId: string;
 }
 
 export default function EditUser({ user, orchestras, userRoles }: any) {
@@ -137,7 +137,6 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
     password,
     state,
   } = user;
-  // const birthdaylocal = birthday.toLocaleDateString();
 
   const passwordRegex =
     /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/;
@@ -148,21 +147,17 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
           name: name ? name : "",
           email: email ? email : "",
           password: "Jose100105.123.",
-          birthday: birthday ? birthday : "",
           country: country ? country : "",
           state: state ? state : "",
           city: city ? city : "",
-          rolId: rolId ? rolId : "",
-          orchestras: orchestras ? orchestras : "",
+          rolId: "",
+          orchestraId: "",
         }}
         validationSchema={Yup.object({
           name: Yup.string().required("Requerido"),
           email: Yup.string()
             .email("Correo inválido")
             .required("Ningún correo ingresado"),
-          birthday: Yup.date()
-            .max(new Date(), "Fecha incorrecta, ingrese una fecha valida")
-            .required("Requerido"),
           city: Yup.string().required("Requerido"),
           state: Yup.string().required("Requerido"),
           country: Yup.string().required("Requerido"),
@@ -172,23 +167,22 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
             let postData = {
               rolId: values.rolId,
               userId: user.id,
+              orchestraId: values.orchestraId,
             };
             await axios.post(
-              `/api/useronorchestra?orchestraId=claq40vof0006r5mcu7zsw2bb`,
+              `/api/useronorchestra?orchestraId=${postData.orchestraId}`,
               postData
             );
             let postUser = {
               name: values.name,
               email: values.email,
               password: values.password,
-              birthday: values.birthday,
               country: values.country,
               state: values.state,
               city: values.city,
             };
             await axios.put(`/api/user/${values.email}`, postUser);
-            console.log(postData);
-            console.log(postUser);
+            console.log(values.email);
 
             toast.success("Datos actualizados correctamente", {
               position: "top-right",
@@ -240,12 +234,6 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
               </p>
             </div>
 
-            <div className="birthday-field">
-              <Field name="birthday" type="date" className="input" />
-              <p className="error">
-                <ErrorMessage name="birthday" className="errorMessage" />
-              </p>
-            </div>
             <div className="pais-field">
               <Field
                 name="country"
@@ -293,7 +281,7 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
               </p>
             </div>
             <div className="orchestraId-field">
-              <Field name="orchestras" as="select" className="input">
+              <Field name="orchestraId" as="select" className="input">
                 <option value="">Orquesta</option>
                 {orchestras.map((orchestra: any) => (
                   <option value={orchestra.id} key={orchestra.id}>
