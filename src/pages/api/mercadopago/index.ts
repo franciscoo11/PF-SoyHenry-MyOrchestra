@@ -39,7 +39,7 @@ async function generatePreference(
         },
       ],
       back_urls: {
-        success: `http://localhost:3000/mpsuccess`,
+        success: `http://localhost:3000/${req.body.idCampaign}/mpsuccess`,
         failure: `http://localhost:3000/`,
       },
       auto_return: "approved",

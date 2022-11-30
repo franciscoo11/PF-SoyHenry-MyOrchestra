@@ -1,22 +1,23 @@
 import axios from "axios";
 import React from "react";
-import { HOSTNAME } from "./_app";
+import { HOSTNAME } from "../../../../../pages/_app";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import Cookies from "universal-cookie";
 
 interface IPaymentDetail {
   paymentDetail: {
+    id: string;
     status: string;
     payerEmail: string;
+    name: string;
     mount: string;
     date: string;
     idCampaign: string;
-    status_detail: string;
   };
 }
 
-const mpSuccess = ({ paymentDetail }: IPaymentDetail) => {
+const paypalSuccess = ({ paymentDetail }: IPaymentDetail) => {
   const router = useRouter();
   const cookie = new Cookies();
   const user = cookie.get("UserloginData");
@@ -53,23 +54,20 @@ const mpSuccess = ({ paymentDetail }: IPaymentDetail) => {
       theme: "light",
     });
 
-    await axios
-      .post(`/api/donation`, {
-        campaignId: "clanmc8wb001ni5zzsnvy42ee",
-        userId: user.id,
-        amount: paymentDetail.mount,
-        date: paymentDetail.date,
-        orchestraId: "clani4ut8000di5zzxfsv7l7r",
-      })
-      .catch(() => alert("No se pudo registrar tu donación"));
-    console.log(paymentDetail);
+    await axios.post(`/api/donation`, {
+      campaignId: "clazl9pd7000esdowmyesripq",
+      userId: user.id,
+      amount: paymentDetail.mount,
+      date: paymentDetail.date,
+      orchestraId: "claww4lat0003vg1wuau9d3dz",
+    });
 
     router.push("/");
   };
 
   return (
     <>
-      {paymentDetail.status_detail == "accredited" ? (
+      {paymentDetail.status == "COMPLETED" ? (
         <div>
           <h2>
             GRACIAS POR TU COLABORACIÓN, EN UNOS INSTANTES SERÁS REDIRIGIDO...
@@ -84,7 +82,7 @@ const mpSuccess = ({ paymentDetail }: IPaymentDetail) => {
 export async function getServerSideProps(context: any) {
   try {
     const { data: response } = await axios.get(
-      `${HOSTNAME}/api/mercadopago?id=${context.query.payment_id}`
+      `${HOSTNAME}/api/paypal/${context.query.token}`
     );
 
     return {
@@ -97,4 +95,4 @@ export async function getServerSideProps(context: any) {
   }
 }
 
-export default mpSuccess;
+export default paypalSuccess;

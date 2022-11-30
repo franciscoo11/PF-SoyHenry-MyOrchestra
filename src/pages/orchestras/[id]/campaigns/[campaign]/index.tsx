@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
-import MainNavBar from "../../../../frontend/components/MainNavBar";
-import Footer from "../../../../frontend/components/Footer";
-import AsideLeft from "../../../../frontend/components/orchestras/AsideLeft";
-import AsideRight from "../../../../frontend/components/orchestras/AsideRight";
-import { StyledMain } from "../../../../frontend/styles/orchestras/sharedStyles";
-import { prisma } from "../../../../../lib/prisma";
+import MainNavBar from "../../../../../frontend/components/MainNavBar";
+import Footer from "../../../../../frontend/components/Footer";
+import AsideLeft from "../../../../../frontend/components/orchestras/AsideLeft";
+import AsideRight from "../../../../../frontend/components/orchestras/AsideRight";
+import { StyledMain } from "../../../../../frontend/styles/orchestras/sharedStyles";
+import { prisma } from "../../../../../../lib/prisma";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -12,8 +12,8 @@ import { useUser } from "@auth0/nextjs-auth0";
 import styled from "styled-components";
 import { FaHeart } from "react-icons/fa";
 import { FiTarget, FiCalendar, FiSmile } from "react-icons/fi";
-import DonationMercadoForm from "../../../../frontend/components/DonationMercadoForm";
-import DonationForm from "../../../../frontend/components/DonationForm";
+import DonationMercadoForm from "../../../../../frontend/components/DonationMercadoForm";
+import DonationForm from "../../../../../frontend/components/DonationForm";
 
 const StyledEventCard = styled.div`
   width: 100%;
