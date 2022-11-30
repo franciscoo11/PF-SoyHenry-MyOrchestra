@@ -131,11 +131,11 @@ export const getUsers = async (query:any) => {
   }
 };
 
-export const updateUser = async (email: any, body: any) => {
+export const updateUser = async (query: any, body: any) => {
   try {
-    const {email,avatar, cover } = body;
+    let {avatar, cover, password, birthday, name } = body;
 
-    if (!email || !body) return null;
+    if (!query.email || !body) return null;
     let cloudinaryCoverUrl = cover;
     let cloudinaryAvatarUrl = avatar;
     let folder = "";
@@ -144,7 +144,7 @@ export const updateUser = async (email: any, body: any) => {
       folder = 'cover';
       cloudinaryCoverUrl = await convertToCloudinaryUrlUser(
         cover,
-        email,
+        query.email,
         folder
       );
     }
@@ -152,22 +152,30 @@ export const updateUser = async (email: any, body: any) => {
       folder = 'avatar';
       cloudinaryAvatarUrl = await convertToCloudinaryUrlUser(
         avatar,
-        email,
+        query.email,
         folder
       );
     }
-    
-    
+    ;
+
+    if(password) {
+      password = hashPassword(password)
+    }
+
     const getUser = await prisma.users.update({
       where: {
-        email: email,
+        email: query.email,
       },
       data:{
         ...body,
         cover:cloudinaryCoverUrl,
-        avatar:cloudinaryAvatarUrl
+        avatar:cloudinaryAvatarUrl,
+        name: name,
+        password: password,
+        birthday: new Date(birthday)
       },
     });
+
     await transporter.sendMail(emailerUpdate(getUser));
     return getUser ? getUser : null;
   } catch (error) {

@@ -49,7 +49,7 @@ export default async function handler(
                   "Something goes wrong, check if id is correct and try again",
               });
       case PUT:
-        const modifyUser = await updateUser(query.email, body);
+        const modifyUser = await updateUser(query, body);
         return modifyUser
           ? res.status(200).json(modifyUser)
           : res
