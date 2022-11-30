@@ -5,10 +5,15 @@ export const getCommentPost = async (query:any) => {
     try {
       const {postId} = query
       if(postId){
-      const getCommentByPost = await prisma.comments.findMany({where:{postId:postId}});
+      const getCommentByPost = await prisma.comments.findMany({
+        orderBy: { creation_date: 'desc' },
+        where:{
+          postId:postId
+        }
+      });
       return getCommentByPost ? getCommentByPost : null 
       }
-      const getComment = await prisma.comments.findMany();
+      const getComment = await prisma.comments.findMany({orderBy:{creation_date:'desc'}});
       return getComment;   
     } catch (error) {
       return error
