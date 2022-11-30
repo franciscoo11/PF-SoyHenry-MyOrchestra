@@ -46,6 +46,7 @@ function OrchestraNews({ orchestra, members }: any) {
   const [posts, setPosts] = useState({ results: 1, data: [] });
   const [loading, setLoading] = useState(true);
   const [commentPosted, setCommentPosted] = useState(false);
+  const [posting, setPosting] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 4;
   const postType = "clanisoey000yi5zzxnd76pwo";
@@ -68,7 +69,7 @@ function OrchestraNews({ orchestra, members }: any) {
       )
       .then((res: any) => setPosts(res.data))
       .finally(() => setLoading(false));
-  }, [commentPosted]);
+  }, [commentPosted, posting]);
 
   const { data, results }: any = posts;
   let pages = Math.ceil(results / itemsPerPage);
@@ -120,6 +121,7 @@ function OrchestraNews({ orchestra, members }: any) {
                   orchestraId={id}
                   userCreator={userId}
                   postType={postType}
+                  setPosting={setPosting}
                 />
               }
             </div>
