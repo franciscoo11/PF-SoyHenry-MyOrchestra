@@ -51,7 +51,7 @@ export default function User({ user, orchestras, userRoles }: any) {
 
       <StyledMain>
         <aside className="aside-left">
-          <UserAsideLeft avatar={avatar} id={email} user={user} />
+          <UserAsideLeft avatar={avatar} email={email} user={user} />
         </aside>
         <section className="content">
           <UserCover cover={cover} title={name} location={city} rolId={rolId} />
