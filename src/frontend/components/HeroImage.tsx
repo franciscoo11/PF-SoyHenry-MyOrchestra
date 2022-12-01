@@ -29,6 +29,9 @@ const HeroContainer = styled.div`
 			.mapa {
 				max-height: 440px;
 				max-width: 40%;
+				@media (max-width: 992px) {
+					max-width: 60%;
+				}
 			}
 			.isologo {
 				max-height: 65px;
@@ -36,7 +39,8 @@ const HeroContainer = styled.div`
 				margin-left: 50px;
 				margin-top: -70px;
 				@media (max-width: 992px) {
-					margin-left: 20px;
+					margin-left: 0px;
+					max-width: 95%;
 				}
 			}
 		}
