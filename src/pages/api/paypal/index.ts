@@ -21,7 +21,7 @@ export default async function handler(
     switch (method) {
       case POST:
         const buildOrder = createOrder(req, res);
-        return buildOrder
+        return buildOrder;
       default:
         return res.status(400).json("method not allowed");
     }
@@ -39,6 +39,7 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse) => {
       purchase_units: [
         {
           reference_id: req.body.idCampaign,
+          external_reference: req.body.idOrchestra,
           amount: {
             currency_code: "USD",
             value: parseInt(req.body.value),
@@ -50,7 +51,7 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse) => {
         brand_name: "myorchestras.net",
         landing_page: "LOGIN",
         user_action: "PAY_NOW",
-        return_url: "http://localhost:3000/paypalSuccess",
+        return_url: `http://localhost:3000//orchestras/${req.body.idOrchestra}/campaigns/${req.body.idCampaign}/paypalSuccess`,
       },
     };
 
@@ -79,8 +80,10 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     );
 
-    res.status(201).json({ id: makeOrder.data.id, paymentLink: makeOrder.data.links[1].href });
-
+    res.status(201).json({
+      id: makeOrder.data.id,
+      paymentLink: makeOrder.data.links[1].href,
+    });
   } catch (error) {
     return res
       .status(500)

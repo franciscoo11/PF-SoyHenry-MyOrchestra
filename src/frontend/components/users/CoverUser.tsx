@@ -46,7 +46,7 @@ export default function UserCover({
         className="cover"
         style={{ backgroundImage: `url(${cover ? cover : "/user_cover.png"})` }}
       >
-        {user ? <UpdateUserCover email={email} user={user} /> : null}
+        {user ? <UpdateUserCover email={email} /> : null}
       </div>
 
       <div className="info">

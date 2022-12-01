@@ -106,7 +106,6 @@ export const UpdateUserLogo = ({ email }: any) => {
       let postData = {
         avatar: uploadImage.data.secure_url,
       };
-      console.log(postData);
 
       await axios.put(`/api/user/${email}`, postData);
       toast.success("Avatar actualizado correctamente", {

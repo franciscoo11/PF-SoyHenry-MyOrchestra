@@ -1,4 +1,4 @@
-import Cover from "../../../frontend/components/Cover";
+import Cover from "../../../frontend/components/orchestras/Cover";
 import MainNavBar from "../../../frontend/components/MainNavBar";
 import OrchestraPosts from "../../../frontend/components/OrchestraPosts";
 import Footer from "../../../frontend/components/Footer";

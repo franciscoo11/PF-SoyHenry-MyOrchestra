@@ -2,25 +2,27 @@ import axios from "axios";
 import React from "react";
 import { HOSTNAME } from "../../../../../pages/_app";
 import { useRouter } from "next/router";
-import { toast } from "react-toastify";
 import Cookies from "universal-cookie";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-interface IPaymentDetail {
-  paymentDetail: {
-    id: string;
-    status: string;
-    payerEmail: string;
-    name: string;
-    mount: string;
-    date: string;
-    idCampaign: string;
-  };
-}
+// interface IPaymentDetail {
+//   paymentDetail: {
+//     id: string;
+//     status: string;
+//     payerEmail: string;
+//     name: string;
+//     mount: string;
+//     date: string;
+//     idCampaign: string;
+//   };
+// }
 
-const paypalSuccess = ({ paymentDetail }: IPaymentDetail) => {
+const paypalSuccess = ({ paymentDetail, idOrchestra, idCampaign }: any) => {
   const router = useRouter();
   const cookie = new Cookies();
   const user = cookie.get("UserloginData");
+  console.log(paymentDetail);
 
   if (!paymentDetail) {
     toast.error(
@@ -54,13 +56,26 @@ const paypalSuccess = ({ paymentDetail }: IPaymentDetail) => {
       theme: "light",
     });
 
-    await axios.post(`/api/donation`, {
-      campaignId: "clazl9pd7000esdowmyesripq",
-      userId: user.id,
-      amount: paymentDetail.mount,
-      date: paymentDetail.date,
-      orchestraId: "claww4lat0003vg1wuau9d3dz",
-    });
+    await axios
+      .post(`/api/donation`, {
+        campaignId: idCampaign,
+        userId: user.id,
+        amount: paymentDetail.mount,
+        date: paymentDetail.date,
+        orchestraId: idOrchestra,
+      })
+      .catch(() =>
+        toast.error("Verifica los datos ingresados, y vuelve a intentar.", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        })
+      );
 
     router.push("/");
   };
@@ -81,13 +96,15 @@ const paypalSuccess = ({ paymentDetail }: IPaymentDetail) => {
 
 export async function getServerSideProps(context: any) {
   try {
+    const { id, campaign, payment_id } = context.query;
     const { data: response } = await axios.get(
-      `${HOSTNAME}/api/paypal/${context.query.token}`
+      `${HOSTNAME}/api/paypal/${payment_id}`
     );
-
     return {
       props: {
         paymentDetail: response,
+        idOrchestra: id,
+        idCampaign: campaign,
       },
     };
   } catch (error) {

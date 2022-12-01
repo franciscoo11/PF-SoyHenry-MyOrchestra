@@ -122,7 +122,12 @@ export async function getServerSideProps({ params }: any) {
       },
     });
 
-    return { props: { campaign: JSON.parse(JSON.stringify(campaign)), idOrchestra: params.id } };
+    return {
+      props: {
+        campaign: JSON.parse(JSON.stringify(campaign)),
+        idOrchestra: params.id,
+      },
+    };
   } catch (error) {
     console.log(error);
   }
@@ -259,9 +264,12 @@ function OrchestraCampaigns({ campaign, idOrchestra }: any) {
           <StyledEventCard>
             {display !== "" ? (
               display === "mercado" ? (
-                <DonationMercadoForm id={campaign.id} idOrchestra={idOrchestra} />
+                <DonationMercadoForm
+                  id={campaign.id}
+                  idOrchestra={idOrchestra}
+                />
               ) : (
-                <DonationForm id={campaign.id} />
+                <DonationForm id={campaign.id} idOrchestra={idOrchestra} />
               )
             ) : null}
           </StyledEventCard>

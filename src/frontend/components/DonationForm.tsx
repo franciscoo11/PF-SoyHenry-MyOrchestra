@@ -127,7 +127,7 @@ interface Values {
 //     }[];
 //   }
 
-export default function DonationForm({ id }: any) {
+export default function DonationForm({ id, idOrchestra }: any) {
   const router = useRouter();
   return (
     <>
@@ -150,7 +150,10 @@ export default function DonationForm({ id }: any) {
             //   console.log(values);
             // });
             try {
-              const pago = await axios.post(`/api/paypal`, values);
+              const pago = await axios.post(`/api/paypal`, {
+                idCampaign: values.idCampaign,
+                value: values.value,
+              });
               router.push(pago.data.link);
               console.log(pago.data);
               console.log(values);

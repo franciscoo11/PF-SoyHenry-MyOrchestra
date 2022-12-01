@@ -5,7 +5,7 @@ import AsideRight from "../../../frontend/components/orchestras/AsideRight";
 import { StyledMain } from "../../../frontend/styles/orchestras/sharedStyles";
 import { prisma } from "../../../../lib/prisma";
 import UserAsideLeft from "../../../frontend/components/users/AsideLeft";
-import UserCover from "../../../frontend/components/users/Cover";
+import UserCover from "../../../frontend/components/users/CoverUser";
 import EditUser from "../../../frontend/components/users/EditForm";
 
 export const getServerSideProps = async ({ params }: any) => {

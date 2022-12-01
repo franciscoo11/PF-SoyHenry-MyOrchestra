@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import Cover from "../../../frontend/components/Cover";
+import Cover from "../../../frontend/components/orchestras/Cover";
 import MainNavBar from "../../../frontend/components/MainNavBar";
 import Footer from "../../../frontend/components/Footer";
 import AsideLeft from "../../../frontend/components/orchestras/AsideLeft";

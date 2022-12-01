@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { UpdateCover } from "./orchestras/UpdateCover";
-import { prisma } from "../../../lib/prisma";
+import { UpdateCover } from "./UpdateCover";
+import { prisma } from "../../../../lib/prisma";
 
 const StyledDiv = styled.div`
   border-radius: 12px;
