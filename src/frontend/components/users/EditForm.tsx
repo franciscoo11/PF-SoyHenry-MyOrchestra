@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { HOSTNAME } from "../../../pages/_app";
-
+import Cookies from "universal-cookie";
 const StyledForm = styled.div`
   .form {
     box-sizing: border-box;
@@ -123,6 +123,7 @@ interface Values {
 }
 
 export default function EditUser({ user, orchestras, userRoles }: any) {
+  const cookies = new Cookies
   const router = useRouter();
 
   const {
@@ -179,7 +180,8 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
               city: values.city,
               first_time: false,
             };
-            await axios.put(`/api/user/${values.email}`, postUser);
+            cookies.set("UserloginData",await axios.put(`/api/user/${values.email}`, postUser))
+            
             console.log(values.email);
 
             toast.success("Datos actualizados correctamente", {
@@ -191,6 +193,7 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
               draggable: true,
               progress: undefined,
               theme: "light",
+
             });
             setSubmitting(false);
           } catch (error) {

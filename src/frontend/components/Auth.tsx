@@ -47,7 +47,6 @@ export default function Auth() {
         icon: 'info',
         timer:2500,
         allowOutsideClick:false,
-        
         focusConfirm: true,
         confirmButtonText:
           `<a href="/users/${emailUser}/edit">Ok</a>`,
