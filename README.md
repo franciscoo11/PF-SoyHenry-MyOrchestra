@@ -1,6 +1,6 @@
 <p align='center'>
     <kbd>
-    <img src='https://ibb.co/nCV3vJM' style="border-radius:50%"</img>
+    <img src='https://i.ibb.co/6BpvxC0/orquesta.png' style="border-radius:50%"</img>
     </kbd>
 </p>
 
