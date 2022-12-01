@@ -40,10 +40,12 @@ const StyledMain = styled.main`
         display: grid;
         grid-template-columns: repeat(9, minmax(0, 1fr));
         gap: 24px;
-        background-color: ${({ theme }) => theme.colors.secondary};
+        background-color: gray;
         padding: 12px;
         font-weight: bold;
         color: white;
+        position: sticky;
+        top: 52px;
 
         .logo {
           grid-column: 2/3;

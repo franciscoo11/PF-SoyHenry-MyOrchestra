@@ -8,6 +8,8 @@ const StyledNav = styled.nav`
   background-color: ${({ theme }) => theme.colors.secondary};
   color: white;
   padding: 12px;
+  position: sticky;
+  top: 0;
 
   .container {
     margin: 0 auto;
@@ -34,7 +36,7 @@ export default function NavAdmin(propr: any) {
         <div className="title">Dashboad</div>
         <div className="links">
           <div className="link-container">
-            <Link href="/admin/orchestras">Orquestas</Link>
+            <Link href="/admin/">Orquestas</Link>
           </div>
           <div className="link-container">
             <Link href="/admin/users">Usuarios </Link>
