@@ -45,5 +45,7 @@ export default function Auth():any {
       return <LoggedIn handlelogout={handlelogout} id={user?.email} />;
 
     }
+  }else{
+    return <LoggedIn handlelogout={handlelogout} id={user?.email} />;
   }
 }
