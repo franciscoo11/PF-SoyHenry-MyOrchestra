@@ -1,5 +1,7 @@
 <p align='center'>
-    <img src='https://www.kaunus.com/app/uploads/2021/04/M%C3%BAsica-cl%C3%A1sica-origen-hitos..-1.png' </img>
+    <kbd>
+    <img src='https://www.kaunus.com/app/uploads/2021/04/M%C3%BAsica-cl%C3%A1sica-origen-hitos..-1.png' style="border-radius:50%"</img>
+    </kbd>
 </p>
 
 # My Orchestras 
