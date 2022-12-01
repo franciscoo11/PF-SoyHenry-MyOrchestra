@@ -10,6 +10,8 @@ import { Campaigns, Posts, Users } from "../frontend/utils/fakeDB";
 import OpenCampaign from "../frontend/components/OpenCampaign";
 import OrchestraEventCard from "../frontend/components/OrchestraEventCard";
 import EventsHero from "../frontend/components/EventsHero";
+import EventHomeCard from "../frontend/components/EventHomeCard";
+import { useEffect, useState } from "react";
 
 const StyledMain = styled.main`
   margin: 24px auto;
@@ -47,6 +49,7 @@ const StyledMain = styled.main`
     .events {
       display: flex;
       flex-direction: column;
+
       gap: 24px;
     }
 
@@ -177,7 +180,37 @@ const StyledMain = styled.main`
   }
 `;
 
-const Events = ({ posts }: any) => {
+const Events = () => {
+  const [posts, setPosts] = useState({ results: 1, data: [] });
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 4;
+  const postType = "clanisuvd0010i5zzyrbr1nn0";
+
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`/api/post?type_PostId=${postType}&optionOrder=desc`)
+      .then((res: any) => setPosts(res.data))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const { data, results }: any = posts;
+  let pages = Math.ceil(results / itemsPerPage);
+
+  async function postAppend() {
+    if (currentPage < pages - 1) {
+      const nextPosts = await axios.get(
+        `/api/post?type_PostId=${postType}&optionOrder=desc&page=${
+          currentPage + 1
+        }`
+      );
+
+      setPosts({ ...posts, data: data.concat(nextPosts.data.data) });
+      setCurrentPage(currentPage + 1);
+    }
+  }
+
   return (
     <>
       <Head>
@@ -197,28 +230,12 @@ const Events = ({ posts }: any) => {
             </div>
           </div>
           <div className="events">
-            {Posts.map(
-              (
-                {
-                  title,
-                  content,
-                  media,
-                  event_location,
-                  event_day,
-                  event_hour,
-                },
-                index
-              ) => (
-                <OrchestraEventCard
-                  key={index}
-                  title={title}
-                  image={media}
-                  description={content}
-                  day={event_day}
-                  hour={event_hour}
-                  location={event_location}
-                />
-              )
+            {loading ? (
+              <p>Loading</p>
+            ) : (
+              data.map((evento: any) => (
+                <EventHomeCard key={evento.id} evento={evento} />
+              ))
             )}
           </div>
           <div className="pagination">
@@ -235,14 +252,3 @@ const Events = ({ posts }: any) => {
 };
 
 export default Events;
-
-export const getServerSideProps = async () => {
-  const res = await axios.get(`${HOSTNAME}/api/post`);
-  const posts = await res.data;
-
-  return {
-    props: {
-      posts,
-    },
-  };
-};

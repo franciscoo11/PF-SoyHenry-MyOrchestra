@@ -86,6 +86,7 @@ export const getPost = async (query:any) => {
     const dataonly =async(prop1:any, data1:any)=>{
       const data= await prisma.posts.findMany( 
         {
+          orderBy: {creation_date: "desc"},
         take: resources*1 ||4,
         skip: page*resources||page*4||0,
           where:{      
