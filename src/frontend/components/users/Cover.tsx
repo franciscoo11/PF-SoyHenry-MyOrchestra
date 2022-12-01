@@ -15,7 +15,6 @@ const StyledDiv = styled.div`
     height: 240px;
     background-size: cover;
     background-position: center;
-    filter: grayscale();
   }
 
   .title {

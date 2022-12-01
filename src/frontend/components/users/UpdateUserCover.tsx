@@ -108,7 +108,7 @@ export const UpdateUserCover = ({ email }: any) => {
           <FiCamera className="iborrainputfile" />
         </label>
       </div>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </StyledDiv>
   );
 };
