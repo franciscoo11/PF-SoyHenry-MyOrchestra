@@ -6,6 +6,7 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import { useEffect, useState } from "react";
 import UserComments from "./orchestras/UserComments";
+import {popupServerError} from "../utils/popups"
 
 const StyledDiv = styled.div`
   width: 100%;
@@ -211,7 +212,7 @@ export default function OrchestraPosts({
   async function getReactions() {
     await axios.get("/api/reaction").then((response) => {
       setReactions(response.data);
-    });
+    }).catch(()=>popupServerError());
   }
 
   const handlePostReaction = async (
@@ -222,7 +223,7 @@ export default function OrchestraPosts({
     await axios.post(`/api/post-reaction?id=${post_id}`, {
       userId: user_id,
       reactionId: reaction_id,
-    });
+    }).catch(()=>popupServerError());
     const auxPostCount =
       countReactions[reaction_id as keyof typeof countReactions];
     setCountReaction(countReaction + 1);
@@ -233,7 +234,7 @@ export default function OrchestraPosts({
     if (!user_id) return [];
     await axios.delete(`/api/post-reaction?id=${post_id}`, {
       data: { userId: user_id, reactionId: id },
-    });
+    }).catch(()=>popupServerError());
     const auxRemoveCount = countReactions[id as keyof typeof countReactions];
     setCountReaction(countReaction - 1);
 
@@ -246,7 +247,7 @@ export default function OrchestraPosts({
   const findReactions = async () => {
     await axios
       .get(`/api/post-reaction?userId=${dataUser.id}`)
-      .then((response) => setUserReactions(response.data));
+      .then((response) => setUserReactions(response.data)).catch(()=>popupServerError());
   };
 
   const findReactionMap = (post_Id: any, user_id: any, reaction_Id: any) => {
@@ -267,7 +268,7 @@ export default function OrchestraPosts({
     findReactions();
     axios
       .get(`/api/user?userId=${userCreator}`)
-      .then((res) => setUsername(res.data.name));
+      .then((res) => setUsername(res.data.name)).catch(()=>popupServerError());
   }, [countReaction]);
   return (
     <StyledDiv>
@@ -368,7 +369,7 @@ export default function OrchestraPosts({
                 setCommentPosted(false);
                 axios
                   .post("/api/comment", values)
-                  .then(() => setCommentPosted(true));
+                  .then(() => setCommentPosted(true)).catch(()=>popupServerError());
                 setSubmitting(false);
               }}
             >

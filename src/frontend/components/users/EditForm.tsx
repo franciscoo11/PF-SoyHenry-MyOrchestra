@@ -113,7 +113,6 @@ const StyledForm = styled.div`
 interface Values {
   name: string;
   email: string;
-  password: string;
   avatar?: string;
   cover?: string;
   city: string;
@@ -146,7 +145,6 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
         initialValues={{
           name: name ? name : "",
           email: email ? email : "",
-          password: "Jose100105.123.",
           country: country ? country : "",
           state: state ? state : "",
           city: city ? city : "",
@@ -176,7 +174,6 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
             let postUser = {
               name: values.name,
               email: values.email,
-              password: values.password,
               country: values.country,
               state: values.state,
               city: values.city,

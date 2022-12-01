@@ -7,6 +7,7 @@ import { prisma } from "../../../../lib/prisma";
 import UserAsideLeft from "../../../frontend/components/users/AsideLeft";
 import UserCover from "../../../frontend/components/users/Cover";
 import EditUser from "../../../frontend/components/users/EditForm";
+import Cookies from "universal-cookie";
 
 export const getServerSideProps = async ({ params }: any) => {
   try {
@@ -31,6 +32,9 @@ export const getServerSideProps = async ({ params }: any) => {
 };
 
 export default function User({ user, orchestras, userRoles }: any) {
+  const cookie = new Cookies
+
+  const dataUserCookie = cookie.get("UserloginData")
   const router = useRouter();
   const {
     avatar,
@@ -47,7 +51,8 @@ export default function User({ user, orchestras, userRoles }: any) {
 
   return (
     <>
-      <MainNavBar />
+{dataUserCookie?(!dataUserCookie.first_time?<MainNavBar />:null):null}
+      
 
       <StyledMain>
         <aside className="aside-left">

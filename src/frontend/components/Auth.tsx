@@ -28,7 +28,6 @@ export default function Auth() {
     return <LoggedOut />;
   } else if (cookie.get("UserloginData")) {
     if (!cookie.get("UserloginData").is_active) {
-
       cookie.remove("Userlogin");
       cookie.remove("UserloginData");
       setLoging(cookie.get("Userlogin"));  
@@ -41,9 +40,23 @@ export default function Auth() {
         confirmButtonText:
           '<a href="/bannedPage">Ok</a>',
       }).then(()=>{window.location.href="/bannedPage"})  
+    }else if (cookie.get("UserloginData").first_time==true) {
+      const emailUser=cookie.get("UserloginData").email
+      Swal.fire({
+        title: '<strong> <u>Aún no has completado tus datos</u></strong>',
+        icon: 'info',
+        timer:2500,
+        allowOutsideClick:false,
+        
+        focusConfirm: true,
+        confirmButtonText:
+          `<a href="/users/${emailUser}/edit">Ok</a>`,
+      }).then(()=>{window.location.href=`/users/${emailUser}/edit`}) 
+      return <LoggedIn handlelogout={handlelogout} id={user?.email} />;
     }else{
       return <LoggedIn handlelogout={handlelogout} id={user?.email} />;
-
     }
+  }else{
+    return <LoggedIn handlelogout={handlelogout} id={user?.email} />;
   }
 }
