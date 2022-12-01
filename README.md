@@ -1,6 +1,6 @@
 <p align='center'>
     <kbd>
-    <img src='https://www.kaunus.com/app/uploads/2021/04/M%C3%BAsica-cl%C3%A1sica-origen-hitos..-1.png' style="border-radius:50%"</img>
+    <img src='https://ibb.co/nCV3vJM' style="border-radius:50%"</img>
     </kbd>
 </p>
 
