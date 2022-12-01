@@ -165,13 +165,28 @@ const StyledDiv = styled.div`
       gap: 5px;
       transition: 0.3s;
     }
+    
     .reaction-img-nochoose {
       width: 10px;
       height: 10px;
       gap: 5px;
       transition: 0.2s;
     }
+    .reaction-img-nochoose:hover{
+      width: 20px;
+      height: 20px;
+      gap: 10px;
+      transition: 0.5s;
+    } 
   }
+  .reaction-button{
+    background-color: transparent;
+    color: black;
+    cursor: pointer;
+    border: none;
+    
+  }
+ 
 `;
 
 export default function OrchestraPosts({
@@ -302,13 +317,16 @@ export default function OrchestraPosts({
             </p>
           </div>
           <div>
+         
             {user ? (
+              
               <div>
+             
                 {reactions.map((data) => {
                   let id_aux_reaction: any = data.id;
                   return findReactionMap(id, dataUser.id, data.id) ==
                     data.id ? (
-                    <button
+                    <button className="reaction-button"
                       key={data.id}
                       onClick={() =>
                         handleRemoveReaction(dataUser.id, id, data.id)
