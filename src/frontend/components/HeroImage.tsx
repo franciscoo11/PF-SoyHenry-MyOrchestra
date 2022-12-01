@@ -10,21 +10,34 @@ const HeroContainer = styled.div`
 	.content {
 		height: 450px;
 		margin: 0 auto;
-		width: 100%;
+		width: 90%;
 		gap: 24px;
+		@media (max-width: 992px) {
+			height: unset;
+		}
 
 		.cover-art {
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			@media (max-width: 992px) {
+				flex-direction: column;
+				gap: 100px;
+				padding: 25px 0;
+			}
 
 			.mapa {
 				max-height: 440px;
+				max-width: 40%;
 			}
 			.isologo {
-				height: 65px;
+				max-height: 65px;
+				max-width: 60%;
 				margin-left: 50px;
 				margin-top: -70px;
+				@media (max-width: 992px) {
+					margin-left: 20px;
+				}
 			}
 		}
 	}

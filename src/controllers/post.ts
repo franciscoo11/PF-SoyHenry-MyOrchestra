@@ -16,7 +16,9 @@ export const getPost = async (query:any) => {
         },
         include:{
           comments:true,
-          user_reaction:true
+          user_reaction:true,
+          Orchestra: true,
+          user: true
           
         }
         })
@@ -34,7 +36,10 @@ export const getPost = async (query:any) => {
           },
           include:{
             comments:true,
-            user_reaction:true
+            user_reaction:true,
+            Orchestra: true,
+            user: true
+            
         }
         })
   
@@ -63,7 +68,9 @@ export const getPost = async (query:any) => {
           },
           include:{
             user_reaction:true,
-            comments:true
+            comments:true,
+            Orchestra: true,
+            user: true
         }
         })
       const results = (await prisma.posts.findMany(
@@ -79,6 +86,7 @@ export const getPost = async (query:any) => {
     const dataonly =async(prop1:any, data1:any)=>{
       const data= await prisma.posts.findMany( 
         {
+          orderBy: {creation_date: "desc"},
         take: resources*1 ||4,
         skip: page*resources||page*4||0,
           where:{      
@@ -86,7 +94,10 @@ export const getPost = async (query:any) => {
           },
           include:{
             user_reaction:true,
-            comments:true
+            comments:true,
+            Orchestra: true,
+            user: true
+            
           }
         })
 

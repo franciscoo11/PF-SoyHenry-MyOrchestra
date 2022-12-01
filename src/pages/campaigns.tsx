@@ -1,13 +1,12 @@
 import Head from "next/head";
 import MainNavBar from "../frontend/components/MainNavBar";
 import styled from "styled-components";
-import axios from "axios";
 import Footer from "../frontend/components/Footer";
-import { HOSTNAME } from "./_app";
 import CampaignHero from "../frontend/components/CampaignHero";
 import OrchestraCampaignCard from "../frontend/components/OrchestraCampaignCard";
 import { Campaigns, Posts, Users } from "../frontend/utils/fakeDB";
 import OpenCampaign from "../frontend/components/OpenCampaign";
+import { prisma } from "./../../lib/prisma";
 
 const StyledMain = styled.main`
   margin: 24px auto;
@@ -93,6 +92,7 @@ const StyledMain = styled.main`
         color: white;
         border: none;
         border-radius: 6px;
+        display: block;
 
         :hover {
           filter: brightness(110%);
@@ -175,17 +175,13 @@ const StyledMain = styled.main`
   }
 `;
 
-const Campañas = ({ campaign }: any) => {
+const Campañas = ({ campaigns }: any) => {
   return (
     <>
       <Head>
         <title>
           Campañas benéficas para Orquestas Populares Latinoamericanas
         </title>
-        <style>
-          @import
-          url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
-        </style>
       </Head>
       <MainNavBar />
       <CampaignHero />
@@ -198,18 +194,18 @@ const Campañas = ({ campaign }: any) => {
             </div>
           </div>
           <div className="campaigns">
-            {Campaigns.map(
-              ({ title, description, media, goal_amount, end_date }, index) => (
-                <OrchestraCampaignCard
-                  key={index}
-                  title={title}
-                  end={end_date}
-                  image={media}
-                  description={description}
-                  goal={goal_amount}
-                />
-              )
-            )}
+            {campaigns.map((campaign: any) => (
+              <OrchestraCampaignCard
+                key={campaign.id}
+                title={campaign.title}
+                end={campaign.end_date}
+                description={campaign.description}
+                goal={campaign.goal_amount}
+                id={campaign.id}
+                orchestraId={campaign.orchestraId}
+                donations={campaign.donations}
+              />
+            ))}
           </div>
           <div className="pagination">
             <button className="more-btn">Mostrar más</button>
@@ -227,12 +223,16 @@ const Campañas = ({ campaign }: any) => {
 export default Campañas;
 
 export const getServerSideProps = async () => {
-  const res = await axios.get(`${HOSTNAME}/api/campaign`);
-  const campaign = await res.data;
+  const campaigns = await prisma.campaigns.findMany({
+    orderBy: { end_date: "asc" },
+    include: {
+      donations: true,
+    },
+  });
 
   return {
     props: {
-      campaign,
+      campaigns: JSON.parse(JSON.stringify(campaigns)),
     },
   };
 };

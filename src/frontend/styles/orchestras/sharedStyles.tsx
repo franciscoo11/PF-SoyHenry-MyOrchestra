@@ -301,6 +301,12 @@ const StyledMain = styled.main`
       text-align: center;
       border-radius: 6px;
 
+      .donate-btn-container {
+        .donate-link-aside {
+          display: block;
+        }
+      }
+
       .donate-btn,
       .campaign-btn {
         background-color: ${({ theme }) => theme.colors.secondary};
@@ -310,6 +316,7 @@ const StyledMain = styled.main`
         color: white;
         border: none;
         border-radius: 6px;
+        display: block;
 
         :hover {
           filter: brightness(110%);
@@ -384,13 +391,13 @@ const StyledMain = styled.main`
           border-radius: 12px;
           margin-bottom: 24px;
 
-          .campaign-current-progress-bar {
+          /* .campaign-current-progress-bar {
             width: 24%;
             height: 12px;
             background-color: ${({ theme }) => theme.colors.secondary};
             opacity: 50%;
             border-radius: 12px;
-          }
+          } */
         }
       }
 
