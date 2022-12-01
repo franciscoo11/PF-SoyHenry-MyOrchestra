@@ -1,156 +1,171 @@
-import axios from "axios";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import Cookies from "universal-cookie";
+import axios from 'axios';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import Cookies from 'universal-cookie';
 
 const filesLogo =
-  "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668090828/abrir-documento_ifj9cl.png";
+	'https://res.cloudinary.com/dzup1ckpy/image/upload/v1668090828/abrir-documento_ifj9cl.png';
 const commentLogo =
-  "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668090834/comentario_bfcnha.png";
+	'https://res.cloudinary.com/dzup1ckpy/image/upload/v1668090834/comentario_bfcnha.png';
 const viewsLogo =
-  "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668090840/vista_j8t6ku.png";
+	'https://res.cloudinary.com/dzup1ckpy/image/upload/v1668090840/vista_j8t6ku.png';
 
 const CardStyle = styled.div`
-  box-sizing: border-box;
-  border: 1px solid lightgray;
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 12px;
-  border-radius: 12px;
+	box-sizing: border-box;
+	border: 1px solid ${({ theme }) => theme.colors.lines};
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	border-radius: 8px;
 
-  .card-header {
-    height: 240px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+	.card-header {
+		height: 170px;
+	}
 
-  .card-content {
-    display: flex;
-    flex-direction: column;
+	.card-header img {
+		border-top-left-radius: 8px;
+		border-top-right-radius: 8px;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
 
-    p,
-    h2,
-    h3 {
-      margin: 0;
-    }
-  }
-  .card-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+	.card-content {
+		padding: 0 24px 24px 24px;
+	}
+	.separator {
+		height: 1px;
+		width: 100%;
+		background-color: ${({ theme }) => theme.colors.lines};
+		margin-bottom: 20px;
+	}
+	.orqLocation {
+		font-size: 12px;
+		font-weight: 900;
+		text-transform: uppercase;
+		color: ${({ theme }) => theme.colors.light};
+	}
+	.orqTitle {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		font-size: 20px;
+		font-weight: 700;
+	}
 
-  img {
-    max-width: 100%;
-    max-height: 240px;
-  }
+	.description {
+		font-size: 16px;
+		font-weight: 300;
+		color: ${({ theme }) => theme.colors.light};
+		min-height: 115px;
+	}
 
-  .card-counters-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 10px;
-  }
+	.card-counters-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		margin-bottom: 10px;
+	}
 
-  h3 {
-    color: #9b9797;
-  }
+	.card-counter {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
 
-  .card-counter {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+	.card-btn-container {
+		.card-btn {
+			background-color: ${({ theme }) => theme.colors.secondary};
+			text-align: center;
+			display: block;
+			width: 100%;
+			padding: 12px;
+			font-size: 1em;
+			color: white;
+			border: none;
+			border-radius: 6px;
 
-  .card-btn-container {
-    .card-btn {
-      background-color: ${({ theme }) => theme.colors.secondary};
-      text-align: center;
-      display: block;
-      width: 100%;
-      padding: 12px;
-      font-size: 1em;
-      color: white;
-      border: none;
-      border-radius: 6px;
-
-      :hover {
-        filter: brightness(110%);
-        cursor: pointer;
-      }
-    }
-  }
+			:hover {
+				filter: brightness(110%);
+				cursor: pointer;
+			}
+		}
+	}
 `;
 
 function HomeCards(props: any) {
-const cookie = new Cookies
+	const cookie = new Cookies();
 
-const dataexist = async ()=>{
- return  await axios.get(`/api/favorites/${cookie.get("UserloginData").id}`, { params: { orchestra_id: props.id } }).then(response=>response.data )
-   
-}
-  const handleClickFavorite= async ()=>{
-    const responsExist= await dataexist()
-    if(responsExist){
-      axios.put(`/api/favorites/${cookie.get("UserloginData").id}`, { orchestra_id: props.id } ).then(response=>response.data )
-    }
+	const dataexist = async () => {
+		return await axios
+			.get(`/api/favorites/${cookie.get('UserloginData').id}`, {
+				params: { orchestra_id: props.id },
+			})
+			.then((response) => response.data);
+	};
+	const handleClickFavorite = async () => {
+		const responsExist = await dataexist();
+		if (responsExist) {
+			axios
+				.put(`/api/favorites/${cookie.get('UserloginData').id}`, {
+					orchestra_id: props.id,
+				})
+				.then((response) => response.data);
+		}
 
-    await axios.post("/api/favorites",{
-      orchestra_id:props.id,
-      user_id:cookie.get("UserloginData").id
-    })
-  }
-   
+		await axios.post('/api/favorites', {
+			orchestra_id: props.id,
+			user_id: cookie.get('UserloginData').id,
+		});
+	};
 
-  return (
-    <>
-      <CardStyle>
-        <div className="card-header">
-          <Link href={`/orchestras/${encodeURIComponent(props.id)}`}>
-            <img src={props.image} alt={props.title} />
-          </Link>
-        </div>
-        <div className="card-content">
-          <h3>{props.subtitle}</h3>
-          <h2 className="card-title">{props.title}</h2>
-          <p>{props.content}...</p>
-        </div>
-        <div className="card-footer">
-          <div className="card-counters-container">
-            <div className="card-counter">
-              <img src={viewsLogo} width="25%" />
-              <div>1234 </div>
-            </div>
-            <div className="card-counter">
-              <img src={commentLogo} width="25%" />
-              <div>7 </div>
-            </div>
-            <div className="card-counter">
-              <img src={filesLogo} width="25%" />
-              <div>7</div>
-            </div>
-          </div>
-          <div className="card-btn-container">
-            <button onClick={()=>handleClickFavorite()}>
-            <a>♡</a>
-            </button>
-            <Link
-              href={`/orchestras/${encodeURIComponent(props.id)}`}
-              legacyBehavior
-            >
-              <a className="card-btn">Ver más</a>
-            </Link>
-          
-          </div>
-        </div>
-      </CardStyle>
-    </>
-  );
+	return (
+		<>
+			<CardStyle>
+				<div className='card-header'>
+					<Link href={`/orchestras/${encodeURIComponent(props.id)}`}>
+						<img src={props.image} alt={props.title} />
+					</Link>
+				</div>
+				<div className='card-content'>
+					<div className='separator'></div>
+					<div className='orqLocation'>{props.subtitle}</div>
+					<div className='orqTitle'>{props.title}</div>
+					<p className='description'>{props.content}...</p>
+
+					<div className='card-footer'>
+						<div className='card-counters-container'>
+							<div className='card-counter'>
+								<img src={viewsLogo} width='25%' />
+								<div>1234 </div>
+							</div>
+							<div className='card-counter'>
+								<img src={commentLogo} width='25%' />
+								<div>7 </div>
+							</div>
+							<div className='card-counter'>
+								<img src={filesLogo} width='25%' />
+								<div>7</div>
+							</div>
+						</div>
+						<div className='card-btn-container'>
+							<button onClick={() => handleClickFavorite()}>
+								<a>♡</a>
+							</button>
+							<Link
+								href={`/orchestras/${encodeURIComponent(props.id)}`}
+								legacyBehavior
+							>
+								<a className='card-btn'>Ver más</a>
+							</Link>
+						</div>
+					</div>
+				</div>
+			</CardStyle>
+		</>
+	);
 }
 
 export default HomeCards;

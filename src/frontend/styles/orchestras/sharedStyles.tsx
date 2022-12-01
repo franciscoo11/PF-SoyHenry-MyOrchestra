@@ -1,6 +1,7 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const StyledMain = styled.main`
+
   margin: 25px auto;
   width: 100%;
   max-width: 1440px;
@@ -407,6 +408,7 @@ const StyledMain = styled.main`
       }
     }
   }
+
 `;
 
 export { StyledMain };

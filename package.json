@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.2",
+    "@next/font": "^13.0.5",
     "@prisma/client": "^4.6.1",
     "@types/bcryptjs": "^2.4.2",
     "@types/node": "18.11.9",
