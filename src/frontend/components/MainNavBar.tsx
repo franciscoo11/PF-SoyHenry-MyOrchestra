@@ -27,7 +27,7 @@ const NavStyle = styled.header`
 			display: none;
 			justify-content: space-between;
 			align-items: center;
-			gap: 40px;
+			gap: 15px;
 		}
 
 		.mobileNav img {
