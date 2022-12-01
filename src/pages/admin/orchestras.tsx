@@ -3,138 +3,88 @@ import OrchestraCards from "../../frontend/components/admin/orchestraCard";
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { prisma } from "../../../lib/prisma";
+
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 
 const StyledMain = styled.main`
-  margin: 25px auto;
-  width: 100%;
+  width: 90%;
   max-width: 1440px;
+  background-color: #f5f5f5;
   display: grid;
-  grid-template-columns: repeat(16, minmax(0, 1fr));
-  gap: 24px;
-  padding: 0 80px;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 12px;
+  margin: 24px auto;
 
   .content {
-    grid-column: 1/17;
-
-    .nav-btn {
-      padding: 12px;
-      font-size: 12px;
-      border: 1px solid lightgray;
-      border-radius: 12px;
-      font-weight: bold;
-      background-color: white;
-      margin: 12px;
-
-      :hover {
-        cursor: pointer;
-        background-color: ${({ theme }) => theme.colors.secondary};
-        color: white;
-        &:disabled {
-          cursor: unset;
-          color: lightgray;
-          background-color: white;
-        }
-      }
-
-      :disabled {
-        cursor: unset;
-        color: lightgray;
-      }
-    }
+    margin: 24px auto;
+    grid-column: 1/10;
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    gap: 24px;
 
     .filters-container {
-      margin: 24px 0;
+      grid-column: 1/10;
       display: flex;
-      justify-content: center;
-      gap: 24px;
-
-      .dropbtn,
-      .reset-btn {
-        padding: 12px;
-        font-size: 12px;
-        border: 1px solid lightgray;
-        border-radius: 12px;
-        font-weight: bold;
-        background-color: white;
-      }
-
-      .reset-btn {
-        :hover {
-          cursor: pointer;
-          background-color: ${({ theme }) => theme.colors.secondary};
-          color: white;
-        }
-      }
-
-      .dropdown {
-        position: relative;
-        display: inline-block;
-      }
-
-      .dropdown-content {
-        display: none;
-        position: absolute;
-        min-width: 120px;
-        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-        font-size: 0.8em;
-      }
-
-      .dropdown-content a {
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        background-color: white;
-      }
-
-      /* Change color of dropdown links on hover */
-      .dropdown-content a:hover {
-        background-color: #f1f2f6;
-        cursor: pointer;
-      }
-
-      /* Show the dropdown menu on hover */
-      .dropdown:hover .dropdown-content {
-        display: block;
-      }
-
-      /* Change the background color of the dropdown button when the dropdown content is shown */
-      .dropdown:hover .dropbtn {
-        background-color: #f1f2f6;
-      }
+      justify-content: space-evenly;
     }
 
     .orquestas {
-      width: 100%;
+      grid-column: 1/10;
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(9, minmax(0, 1fr));
       gap: 24px;
 
-      .search-alert,
-      .loading-msg {
-        grid-column: 1/5;
-        margin: 242px auto;
-        font-size: 2em;
-      }
-    }
+      .heads-container {
+        grid-column: 1/10;
+        display: grid;
+        grid-template-columns: repeat(9, minmax(0, 1fr));
+        gap: 24px;
+        background-color: gray;
+        padding: 12px;
+        font-weight: bold;
+        color: white;
+        position: sticky;
+        top: 52px;
 
-    .paginacion {
-      margin: 15px 0;
-      display: flex;
-      justify-content: center;
+        .logo {
+          grid-column: 2/3;
+          display: flex;
+          align-items: center;
+          img {
+            width: 48px;
+            height: auto;
+          }
+        }
+
+        .info {
+          grid-column: 3/7;
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          div {
+            display: flex;
+            justify-content: center;
+          }
+        }
+
+        .actions {
+          grid-column: 8/9;
+          display: flex;
+          align-items: center;
+        }
+      }
+      .list-container {
+        grid-column: 1/10;
+      }
     }
   }
 `;
 
-export default function AdminOrchestras({orchestraTypes}: any) {
+export default function AdminOrchestras({ orchestraTypes }: any) {
   const [orchestras, setOrchestras] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [change, setChange] = useState("")
+  const [change, setChange] = useState("");
   const itemsPerPage = 4;
   const router = useRouter();
   const searchQuery = router.asPath.split("?").pop();
@@ -142,25 +92,25 @@ export default function AdminOrchestras({orchestraTypes}: any) {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`/api/orchestra?admin=true&${searchQuery}`)
+      .get(`/api/orchestra?admin=true&${searchQuery}&resources=100`)
       .then((res) => setOrchestras(res.data))
       .finally(() => setLoading(false))
       .catch(() => {
         Swal.fire({
-          title: '<strong> <u>No hay orquestas</u></strong>',
-          icon: 'error',
-          allowOutsideClick:false,
+          title: "<strong> <u>No hay orquestas</u></strong>",
+          icon: "error",
+          allowOutsideClick: false,
           focusConfirm: true,
-          timer:2500,
-          confirmButtonText:
-            '<a href="/bannedPage">Ok</a>',
-        }).then(()=>{window.location.href="/admin"})
-      })
+          timer: 2500,
+          confirmButtonText: '<a href="/bannedPage">Ok</a>',
+        }).then(() => {
+          window.location.href = "/admin";
+        });
+      });
   }, [searchQuery]);
 
   const { data = [], results = 1 }: any = orchestras;
   let pages = Math.ceil(results / itemsPerPage);
-
 
   const nextPage = () => {
     if (currentPage < pages - 1) {
@@ -240,11 +190,11 @@ export default function AdminOrchestras({orchestraTypes}: any) {
   return (
     <>
       <Head>
-        <title>Listado de Orquestas Populares de Música Latinoamericana</title>
+        <title>Dashboard - Orquestas Populares de Música Latinoamericana</title>
       </Head>
       <StyledMain>
         <section className="content">
-          <div className="filters-container">
+          {/* <div className="filters-container">
             <div className="dropdown">
               <button className="dropbtn">Tipo de Orquesta</button>
               <div className="dropdown-content">
@@ -278,29 +228,38 @@ export default function AdminOrchestras({orchestraTypes}: any) {
                 Restablecer
               </button>
             </div>
-          </div>
+          </div> */}
           <div className="orquestas">
-            {loading ? (
-              <p className="loading-msg">Loading...</p>
-            ) : data.length > 0 ? (
-              data.map((orquesta: any, index: number) => (
-                <OrchestraCards
-                  key={orquesta.id}
-                  id={orquesta.id}
-                  title={orquesta.name}
-                  subtitle={orquesta.location}
-                  content={orquesta.description.substr(0, 150)}
-                  image={orquesta.logo}
-                  is_active={orquesta.is_active}
-                  // handleClickLogicDelete={handleClickLogicDelete}
-
-                />
-              ))
-            ) : (
-              <p className="search-alert">Sin coincidencias</p>
-            )}
+            <div className="heads-container">
+              <div className="logo">LOGO</div>
+              <div className="info">
+                <div className="nombre">ORQUESTA</div>
+                <div className="pais">PAIS</div>
+              </div>
+              <div className="actions">ACCIONES</div>
+            </div>
+            <div className="list-container">
+              {loading ? (
+                <p className="loading-msg">Loading...</p>
+              ) : data.length > 0 ? (
+                data.map((orquesta: any, index: number) => (
+                  <OrchestraCards
+                    key={orquesta.id}
+                    id={orquesta.id}
+                    title={orquesta.name}
+                    subtitle={orquesta.location}
+                    content={orquesta.description.substr(0, 150)}
+                    image={orquesta.logo}
+                    is_active={orquesta.is_active}
+                    // handleClickLogicDelete={handleClickLogicDelete}
+                  />
+                ))
+              ) : (
+                <p className="search-alert">Sin coincidencias</p>
+              )}
+            </div>
           </div>
-          <div className="paginacion">
+          {/* <div className="paginacion">
             <button
               className="nav-btn"
               onClick={prevPage}
@@ -315,16 +274,9 @@ export default function AdminOrchestras({orchestraTypes}: any) {
             >
               Siguiente
             </button>
-          </div>
+          </div> */}
         </section>
       </StyledMain>
     </>
   );
-}
-
-export async function getServerSideProps() {
-  const orchestraTypes = await prisma.orchestra_type.findMany();
-  return {
-    props: { orchestraTypes },
-  };
 }

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { prisma } from "../../../lib/prisma";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
+import NavAdmin from "../../frontend/components/admin/navAdmin";
 
 const StyledMain = styled.main`
   margin: 25px auto;
@@ -132,11 +133,11 @@ const StyledMain = styled.main`
 
 export default function AdminDonation(props: any) {
   const [donations, setDonations] = useState([]);
-//   const [currentPage, setCurrentPage] = useState(0);
+  //   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(true);
-//   const itemsPerPage = 4;
+  //   const itemsPerPage = 4;
   const router = useRouter();
-//   const searchQuery = router.asPath.split("?").pop();
+  //   const searchQuery = router.asPath.split("?").pop();
 
   useEffect(() => {
     setLoading(true);
@@ -146,25 +147,24 @@ export default function AdminDonation(props: any) {
       .finally(() => setLoading(false))
       .catch(() => {
         Swal.fire({
-          title: '<strong> <u>No hay donaciones</u></strong>',
-          icon: 'error',
-          allowOutsideClick:false,
+          title: "<strong> <u>No hay donaciones</u></strong>",
+          icon: "error",
+          allowOutsideClick: false,
           focusConfirm: true,
-          timer:2500,
-          confirmButtonText:
-            '<a href="/bannedPage">Ok</a>',
-        }).then(()=>{window.location.href="/admin"})
-      })
+          timer: 2500,
+          confirmButtonText: '<a href="/bannedPage">Ok</a>',
+        }).then(() => {
+          window.location.href = "/admin";
+        });
+      });
   }, []);
-
- 
-
 
   return (
     <>
       <Head>
         <title>Listado de Usuarios</title>
       </Head>
+      <NavAdmin />
       <StyledMain>
         <section className="content">
           <div className="orquestas">

@@ -2,165 +2,118 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import Cookies from "universal-cookie";
 import Swal from "sweetalert2";
 
-const filesLogo =
-  "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668090828/abrir-documento_ifj9cl.png";
-const commentLogo =
-  "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668090834/comentario_bfcnha.png";
-const viewsLogo =
-  "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668090840/vista_j8t6ku.png";
-
 const CardStyle = styled.div`
-  box-sizing: border-box;
-  border: 1px solid lightgray;
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 12px;
-  border-radius: 12px;
+  width: 100%;
+  max-width: 1440px;
+  background-color: #f5f5f5;
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 24px;
 
-  .card-header {
-    height: 240px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  .element-container {
+    grid-column: 1/10;
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    gap: 24px;
+    padding: 6px;
+    border-bottom: 2px solid gray;
 
-  .card-content {
-    display: flex;
-    flex-direction: column;
-
-    p,
-    h2,
-    h3 {
-      margin: 0;
-    }
-  }
-  .card-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  img {
-    max-width: 100%;
-    max-height: 240px;
-  }
-
-  .card-counters-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 10px;
-  }
-
-  h3 {
-    color: #9b9797;
-  }
-
-  .card-counter {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .card-btn-container {
-    .card-btn {
-      background-color: ${({ theme }) => theme.colors.secondary};
-      text-align: center;
-      display: block;
-      width: 100%;
-      padding: 12px;
-      font-size: 1em;
-      color: white;
-      border: none;
-      border-radius: 6px;
-
-      :hover {
-        filter: brightness(110%);
-        cursor: pointer;
+    .card-header {
+      grid-column: 2/3;
+      display: flex;
+      align-items: center;
+      img {
+        width: 48px;
+        height: auto;
       }
+    }
+
+    .card-content {
+      grid-column: 3/7;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      div {
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    .card-footer {
+      grid-column: 8/10;
+      display: flex;
+      align-items: center;
     }
   }
 `;
 
 function OrchestraCards(props: any) {
-   
-    const logicDelete = async ()=>{
-    return await axios.patch(`/api/orchestra/${props.id}`).then(response=>response.data )  
-    }
-    const handleClickLogicDelete= async ()=>{
-    const response = await logicDelete()
-    window.location.href = window.location.href
-    return response
-    }
-  
-    
+  const logicDelete = async () => {
+    return await axios
+      .patch(`/api/orchestra/${props.id}`)
+      .then((response) => response.data);
+  };
+  const handleClickLogicDelete = async () => {
+    const response = await logicDelete();
+    window.location.href = window.location.href;
+    return response;
+  };
 
-    const deleteReal = async ()=>{  
-    return await axios.delete(`/api/orchestra/${props.id}`).then(response=>response.data )  
-    }
-    const handleClickDeleteReal= async ()=>{
-        Swal.fire({
-          title: 'Estas seguro de eliminar esta orquesta?',
-          showDenyButton: true,
-          showCancelButton: true,
-          confirmButtonText: 'Confirmar',
-          denyButtonText: `Cancelar`,
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            const response= await deleteReal()
-            Swal.fire('Eliminada!', '', 'success')
-            return response
-          } else if (result.isDenied) {
-            Swal.fire('Los cambios no fueron guardados', '', 'info')
-          }
-        })
-    }
-
-   
+  const deleteReal = async () => {
+    return await axios
+      .delete(`/api/orchestra/${props.id}`)
+      .then((response) => response.data);
+  };
+  const handleClickDeleteReal = async () => {
+    Swal.fire({
+      title: "Estas seguro de eliminar esta orquesta?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Confirmar",
+      denyButtonText: `Cancelar`,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await deleteReal();
+        Swal.fire("Eliminada!", "", "success");
+        return response;
+      } else if (result.isDenied) {
+        Swal.fire("Los cambios no fueron guardados", "", "info");
+      }
+    });
+  };
 
   return (
     <>
       <CardStyle>
-        <div className="card-header">
-          <Link href={`/orchestras/${encodeURIComponent(props.id)}`}>
-            <img src={props.image} alt={props.title} />
-          </Link>
-        </div>
-        <div className="card-content">
-          <h3>{props.subtitle}</h3>
-          <h2 className="card-title">{props.title}</h2>
-          <p>{props.content}...</p>
-        </div>
-        <div className="card-footer">
-          <div className="card-counters-container">
-            <div className="card-counter">
-              <img src={viewsLogo} width="25%" />
-              <div>1234 </div>
+        <div className="element-container">
+          <div className="card-header">
+            <Link href={`/orchestras/${encodeURIComponent(props.id)}`}>
+              <img src={props.image} alt={props.title} />
+            </Link>
+          </div>
+          <div className="card-content">
+            <div className="orchestra-name">
+              <p className="card-title">{props.title}</p>
             </div>
-            <div className="card-counter">
-              <img src={commentLogo} width="25%" />
-              <div>7 </div>
-            </div>
-            <div className="card-counter">
-              <img src={filesLogo} width="25%" />
-              <div>7</div>
+            <div className="location">
+              <p>{props.subtitle}</p>
             </div>
           </div>
-          <div className="card-btn-container">
-            {props.is_active ? <button onClick={()=>handleClickLogicDelete()}>
-            <a>Desactivar</a>
-            </button> : <button onClick={()=>handleClickLogicDelete()}>
-            <a>Activar</a>
-            </button>}
-            
-            <button onClick={() => handleClickDeleteReal()}>Eliminar</button>
-          
+          <div className="card-footer">
+            <div className="card-btn-container">
+              {props.is_active ? (
+                <button onClick={() => handleClickLogicDelete()}>
+                  <a>Desactivar</a>
+                </button>
+              ) : (
+                <button onClick={() => handleClickLogicDelete()}>
+                  <a>Activar</a>
+                </button>
+              )}
+
+              <button onClick={() => handleClickDeleteReal()}>Eliminar</button>
+            </div>
           </div>
         </div>
       </CardStyle>
