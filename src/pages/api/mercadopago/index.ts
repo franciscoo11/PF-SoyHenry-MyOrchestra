@@ -68,7 +68,7 @@ async function capturePayment(req: NextApiRequest, res: NextApiResponse<any>) {
 
     const getPayment = await axios.get(url, {
       headers: {
-        'Accept-Encoding': '*',
+        'Accept-Encoding': 'null',
         "Content-Type": "application-json",
         Authorization: `Bearer ${process.env.MERCADOPAGO_ACCESS_TOKEN}`,
       },
