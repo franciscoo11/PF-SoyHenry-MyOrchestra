@@ -4,15 +4,31 @@ import HomeCards from './HomeCards';
 
 export const StyledMain = styled.main`
 	margin: 25px auto;
-	width: 100%;
+	width: 90%;
 	max-width: 1440px;
 	display: grid;
-	grid-template-columns: repeat(4, minmax(0, 1fr));
+	grid-template-columns: 1fr 1fr 1fr 290px;
 	gap: 24px;
-	padding: 0 80px;
+
+	@media (max-width: 1080px) {
+		grid-template-columns: 1fr 1fr 290px;
+	}
+	@media (max-width: 992px) {
+		grid-template-columns: 2fr 1fr;
+	}
+	@media (max-width: 762px) {
+		grid-template-columns: 1fr;
+	}
 
 	section {
 		grid-column: 1/4;
+
+		@media (max-width: 1080px) {
+			grid-column: 1/3;
+		}
+		@media (max-width: 992px) {
+			grid-column: 1/2;
+		}
 
 		.section-title {
 			display: flex;
@@ -38,13 +54,29 @@ export const StyledMain = styled.main`
 		.orquestas {
 			width: 100%;
 			display: grid;
-			grid-template-columns: repeat(3, minmax(0, 1fr));
+			grid-template-columns: repeat(3, 1fr);
+			@media (max-width: 1080px) {
+				grid-template-columns: repeat(2, 1fr);
+			}
+			@media (max-width: 992px) {
+				grid-template-columns: 1fr;
+			}
+
 			gap: 24px;
 		}
 	}
 
 	aside {
 		grid-column: 4/5;
+		@media (max-width: 1080px) {
+			grid-column: 3/4;
+		}
+		@media (max-width: 992px) {
+			grid-column: 2/4;
+		}
+		@media (max-width: 762px) {
+			grid-column: 1/2;
+		}
 		margin-top: 64px;
 		.temp-img {
 			width: 100%;

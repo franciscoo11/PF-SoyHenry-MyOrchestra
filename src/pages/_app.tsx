@@ -16,7 +16,7 @@ console.log(lato);
 
 const theme: DefaultTheme = {
 	colors: {
-		primary: '#1E1E1E',
+		primary: '#111827',
 		secondary: '#862866',
 		light: '#4B5563',
 		lines: '#E5E7EB',

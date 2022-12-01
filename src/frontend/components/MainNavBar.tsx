@@ -3,32 +3,46 @@ import Nav from './Nav';
 import Auth from './Auth';
 
 const NavStyle = styled.header`
-	width: 100%;
+	width: 90%;
 	max-width: 1440px;
 	margin: auto;
 	margin-top: 24px;
 	margin-bottom: 24px;
-	display: grid;
-	grid-template-columns: repeat(16, minmax(0, 1fr));
-	gap: 24px;
-	padding: 0 80px;
 
 	.nav-container {
-		grid-column: 1/17;
-		grid-row: 1;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		text-decoration: none;
-		align-items: baseline;
+		align-items: center;
 
-		nav {
+		.desktopNav {
 			display: flex;
 			justify-content: space-between;
 			align-items: baseline;
 			gap: 40px;
 			font-size: 16px;
 			font-weight: 300;
+		}
+		.mobileNav {
+			display: none;
+			justify-content: space-between;
+			align-items: center;
+			gap: 40px;
+		}
+
+		.mobileNav img {
+			border: 1px solid lightgray;
+			border-radius: 50%;
+			padding: 10px;
+		}
+
+		@media (max-width: 576px) {
+			.desktopNav {
+				display: none;
+			}
+			.mobileNav {
+				display: flex;
+			}
 		}
 		.links-container {
 			display: flex;
