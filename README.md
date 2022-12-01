@@ -14,3 +14,15 @@ Donde también podrán recibir ayuda por medio de donaciones con el fin de colab
 * ReactJS
 * Prisma
 * PostreSQL
+
+
+## Authors
+
+- [@Oscar del Angel Cu Reyes](https://github.com/oscaracu)
+- [@Mercedes Ruiz](https://github.com/MECHIRUIZ)
+- [@Javier Gonzalez](https://github.com/hanseyll)
+- [@Francisco Giudicatti](https://github.com/franciscoo11)
+- [@Ivan Garcia](https://github.com/Dargnel)
+- [@Camila Panella](https://github.com/camilapanella)
+- [@Jose Angel Rodriguez](https://github.com/jartisick)
+- [@Juan Lange](https://github.com/JuanLange)
