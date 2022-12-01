@@ -24,10 +24,12 @@ const CardStyle = styled.div`
 
   .card-content {
     grid-column: 3/7;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: row-reverse;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    div {
+      display: flex;
+      justify-content: center;
+    }
   }
 
   .card-footer {
@@ -81,8 +83,12 @@ function OrchestraCards(props: any) {
           </Link>
         </div>
         <div className="card-content">
-          <p>{props.subtitle}</p>
-          <p className="card-title">{props.title}</p>
+          <div className="orchestra-name">
+            <p className="card-title">{props.title}</p>
+          </div>
+          <div className="location">
+            <p>{props.subtitle}</p>
+          </div>
         </div>
         <div className="card-footer">
           <div className="card-btn-container">
