@@ -236,8 +236,6 @@ export const Developers = [
     pic: "https://res.cloudinary.com/dzup1ckpy/image/upload/v1669867934/WhatsApp_Image_2022-12-01_at_12.11.18_AM_efep7g.jpg",
     name: "Hector Ivan Garcia",
     team: "Backend",
-    description:
-      "Soy de la ciudad de Bogotá/Colombia, un apasionado por la tecnologia y el desarrollo, este proyecto fue una de las mejores experiencias que he tenido conoci gente muy buena, trabajadora y divertida y mis metas es seguir creciendo como desarrollador y como persona.",
     GitUrl: "https://github.com/Dargnel",
     LinkUrl: "https://www.linkedin.com/in/ivan-garcia-5ab79b24a/",
   },
@@ -245,8 +243,6 @@ export const Developers = [
     pic: "https://res.cloudinary.com/dzup1ckpy/image/upload/v1669868533/WhatsApp_Image_2022-12-01_at_12.21.55_AM_whv4yi.jpg",
     name: "Mercedes Ruiz",
     team: "Backend/Frontend",
-    description:
-      "Soy Mercedes Ruiz, tengo 29 años y soy de Argentina. Me adentre en el mundo de la programacion a principios del 2022 y a mediados de año entre a Henry. Para significó un enorme crecimiento tanto personal como academico, ya que pude superar muchas barreras que veia muy lejanas. Este proyecto lo afronte con muchisima alegria y ambición, ya que venimos compartiendo con este grupo desde principios del bootcamp y estan constantemente apoyandome en lo que necesite y tambien abiertos a aportes del resto de los compañeros.Termino este proyecto y esta etapa con un monton de aprendizajes y superacion, y solo tengo deseos de ir por mas y llegar a ser unabuena profesional. Me siento muy agradecida de haber formado parte.",
     GitUrl: "https://github.com/MECHIRUIZ",
     LinkUrl: "https://www.linkedin.com/in/mercedes-ruiz-4bba7320b/",
   },
@@ -254,8 +250,6 @@ export const Developers = [
     pic: "https://res.cloudinary.com/dzup1ckpy/image/upload/v1669869108/jartisick_1666020188005136_evqhi4.jpg",
     name: "Jose Angel Rodriguez",
     team: "Frontend",
-    description:
-      "Mi nombre es José Angel Rodríguez, tengo 25 años y soy de Venezuela. Empecé este viaje hace aproximadamente 6 meses, este proyecto para mí fue una experiencia única, me tocó un tema excelente y un grupo extraordinario, lleno de gente linda y dispuestas a aportar en lo que sea que ocurra. Me siento muy afortunado de haber formado parte de este grupo",
     GitUrl: "https://github.com/jartisick",
     LinkUrl:
       "https://www.linkedin.com/in/jos%C3%A9-%C3%A1ngel-rodr%C3%ADguez-367b2817a/",
@@ -264,8 +258,6 @@ export const Developers = [
     pic: "https://res.cloudinary.com/dzup1ckpy/image/upload/v1669868767/WhatsApp_Image_2022-12-01_at_12.24.33_AM_kcv8n5.jpg",
     name: "Francisco Giudicatti",
     team: "Backend/Frontend",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     GitUrl: "https://github.com/franciscoo11",
     LinkUrl: "linkedin.com/in/francisco-giudicatti/",
   },
@@ -273,8 +265,6 @@ export const Developers = [
     pic: "https://res.cloudinary.com/dzup1ckpy/image/upload/v1669868110/WhatsApp_Image_2022-12-01_at_12.14.35_AM_zufien.jpg ",
     name: "Oscar Angel Cu",
     team: "Frontend",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     GitUrl: "https://github.com/oscaracu",
     LinkUrl: "https://www.linkedin.com/in/oscaracu/",
   },
@@ -282,8 +272,6 @@ export const Developers = [
     pic: "https://res.cloudinary.com/dzup1ckpy/image/upload/v1669868804/WhatsApp_Image_2022-12-01_at_12.24.33_AM_2_ixfqay.jpg",
     name: "Javier Gonzales",
     team: "Backend",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     GitUrl: "https://github.com/hanseyll",
     LinkUrl:
       "https://www.linkedin.com/in/javier-jos%C3%A9-gonzalez-pacheco-791721244/",
@@ -292,8 +280,6 @@ export const Developers = [
     pic: "https://res.cloudinary.com/dzup1ckpy/image/upload/v1669868113/WhatsApp_Image_2022-12-01_at_12.14.51_AM_say58c.jpg",
     name: "Camila Soledad Panella",
     team: "Backend",
-    description:
-      "Mi nombre es Camila Panella. Soy de la ciudad de La Plata, Argentina. Nueva en el mundo de la programacion, este proyecto me ayudo a entender y aprender varios conceptos nuevos, gracias a mis compañeros. Me gustaria especializarme en el desarrollo back-end. Mi meta en adelante es seguir avanzando e incorporando conocimientos.",
     GitUrl: "https://github.com/camilapanella",
     LinkUrl: "https://www.linkedin.com/in/camila-panella-8150aa251/",
   },
@@ -301,8 +287,6 @@ export const Developers = [
     pic: "https://res.cloudinary.com/dzup1ckpy/image/upload/v1669868784/WhatsApp_Image_2022-12-01_at_12.24.33_AM_1_xss40s.jpg",
     name: "Juan Carlos Lange",
     team: "Frontend",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     GitUrl: "",
     LinkUrl: "https://www.linkedin.com/in/juancarloslange/",
   },

@@ -12,7 +12,6 @@ const CardStyle = styled.div`
   flex-direction: column;
   gap: 12px;
   border-radius: 8px;
-
   .card-header {
     height: 170px;
   }
@@ -88,7 +87,10 @@ const CardStyle = styled.div`
     }
   }
 `;
-
+const linkedin =
+  "https://res.cloudinary.com/dzup1ckpy/image/upload/v1669911985/logotipo-de-linkedin_y5pq18.png";
+const github =
+  "https://res.cloudinary.com/dzup1ckpy/image/upload/v1668188969/github_cnhtql.png";
 interface DeveloperMemberProps {
   pic: string;
   name: string;
@@ -100,27 +102,25 @@ interface DeveloperMemberProps {
 
 export default function DeveloperMember(props: any) {
   return (
-    <CardStyle>
-      <MainNavBar />
-      <div className="card-content">
-        <div className="separator"></div>
-        <div className="card-counters-container"></div>
-        <div className="card-counter">
-          <img src={props.pic} width="25%" />
-          <div>
-            <div className="card-content">
-              <div className="orqTitle">{props.name}</div>
-              <div className="orqLocation">{props.team}</div>
-              <p className="description">{props.description}</p>
-
-              <div className="card-footer"></div>
+    <>
+      <CardStyle>
+        <div className="card-content">
+          <div className="separator"></div>
+          <div className="card-counters-container"></div>
+          <div className="card-counter">
+            <div className="card-header">
+              <img src={props.pic} width="25%" />
             </div>
-
-            <div>{props.GitUrl}</div>
-            <div>{props.LinkUrl}</div>
+            <div>
+              <div className="card-content">
+                <div className="orqTitle">{props.name}</div>
+                <div className="orqLocation">{props.team}</div>
+                <p className="description">{props.description}</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </CardStyle>
+      </CardStyle>
+    </>
   );
 }
