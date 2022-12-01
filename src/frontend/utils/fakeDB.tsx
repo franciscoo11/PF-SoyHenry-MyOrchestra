@@ -233,7 +233,7 @@ export const Campaigns = [
 
 export const Developers = [
   {
-    pic:"WhatsApp Image 2022-11-26 at 12.42.07.jpeg",
+    pic:"https://res.cloudinary.com/dzup1ckpy/image/upload/v1669867934/WhatsApp_Image_2022-12-01_at_12.11.18_AM_efep7g.jpg",
     name: "Hector Ivan Garcia",
     team: "Backend",
     description: "Soy de la ciudad de Bogotá/Colombia, un apasionado por la tecnologia y el desarrollo, este proyecto fue una de las mejores experiencias que he tenido conoci gente muy buena, trabajadora y divertida y mis metas es seguir creciendo como desarrollador y como persona.",
@@ -241,7 +241,7 @@ export const Developers = [
     LinkUrl: "https://www.linkedin.com/in/ivan-garcia-5ab79b24a/",
   },
   {
-    pic:"",
+    pic:"https://res.cloudinary.com/dzup1ckpy/image/upload/v1669868533/WhatsApp_Image_2022-12-01_at_12.21.55_AM_whv4yi.jpg",
     name: "Mercedes Ruiz",
     team: "Backend/Frontend",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -249,7 +249,7 @@ export const Developers = [
     LinkUrl: "https://www.linkedin.com/in/mercedes-ruiz-4bba7320b/",
   },
   {
-    pic:"",
+    pic:"https://res.cloudinary.com/dzup1ckpy/image/upload/v1669869108/jartisick_1666020188005136_evqhi4.jpg",
     name: "Jose Angel Rodriguez",
     team: "Frontend",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -257,7 +257,7 @@ export const Developers = [
     LinkUrl: "https://www.linkedin.com/in/jos%C3%A9-%C3%A1ngel-rodr%C3%ADguez-367b2817a/",
   },
   {
-    pic:"",
+    pic:"https://res.cloudinary.com/dzup1ckpy/image/upload/v1669868767/WhatsApp_Image_2022-12-01_at_12.24.33_AM_kcv8n5.jpg",
     name: "Francisco Giudicatti",
     team: "Backend/Frontend",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -265,7 +265,7 @@ export const Developers = [
     LinkUrl: "linkedin.com/in/francisco-giudicatti/",
   },
   {
-    pic:"WhatsApp Image 2022-11-26 at 15.10.12.jpeg",
+    pic:"https://res.cloudinary.com/dzup1ckpy/image/upload/v1669868110/WhatsApp_Image_2022-12-01_at_12.14.35_AM_zufien.jpg ",
     name: "Oscar Angel Cu",
     team: "Frontend",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -273,7 +273,7 @@ export const Developers = [
     LinkUrl: "https://www.linkedin.com/in/oscaracu/",
   },
   {
-    pic:"",
+    pic:"https://res.cloudinary.com/dzup1ckpy/image/upload/v1669868804/WhatsApp_Image_2022-12-01_at_12.24.33_AM_2_ixfqay.jpg",
     name: "Javier Gonzales",
     team: "Backend",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -281,7 +281,7 @@ export const Developers = [
     LinkUrl: "https://www.linkedin.com/in/javier-jos%C3%A9-gonzalez-pacheco-791721244/",
   },
   {
-    pic:"",
+    pic:"https://res.cloudinary.com/dzup1ckpy/image/upload/v1669868113/WhatsApp_Image_2022-12-01_at_12.14.51_AM_say58c.jpg",
     name: "Camila Soledad Panella",
     team: "Backend",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -289,7 +289,7 @@ export const Developers = [
     LinkUrl: "https://www.linkedin.com/in/camila-panella-8150aa251/",
   },
   {
-    pic:"",
+    pic:"https://res.cloudinary.com/dzup1ckpy/image/upload/v1669868784/WhatsApp_Image_2022-12-01_at_12.24.33_AM_1_xss40s.jpg",
     name: "Juan Carlos Lange",
     team: "Frontend",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",

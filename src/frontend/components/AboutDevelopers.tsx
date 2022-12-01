@@ -5,79 +5,88 @@ import MainNavBar from "./MainNavBar";
 import HeroImage from "./HeroImage";
 
 const CardStyle = styled.div`
-  box-sizing: border-box;
-  border: 1px solid lightgray;
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 12px;
-  border-radius: 12px;
+	box-sizing: border-box;
+	border: 1px solid ${({ theme }) => theme.colors.lines};
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	border-radius: 8px;
 
-  .card-header {
-    height: 240px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+	.card-header {
+		height: 170px;
+	}
 
-  .card-content {
-    display: flex;
-    flex-direction: column;
+	.card-header img {
+		border-top-left-radius: 8px;
+		border-top-right-radius: 8px;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
 
-    p,
-    h2,
-    h3 {
-      margin: 0;
-    }
-  }
-  .card-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+	.card-content {
+		padding: 0 24px 24px 24px;
+	}
+	.separator {
+		height: 1px;
+		width: 100%;
+		background-color: ${({ theme }) => theme.colors.lines};
+		margin-bottom: 20px;
+	}
+	.orqLocation {
+		font-size: 12px;
+		font-weight: 900;
+		text-transform: uppercase;
+		color: ${({ theme }) => theme.colors.light};
+	}
+	.orqTitle {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		font-size: 20px;
+		font-weight: 700;
+	}
 
-  img {
-    max-width: 100%;
-    max-height: 240px;
-  }
+	.description {
+		font-size: 16px;
+		font-weight: 300;
+		color: ${({ theme }) => theme.colors.light};
+		min-height: 115px;
+	}
 
-  .card-counters-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 10px;
-  }
+	.card-counters-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		margin-bottom: 10px;
+	}
 
-  h3 {
-    color: #9b9797;
-  }
+	.card-counter {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
 
-  .card-counter {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+	.card-btn-container {
+		.card-btn {
+			background-color: ${({ theme }) => theme.colors.secondary};
+			text-align: center;
+			display: flex;
+      flex-direction: row;
+			width: 100%;
+			padding: 12px;
+			font-size: 1em;
+			color: white;
+			border: none;
+			border-radius: 6px;
 
-  .card-btn-container {
-    .card-btn {
-      background-color: ${({ theme }) => theme.colors.secondary};
-      text-align: center;
-      display: block;
-      width: 100%;
-      padding: 12px;
-      font-size: 1em;
-      color: white;
-      border: none;
-      border-radius: 6px;
-
-      :hover {
-        filter: brightness(110%);
-        cursor: pointer;
-      }
-    }
-  }
+			:hover {
+				filter: brightness(110%);
+				cursor: pointer;
+			}
+		}
+	}
 `;
 
 interface DeveloperMemberProps {
@@ -93,7 +102,6 @@ export default function DeveloperMember() {
   return (
     <CardStyle>
       <MainNavBar />
-      <HeroImage />
       <div className="card-btn-container">
         {Developers.map((e) => {
           return (
