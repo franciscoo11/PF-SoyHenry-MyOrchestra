@@ -12,7 +12,7 @@ const lato = Lato({
 	weight: ['100', '300', '400', '700', '900'],
 });
 
-console.log(lato);
+// console.log(lato);
 
 const theme: DefaultTheme = {
 	colors: {
