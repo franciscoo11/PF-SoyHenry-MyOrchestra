@@ -39,7 +39,7 @@ Donde también podrán recibir ayuda por medio de donaciones con el fin de colab
 
 > La música no tiene fronteras, unifica personas sin importar religión, ideología, status social, origen, etc.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 
 ## Tech
@@ -66,7 +66,7 @@ Listado de tecnologías:
 - [@Jose Angel Rodriguez](https://github.com/jartisick)
 - [@Juan Lange](https://github.com/JuanLange)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
