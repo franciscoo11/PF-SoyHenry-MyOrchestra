@@ -87,7 +87,7 @@ export async function getServerSideProps(context: any) {
     const { data: response } = await axios.get(
       `${HOSTNAME}/api/mercadopago?id=${payment_id}`, {
         headers: {
-          'Accept-Encoding': '*',
+          'Accept-Encoding': 'null',
         }
       }
     );
