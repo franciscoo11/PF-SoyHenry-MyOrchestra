@@ -4,23 +4,24 @@ import { HOSTNAME } from "../../../../../pages/_app";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import Cookies from "universal-cookie";
+import { Context } from "vm";
 
-interface IPaymentDetail {
-  paymentDetail: {
-    status: string;
-    payerEmail: string;
-    mount: string;
-    date: string;
-    idCampaign: string;
-    status_detail: string;
-  };
-}
+//  interface IPaymentDetail {
+//    paymentDetail: {
+//      status: string;
+//      payerEmail: string;
+//      mount: string;
+//      date: string;
+//      idCampaign: string;
+//      status_detail: string;
+//    };
+//  }
 
-const mpSuccess = ({ paymentDetail }: IPaymentDetail) => {
+const mpSuccess = ({ paymentDetail, idOrchestra, idCampaign }: any ) => {
   const router = useRouter();
   const cookie = new Cookies();
   const user = cookie.get("UserloginData");
-
+  console.log(paymentDetail)
   if (!paymentDetail) {
     toast.error(
       "Lo sentimos pero su donación no fue exitosa, intente nuevamente",
@@ -55,14 +56,13 @@ const mpSuccess = ({ paymentDetail }: IPaymentDetail) => {
 
     await axios
       .post(`/api/donation`, {
-        campaignId: "clanmc8wb001ni5zzsnvy42ee",
+        campaignId: idCampaign,
         userId: user.id,
         amount: paymentDetail.mount,
         date: paymentDetail.date,
-        orchestraId: "clani4ut8000di5zzxfsv7l7r",
+        orchestraId: idOrchestra,
       })
       .catch(() => alert("No se pudo registrar tu donación"));
-    console.log(paymentDetail);
 
     router.push("/");
   };
@@ -72,7 +72,7 @@ const mpSuccess = ({ paymentDetail }: IPaymentDetail) => {
       {paymentDetail.status_detail == "accredited" ? (
         <div>
           <h2>
-            GRACIAS POR TU COLABORACIÓN, EN UNOS INSTANTES SERÁS REDIRIGIDO...
+            GRACIAS POR TU COLABORACIÓN!!
           </h2>
           <button onClick={(e) => handleButtonRedirect(e)}>CONTINUAR</button>
         </div>
@@ -83,13 +83,20 @@ const mpSuccess = ({ paymentDetail }: IPaymentDetail) => {
 
 export async function getServerSideProps(context: any) {
   try {
+    const {id, campaign, payment_id } =  context.query
     const { data: response } = await axios.get(
-      `${HOSTNAME}/api/mercadopago?id=${context.query.payment_id}`
+      `${HOSTNAME}/api/mercadopago?id=${payment_id}`, {
+        headers: {
+          'Accept-Encoding': 'null',
+        }
+      }
     );
-
+    
     return {
       props: {
         paymentDetail: response,
+        idOrchestra: id,
+        idCampaign: campaign
       },
     };
   } catch (error) {

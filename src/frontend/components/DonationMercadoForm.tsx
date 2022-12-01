@@ -118,7 +118,7 @@ interface Values {
   price: string;
 }
 
-export default function DonationMercadoForm({ id }: any) {
+export default function DonationMercadoForm({ id, idOrchestra }: any) {
   const router = useRouter();
   return (
     <>
@@ -133,7 +133,7 @@ export default function DonationMercadoForm({ id }: any) {
             { setSubmitting }: FormikHelpers<Values>
           ) => {
             try {
-              const pago = await axios.post(`/api/mercadopago`, values);
+              const pago = await axios.post(`/api/mercadopago`, { idCampaign: values.idCampaign, price: values.price, idOrchestra: idOrchestra });
               console.log(pago.data);
               router.push(pago.data.paymentLink);
 

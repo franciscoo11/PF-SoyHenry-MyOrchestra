@@ -38,8 +38,9 @@ async function generatePreference(
           quantity: 1,
         },
       ],
+      external_reference: req.body.idOrchestra,
       back_urls: {
-        success: `http://localhost:3000/${req.body.idCampaign}/mpsuccess`,
+        success: `http://localhost:3000/orchestras/${req.body.idOrchestra}/campaigns/${req.body.idCampaign}/mpsuccess`,
         failure: `http://localhost:3000/`,
       },
       auto_return: "approved",
@@ -67,6 +68,7 @@ async function capturePayment(req: NextApiRequest, res: NextApiResponse<any>) {
 
     const getPayment = await axios.get(url, {
       headers: {
+        'Accept-Encoding': 'null',
         "Content-Type": "application-json",
         Authorization: `Bearer ${process.env.MERCADOPAGO_ACCESS_TOKEN}`,
       },
@@ -81,7 +83,7 @@ async function capturePayment(req: NextApiRequest, res: NextApiResponse<any>) {
       idCampaign: getPayment.data.additional_info.items[0].id,
     };
 
-    return res.status(200).json(paymentInformation);
+    return res.status(200).json(getPayment.data);
   } catch (error) {
     return res
       .status(500)

@@ -122,13 +122,13 @@ export async function getServerSideProps({ params }: any) {
       },
     });
 
-    return { props: { campaign: JSON.parse(JSON.stringify(campaign)) } };
+    return { props: { campaign: JSON.parse(JSON.stringify(campaign)), idOrchestra: params.id } };
   } catch (error) {
     console.log(error);
   }
 }
 
-function OrchestraCampaigns({ campaign }: any) {
+function OrchestraCampaigns({ campaign, idOrchestra }: any) {
   const { id, logo } = campaign.orchestra;
   const { user } = useUser();
   const [userId, setUserId] = useState();
@@ -259,7 +259,7 @@ function OrchestraCampaigns({ campaign }: any) {
           <StyledEventCard>
             {display !== "" ? (
               display === "mercado" ? (
-                <DonationMercadoForm id={campaign.id} />
+                <DonationMercadoForm id={campaign.id} idOrchestra={idOrchestra} />
               ) : (
                 <DonationForm id={campaign.id} />
               )
