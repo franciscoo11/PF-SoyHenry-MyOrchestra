@@ -10,6 +10,8 @@ import { Campaigns, Posts, Users } from "../frontend/utils/fakeDB";
 import OpenCampaign from "../frontend/components/OpenCampaign";
 import NewsHero from "../frontend/components/NewsHero";
 import OrchestraPosts from "../frontend/components/OrchestraPosts";
+import { useEffect, useState } from "react";
+import NewsHomeCard from "../frontend/components/NewsHomeCards";
 
 const StyledMain = styled.main`
   margin: 24px auto;
@@ -177,7 +179,37 @@ const StyledMain = styled.main`
   }
 `;
 
-export default function News({ news }: any) {
+export default function News() {
+  const [posts, setPosts] = useState({ results: 1, data: [] });
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 4;
+  const postType = "clanisoey000yi5zzxnd76pwo";
+
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`/api/post?type_PostId=${postType}&optionOrder=desc`)
+      .then((res: any) => setPosts(res.data))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const { data, results }: any = posts;
+  let pages = Math.ceil(results / itemsPerPage);
+
+  async function postAppend() {
+    if (currentPage < pages - 1) {
+      const nextPosts = await axios.get(
+        `/api/post?type_PostId=${postType}&optionOrder=desc&page=${
+          currentPage + 1
+        }`
+      );
+
+      setPosts({ ...posts, data: data.concat(nextPosts.data.data) });
+      setCurrentPage(currentPage + 1);
+    }
+  }
+
   return (
     <>
       <Head>
@@ -196,9 +228,13 @@ export default function News({ news }: any) {
             </div>
           </div>
           <div className="campaigns">
-            {Posts.map((post, index) => (
-              <OrchestraPosts key={index} post={post} />
-            ))}
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              data.map((post: any) => (
+                <NewsHomeCard key={post.id} post={post} />
+              ))
+            )}
           </div>
           <div className="pagination">
             <button className="more-btn">Mostrar más</button>
@@ -212,14 +248,3 @@ export default function News({ news }: any) {
     </>
   );
 }
-
-export const getServerSideProps = async () => {
-  const res = await axios.get(`${HOSTNAME}/api/post`);
-  const news = await res.data;
-
-  return {
-    props: {
-      news,
-    },
-  };
-};
