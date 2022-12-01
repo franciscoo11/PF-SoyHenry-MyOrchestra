@@ -40,7 +40,7 @@ async function generatePreference(
       ],
       external_reference: req.body.idOrchestra,
       back_urls: {
-        success: `http://localhost:3000/orchestras/${req.body.idOrchestra}/campaigns/${req.body.idCampaign}/mpsuccess`,
+        success: `/orchestras/${req.body.idOrchestra}/campaigns/${req.body.idCampaign}/mpsuccess`,
         failure: `http://localhost:3000/`,
       },
       auto_return: "approved",
