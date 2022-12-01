@@ -51,7 +51,8 @@ Listado de tecnologías:
 * [![TypeScript][TypeScript.js]][TypeScript-url]
 * [![Prisma][Prisma.js]][Prisma-url]
 * [![Postgres][Postgres.js]][Postgres-url]
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 
 <!-- CONTACT -->
