@@ -83,7 +83,7 @@ async function capturePayment(req: NextApiRequest, res: NextApiResponse<any>) {
       idCampaign: getPayment.data.additional_info.items[0].id,
     };
 
-    return res.status(200).json(getPayment.data);
+    return res.status(200).json(paymentInformation);
   } catch (error) {
     return res
       .status(500)

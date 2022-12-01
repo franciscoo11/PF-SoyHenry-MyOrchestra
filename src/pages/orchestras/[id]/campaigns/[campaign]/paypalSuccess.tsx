@@ -5,23 +5,43 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import Cookies from "universal-cookie";
 
-interface IPaymentDetail {
-  paymentDetail: {
-    id: string;
-    status: string;
-    payerEmail: string;
-    name: string;
-    mount: string;
-    date: string;
-    idCampaign: string;
-  };
+// interface IPaymentDetail {
+//   paymentDetail: {
+//     id: string;
+//     status: string;
+//     payerEmail: string;
+//     name: string;
+//     mount: string;
+//     date: string;
+//     idCampaign: string;
+//   };
+// }
+
+export async function getServerSideProps(context: any) {
+  try {
+    
+    const { data: response } = await axios.get(
+      `${HOSTNAME}/api/paypal/${context.query.token}`
+    );
+
+    return {
+      props: {
+        paymentDetail: response,
+        orchestraId: context.query.id,
+        campaignId: context.query.campaign,
+      },
+    };
+  } catch (error) {
+    return { redirect: { destination: "/" } };
+  }
 }
 
-const paypalSuccess = ({ paymentDetail }: IPaymentDetail) => {
+const paypalSuccess = ({ paymentDetail, orchestraId, campaignId }: any) => {
+  
   const router = useRouter();
   const cookie = new Cookies();
   const user = cookie.get("UserloginData");
-
+  
   if (!paymentDetail) {
     toast.error(
       "Lo sentimos pero su donación no fue exitosa, intente nuevamente",
@@ -40,30 +60,40 @@ const paypalSuccess = ({ paymentDetail }: IPaymentDetail) => {
     router.push("/");
   }
 
-  const handleButtonRedirect = async (e: any) => {
-    e.preventDefault();
+  const handleButtonRedirect = (e: any) => {
 
-    toast.success("Lo estamos redirigiendo aguarde unos instantes...", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+       axios.post('/api/donation', {
+        campaignId: campaignId,
+        userId: user.id,
+        amount: paymentDetail.mount,
+        date: paymentDetail.date,
+        orchestraId: orchestraId,
+      }).then(() => {
+        toast.success("Lo estamos redirigiendo aguarde unos instantes...", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        router.push('/')
+      }).catch(() => {
+        toast.error("Su pago no se concreto...", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        })
+      }) 
 
-    await axios.post(`/api/donation`, {
-      campaignId: "clazl9pd7000esdowmyesripq",
-      userId: user.id,
-      amount: paymentDetail.mount,
-      date: paymentDetail.date,
-      orchestraId: "claww4lat0003vg1wuau9d3dz",
-    });
-
-    router.push("/");
-  };
+    }
 
   return (
     <>
@@ -78,21 +108,5 @@ const paypalSuccess = ({ paymentDetail }: IPaymentDetail) => {
     </>
   );
 };
-
-export async function getServerSideProps(context: any) {
-  try {
-    const { data: response } = await axios.get(
-      `${HOSTNAME}/api/paypal/${context.query.token}`
-    );
-
-    return {
-      props: {
-        paymentDetail: response,
-      },
-    };
-  } catch (error) {
-    return { redirect: { destination: "/" } };
-  }
-}
 
 export default paypalSuccess;

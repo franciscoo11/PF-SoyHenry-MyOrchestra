@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import NextCors from "nextjs-cors";
+require('dotenv').config()
 
 export default async function handler(
   req: NextApiRequest,
@@ -20,7 +21,7 @@ export default async function handler(
   try {
     switch (method) {
       case POST:
-        const buildOrder = createOrder(req, res);
+        const buildOrder = await createOrder(req, res);
         return buildOrder
       default:
         return res.status(400).json("method not allowed");
@@ -32,8 +33,9 @@ export default async function handler(
   }
 }
 
-const createOrder = async (req: NextApiRequest, res: NextApiResponse) => {
+const createOrder = async (req: NextApiRequest, res: NextApiResponse<any>) => {
   try {
+    console.log(process.env)
     const order = {
       intent: "CAPTURE",
       purchase_units: [
@@ -43,14 +45,15 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse) => {
             currency_code: "USD",
             value: parseInt(req.body.value),
           },
-          description: "donation",
+          description: req.body.idOrchestra,
         },
       ],
+      
       application_context: {
         brand_name: "myorchestras.net",
         landing_page: "LOGIN",
         user_action: "PAY_NOW",
-        return_url: "http://localhost:3000/paypalSuccess",
+        return_url: `http://localhost:3000/orchestras/${req.body.idOrchestra}/campaigns/${req.body.idCampaign}/paypalSuccess` ,
       },
     };
 
@@ -61,11 +64,12 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse) => {
       data: { access_token },
     } = await axios.post(`${process.env.PAYPAL_OAUTH_URL}`, params, {
       headers: {
+        'Accept-Encoding': '*',
         "Content-Type": "application/x-www-form-urlencoded",
       },
       auth: {
-        username: process.env.PAYPAY_CLIENT || "",
-        password: process.env.PAYPAL_SECRET || "",
+        username: process.env.PAYPAL_CLIENT || '',
+        password: process.env.PAYPAL_SECRET || '',
       },
     });
 

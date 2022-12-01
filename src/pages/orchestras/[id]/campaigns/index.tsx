@@ -101,6 +101,7 @@ function OrchestraCampaigns({ orchestra, members, campaigns }: any) {
           <div className="posts">
             {campaigns.map(
               ({
+                orchestraId,
                 title,
                 description,
                 goal_amount,
@@ -115,7 +116,7 @@ function OrchestraCampaigns({ orchestra, members, campaigns }: any) {
                   end={end_date}
                   description={description}
                   goal={goal_amount}
-                  orchestraId={id}
+                  orchestraId={orchestraId}
                   donations={donations}
                 />
               )

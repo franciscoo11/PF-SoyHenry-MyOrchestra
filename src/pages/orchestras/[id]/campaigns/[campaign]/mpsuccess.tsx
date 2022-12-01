@@ -4,7 +4,6 @@ import { HOSTNAME } from "../../../../../pages/_app";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import Cookies from "universal-cookie";
-import { Context } from "vm";
 
 //  interface IPaymentDetail {
 //    paymentDetail: {
@@ -17,11 +16,12 @@ import { Context } from "vm";
 //    };
 //  }
 
-const mpSuccess = ({ paymentDetail, idOrchestra, idCampaign }: any ) => {
+const mpSuccess = ({ paymentDetail, idOrchestra, idCampaign }: any , ) => {
   const router = useRouter();
   const cookie = new Cookies();
   const user = cookie.get("UserloginData");
-  console.log(paymentDetail)
+
+
   if (!paymentDetail) {
     toast.error(
       "Lo sentimos pero su donación no fue exitosa, intente nuevamente",
@@ -37,34 +37,42 @@ const mpSuccess = ({ paymentDetail, idOrchestra, idCampaign }: any ) => {
       }
     );
 
-    router.push("/");
+    router.push(`/orchestras/${idOrchestra}/campaigns/${idCampaign}`);
   }
 
-  const handleButtonRedirect = async (e: any) => {
-    e.preventDefault();
+  const handleButtonRedirect = (e: any) => {
 
-    toast.success("Lo estamos redirigiendo aguarde unos instantes...", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-
-    await axios
-      .post(`/api/donation`, {
+     axios
+      .post('/api/donation', {
         campaignId: idCampaign,
         userId: user.id,
         amount: paymentDetail.mount,
-        date: paymentDetail.date,
         orchestraId: idOrchestra,
+      }).then(() => {
+        toast.success("Pago realizado", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        router.push(`/orchestras/${idOrchestra}/campaigns`)
       })
-      .catch(() => alert("No se pudo registrar tu donación"));
-
-    router.push("/");
+      .catch(() => {
+        toast.error("No se pudo verificar tu pago.", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
   };
 
   return (

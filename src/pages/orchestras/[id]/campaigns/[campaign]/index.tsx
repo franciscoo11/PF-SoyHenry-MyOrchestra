@@ -122,7 +122,7 @@ export async function getServerSideProps({ params }: any) {
       },
     });
 
-    return { props: { campaign: JSON.parse(JSON.stringify(campaign)), idOrchestra: params.id } };
+    return { props: { campaign: JSON.parse(JSON.stringify(campaign)), idOrchestra: params.id, params: params } };
   } catch (error) {
     console.log(error);
   }
@@ -135,7 +135,6 @@ function OrchestraCampaigns({ campaign, idOrchestra }: any) {
   const [loading, setLoading] = useState(true);
   const { title, end_date, goal_amount, description, donations } = campaign;
   const [display, setDisplay] = useState("");
-
   const getSum = (donations: any) => {
     let sum = 0;
     for (let i = 0; i < donations.length; i++) {
@@ -261,7 +260,7 @@ function OrchestraCampaigns({ campaign, idOrchestra }: any) {
               display === "mercado" ? (
                 <DonationMercadoForm id={campaign.id} idOrchestra={idOrchestra} />
               ) : (
-                <DonationForm id={campaign.id} />
+                <DonationForm id={campaign.id} idOrchestra={idOrchestra}/>
               )
             ) : null}
           </StyledEventCard>
