@@ -19,21 +19,33 @@ export async function getServerSideProps({ params }: any) {
       },
     });
 
-    return { props: { orchestra } };
+    const members = await prisma.users_on_orchestra.findMany({
+      where: {
+        orchestraId: params.id,
+      },
+      include: {
+        user: true,
+        rol: true,
+      },
+    });
+
+    return { props: { orchestra, members } };
   } catch (error) {
     console.log(error);
   }
 }
 
-function OrchestraDetails({ orchestra }: any) {
+function OrchestraDetails({ orchestra, members }: any) {
   const { id, name, description, logo, cover, location } = orchestra;
   const { user } = useUser();
   const [userId, setUserId] = useState();
   const [posts, setPosts] = useState({ results: 1, data: [] });
   const [loading, setLoading] = useState(true);
   const [commentPosted, setCommentPosted] = useState(false);
+  const [posting, setPosting] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 4;
+  const postType = "clanisg15000wi5zzxjvr2hu8";
 
   useEffect(() => {
     setLoading(true);
@@ -49,11 +61,11 @@ function OrchestraDetails({ orchestra }: any) {
     setLoading(true);
     axios
       .get(
-        `/api/post?orchestraId=${id}&type_PostId=clanisg15000wi5zzxjvr2hu8&optionOrder=desc`
+        `/api/post?orchestraId=${id}&type_PostId=${postType}&optionOrder=desc`
       )
       .then((res: any) => setPosts(res.data))
       .finally(() => setLoading(false));
-  }, [commentPosted]);
+  }, [commentPosted, posting]);
 
   const { data, results }: any = posts;
   let pages = Math.ceil(results / itemsPerPage);
@@ -61,7 +73,7 @@ function OrchestraDetails({ orchestra }: any) {
   async function postAppend() {
     if (currentPage < pages - 1) {
       const nextPosts = await axios.get(
-        `/api/post?orchestraId=${id}&type_PostId=clanisg15000wi5zzxjvr2hu8&optionOrder=desc&page=${
+        `/api/post?orchestraId=${id}&type_PostId=${postType}&optionOrder=desc&page=${
           currentPage + 1
         }`
       );
@@ -80,19 +92,33 @@ function OrchestraDetails({ orchestra }: any) {
           <AsideLeft logo={logo} id={id} user={user} />
         </aside>
         <section className="content">
-          <Cover cover={cover} title={name} location={location} id={id} />
+          <Cover
+            cover={cover}
+            title={name}
+            location={location}
+            id={id}
+            user={user}
+            members={members}
+          />
 
           {user ? (
             <div className="form-container">
-              {<CreatePosts orchestraId={id} userCreator={userId} />}
+              {
+                <CreatePosts
+                  orchestraId={id}
+                  userCreator={userId}
+                  postType={postType}
+                  setPosting={setPosting}
+                />
+              }
             </div>
           ) : null}
-          <div className="filter-container">
+          {/* <div className="filter-container">
             <div className="divider"></div>
             <div className="post-filter">
               Ordenar por: <b>Mas recientes</b>
             </div>
-          </div>
+          </div> */}
 
           <div className="posts">
             {loading ? (

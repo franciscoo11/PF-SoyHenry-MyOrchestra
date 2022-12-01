@@ -14,52 +14,64 @@ transporter.verify().then(() => {
   console.log("Configuration has working perfect!");
 });
 
-export const emailerReg = function (user: any) {
+export const emailer = function (user:any, subject:any, title:any, body:any) {
   return {
     from: `"My Orchestras App" <${EMAIL}>`,
     to: user.email,
-    subject: "Bienvenido a My Orchestras App",
+    subject: subject,
     html: ` 
-      <div style="background-color: #2b9423; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3px 10px; font-weight: bold; border-radius: 5px;">
-      <ul>
-      <h2 style="color: #fff;">Hola ${user.name}, My Orchestras te da una calida bienvenida, gracias por ser parte de nuestra familia! </h2>
-      </ul>
-      </div>
-      <ul>
-      
-      <h3 style="color: #000000;">ESTOS SON LOS DATOS DE TU CUENTA:</h3>
-      <h4 style="color: #000000;">- Nombre: ${user.name}</h4>
-      <h4 style="color: #000000;">- Email: ${user.email}</h4>
+    <div style="width: 100%; background-color: #e3e3e3;">
+    <div style="padding: 20px 10px 20px 10px;">
+        <div style="background-color: #222; padding: 10px 0px 10px 0px; width: 100%; text-align: center;">
+        </div>
+        
+        <div style="background-color: #ffffff; padding: 20px 0px 5px 0px; width: 100%; text-align: center;">
+            <h1>${title}</h1>
+            <p>
+                ${body}
+            </p>
 
-      </ul>
-      <ul><br><br>
-      <h3 style="color: #000000;">Politicas de seguridad:</h3>
-      <li style="color: #000000;">Pon tus datos en un lugar seguro.</li>
-      <li style="color: #000000;">No compartas tu información personal con otras personas.</li>
-      <li style="color: #000000;">Si tienes dudas sobre algun movimiento extraño en tu cuenta, haganos saber!</li>
-      </ul> `,
-  };
-};
+            <p>Gracias por tu tiempo.</p>
+            <p style="margin-bottom: 50px;"><i>Sinceramente:</i><br>Equipo de My Orchestras</p>
 
-export const emailerUpdate = function (user: any) {
-  return {
-    from: `"My Orchestras App" <${EMAIL}>`,
-    to: user.email,
-    subject: "Actualización de su cuenta",
-    html: ` 
-      <div style="background-color: #2b9423; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3px 10px; font-weight: bold; border-radius: 5px;">
-      <ul>
-      <h2 style="color: #fff;">Hola ${user.name}, te informamos que algunos datos de tu cuenta han sidos actualizada! </h2>
-      </ul>
-      </div>
+            
+            <a style="width: 25%;
+            color: rgb(255, 255, 255); 
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin: 4px 2px;
+            background-color: #862866;
+            text-align: center;
+            padding: 12px 32px;
+            font-size: 1em;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor:pointer;
+            transition-duration: 0.6s;" href="http://localhost:3000">My Orchestras</a>
+        </div>
+        
+        
+        <div style="background-color: #222; color: #ffffff; padding: 5px 0px 0px 0px; width: 100%; text-align: center;">
+          
+            <h3>Politicas de seguridad:</h3>
+            <p>Pon tus datos en un lugar seguro.</p>
+            <p>No compartas tu información personal con otras personas.</p>
+            <p>Si tienes dudas sobre algun movimiento extraño en tu cuenta, haganos saber!</p>
+          
+            <h4>Soporte</h4>
+            <p style="font-size: 13px; padding: 0px 20px 0px 20px;">
+                Contactanos:<br>
+                Mail: <a  href="mailto:myorchestraslatam@gmail.com">myorchestraslatam@gmail.com</a><br>
+            </p>
+            <p style="background-color: #1d1d1d; padding: 10px 0px 10px 0px; font-size: 12px !important;">
+                © 2022 My Orchestras, All rights reserved.
+            </p>
+        </div>
 
-      <h3 style="color: #000000;">Si no fuiste tú, comunicate con nosotros!</h3>
-     
-      <ul><br><br>
-      <h3 style="color: #000000;">Politicas de seguridad:</h3>
-      <li style="color: #000000;">Pon tus datos en un lugar seguro.</li>
-      <li style="color: #000000;">No compartas tu información personal con otras personas.</li>
-      <li style="color: #000000;">Si tienes dudas sobre algun movimiento extraño en tu cuenta, haganos saber!</li>
-      </ul> `,
+    </div>
+    </div>
+       `,
   };
 };

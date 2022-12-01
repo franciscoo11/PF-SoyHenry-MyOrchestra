@@ -14,8 +14,8 @@ model orchestras {
   id                 String               @id @default(cuid())
   name               String               @unique @db.VarChar()
   description        String
-  logo               String?              @default("blank_logo.png")
-  cover              String?              @default("orchestra_cover.png")
+  logo               String?              
+  cover              String?              
   creation_date      String
   sponsor            String?
   location           String
@@ -24,7 +24,7 @@ model orchestras {
   phone              String               @unique
   user_id            String?              @db.Uuid()
   posts              posts[]
-  orchestra_type     orchestra_type?      @relation(fields: [orchestra_TypeId], references: [id])
+  orchestra_type     orchestra_type?      @relation(fields: [orchestra_TypeId], references: [id], onDelete: SetNull)
   orchestra_TypeId   String?
   campaigns          campaigns[]
   users_on_orchestra users_on_orchestra[]
@@ -39,7 +39,7 @@ model users {
   password               String?
   avatar                 String?
   cover                  String?
-  birthday               DateTime?                @db.Date
+  birthday               String?              
   city                   String?
   state                  String?
   country                String?
@@ -50,7 +50,7 @@ model users {
   post_user_on_reactions post_user_on_reactions[]
   user_on_orchestra      users_on_orchestra[]
   favorites              favorites[]
-  rol                    rols?                    @relation(fields: [rolId], references: [id])
+  rol                    rols?                    @relation(fields: [rolId], references: [id], onDelete: SetNull)
   rolId                  String?
   donations              donations[]
 }
@@ -76,11 +76,11 @@ model posts {
   event_hour    String?
   views         Int?
   comments      comments[]
-  Orchestra     orchestras               @relation(fields: [orchestraId], references: [id])
+  Orchestra     orchestras               @relation(fields: [orchestraId], references: [id], onDelete: Cascade)
   orchestraId   String
-  user          users                    @relation(fields: [userCreator], references: [id])
+  user          users                    @relation(fields: [userCreator], references: [id], onDelete: Cascade)
   userCreator   String                   @db.Uuid()
-  Type_Post     type_post?               @relation(fields: [type_PostId], references: [id])
+  Type_Post     type_post?               @relation(fields: [type_PostId], references: [id], onDelete: SetNull)
   type_PostId   String?
   user_reaction post_user_on_reactions[]
 }
@@ -100,7 +100,7 @@ model campaigns {
   description   String      @db.Text
   is_active     Boolean     @default(true)
   amount_raised Float?
-  orchestra     orchestras  @relation(fields: [orchestraId], references: [id])
+  orchestra     orchestras  @relation(fields: [orchestraId], references: [id], onDelete: Cascade)
   orchestraId   String
   donations     donations[]
 }
@@ -110,9 +110,9 @@ model comments {
   content       String
   creation_date DateTime @default(now())
   is_active     Boolean  @default(true)
-  User          users?   @relation(fields: [userId], references: [id])
+  User          users?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String?  @db.Uuid()
-  Post          posts?   @relation(fields: [postId], references: [id])
+  Post          posts?   @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId        String?
 }
 
@@ -129,11 +129,11 @@ model reactions {
 }
 
 model post_user_on_reactions {
-  post       posts     @relation(fields: [postId], references: [id])
+  post       posts     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId     String
-  user       users     @relation(fields: [userId], references: [id])
+  user       users     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String    @db.Uuid()
-  reaction   reactions @relation(fields: [reactionId], references: [id])
+  reaction   reactions @relation(fields: [reactionId], references: [id], onDelete: Cascade)
   reactionId String
 
   @@id([postId, userId, reactionId])
@@ -141,9 +141,9 @@ model post_user_on_reactions {
 
 model users_on_orchestra {
   status      StatusOrchestraMember @default(PENDING)
-  user        users                 @relation(fields: [userId], references: [id])
+  user        users                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String                @db.Uuid()
-  orchestra   orchestras            @relation(fields: [orchestraId], references: [id])
+  orchestra   orchestras            @relation(fields: [orchestraId], references: [id], onDelete: Cascade)
   orchestraId String
   rol         rols                  @relation(fields: [rolId], references: [id])
   rolId       String
@@ -152,9 +152,9 @@ model users_on_orchestra {
 }
 
 model favorites {
-  user        users      @relation(fields: [userId], references: [id])
+  user        users      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String     @db.Uuid()
-  orchestra   orchestras @relation(fields: [orchestraId], references: [id])
+  orchestra   orchestras @relation(fields: [orchestraId], references: [id], onDelete: Cascade)
   orchestraId String
 
   @@id([userId, orchestraId])
@@ -174,11 +174,11 @@ enum Roles {
 
 model donations {
   id          String     @id @default(cuid())
-  campaign    campaigns? @relation(fields: [campaignId], references: [id])
+  campaign    campaigns? @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   campaignId  String?
-  orchestra   orchestras @relation(fields: [orchestraId], references: [id])
+  orchestra   orchestras @relation(fields: [orchestraId], references: [id], onDelete: Cascade)
   orchestraId String
-  user        users      @relation(fields: [userId], references: [id])
+  user        users      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String     @db.Uuid()
   amount      Float
   private     Boolean    @default(false)

@@ -17,21 +17,26 @@ import {
   FiBell,
 } from "react-icons/fi";
 import Link from "next/link";
+import { UpdateUserLogo } from "./UpdateUserLogo";
 
-export default function UserAsideLeft(props: any) {
+export default function UserAsideLeft({ avatar, email, user }: any) {
   return (
     <>
       <div className="user-nav-container">
         <div
           className="user-pic"
-          style={{ backgroundImage: `url(${props.logo})` }}
-        ></div>
+          style={{
+            backgroundImage: `url(${avatar ? avatar : "/blank_profile.png"})`,
+          }}
+        >
+          {user ? <UpdateUserLogo email={email} user={user} /> : null}
+        </div>
         <nav className="user-nav">
           <ul className="nav-list">
             <li className="nav-item">
               <FiUser />
               <div>
-                <Link href={`/users/${encodeURIComponent(props.id)}`}>
+                <Link href={`/users/${encodeURIComponent(email)}`}>
                   Principal
                 </Link>
               </div>
@@ -39,7 +44,7 @@ export default function UserAsideLeft(props: any) {
             <li className="nav-item">
               <FiSettings />
               <div>
-                <Link href={`/users/${encodeURIComponent(props.id)}/edit`}>
+                <Link href={`/users/${encodeURIComponent(email)}/edit`}>
                   Mis datos
                 </Link>
               </div>
@@ -47,7 +52,7 @@ export default function UserAsideLeft(props: any) {
             <li className="nav-item">
               <FiStar />
               <div>
-                <Link href={`/users/${encodeURIComponent(props.id)}/favs`}>
+                <Link href={`/users/${encodeURIComponent(email)}/favs`}>
                   Favoritos
                 </Link>
               </div>
@@ -55,7 +60,7 @@ export default function UserAsideLeft(props: any) {
             <li className="nav-item">
               <FiMusic />
               <div>
-                <Link href={`/orchestras/${encodeURIComponent(props.id)}`}>
+                <Link href={`/orchestras/${encodeURIComponent(email)}`}>
                   Mi orquesta
                 </Link>
               </div>

@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { FiFacebook, FiInstagram, FiYoutube } from "react-icons/fi";
+import { FaWhatsapp } from "react-icons/fa";
+import { useRouter } from "next/router";
 
 const StyledFooter = styled.footer`
   background-color: #222;
@@ -85,6 +87,8 @@ const StyledFooter = styled.footer`
 `;
 
 export default function Footer(props: any) {
+  const router = useRouter()
+  
   return (
     <StyledFooter>
       <div className="footer-grid">
@@ -98,6 +102,7 @@ export default function Footer(props: any) {
             <FiFacebook />
             <FiInstagram />
             <FiYoutube />
+            <FaWhatsapp onClick={() => router.push('https://wa.me/5493425682316')} />
           </div>
         </div>
         <div className="footer-center">

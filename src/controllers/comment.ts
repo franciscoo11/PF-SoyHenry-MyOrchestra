@@ -1,9 +1,19 @@
 import {prisma} from '../../lib/prisma'
 
 
-export const getCommentPost = async () => {
+export const getCommentPost = async (query:any) => {
     try {
-      const getComment = await prisma.comments.findMany();
+      const {postId} = query
+      if(postId){
+      const getCommentByPost = await prisma.comments.findMany({
+        orderBy: { creation_date: 'desc' },
+        where:{
+          postId:postId
+        }
+      });
+      return getCommentByPost ? getCommentByPost : null 
+      }
+      const getComment = await prisma.comments.findMany({orderBy:{creation_date:'desc'}});
       return getComment;   
     } catch (error) {
       return error

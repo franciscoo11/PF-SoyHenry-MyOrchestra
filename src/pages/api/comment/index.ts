@@ -21,7 +21,7 @@ export default async function handler(
   try {
     switch (method) {
       case GET:
-        const get_CommentPost = await getCommentPost();
+        const get_CommentPost = await getCommentPost(query);
         return get_CommentPost
           ? res.status(200).json(get_CommentPost)
           : res.status(400).json([]);

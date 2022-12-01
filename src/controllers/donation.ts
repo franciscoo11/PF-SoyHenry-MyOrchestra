@@ -1,4 +1,8 @@
 import { prisma } from "../../lib/prisma";
+import {
+  transporter,
+  emailer,
+} from "../../config/nodemailer";
 
 export const getDonations = async (query:any) => {
   const {orchestraId, userId} = query
@@ -58,7 +62,6 @@ export const postDonation =async (body:any)=>{
     try { 
       if(!body) return null
 
-
       const createDonation = await prisma.donations.create({
         data:{
           amount: parseFloat(body.amount),
@@ -68,7 +71,30 @@ export const postDonation =async (body:any)=>{
           userId: body.userId
         }
       })
-      
+
+      if (createDonation) {
+        const takeUser = await prisma.users.findFirst({
+          where: {
+            id: body.userId,
+          },
+        });
+        const destinationOrchestra = await prisma.orchestras.findFirst({
+          where:{
+            id: body.orchestraId
+          }
+        })
+        await transporter.sendMail(
+          emailer(
+            takeUser,
+            "Donación realizada",
+            `Saludos ${takeUser!.name}, agradecemos sumamente tu colaboración!`,
+            `
+            Detalles de donación: Monto: $${body.amount} || Estado: Completado || Destinatario: ${destinationOrchestra?.name}
+            `
+          )
+        );
+      }
+
       return createDonation ? createDonation: null
     } catch (error) {
       return error

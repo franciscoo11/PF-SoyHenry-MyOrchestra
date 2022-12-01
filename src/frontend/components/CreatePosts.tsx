@@ -1,7 +1,9 @@
-import { Formik, Form, Field, FormikHelpers } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
 import styled from "styled-components";
+import * as Yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 
 const StyledForm = styled.div`
@@ -12,6 +14,20 @@ const StyledForm = styled.div`
     grid-template-columns: repeat(9, minmax(0, 1fr));
     gap: 24px;
 
+    .error {
+      font-family: "Lato";
+      padding: 6px;
+      display: block;
+      color: #000000;
+      font-size: 0.7em;
+      text-align: center;
+    }
+
+    .error {
+      margin: 0;
+      text-align: unset;
+      margin-bottom: -12px;
+    }
     .form-header {
       grid-column: 1/7;
       grid-row: 1;
@@ -94,7 +110,12 @@ const StyledForm = styled.div`
   }
 `;
 
-export default function CreatePosts({ orchestraId, userCreator }: any) {
+export default function CreatePosts({
+  orchestraId,
+  userCreator,
+  postType,
+  setPosting,
+}: any) {
   if (userCreator) {
     return (
       <StyledForm>
@@ -104,20 +125,32 @@ export default function CreatePosts({ orchestraId, userCreator }: any) {
             content: "",
             orchestraId,
             userCreator,
-            type_PostId: "clanisg15000wi5zzxjvr2hu8",
+            type_PostId: postType,
           }}
-          onSubmit={async (values: any, { setSubmitting }) => {
+          validationSchema={Yup.object({
+            title: Yup.string().required("Requerido"),
+            content: Yup.string().required("Requerido"),
+          })}
+          onSubmit={async (values: any, { setSubmitting, resetForm }) => {
             const file: any = values.file;
             const formData = new FormData();
             let url_file: string = "";
 
             try {
+              setPosting(true);
               if (file) {
                 formData.append("file", file);
                 formData.append("upload_preset", "orchestras-uploads");
-                const uploadImage = await axios.post(
-                  `https://api.cloudinary.com/v1_1/orchestrascloudinary/image/upload`,
-                  formData
+                const uploadImage = await toast.promise(
+                  axios.post(
+                    `https://api.cloudinary.com/v1_1/orchestrascloudinary/image/upload`,
+                    formData
+                  ),
+                  {
+                    pending: "Carga de imagen pendiente",
+                    success: "Carga de imagen en proceso",
+                    error: "Error de carga de imagen",
+                  }
                 );
                 url_file = uploadImage.data.secure_url;
               }
@@ -129,8 +162,6 @@ export default function CreatePosts({ orchestraId, userCreator }: any) {
                 type_PostId: values.type_PostId,
                 url_file,
               };
-
-              console.log(postData);
 
               await axios.post("/api/post", postData);
               setSubmitting(false);
@@ -144,7 +175,8 @@ export default function CreatePosts({ orchestraId, userCreator }: any) {
                 progress: undefined,
                 theme: "light",
               });
-              window.location.reload();
+              resetForm();
+              setPosting(false);
             } catch (error) {
               toast.error("Verifica e intenta nuevamente.", {
                 position: "top-right",
@@ -182,6 +214,9 @@ export default function CreatePosts({ orchestraId, userCreator }: any) {
                   placeholder="Titulo"
                   className="input"
                 />
+                <p className="error">
+                  <ErrorMessage name="title" className="errorMessage" />
+                </p>
               </div>
 
               <div className="post-content">
@@ -193,6 +228,9 @@ export default function CreatePosts({ orchestraId, userCreator }: any) {
                   rows="5"
                   cols="30"
                 />
+                <p className="error">
+                  <ErrorMessage name="content" className="errorMessage" />
+                </p>
               </div>
               <div className="post-file">
                 <Field

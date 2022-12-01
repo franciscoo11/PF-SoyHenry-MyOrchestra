@@ -10,12 +10,12 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default function LoggedIn({ handlelogout }: any) {
+export default function LoggedIn({ handlelogout, id }: any) {
   return (
     <>
       <StyledDiv>
         <div>
-          <Link href="/users/7" className="log">
+          <Link href={`/users/${id}`} className="log">
             <span>Mi Perfil </span>
             <span>
               <FiUser />

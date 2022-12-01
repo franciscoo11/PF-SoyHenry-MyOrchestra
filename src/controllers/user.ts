@@ -2,8 +2,7 @@ import { prisma } from "../../lib/prisma";
 import bcrypt from "bcryptjs";
 import {
   transporter,
-  emailerReg,
-  emailerUpdate,
+  emailer,
 } from "../../config/nodemailer";
 import {convertToCloudinaryUrlUser } from "./cloudinary";
 
@@ -21,7 +20,7 @@ const check_password = (password: string) => {
 export const postUser = async (body: any, query: any) => {
   try {
     if (!body) return null;
-    const { name, email, password, rolId, birthday, avatar, cover } = body;
+    const { name, email, password, rolId, avatar, cover } = body;
     if (!email) return null;
     let cloudinaryCoverUrl = "/user_cover.png";
     let cloudinaryAvatarUrl = "/blank_profile.png";
@@ -61,7 +60,15 @@ export const postUser = async (body: any, query: any) => {
           rol:true
         }
       });
-      await transporter.sendMail(emailerReg(addUserFromGmail));
+      await transporter.sendMail(
+        emailer(
+          addUserFromGmail,
+          "Registro My Orchestras",
+          `Gracias por registrarte ${addUserFromGmail.name}`,
+          `
+          Tu usuario es: ${addUserFromGmail.email}, estamos muy contentos de que formes parte de nuestra comunidad. Te invitamos a que visites nuestra plataforma y puedas enterarte de lo que esta pasando...`
+        )
+      );
       return addUserFromGmail ? addUserFromGmail : null;
     } else {
       if (!check_password(password)) return null;
@@ -76,7 +83,6 @@ export const postUser = async (body: any, query: any) => {
           email: email,
           password: hashPassword(password),
           rolId: rolId,
-          birthday: new Date(birthday),
           avatar: cloudinaryAvatarUrl,
           cover: cloudinaryCoverUrl
         },
@@ -86,13 +92,20 @@ export const postUser = async (body: any, query: any) => {
           avatar: cloudinaryAvatarUrl,
           cover: cloudinaryCoverUrl,
           password: hashPassword(password),
-          birthday: new Date(birthday),
         },
         include:{
           rol:true
         }
       });
-      await transporter.sendMail(emailerReg(addUser));
+      await transporter.sendMail(
+        emailer(
+          addUser,
+          "Registro My Orchestras",
+          `Gracias por registrarte ${addUser.name}`,
+          `
+          Tu usuario es: ${addUser.email}, estamos muy contentos de que formes parte de nuestra comunidad. Te invitamos a que visites nuestra plataforma y puedas enterarte de lo que esta pasando...`
+        )
+      );
       return addUser ? addUser : null;
     }
 
@@ -131,11 +144,11 @@ export const getUsers = async (query:any) => {
   }
 };
 
-export const updateUser = async (email: any, body: any) => {
+export const updateUser = async (query: any, body: any) => {
   try {
-    const {email,avatar, cover } = body;
+    let {avatar, cover, password, name } = body;
 
-    if (!email || !body) return null;
+    if (!query.email || !body) return null;
     let cloudinaryCoverUrl = cover;
     let cloudinaryAvatarUrl = avatar;
     let folder = "";
@@ -144,7 +157,7 @@ export const updateUser = async (email: any, body: any) => {
       folder = 'cover';
       cloudinaryCoverUrl = await convertToCloudinaryUrlUser(
         cover,
-        email,
+        query.email,
         folder
       );
     }
@@ -152,23 +165,37 @@ export const updateUser = async (email: any, body: any) => {
       folder = 'avatar';
       cloudinaryAvatarUrl = await convertToCloudinaryUrlUser(
         avatar,
-        email,
+        query.email,
         folder
       );
     }
-    
-    
+    ;
+
+    if(password) {
+      password = hashPassword(password)
+    }
+
     const getUser = await prisma.users.update({
       where: {
-        email: email,
+        email: query.email,
       },
       data:{
         ...body,
         cover:cloudinaryCoverUrl,
-        avatar:cloudinaryAvatarUrl
+        avatar:cloudinaryAvatarUrl,
+        name: name,
+        password: password,
       },
     });
-    await transporter.sendMail(emailerUpdate(getUser));
+
+    await transporter.sendMail(
+      emailer(
+        getUser,
+        "Actualización de su cuenta",
+        `Hola ${getUser.name}, te informamos que algunos datos de tu cuenta han sido modificados`,
+        `Si no fuiste tu, comunicate con nostros a la brevedad!`
+      )
+    );
     return getUser ? getUser : null;
   } catch (error) {
     return error;
@@ -177,20 +204,48 @@ export const updateUser = async (email: any, body: any) => {
 
 export const logicDeleteUser = async (email: any) => {
   try {
-    if (!email) return null;
-    const user = await prisma.users.update({
-      where: {
-        email: email,
-      },
-      data: {
-        is_active: false,
-      },
-    });
-    return user ? user : null;
+    const user = await prisma.users.findUnique({where:{email}})
+    if(user?.is_active){
+      const deactivate = await prisma.users.update({
+        where: {
+          email:email
+        },
+        data: {
+          is_active: false
+        }
+      })
+
+      await transporter.sendMail(
+        emailer(
+          deactivate,
+          "Baneo temporal de My Orchestras",
+          `Hola ${deactivate.name}, debido alguna infracción se ha restringido el acceso a la plataforma.`,
+          `Para más informacion comunicate por email o por nuestos canales de comunicación.`
+        )
+      );
+
+      return deactivate
+    }
+
+    if(!user?.is_active){
+      const activate = await prisma.users.update({
+        where: {
+          email:email
+        },
+        data: {
+          is_active: true
+        }
+      })
+
+      return activate
+    }
+   
+   
   } catch (error) {
-    return error;
+    return error
   }
 };
+
 
 export const deleteUser = async (email: any) => {
   try {

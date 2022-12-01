@@ -27,7 +27,8 @@ export const getCampaigns = async (query?:any) => {
               [prop1]:aux 
             },
             include:{
-                donations:true
+                donations:true,
+                orchestra:true
             }
           })
 
