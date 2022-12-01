@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import NextCors from "nextjs-cors";
+import { HOSTNAME } from "../../_app";
 require('dotenv').config()
 
 export default async function handler(
@@ -35,7 +36,6 @@ export default async function handler(
 
 const createOrder = async (req: NextApiRequest, res: NextApiResponse<any>) => {
   try {
-    console.log(process.env)
     const order = {
       intent: "CAPTURE",
       purchase_units: [
@@ -53,7 +53,7 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         brand_name: "myorchestras.net",
         landing_page: "LOGIN",
         user_action: "PAY_NOW",
-        return_url: `http://localhost:3000/orchestras/${req.body.idOrchestra}/campaigns/${req.body.idCampaign}/paypalSuccess` ,
+        return_url: `${HOSTNAME}/orchestras/${req.body.idOrchestra}/campaigns/${req.body.idCampaign}/paypalSuccess` ,
       },
     };
 
