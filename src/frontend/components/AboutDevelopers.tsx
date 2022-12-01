@@ -3,6 +3,7 @@ import { FiMail } from "react-icons/fi";
 import { Developers } from "../utils/fakeDB";
 import MainNavBar from "./MainNavBar";
 import HeroImage from "./HeroImage";
+import { isPropertySignature } from "typescript";
 
 const CardStyle = styled.div`
 	box-sizing: border-box;
@@ -72,8 +73,7 @@ const CardStyle = styled.div`
 		.card-btn {
 			background-color: ${({ theme }) => theme.colors.secondary};
 			text-align: center;
-			display: flex;
-      flex-direction: row;
+			display: block;
 			width: 100%;
 			padding: 12px;
 			font-size: 1em;
@@ -98,28 +98,29 @@ interface DeveloperMemberProps {
   LinkUrl: string;
 }
 
-export default function DeveloperMember() {
+export default function DeveloperMember({ props }: any) {
   return (
     <CardStyle>
       <MainNavBar />
-      <div className="card-btn-container">
-        {Developers.map((e) => {
-          return (
+      <div className="card-content">
+      <div className='separator'></div>
+						<div className='card-counters-container'></div>
             <div className="card-counter">
-              <img src= {e.pic} width="25%" />
+              <img src= {props.pic} width="25%" />
               <div>
                 <div className="card-content">
-                  <h2 className="card-title">{e.name}</h2>
-                  <h3>{e.team}</h3>
-                  <h4>{e.description}</h4>
+                  <div className='orqTitle'>{props.name}</div>
+                   <div className='orqLocation'>{props.team}</div>
+                  <p className='description'>{props.description}</p>
+                  
+                  <div className='card-footer'>
                 </div>
               </div>
 
-              <div>{e.GitUrl}</div>
-              <div>{e.LinkUrl}</div>
+              <div>{props.GitUrl}</div>
+              <div>{props.LinkUrl}</div>
             </div>
-          );
-        })}
+            </div>
       </div>
     </CardStyle>
   );

@@ -1,9 +1,9 @@
 import DeveloperMember  from '../frontend/components/AboutDevelopers';
-import axios from "axios";
 import Head from "next/head";
 import Footer from "../frontend/components/Footer";
 import { HOSTNAME } from "./_app";
-
+import HomeCards from '../frontend/components/HomeCards';
+import { Developers } from "../frontend/utils/fakeDB";
 
 
 export default function AboutDev(props: any) {
@@ -11,12 +11,19 @@ export default function AboutDev(props: any) {
     <>
       <Head>
         <title>Red de Orquestas Populares de Música Latinoamericana</title>
-        <style>
-          @import
-          url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
-        </style>
       </Head>
-      <DeveloperMember/>
+      { Developers?.map((e)=> {
+        return(
+          <DeveloperMember 
+          pic= {e.pic}
+          name= {e.name}
+          team= {e.team}
+          description= {e.description}
+          GitUrl= {e.GitUrl}
+          LinkUrl= {e.LinkUrl}
+          />
+        )
+      }) }
       <Footer />
     </>
   );
