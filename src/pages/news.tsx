@@ -97,6 +97,7 @@ const StyledMain = styled.main`
         color: white;
         border: none;
         border-radius: 6px;
+        display: block;
 
         :hover {
           filter: brightness(110%);

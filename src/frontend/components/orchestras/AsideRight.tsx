@@ -1,7 +1,8 @@
 import { FiHeart } from "react-icons/fi";
 import OpenCampaign from "../OpenCampaign";
+import Link from "next/link";
 
-export default function AsideRight(props: any) {
+export default function AsideRight() {
   return (
     <>
       <div className="donate-container">
@@ -18,7 +19,9 @@ export default function AsideRight(props: any) {
           </p>
         </div>
         <div className="donate-btn-container">
-          <button className="donate-btn">Donar</button>
+          <Link className="donate-btn donate-link-aside" href={"/campaigns"}>
+            Donar
+          </Link>
         </div>
       </div>
       <OpenCampaign />

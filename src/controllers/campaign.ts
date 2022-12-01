@@ -7,6 +7,7 @@ export const getCampaigns = async (query?:any) => {
     const onlyorder =async(orderprop:any,order:any)=>{
         const data= await prisma.campaigns.findMany( 
           { orderBy: { [orderprop]: order },
+          include: {donations: true},
           take: resources*1 ||4,
           skip: page*resources||page*4||0,
           })
