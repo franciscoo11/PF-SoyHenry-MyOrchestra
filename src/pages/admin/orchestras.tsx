@@ -8,41 +8,73 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 
 const StyledMain = styled.main`
-  width: 100%;
+  width: 90%;
   max-width: 1440px;
   background-color: #f5f5f5;
   display: grid;
   grid-template-columns: repeat(9, minmax(0, 1fr));
   gap: 12px;
+  margin: 24px auto;
 
   .content {
+    margin: 24px auto;
     grid-column: 1/10;
-  }
-
-  .logo {
-    grid-column: 2/3;
-    display: flex;
-    align-items: center;
-    img {
-      width: 48px;
-      height: auto;
-    }
-  }
-
-  .info {
-    grid-column: 3/7;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    div {
-      display: flex;
-      justify-content: center;
-    }
-  }
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    gap: 24px;
 
-  .actions {
-    grid-column: 8/10;
-    display: flex;
-    align-items: center;
+    .filters-container {
+      grid-column: 1/10;
+      display: flex;
+      justify-content: space-evenly;
+    }
+
+    .orquestas {
+      grid-column: 1/10;
+      display: grid;
+      grid-template-columns: repeat(9, minmax(0, 1fr));
+      gap: 24px;
+
+      .heads-container {
+        grid-column: 1/10;
+        display: grid;
+        grid-template-columns: repeat(9, minmax(0, 1fr));
+        gap: 24px;
+        background-color: ${({ theme }) => theme.colors.secondary};
+        padding: 12px;
+        font-weight: bold;
+        color: white;
+
+        .logo {
+          grid-column: 2/3;
+          display: flex;
+          align-items: center;
+          img {
+            width: 48px;
+            height: auto;
+          }
+        }
+
+        .info {
+          grid-column: 3/7;
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          div {
+            display: flex;
+            justify-content: center;
+          }
+        }
+
+        .actions {
+          grid-column: 8/9;
+          display: flex;
+          align-items: center;
+        }
+      }
+      .list-container {
+        grid-column: 1/10;
+      }
+    }
   }
 `;
 
@@ -160,7 +192,7 @@ export default function AdminOrchestras({ orchestraTypes }: any) {
       </Head>
       <StyledMain>
         <section className="content">
-          <div className="filters-container">
+          {/* <div className="filters-container">
             <div className="dropdown">
               <button className="dropbtn">Tipo de Orquesta</button>
               <div className="dropdown-content">
@@ -194,34 +226,38 @@ export default function AdminOrchestras({ orchestraTypes }: any) {
                 Restablecer
               </button>
             </div>
-          </div>
+          </div> */}
           <div className="orquestas">
-            <div className="logo">LOGO</div>
-            <div className="info">
-              <div className="nombre">ORQUESTA</div>
-              <div className="pais">PAIS</div>
+            <div className="heads-container">
+              <div className="logo">LOGO</div>
+              <div className="info">
+                <div className="nombre">ORQUESTA</div>
+                <div className="pais">PAIS</div>
+              </div>
+              <div className="actions">ACCIONES</div>
             </div>
-            <div className="actions">ACCIONES</div>
-            {loading ? (
-              <p className="loading-msg">Loading...</p>
-            ) : data.length > 0 ? (
-              data.map((orquesta: any, index: number) => (
-                <OrchestraCards
-                  key={orquesta.id}
-                  id={orquesta.id}
-                  title={orquesta.name}
-                  subtitle={orquesta.location}
-                  content={orquesta.description.substr(0, 150)}
-                  image={orquesta.logo}
-                  is_active={orquesta.is_active}
-                  // handleClickLogicDelete={handleClickLogicDelete}
-                />
-              ))
-            ) : (
-              <p className="search-alert">Sin coincidencias</p>
-            )}
+            <div className="list-container">
+              {loading ? (
+                <p className="loading-msg">Loading...</p>
+              ) : data.length > 0 ? (
+                data.map((orquesta: any, index: number) => (
+                  <OrchestraCards
+                    key={orquesta.id}
+                    id={orquesta.id}
+                    title={orquesta.name}
+                    subtitle={orquesta.location}
+                    content={orquesta.description.substr(0, 150)}
+                    image={orquesta.logo}
+                    is_active={orquesta.is_active}
+                    // handleClickLogicDelete={handleClickLogicDelete}
+                  />
+                ))
+              ) : (
+                <p className="search-alert">Sin coincidencias</p>
+              )}
+            </div>
           </div>
-          <div className="paginacion">
+          {/* <div className="paginacion">
             <button
               className="nav-btn"
               onClick={prevPage}
@@ -236,7 +272,7 @@ export default function AdminOrchestras({ orchestraTypes }: any) {
             >
               Siguiente
             </button>
-          </div>
+          </div> */}
         </section>
       </StyledMain>
     </>
