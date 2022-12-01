@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import {getUserEmail  } from "../utils/getUserEmail";
 import Swal from "sweetalert2";
 
-export default function Auth() {
+export default function Auth():any {
   const { user, error, isLoading } = useUser();
   const cookie = new Cookies();
   cookie.set("Userlogin", user, { path: "/" });
