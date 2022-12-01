@@ -17,7 +17,7 @@ export const getServerSideProps = async ({ params }: any) => {
 };
 export default function User({ user }: any) {
   const router = useRouter();
-  const { avatar, birthday, city, country, cover, email, name, rolId } = user;
+  const { avatar, city, cover, email, name, rolId } = user;
   return (
     <>
       <MainNavBar />

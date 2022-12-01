@@ -15,7 +15,7 @@ export const getServerSideProps = async ({ params }: any) => {
         email: params.id,
       },
     });
-    // user?.birthday?.toString();
+
     const orchestras = await prisma.orchestras.findMany({
       select: {
         id: true,
@@ -51,7 +51,7 @@ export default function User({ user, orchestras, userRoles }: any) {
 
       <StyledMain>
         <aside className="aside-left">
-          <UserAsideLeft logo={avatar} id={email} />
+          <UserAsideLeft avatar={avatar} id={email} user={user} />
         </aside>
         <section className="content">
           <UserCover cover={cover} title={name} location={city} rolId={rolId} />

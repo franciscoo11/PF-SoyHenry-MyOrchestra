@@ -5,7 +5,6 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { HOSTNAME } from "../../../pages/_app";
 
 const StyledForm = styled.div`
   .form {
@@ -70,16 +69,12 @@ const StyledForm = styled.div`
         grid-column: 5/7;
         grid-row: 3;
       }
-      .birthday-field {
-        grid-column: 1/3;
-        grid-row: 4;
-      }
       .rolId-field {
-        grid-column: 3/5;
+        grid-column: 1/4;
         grid-row: 4;
       }
       .orchestraId-field {
-        grid-column: 5/7;
+        grid-column: 4/7;
         grid-row: 4;
       }
       .btn-container {
@@ -113,7 +108,6 @@ const StyledForm = styled.div`
 interface Values {
   name: string;
   email: string;
-  password: string;
   avatar?: string;
   cover?: string;
   city: string;
@@ -134,7 +128,7 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
     email,
     name,
     rolId,
-    password,
+
     state,
   } = user;
 
@@ -146,7 +140,6 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
         initialValues={{
           name: name ? name : "",
           email: email ? email : "",
-          password: "Jose100105.123.",
           country: country ? country : "",
           state: state ? state : "",
           city: city ? city : "",
@@ -176,14 +169,12 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
             let postUser = {
               name: values.name,
               email: values.email,
-              password: values.password,
               country: values.country,
               state: values.state,
               city: values.city,
               first_time: false,
             };
             await axios.put(`/api/user/${values.email}`, postUser);
-            console.log(values.email);
 
             toast.success("Datos actualizados correctamente", {
               position: "top-right",
@@ -196,6 +187,7 @@ export default function EditUser({ user, orchestras, userRoles }: any) {
               theme: "light",
             });
             setSubmitting(false);
+            router.push(`/users/${values.email}`);
           } catch (error) {
             toast.error("Verifica los datos ingresados, y vuelve a intentar.", {
               position: "top-right",
