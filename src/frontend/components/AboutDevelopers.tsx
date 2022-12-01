@@ -3,43 +3,56 @@ import { FiMail } from "react-icons/fi";
 import { Developers } from "../utils/fakeDB";
 import MainNavBar from "./MainNavBar";
 import HeroImage from "./HeroImage";
+import { isPropertySignature } from "typescript";
 
 const CardStyle = styled.div`
   box-sizing: border-box;
-  border: 1px solid lightgray;
-  padding: 15px;
+  border: 1px solid ${({ theme }) => theme.colors.lines};
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 12px;
-  border-radius: 12px;
+  border-radius: 8px;
 
   .card-header {
-    height: 240px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 170px;
+  }
+
+  .card-header img {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .card-content {
-    display: flex;
-    flex-direction: column;
-
-    p,
-    h2,
-    h3 {
-      margin: 0;
-    }
+    padding: 0 24px 24px 24px;
   }
-  .card-title {
+  .separator {
+    height: 1px;
+    width: 100%;
+    background-color: ${({ theme }) => theme.colors.lines};
+    margin-bottom: 20px;
+  }
+  .orqLocation {
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: ${({ theme }) => theme.colors.light};
+  }
+  .orqTitle {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 20px;
+    font-weight: 700;
   }
 
-  img {
-    max-width: 100%;
-    max-height: 240px;
+  .description {
+    font-size: 16px;
+    font-weight: 300;
+    color: ${({ theme }) => theme.colors.light};
+    min-height: 115px;
   }
 
   .card-counters-container {
@@ -47,10 +60,6 @@ const CardStyle = styled.div`
     justify-content: space-between;
     align-items: baseline;
     margin-bottom: 10px;
-  }
-
-  h3 {
-    color: #9b9797;
   }
 
   .card-counter {
@@ -81,7 +90,7 @@ const CardStyle = styled.div`
 `;
 
 interface DeveloperMemberProps {
-  pic?: string;
+  pic: string;
   name: string;
   team: string;
   description: Text;
@@ -89,29 +98,28 @@ interface DeveloperMemberProps {
   LinkUrl: string;
 }
 
-export default function DeveloperMember() {
+export default function DeveloperMember(props: any) {
   return (
     <CardStyle>
       <MainNavBar />
-      <HeroImage />
-      <div className="card-btn-container">
-        {Developers.map((e) => {
-          return (
-            <div className="card-counter">
-              <img src= {e.pic} width="25%" />
-              <div>
-                <div className="card-content">
-                  <h2 className="card-title">{e.name}</h2>
-                  <h3>{e.team}</h3>
-                  <h4>{e.description}</h4>
-                </div>
-              </div>
+      <div className="card-content">
+        <div className="separator"></div>
+        <div className="card-counters-container"></div>
+        <div className="card-counter">
+          <img src={props.pic} width="25%" />
+          <div>
+            <div className="card-content">
+              <div className="orqTitle">{props.name}</div>
+              <div className="orqLocation">{props.team}</div>
+              <p className="description">{props.description}</p>
 
-              <div>{e.GitUrl}</div>
-              <div>{e.LinkUrl}</div>
+              <div className="card-footer"></div>
             </div>
-          );
-        })}
+
+            <div>{props.GitUrl}</div>
+            <div>{props.LinkUrl}</div>
+          </div>
+        </div>
       </div>
     </CardStyle>
   );
