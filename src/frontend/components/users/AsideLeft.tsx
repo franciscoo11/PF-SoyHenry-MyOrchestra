@@ -1,4 +1,3 @@
-import { Orquestas, Users } from "../../../frontend/utils/fakeDB";
 import {
   FiHome,
   FiInfo,
@@ -15,6 +14,7 @@ import {
   FiMusic,
   FiFileText,
   FiBell,
+  FiKey,
 } from "react-icons/fi";
 import Link from "next/link";
 import { UpdateUserLogo } from "./UpdateUserLogo";
@@ -50,61 +50,15 @@ export default function UserAsideLeft({ avatar, email, user }: any) {
               </div>
             </li>
             <li className="nav-item">
-              <FiStar />
-              <div>
-                <Link href={`/users/${encodeURIComponent(email)}/favs`}>
-                  Favoritos
-                </Link>
-              </div>
-            </li>
-            <li className="nav-item">
-              <FiMusic />
-              <div>
-                <Link href={`/orchestras/${encodeURIComponent(email)}`}>
-                  Mi orquesta
-                </Link>
-              </div>
-            </li>
-            {/* <li className="nav-item">
-              <FiFileText />
-              <div>
-                <Link href={`/users/${encodeURIComponent(props.id)}/files`}>
-                  Compartido
-                </Link>
-              </div>
-            </li> */}
-            <li className="nav-item">
-              <FiFile />
-              <div>Notificaciones</div>
-            </li>
-            {/* <li className="nav-item">
-              <FiCalendar />
+              <FiKey />
               <div>
                 <Link
-                  href={`/orchestras/${encodeURIComponent(props.id)}/events`}
+                  href={`/users/${encodeURIComponent(email)}/changepassword`}
                 >
-                  Eventos
+                  Cambiar contraseña
                 </Link>
               </div>
             </li>
-            <li className="nav-item">
-              <FiHeart />
-              <div>
-                <Link
-                  href={`/orchestras/${encodeURIComponent(props.id)}/campaigns`}
-                >
-                  Campañas
-                </Link>
-              </div>
-            </li>
-            <li className="nav-item">
-              <FiEdit3 />
-              <div>
-                <Link href={`/orchestras/${encodeURIComponent(props.id)}/edit`}>
-                  Editar Orquesta
-                </Link>
-              </div>
-            </li> */}
           </ul>
         </nav>
       </div>

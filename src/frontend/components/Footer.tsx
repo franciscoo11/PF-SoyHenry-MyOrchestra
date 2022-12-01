@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { FiFacebook, FiInstagram, FiYoutube } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const StyledFooter = styled.footer`
   background-color: #222;
@@ -87,8 +88,8 @@ const StyledFooter = styled.footer`
 `;
 
 export default function Footer(props: any) {
-  const router = useRouter()
-  
+  const router = useRouter();
+
   return (
     <StyledFooter>
       <div className="footer-grid">
@@ -100,18 +101,31 @@ export default function Footer(props: any) {
           </p>
           <div className="social-icons-container">
             <FiFacebook />
+
             <FiInstagram />
+
             <FiYoutube />
-            <FaWhatsapp onClick={() => router.push('https://wa.me/5493425682316')} />
+
+            <FaWhatsapp
+              onClick={() => router.push("https://wa.me/5493425682316")}
+            />
           </div>
         </div>
         <div className="footer-center">
           <nav className="footer-nav">
             <ul className="footer-nav-list">
-              <li className="footer-nav-item">Orquestas</li>
-              <li className="footer-nav-item">Eventos</li>
-              <li className="footer-nav-item">Campañas</li>
-              <li className="footer-nav-item">Noticias</li>
+              <Link href="/orchestras">
+                <li className="footer-nav-item">Orquestas</li>
+              </Link>
+              <Link href="/events">
+                <li className="footer-nav-item">Eventos</li>
+              </Link>
+              <Link href="/campaigns">
+                <li className="footer-nav-item">Campañas</li>
+              </Link>
+              <Link href="/news">
+                <li className="footer-nav-item">Noticias</li>
+              </Link>
               {/* <li className="footer-nav-item">Multimedia</li>
               <li className="footer-nav-item">Acerca de</li> */}
             </ul>
