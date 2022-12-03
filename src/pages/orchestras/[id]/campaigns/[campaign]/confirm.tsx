@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const StyledDiv = styled.div`
   background-image: url("/bg_01.jpg");
-  max-width: 1440px;
+  width: 100%;
   margin: 0 auto;
   height: 100vh;
   display: flex;
