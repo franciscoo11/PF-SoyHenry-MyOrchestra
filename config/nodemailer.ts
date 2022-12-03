@@ -49,7 +49,7 @@ export const emailer = function (user:any, subject:any, title:any, body:any) {
             border: none;
             border-radius: 6px;
             cursor:pointer;
-            transition-duration: 0.6s;" href="http://localhost:3000">My Orchestras</a>
+            transition-duration: 0.6s;" href="${process.env.HOSTNAME}">My Orchestras</a>
         </div>
         
         

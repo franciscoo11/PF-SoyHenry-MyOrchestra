@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 const StyledDiv = styled.div`
-  background-image: url("bg_01.jpg");
-  max-width: 1440px;
+  background-image: url("/bg_01.jpg");
+  width: 100%;
   margin: 0 auto;
   height: 100vh;
   display: flex;
@@ -34,10 +34,10 @@ export default function Confirm() {
   return (
     <StyledDiv>
       <div>
-        <img src="mapa.png" alt="Mapa Orquestas" height="200px" />
+        <img src="/mapa.png" alt="Mapa Orquestas" height="200px" />
         <br />
         <img
-          src="isologo.png"
+          src="/isologo.png"
           alt="Red de Orquestas Populares de Musica Latinoamericana"
           height="60px"
         />
