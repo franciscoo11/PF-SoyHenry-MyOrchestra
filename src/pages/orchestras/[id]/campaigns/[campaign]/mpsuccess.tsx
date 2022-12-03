@@ -7,7 +7,7 @@ import Cookies from "universal-cookie";
 import styled from "styled-components";
 
 const StyledDiv = styled.div`
-  background-image: url("bg_01.jpg");
+  background-image: url("/bg_01.jpg");
   max-width: 1440px;
   margin: 0 auto;
   height: 100vh;
@@ -109,10 +109,10 @@ const mpSuccess = ({ paymentDetail, idOrchestra, idCampaign }: any) => {
     <StyledDiv>
       {paymentDetail.status_detail == "accredited" ? (
         <div>
-          <img src="mapa.png" alt="Mapa Orquestas" height="200px" />
+          <img src="/mapa.png" alt="Mapa Orquestas" height="200px" />
           <br />
           <img
-            src="isologo.png"
+            src="/isologo.png"
             alt="Red de Orquestas Populares de Musica Latinoamericana"
             height="60px"
           />
