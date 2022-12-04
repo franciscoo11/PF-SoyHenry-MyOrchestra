@@ -42,9 +42,8 @@ Donde también podrán recibir ayuda por medio de donaciones con el fin de colab
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-## Tech
+## Tecnologías
 
-Listado de tecnologías:
 
 * [![Next][Next.js]][Next-url]
 * [![React][React.js]][React-url]
