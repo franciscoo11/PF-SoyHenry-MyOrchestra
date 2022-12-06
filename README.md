@@ -2,7 +2,9 @@
 <br />
 <div align="center">
   <a href="https://github.com/franciscoo11/PF-SoyHenry-MyOrchestra">
+    <kbd>
     <img src="https://res.cloudinary.com/orchestrascloudinary/image/upload/v1670351000/imag_eygy75.png" alt="Logo" width="450" height="250">
+    </kbd>
   </a>
 
   <h3 align="center">My Orchestras</h3>
